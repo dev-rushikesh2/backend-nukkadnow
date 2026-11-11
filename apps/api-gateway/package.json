@@ -18,7 +18,7 @@
     "@nestjs/platform-express": "^10.4.7",
     "@nestjs/platform-socket.io": "^10.4.7",
     "@nestjs/swagger": "^7.4.2",
-    "@nestjs/websockets": "^10.4.7",
+    "@nestjs/websockets": "^12.4.0",
     "@nukkadnow/contracts": "workspace:*",
     "@nukkadnow/observability": "workspace:*",
     "@nukkadnow/platform-kernel": "workspace:*",
