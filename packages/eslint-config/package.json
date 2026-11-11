@@ -4,6 +4,6 @@
   "description": "NukkadNow Boundary Enforcement ESLint Rules",
   "main": "index.js",
   "dependencies": {
-    "eslint-plugin-boundaries": "^5.0.1"
+    "eslint-plugin-boundaries": "^7.4.2"
   }
 }
