@@ -1,0 +1,38 @@
+name: Database Migrations Check
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**/prisma/**'
+
+jobs:
+  verify-migrations:
+    name: Expand-Contract Safe Migration Audit
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgrespassword
+          POSTGRES_DB: migration_test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.3
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: 'pnpm'
+      - name: Run Prisma Validate
+        run: pnpm prisma:generate

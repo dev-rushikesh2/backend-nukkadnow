@@ -1,0 +1,83 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("MERCHANT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Merchant {
+  id                 String               @id @default(uuid())
+  organizationName   String
+  legalBusinessName  String?
+  contactName        String
+  contactPhone       String
+  verificationStatus String               @default("PENDING")
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  outlets            Outlet[]
+  verifications      VerificationRecord[]
+
+  @@map("merchants")
+}
+
+model Outlet {
+  id              String        @id @default(uuid())
+  merchantId      String
+  name            String
+  sellerMode      String        @default("PERMANENT") // PERMANENT, HOME_CHEF, SEASONAL, EVENT, ARTISAN
+  addressLine     String
+  locality        String
+  city            String        @default("Nagpur")
+  latitude        Float
+  longitude       Float
+  isAddressPublic Boolean       @default(true)
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  merchant        Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  hours           OutletHours[]
+  serviceAreas    ServiceArea[]
+
+  @@index([merchantId])
+  @@index([locality])
+  @@map("outlets")
+}
+
+model OutletHours {
+  id         String   @id @default(uuid())
+  outletId   String
+  dayOfWeek  Int      // 0 = Sunday, 1 = Monday ...
+  openTime   String   // "09:00"
+  closeTime  String   // "21:00"
+  isClosed   Boolean  @default(false)
+  outlet     Outlet   @relation(fields: [outletId], references: [id], onDelete: Cascade)
+
+  @@unique([outletId, dayOfWeek])
+  @@map("outlet_hours")
+}
+
+model ServiceArea {
+  id           String   @id @default(uuid())
+  outletId     String
+  radiusMeters Int
+  geoJson      Json?
+  outlet       Outlet   @relation(fields: [outletId], references: [id], onDelete: Cascade)
+
+  @@map("service_areas")
+}
+
+model VerificationRecord {
+  id           String    @id @default(uuid())
+  merchantId   String
+  documentType String
+  documentUrl  String
+  status       String    @default("SUBMITTED")
+  notes        String?
+  verifiedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  merchant     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@map("verification_records")
+}

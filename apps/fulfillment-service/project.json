@@ -1,0 +1,6 @@
+{
+  "name": "fulfillment-service",
+  "root": "apps/fulfillment-service",
+  "sourceRoot": "apps/fulfillment-service/src",
+  "projectType": "application"
+}

@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: nukkadnow-prometheus
+    restart: unless-stopped
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - nukkadnow-mesh
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: nukkadnow-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - nukkadnow-mesh
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: nukkadnow-jaeger
+    restart: unless-stopped
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - nukkadnow-mesh
+
+networks:
+  nukkadnow-mesh:
+    external: true

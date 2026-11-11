@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("REVIEW_SUPPORT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  orderId     String   @unique
+  customerId  String
+  outletId    String
+  rating      Int      // 1 to 5
+  comment     String?
+  isModerated Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([outletId])
+  @@map("reviews")
+}
+
+model SupportTicket {
+  id           String          @id @default(uuid())
+  ticketNumber String          @unique
+  customerId   String
+  tenantId     String?
+  orderId      String?
+  subject      String
+  status       String          @default("OPEN")
+  priority     String          @default("NORMAL")
+  createdAt    DateTime        @default(now())
+  messages     TicketMessage[]
+
+  @@index([customerId])
+  @@map("support_tickets")
+}
+
+model TicketMessage {
+  id         String        @id @default(uuid())
+  ticketId   String
+  senderId   String
+  senderRole String        // CUSTOMER, AGENT
+  message    String
+  createdAt  DateTime      @default(now())
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@map("ticket_messages")
+}

@@ -1,0 +1,33 @@
+# ==============================================================================
+# NukkadNow Backend Microservices CODEOWNERS
+# ==============================================================================
+
+# Global fallback
+* @nukkadnow/core-architects
+
+# Platform and Gateway
+/apps/api-gateway/                 @nukkadnow/platform-team
+/packages/security/                @nukkadnow/security-team
+/packages/observability/           @nukkadnow/platform-team
+/packages/messaging/               @nukkadnow/platform-team
+/packages/platform-kernel/         @nukkadnow/core-architects
+/infrastructure/                   @nukkadnow/devops-team
+
+# Core Commerce Microservices
+/apps/order-service/               @nukkadnow/commerce-team
+/apps/fulfillment-service/         @nukkadnow/commerce-team
+/apps/catalog-service/             @nukkadnow/commerce-team
+/apps/discovery-service/           @nukkadnow/commerce-team
+
+# Financial & Payments
+/apps/payment-service/             @nukkadnow/payments-team
+/apps/subscription-service/        @nukkadnow/payments-team
+
+# Identity & Access Control
+/apps/identity-service/            @nukkadnow/security-team
+
+# Merchant Domain
+/apps/merchant-service/            @nukkadnow/merchant-team
+
+# Contracts & Schemas
+/packages/contracts/               @nukkadnow/core-architects

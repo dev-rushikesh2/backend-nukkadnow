@@ -1,0 +1,71 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("FULFILLMENT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model CapacitySlot {
+  id             String            @id @default(uuid())
+  outletId       String
+  slotDate       String            // "YYYY-MM-DD"
+  startTime      String            // "10:00"
+  endTime        String            // "10:30"
+  maxCapacity    Int               @default(10)
+  reservedCount  Int               @default(0)
+  isWalkIn       Boolean           @default(false)
+  reservations   SlotReservation[]
+
+  @@unique([outletId, slotDate, startTime])
+  @@map("capacity_slots")
+}
+
+model SlotReservation {
+  id        String       @id @default(uuid())
+  slotId    String
+  orderId   String       @unique
+  status    String       @default("RESERVED") // RESERVED, CONFIRMED, EXPIRED
+  expiresAt DateTime
+  createdAt DateTime     @default(now())
+  slot      CapacitySlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@map("slot_reservations")
+}
+
+model QueueSnapshot {
+  id                String   @id @default(uuid())
+  outletId          String
+  activeOrdersCount Int
+  waitMinutes       Int
+  observedAt        DateTime @default(now())
+
+  @@index([outletId, observedAt])
+  @@map("queue_snapshots")
+}
+
+model PickupToken {
+  id          String   @id @default(uuid())
+  orderId     String   @unique
+  outletId    String
+  tokenNumber String   // "A-12"
+  status      String   @default("ISSUED") // ISSUED, READY, COLLECTED
+  createdAt   DateTime @default(now())
+
+  @@index([outletId, status])
+  @@map("pickup_tokens")
+}
+
+model DeliveryTask {
+  id              String   @id @default(uuid())
+  orderId         String   @unique
+  outletId        String
+  deliveryAddress String
+  status          String   @default("PENDING")
+  assignedStaffId String?
+  createdAt       DateTime @default(now())
+
+  @@map("delivery_tasks")
+}

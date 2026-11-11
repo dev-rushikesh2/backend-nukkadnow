@@ -1,0 +1,6 @@
+{
+  "name": "identity-service",
+  "root": "apps/identity-service",
+  "sourceRoot": "apps/identity-service/src",
+  "projectType": "application"
+}

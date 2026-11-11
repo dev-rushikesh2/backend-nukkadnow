@@ -1,0 +1,29 @@
+name: Security & Vulnerability Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Weekly on Monday
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sast-and-audit:
+    name: Dependency Audit & CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.3
+
+      - name: Audit Dependencies
+        run: pnpm audit --prod
+
+      - name: Secret Scan (TruffleHog)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD

@@ -1,0 +1,16 @@
+name: Deploy to Production Environment
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  deploy-prod:
+    name: Canary Deploy to Production Cluster
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Echo Production Deploy Trigger
+        run: echo "Production deployment approved and initiated for release ${{ github.ref_name }}"

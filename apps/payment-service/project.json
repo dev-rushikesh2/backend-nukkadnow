@@ -1,0 +1,6 @@
+{
+  "name": "payment-service",
+  "root": "apps/payment-service",
+  "sourceRoot": "apps/payment-service/src",
+  "projectType": "application"
+}

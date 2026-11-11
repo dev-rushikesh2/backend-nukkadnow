@@ -1,0 +1,6 @@
+{
+  "name": "analytics-service",
+  "root": "apps/analytics-service",
+  "sourceRoot": "apps/analytics-service/src",
+  "projectType": "application"
+}

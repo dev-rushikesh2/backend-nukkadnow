@@ -1,0 +1,6 @@
+{
+  "name": "review-support-service",
+  "root": "apps/review-support-service",
+  "sourceRoot": "apps/review-support-service/src",
+  "projectType": "application"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "discovery-service",
+  "root": "apps/discovery-service",
+  "sourceRoot": "apps/discovery-service/src",
+  "projectType": "application"
+}

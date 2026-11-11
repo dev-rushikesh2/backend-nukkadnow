@@ -1,0 +1,17 @@
+{
+  "name": "@nukkadnow/contracts",
+  "version": "1.0.0",
+  "description": "NukkadNow Contracts - OpenAPI specs, AsyncAPI specs, versioned event schemas and envelopes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

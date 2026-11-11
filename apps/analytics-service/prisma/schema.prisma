@@ -1,0 +1,32 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("ANALYTICS_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model DailyMetric {
+  id                   String   @id @default(uuid())
+  metricDate           String   // "YYYY-MM-DD"
+  outletId             String
+  totalOrders          Int      @default(0)
+  totalSalesPaise      BigInt   @default(0)
+  avgPrepTimeMinutes   Float    @default(0)
+  updatedAt            DateTime @updatedAt
+
+  @@unique([metricDate, outletId])
+  @@map("daily_metrics")
+}
+
+model PlatformReportingFact {
+  id                   String   @id @default(uuid())
+  factDate             String   @unique // "YYYY-MM-DD"
+  totalGmvPaise        BigInt   @default(0)
+  activeMerchantsCount Int      @default(0)
+  activeCustomersCount Int      @default(0)
+  totalOrdersFulfilled Int      @default(0)
+
+  @@map("platform_reporting_facts")
+}

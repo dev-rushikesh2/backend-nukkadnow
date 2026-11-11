@@ -1,0 +1,6 @@
+{
+  "name": "order-service",
+  "root": "apps/order-service",
+  "sourceRoot": "apps/order-service/src",
+  "projectType": "application"
+}

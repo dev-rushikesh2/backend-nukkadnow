@@ -1,0 +1,6 @@
+{
+  "name": "subscription-service",
+  "root": "apps/subscription-service",
+  "sourceRoot": "apps/subscription-service/src",
+  "projectType": "application"
+}

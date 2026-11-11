@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DISCOVERY_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model OutletSearchDocument {
+  id                   String   @id @default(uuid())
+  outletId             String   @unique
+  merchantName         String
+  locality             String
+  city                 String   @default("Nagpur")
+  latitude             Float
+  longitude            Float
+  rating               Float    @default(0.0)
+  categoryTags         String[]
+  isCurrentlyOpen      Boolean  @default(true)
+  queueEstimateMinutes Int      @default(5)
+  updatedAt            DateTime @updatedAt
+
+  @@index([locality])
+  @@map("outlet_search_documents")
+}
+
+model AvailabilityProjection {
+  id              String   @id @default(uuid())
+  outletId        String   @unique
+  hasActiveStock  Boolean  @default(true)
+  nextSlotTime    DateTime?
+  updatedAt       DateTime @updatedAt
+
+  @@map("availability_projections")
+}

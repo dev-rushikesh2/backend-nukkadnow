@@ -1,0 +1,6 @@
+{
+  "name": "catalog-service",
+  "root": "apps/catalog-service",
+  "sourceRoot": "apps/catalog-service/src",
+  "projectType": "application"
+}

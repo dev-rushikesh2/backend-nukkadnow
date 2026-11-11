@@ -1,0 +1,6 @@
+{
+  "name": "notification-service",
+  "root": "apps/notification-service",
+  "sourceRoot": "apps/notification-service/src",
+  "projectType": "application"
+}

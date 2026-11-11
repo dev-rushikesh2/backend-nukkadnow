@@ -1,0 +1,18 @@
+{
+  "name": "@nukkadnow/platform-kernel",
+  "version": "1.0.0",
+  "description": "NukkadNow Platform Kernel - Core Domain Primitives, Result Monad, Money, Identifiers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.6.3"
+  }
+}

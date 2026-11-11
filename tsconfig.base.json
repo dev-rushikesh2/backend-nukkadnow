@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@nukkadnow/contracts": ["packages/contracts/src/index.ts"],
+      "@nukkadnow/contracts/*": ["packages/contracts/src/*"],
+      "@nukkadnow/platform-kernel": ["packages/platform-kernel/src/index.ts"],
+      "@nukkadnow/platform-kernel/*": ["packages/platform-kernel/src/*"],
+      "@nukkadnow/observability": ["packages/observability/src/index.ts"],
+      "@nukkadnow/observability/*": ["packages/observability/src/*"],
+      "@nukkadnow/security": ["packages/security/src/index.ts"],
+      "@nukkadnow/security/*": ["packages/security/src/*"],
+      "@nukkadnow/messaging": ["packages/messaging/src/index.ts"],
+      "@nukkadnow/messaging/*": ["packages/messaging/src/*"],
+      "@nukkadnow/testing": ["packages/testing/src/index.ts"],
+      "@nukkadnow/testing/*": ["packages/testing/src/*"],
+      "@nukkadnow/config": ["packages/config/src/index.ts"],
+      "@nukkadnow/config/*": ["packages/config/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "tmp"]
+}

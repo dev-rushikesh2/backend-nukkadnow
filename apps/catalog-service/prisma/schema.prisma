@@ -1,0 +1,86 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("CATALOG_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  tenantId    String           // Merchant Organization ID
+  outletId    String
+  name        String
+  description String?
+  category    String
+  isAvailable Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  variants    ProductVariant[]
+
+  @@index([tenantId, outletId])
+  @@map("products")
+}
+
+model ProductVariant {
+  id                  String             @id @default(uuid())
+  productId           String
+  name                String
+  sku                 String?
+  pricePaise          Int
+  compareAtPricePaise Int?
+  isPreorder          Boolean            @default(false)
+  leadTimeMinutes     Int                @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  product             Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  stockBalance        StockBalance?
+  stockReservations   StockReservation[]
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model StockBalance {
+  id               String         @id @default(uuid())
+  variantId        String         @unique
+  outletId         String
+  onHandQuantity   Int            @default(0)
+  reservedQuantity Int            @default(0)
+  version          Int            @default(1)
+  updatedAt        DateTime       @updatedAt
+  variant          ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([outletId])
+  @@map("stock_balances")
+}
+
+model StockMovement {
+  id             String   @id @default(uuid())
+  variantId      String
+  outletId       String
+  quantityChange Int
+  reason         String   // RESTOCK, ORDER_RESERVATION, WASTE
+  referenceId    String?
+  createdAt      DateTime @default(now())
+
+  @@index([variantId])
+  @@map("stock_movements")
+}
+
+model StockReservation {
+  id        String         @id @default(uuid())
+  variantId String
+  outletId  String
+  quantity  Int
+  orderId   String
+  expiresAt DateTime
+  status    String         @default("ACTIVE") // ACTIVE, COMMITTED, EXPIRED, RELEASED
+  createdAt DateTime       @default(now())
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([expiresAt])
+  @@map("stock_reservations")
+}

@@ -1,0 +1,98 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("ORDER_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Order {
+  id               String       @id @default(uuid())
+  orderNumber      String       @unique
+  customerId       String
+  tenantId         String       // Merchant Org ID
+  outletId         String
+  status           String       @default("PENDING_PAYMENT")
+  totalAmountPaise Int
+  paymentStatus    String       @default("UNPAID")
+  fulfillmentType  String       @default("STORE_PICKUP")
+  pickupSlotId     String?
+  idempotencyKey   String?      @unique
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  items            OrderItem[]
+  events           OrderEvent[]
+
+  @@index([customerId])
+  @@index([tenantId, outletId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             String @id @default(uuid())
+  orderId        String
+  productId      String
+  variantId      String
+  title          String
+  quantity       Int
+  unitPricePaise Int
+  totalPricePaise Int
+  order          Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model OrderEvent {
+  id         String   @id @default(uuid())
+  orderId    String
+  eventType  String
+  fromStatus String?
+  toStatus   String
+  metadata   Json?
+  occurredAt DateTime @default(now())
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_events")
+}
+
+model Cart {
+  id         String     @id @default(uuid())
+  customerId String
+  tenantId   String
+  outletId   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  items      CartItem[]
+
+  @@unique([customerId, outletId])
+  @@map("carts")
+}
+
+model CartItem {
+  id             String @id @default(uuid())
+  cartId         String
+  variantId      String
+  quantity       Int
+  unitPricePaise Int
+  cart           Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
+
+model TransactionalOutbox {
+  id            String    @id @default(uuid())
+  aggregateType String
+  aggregateId   String
+  eventType     String
+  payload       String
+  status        String    @default("PENDING") // PENDING, PUBLISHED, FAILED
+  retryCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  processedAt   DateTime?
+
+  @@index([status, createdAt])
+  @@map("transactional_outbox")
+}

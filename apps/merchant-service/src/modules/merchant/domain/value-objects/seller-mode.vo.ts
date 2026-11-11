@@ -1,0 +1,7 @@
+export enum SellerMode {
+  PERMANENT = "PERMANENT",
+  HOME_CHEF = "HOME_CHEF",
+  SEASONAL = "SEASONAL",
+  EVENT = "EVENT",
+  ARTISAN = "ARTISAN",
+}

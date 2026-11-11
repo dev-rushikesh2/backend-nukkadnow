@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("NOTIFICATION_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model NotificationTemplate {
+  id           String            @id @default(uuid())
+  code         String            @unique
+  channel      String            // SMS, WHATSAPP, EMAIL, PUSH
+  templateBody String
+  jobs         NotificationJob[]
+
+  @@map("notification_templates")
+}
+
+model NotificationJob {
+  id           String            @id @default(uuid())
+  recipient    String
+  channel      String
+  templateId   String
+  status       String            @default("PENDING")
+  sentAt       DateTime?
+  createdAt    DateTime          @default(now())
+  template     NotificationTemplate @relation(fields: [templateId], references: [id])
+  attempts     DeliveryAttempt[]
+
+  @@map("notification_jobs")
+}
+
+model DeliveryAttempt {
+  id           String          @id @default(uuid())
+  jobId        String
+  attemptNum   Int
+  status       String
+  responseCode String?
+  attemptedAt  DateTime        @default(now())
+  job          NotificationJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@map("delivery_attempts")
+}

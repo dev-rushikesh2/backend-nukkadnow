@@ -1,0 +1,15 @@
+name: Deploy to Staging Environment
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Rolling Update to Staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Echo Staging Deploy Trigger
+        run: echo "Staging deployment pipeline triggered for sha ${{ github.sha }}"

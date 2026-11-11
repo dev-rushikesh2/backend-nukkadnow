@@ -1,0 +1,9 @@
+{
+  "name": "@nukkadnow/eslint-config",
+  "version": "1.0.0",
+  "description": "NukkadNow Boundary Enforcement ESLint Rules",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-plugin-boundaries": "^5.0.1"
+  }
+}

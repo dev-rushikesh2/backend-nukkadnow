@@ -1,0 +1,6 @@
+{
+  "name": "merchant-service",
+  "root": "apps/merchant-service",
+  "sourceRoot": "apps/merchant-service/src",
+  "projectType": "application"
+}

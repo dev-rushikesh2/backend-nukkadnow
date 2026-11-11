@@ -1,0 +1,77 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("PAYMENT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model PaymentIntent {
+  id           String    @id @default(uuid())
+  orderId      String    @unique
+  tenantId     String
+  amountPaise  Int
+  currency     String    @default("INR")
+  status       String    @default("CREATED") // CREATED, SUCCEEDED, FAILED
+  provider     String    // RAZORPAY, CASHFREE, MOCK
+  pspReference String?
+  createdAt    DateTime  @default(now())
+  payment      Payment?
+
+  @@index([orderId])
+  @@map("payment_intents")
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  intentId       String        @unique
+  orderId        String
+  amountPaise    Int
+  pspPaymentId   String
+  pspSignature   String?
+  status         String        @default("CONFIRMED")
+  verifiedAt     DateTime      @default(now())
+  intent         PaymentIntent @relation(fields: [intentId], references: [id], onDelete: Cascade)
+  refunds        Refund[]
+
+  @@map("payments")
+}
+
+model Refund {
+  id          String   @id @default(uuid())
+  paymentId   String
+  orderId     String
+  amountPaise Int
+  reason      String
+  status      String   @default("COMPLETED")
+  pspRefundId String?
+  createdAt   DateTime @default(now())
+  payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@map("refunds")
+}
+
+model WebhookInbox {
+  id          String    @id @default(uuid())
+  provider    String
+  eventId     String    @unique
+  payload     Json
+  isProcessed Boolean   @default(false)
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@map("webhook_inbox")
+}
+
+model ReconciliationRecord {
+  id                 String   @id @default(uuid())
+  paymentId          String
+  internalAmountPaise Int
+  pspAmountPaise     Int
+  status             String   // MATCHED, DISCREPANCY
+  notes              String?
+  reconciledAt       DateTime @default(now())
+
+  @@map("reconciliation_records")
+}

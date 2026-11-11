@@ -1,0 +1,41 @@
+{
+  "name": "@nukkadnow/payment-service",
+  "version": "1.0.0",
+  "description": "PSP Intents, Signed Webhooks, Refunds & Reconciliation Ledger",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "nest start",
+    "start:prod": "node dist/main",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "test:unit": "jest --testPathPattern=test/unit",
+    "test:integration": "jest --testPathPattern=test/integration"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.4.7",
+    "@nestjs/core": "^10.4.7",
+    "@nestjs/platform-express": "^10.4.7",
+    "@nestjs/swagger": "^7.4.2",
+    "@prisma/client": "^5.22.0",
+    "@nukkadnow/contracts": "workspace:*",
+    "@nukkadnow/observability": "workspace:*",
+    "@nukkadnow/platform-kernel": "workspace:*",
+    "@nukkadnow/security": "workspace:*",
+    "@nukkadnow/messaging": "workspace:*",
+    "@nukkadnow/config": "workspace:*",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.7",
+    "@nestjs/schematics": "^10.2.3",
+    "@nestjs/testing": "^10.4.7",
+    "@types/node": "^20.17.6",
+    "prisma": "^5.22.0",
+    "typescript": "^5.6.3"
+  }
+}

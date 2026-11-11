@@ -1,0 +1,41 @@
+name: Build & Containerize Services
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-matrix:
+    name: Build Service Containers
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - identity-service
+          - merchant-service
+          - catalog-service
+          - discovery-service
+          - order-service
+          - fulfillment-service
+          - payment-service
+          - subscription-service
+          - notification-service
+          - review-support-service
+          - analytics-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Container Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/${{ matrix.service }}/Dockerfile
+          push: false
+          tags: nukkadnow/${{ matrix.service }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
