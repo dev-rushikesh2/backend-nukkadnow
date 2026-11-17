@@ -5,6 +5,7 @@ export interface VariantProps {
   productId: string;
   name: string;
   sku?: string;
+  barcode?: string;
   pricePaise: number;
   compareAtPricePaise?: number;
   isPreorder: boolean;
@@ -22,6 +23,7 @@ export class ProductVariant {
   get productId(): string { return this.props.productId; }
   get name(): string { return this.props.name; }
   get sku(): string | undefined { return this.props.sku; }
+  get barcode(): string | undefined { return this.props.barcode; }
   get pricePaise(): number { return this.props.pricePaise; }
   get compareAtPricePaise(): number | undefined { return this.props.compareAtPricePaise; }
   get isPreorder(): boolean { return this.props.isPreorder; }
@@ -29,6 +31,16 @@ export class ProductVariant {
 
   get priceMoney(): Money {
     return Money.fromPaise(this.props.pricePaise);
+  }
+
+  updatePricing(newPricePaise: number, compareAtPricePaise?: number): void {
+    if (!Number.isInteger(newPricePaise) || newPricePaise <= 0) {
+      throw new Error(`Variant price must be a positive integer in paise, received: ${newPricePaise}`);
+    }
+    this.props.pricePaise = newPricePaise;
+    if (compareAtPricePaise !== undefined) {
+      this.props.compareAtPricePaise = compareAtPricePaise;
+    }
   }
 }
 
@@ -39,6 +51,7 @@ export interface ProductProps {
   name: string;
   description?: string;
   category: string;
+  subCategory?: string;
   isAvailable: boolean;
   variants: ProductVariant[];
   createdAt: Date;
@@ -58,8 +71,11 @@ export class Product {
   get name(): string { return this.props.name; }
   get description(): string | undefined { return this.props.description; }
   get category(): string { return this.props.category; }
+  get subCategory(): string | undefined { return this.props.subCategory; }
   get isAvailable(): boolean { return this.props.isAvailable; }
   get variants(): ProductVariant[] { return [...this.props.variants]; }
+  get createdAt(): Date { return this.props.createdAt; }
+  get updatedAt(): Date { return this.props.updatedAt; }
 
   setAvailability(available: boolean): void {
     this.props.isAvailable = available;
@@ -68,5 +84,14 @@ export class Product {
 
   findVariant(variantId: string): ProductVariant | undefined {
     return this.props.variants.find(v => v.id === variantId);
+  }
+
+  updateVariantPricing(variantId: string, newPricePaise: number, compareAtPricePaise?: number): void {
+    const variant = this.findVariant(variantId);
+    if (!variant) {
+      throw new Error(`Variant ${variantId} not found on product ${this.props.id}`);
+    }
+    variant.updatePricing(newPricePaise, compareAtPricePaise);
+    this.props.updatedAt = new Date();
   }
 }

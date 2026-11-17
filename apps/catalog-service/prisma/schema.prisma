@@ -10,16 +10,18 @@ generator client {
 model Product {
   id          String           @id @default(uuid())
   tenantId    String           // Merchant Organization ID
-  outletId    String
+  outletId    String           // Merchant Outlet ID
   name        String
   description String?
   category    String
+  subCategory String?
   isAvailable Boolean          @default(true)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   variants    ProductVariant[]
 
   @@index([tenantId, outletId])
+  @@index([category])
   @@map("products")
 }
 
@@ -28,8 +30,9 @@ model ProductVariant {
   productId           String
   name                String
   sku                 String?
+  barcode             String?
   pricePaise          Int
-  compareAtPricePaise Int?
+  compareAtPricePaise Int?               // MRP or benchmark reference
   isPreorder          Boolean            @default(false)
   leadTimeMinutes     Int                @default(0)
   createdAt           DateTime           @default(now())
@@ -37,6 +40,7 @@ model ProductVariant {
   product             Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
   stockBalance        StockBalance?
   stockReservations   StockReservation[]
+  stockMovements      StockMovement[]
 
   @@index([productId])
   @@map("product_variants")
@@ -48,6 +52,7 @@ model StockBalance {
   outletId         String
   onHandQuantity   Int            @default(0)
   reservedQuantity Int            @default(0)
+  safetyStock      Int            @default(5)
   version          Int            @default(1)
   updatedAt        DateTime       @updatedAt
   variant          ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
@@ -57,15 +62,20 @@ model StockBalance {
 }
 
 model StockMovement {
-  id             String   @id @default(uuid())
+  id             String          @id @default(uuid())
   variantId      String
   outletId       String
-  quantityChange Int
-  reason         String   // RESTOCK, ORDER_RESERVATION, WASTE
+  quantityChange Int             // Negative for deductions, positive for additions
+  balanceAfter   Int             @default(0)
+  reason         String          // RESTOCK, ORDER_RESERVATION, SALE_COMMIT, RESERVATION_RELEASE, DAMAGE_WASTE, RETURN_RESTOCK, AUDIT_CORRECTION
+  actorId        String          @default("SYSTEM")
   referenceId    String?
-  createdAt      DateTime @default(now())
+  notes          String?
+  createdAt      DateTime        @default(now())
+  variant        ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
   @@index([variantId])
+  @@index([outletId, createdAt])
   @@map("stock_movements")
 }
 
@@ -81,6 +91,22 @@ model StockReservation {
   variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
-  @@index([expiresAt])
+  @@index([status, expiresAt])
   @@map("stock_reservations")
+}
+
+model AdminPriceCapRule {
+  id            String   @id @default(uuid())
+  scope         String   @default("CATEGORY") // GLOBAL, CATEGORY, LOCALITY, SPECIFIC_PRODUCT
+  targetKey     String   // e.g. "Dairy & Milk", "Nagpur-Central", or "*"
+  maxPricePaise Int      // Maximum allowed selling price in paise
+  enforceMrpCap Boolean  @default(true) // If true, price cannot exceed compareAtPricePaise
+  reason        String
+  isActive      Boolean  @default(true)
+  createdBy     String   @default("PLATFORM_ADMIN")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([scope, targetKey, isActive])
+  @@map("admin_price_cap_rules")
 }

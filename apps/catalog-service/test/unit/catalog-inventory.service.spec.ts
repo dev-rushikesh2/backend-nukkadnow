@@ -1,16 +1,23 @@
 import { CatalogService } from "../../src/modules/catalog/application/services/catalog.service";
-import { InMemoryProductRepository, InMemoryStockRepository } from "../../src/modules/catalog/infrastructure/persistence/repositories/in-memory-catalog.repository";
+import {
+  InMemoryProductRepository,
+  InMemoryStockRepository,
+  InMemoryPriceCapRepository,
+} from "../../src/modules/catalog/infrastructure/persistence/repositories/in-memory-catalog.repository";
 import { InsufficientStockError } from "../../src/modules/catalog/domain/errors/catalog-errors";
+import { UnprocessableEntityException } from "@nestjs/common";
 
-describe("Catalog & Inventory Service (Sprint 4 & 5)", () => {
+describe("Catalog & Inventory Service (Sprint 4 & 5 + Production Admin Price Caps)", () => {
   let service: CatalogService;
   let productRepo: InMemoryProductRepository;
   let stockRepo: InMemoryStockRepository;
+  let priceCapRepo: InMemoryPriceCapRepository;
 
   beforeEach(() => {
     productRepo = new InMemoryProductRepository();
     stockRepo = new InMemoryStockRepository();
-    service = new CatalogService(productRepo, stockRepo);
+    priceCapRepo = new InMemoryPriceCapRepository();
+    service = new CatalogService(productRepo, stockRepo, priceCapRepo);
   });
 
   it("should create product with variants and initial stock", async () => {
@@ -37,6 +44,45 @@ describe("Catalog & Inventory Service (Sprint 4 & 5)", () => {
     const productView = await service.getProduct(product.id);
     expect(productView.variants[0].availableStock).toBe(10);
     expect(productView.variants[0].priceFormatted).toBe("₹45.00");
+  });
+
+  it("should reject product creation when price exceeds printed MRP (Legal Metrology)", async () => {
+    await expect(
+      service.createProduct({
+        tenantId: "tenant_1",
+        outletId: "outlet_1",
+        name: "Standard Packaged Curd",
+        category: "Dairy & Milk",
+        variants: [
+          {
+            name: "500g Pouch",
+            pricePaise: 4500, // Rs. 45.00
+            compareAtPricePaise: 4000, // MRP is Rs. 40.00
+            initialStock: 20,
+          },
+        ],
+      })
+    ).rejects.toThrow(UnprocessableEntityException);
+  });
+
+  it("should reject product creation when price breaches Admin Price Cap", async () => {
+    // Default seed has Dairy & Milk capped at Rs. 80.00 (8000 paise)
+    await expect(
+      service.createProduct({
+        tenantId: "tenant_1",
+        outletId: "outlet_1",
+        name: "Luxury Artisanal Buffalo Milk",
+        category: "Dairy & Milk",
+        variants: [
+          {
+            name: "1 Litre Glass Bottle",
+            pricePaise: 15000, // Rs. 150.00 (exceeds Rs. 80.00 cap)
+            compareAtPricePaise: 15000,
+            initialStock: 10,
+          },
+        ],
+      })
+    ).rejects.toThrow(UnprocessableEntityException);
   });
 
   it("should atomically reserve stock and prevent overselling", async () => {
@@ -111,7 +157,7 @@ describe("Catalog & Inventory Service (Sprint 4 & 5)", () => {
     expect(view.variants[0].availableStock).toBe(4);
   });
 
-  it("should permanently deduct stock on commit", async () => {
+  it("should permanently deduct stock on commit and log movement ledger", async () => {
     const product = await service.createProduct({
       tenantId: "tenant_1",
       outletId: "outlet_1",
@@ -136,5 +182,9 @@ describe("Catalog & Inventory Service (Sprint 4 & 5)", () => {
 
     const view = await service.getProduct(product.id);
     expect(view.variants[0].availableStock).toBe(8);
+
+    // Check movements audit trail
+    const movements = await service.getOutletMovements("outlet_1");
+    expect(movements.length).toBeGreaterThanOrEqual(1);
   });
 });

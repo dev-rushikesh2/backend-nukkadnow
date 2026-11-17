@@ -1,7 +1,13 @@
-import { Controller, Post, Get, Body, Param, Req } from "@nestjs/common";
+import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CatalogService } from "../../../application/services/catalog.service";
-import { CreateProductDto, AdjustStockDto, ReserveStockDto } from "../../../application/dto/catalog.dto";
+import {
+  CreateProductDto,
+  AdjustStockDto,
+  ReserveStockDto,
+  UpdateVariantPricingDto,
+  CreatePriceCapRuleDto,
+} from "../../../application/dto/catalog.dto";
 
 @ApiTags("Catalog & Inventory")
 @Controller("api/v1/catalog")
@@ -10,8 +16,9 @@ export class CatalogController {
 
   @Post("products")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Create product with variants and initial inventory" })
+  @ApiOperation({ summary: "Create product with variants and initial inventory, validating Admin Price Caps" })
   @ApiResponse({ status: 201, description: "Product created" })
+  @ApiResponse({ status: 422, description: "Price Cap or MRP Violation" })
   async createProduct(@Body() dto: CreateProductDto, @Req() req: any) {
     const callerTenantId = req.user?.tenantId;
     return this.catalogService.createProduct(dto, callerTenantId);
@@ -29,15 +36,33 @@ export class CatalogController {
     return this.catalogService.listOutletProducts(outletId);
   }
 
+  @Patch("products/:id/pricing")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Merchant update variant pricing with Admin Price Cap enforcement" })
+  @ApiResponse({ status: 200, description: "Pricing updated" })
+  @ApiResponse({ status: 422, description: "Price Cap or MRP Violation" })
+  async updatePricing(@Param("id") id: string, @Body() dto: UpdateVariantPricingDto, @Req() req: any) {
+    const callerTenantId = req.user?.tenantId;
+    return this.catalogService.updateVariantPricing(id, dto, callerTenantId);
+  }
+
   @Post("inventory/adjust")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Manual inventory restock or deduction" })
-  async adjustStock(@Body() dto: AdjustStockDto) {
-    return this.catalogService.adjustStock(dto);
+  @ApiOperation({ summary: "Manual inventory restock or deduction with double-entry audit logging" })
+  async adjustStock(@Body() dto: AdjustStockDto, @Req() req: any) {
+    const callerTenantId = req.user?.tenantId;
+    return this.catalogService.adjustStock(dto, callerTenantId);
+  }
+
+  @Get("outlets/:outletId/movements")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get immutable stock movement audit ledger for an outlet" })
+  async getOutletMovements(@Param("outletId") outletId: string, @Query("limit") limit?: number) {
+    return this.catalogService.getOutletMovements(outletId, limit ? Number(limit) : 50);
   }
 
   @Post("inventory/reserve")
-  @ApiOperation({ summary: "Internal atomic stock reservation for checkout" })
+  @ApiOperation({ summary: "Internal atomic stock reservation for checkout with TTL" })
   async reserveStock(@Body() dto: ReserveStockDto) {
     return this.catalogService.reserveStock(dto);
   }
@@ -52,5 +77,36 @@ export class CatalogController {
   @ApiOperation({ summary: "Commit stock reservation on payment completion" })
   async commitStock(@Body() dto: ReserveStockDto) {
     return this.catalogService.commitStock(dto);
+  }
+
+  @Post("inventory/cleanup-expired")
+  @ApiOperation({ summary: "TTL Sweeper: auto-release expired reservations" })
+  async cleanupExpired() {
+    const count = await this.catalogService.cleanupExpiredReservations();
+    return { success: true, expiredReleasedCount: count };
+  }
+
+  // --- Platform Admin Price Cap Governance ---
+
+  @Get("admin/price-caps")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Platform Admin: List all price cap policies" })
+  async listPriceCaps() {
+    return this.catalogService.listPriceCaps();
+  }
+
+  @Post("admin/price-caps")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Platform Admin: Create a new category or locality price cap" })
+  async createPriceCap(@Body() dto: CreatePriceCapRuleDto, @Req() req: any) {
+    const adminUserId = req.user?.sub || "PLATFORM_ADMIN";
+    return this.catalogService.createPriceCap(dto, adminUserId);
+  }
+
+  @Delete("admin/price-caps/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Platform Admin: Deactivate a price cap policy" })
+  async deactivatePriceCap(@Param("id") id: string) {
+    return this.catalogService.deactivatePriceCap(id);
   }
 }

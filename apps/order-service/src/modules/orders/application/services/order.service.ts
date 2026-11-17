@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from "@nestjs/common";
+import { Injectable, ForbiddenException, ConflictException } from "@nestjs/common";
 import { OrderRepositoryPort, CartRepositoryPort } from "../../domain/repositories/order.repository.port";
 import { Order } from "../../domain/entities/order.entity";
 import { Cart } from "../../domain/entities/cart.entity";
@@ -6,12 +6,14 @@ import { OrderPricing } from "../../domain/value-objects/order-pricing.vo";
 import { AddToCartDto, CheckoutDto, AcceptOrderDto } from "../dto/order.dto";
 import { OrderNotFoundError, EmptyCartError } from "../../domain/errors/order-errors";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
+import { CatalogClient } from "../../infrastructure/external-clients/catalog.client";
 
 @Injectable()
 export class OrderService {
   constructor(
     private readonly orderRepo: OrderRepositoryPort,
-    private readonly cartRepo: CartRepositoryPort
+    private readonly cartRepo: CartRepositoryPort,
+    private readonly catalogClient: CatalogClient
   ) {}
 
   async getCart(customerId: string) {
@@ -62,6 +64,23 @@ export class OrderService {
       throw new EmptyCartError();
     }
 
+    const orderId = UniqueIdentifier.generateV7();
+    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
+
+    // 2. Atomic Stock Reservation across all cart items (Two-Phase Hold)
+    const reservedItems: Array<{ variantId: string; quantity: number }> = [];
+    for (const item of cart.getItems()) {
+      const reserved = await this.catalogClient.reserveStock(item.variantId, item.quantity, orderId);
+      if (!reserved) {
+        // Rollback any items already reserved during this checkout attempt
+        for (const rev of reservedItems) {
+          await this.catalogClient.releaseStock(rev.variantId, rev.quantity, orderId);
+        }
+        throw new ConflictException(`Item "${item.title}" is out of stock or requested quantity is unavailable.`);
+      }
+      reservedItems.push({ variantId: item.variantId, quantity: item.quantity });
+    }
+
     const subtotalPaise = cart.calculateSubtotalPaise();
     const packagingPaise = 1000; // Rs. 10.00
     const deliveryPaise = dto.fulfillmentType === "MERCHANT_DELIVERY" ? 3000 : 0;
@@ -73,9 +92,6 @@ export class OrderService {
       deliveryPaise,
       taxPaise,
     });
-
-    const orderId = UniqueIdentifier.generateV7();
-    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
 
     const order = new Order({
       id: orderId,

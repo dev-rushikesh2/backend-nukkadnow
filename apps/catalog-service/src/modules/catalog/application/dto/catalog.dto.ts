@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsBoolean, IsArray, ValidateNested, IsOptional } from "class-validator";
+import { IsString, IsNotEmpty, IsNumber, IsBoolean, IsArray, ValidateNested, IsOptional, IsIn } from "class-validator";
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -12,6 +12,11 @@ export class CreateVariantDto {
   @IsString()
   @IsOptional()
   sku?: string;
+
+  @ApiProperty({ example: "8901030000000", required: false })
+  @IsString()
+  @IsOptional()
+  barcode?: string;
 
   @ApiProperty({ example: 4500, description: "Price in integer paise (e.g. Rs 45.00 = 4500)" })
   @IsNumber()
@@ -63,6 +68,11 @@ export class CreateProductDto {
   @IsString()
   category!: string;
 
+  @ApiProperty({ example: "Breads", required: false })
+  @IsString()
+  @IsOptional()
+  subCategory?: string;
+
   @ApiProperty({ type: [CreateVariantDto] })
   @IsArray()
   @ValidateNested({ each: true })
@@ -83,9 +93,19 @@ export class AdjustStockDto {
   @IsNumber()
   quantityChange!: number;
 
-  @ApiProperty({ example: "DAILY_RESTOCK" })
+  @ApiProperty({ example: "RESTOCK", description: "RESTOCK, DAMAGE_WASTE, AUDIT_CORRECTION, RETURN_RESTOCK" })
   @IsString()
   reason!: string;
+
+  @ApiProperty({ example: "Staff (Kitchen Register)", required: false })
+  @IsString()
+  @IsOptional()
+  actorId?: string;
+
+  @ApiProperty({ example: "Fresh morning batch cooked", required: false })
+  @IsString()
+  @IsOptional()
+  notes?: string;
 }
 
 export class ReserveStockDto {
@@ -100,4 +120,50 @@ export class ReserveStockDto {
   @ApiProperty({ example: "order_uuid_here" })
   @IsString()
   orderId!: string;
+
+  @ApiProperty({ example: 10, required: false, description: "TTL in minutes before auto-release" })
+  @IsNumber()
+  @IsOptional()
+  ttlMinutes?: number;
+}
+
+export class UpdateVariantPricingDto {
+  @ApiProperty({ example: "variant_uuid_here" })
+  @IsString()
+  variantId!: string;
+
+  @ApiProperty({ example: 4500, description: "New price in paise" })
+  @IsNumber()
+  pricePaise!: number;
+
+  @ApiProperty({ example: 5000, required: false, description: "Printed MRP in paise" })
+  @IsNumber()
+  @IsOptional()
+  compareAtPricePaise?: number;
+}
+
+export class CreatePriceCapRuleDto {
+  @ApiProperty({ example: "CATEGORY", enum: ["GLOBAL", "CATEGORY", "SUB_CATEGORY", "LOCALITY", "SPECIFIC_PRODUCT"] })
+  @IsString()
+  @IsIn(["GLOBAL", "CATEGORY", "SUB_CATEGORY", "LOCALITY", "SPECIFIC_PRODUCT"])
+  scope!: "GLOBAL" | "CATEGORY" | "SUB_CATEGORY" | "LOCALITY" | "SPECIFIC_PRODUCT";
+
+  @ApiProperty({ example: "Dairy & Milk", description: "Category name, locality, or SKU" })
+  @IsString()
+  @IsNotEmpty()
+  targetKey!: string;
+
+  @ApiProperty({ example: 7500, description: "Maximum allowed price in paise (e.g. Rs 75.00 = 7500)" })
+  @IsNumber()
+  maxPricePaise!: number;
+
+  @ApiProperty({ example: true, description: "Enforce Legal Metrology: selling price cannot exceed printed MRP" })
+  @IsBoolean()
+  @IsOptional()
+  enforceMrpCap?: boolean;
+
+  @ApiProperty({ example: "Essential food price regulation by Platform Administration" })
+  @IsString()
+  @IsNotEmpty()
+  reason!: string;
 }

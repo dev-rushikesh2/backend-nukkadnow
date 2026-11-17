@@ -3,11 +3,13 @@ import { OrdersController } from "./presentation/http/controllers/orders.control
 import { OrderService } from "./application/services/order.service";
 import { OrderRepositoryPort, CartRepositoryPort } from "./domain/repositories/order.repository.port";
 import { InMemoryOrderRepository, InMemoryCartRepository } from "./infrastructure/persistence/repositories/in-memory-order.repository";
+import { CatalogClient } from "./infrastructure/external-clients/catalog.client";
 
 @Module({
   controllers: [OrdersController],
   providers: [
     OrderService,
+    CatalogClient,
     {
       provide: OrderRepositoryPort,
       useClass: InMemoryOrderRepository,
