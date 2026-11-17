@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, Req, Headers } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 
 @ApiTags("Merchant BFF")
 @Controller("api/v1/merchant")
 export class MerchantController {
   private readonly catalogServiceUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:3002";
+  private readonly merchantServiceUrl = process.env.MERCHANT_SERVICE_URL || "http://localhost:4002";
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
 
@@ -17,6 +18,91 @@ export class MerchantController {
       todayRevenuePaise: 0,
       pendingPickupCount: 0,
     };
+  }
+
+  // --- Partner Onboarding & Registration (Real Dynamic Persistence) ---
+
+  @Post("onboarding/draft")
+  @ApiOperation({ summary: "Save progressive partner registration draft" })
+  async saveOnboardingDraft(@Body() body: any) {
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/draft`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      }
+    );
+  }
+
+  @Post("onboarding/submit")
+  @ApiOperation({ summary: "Submit partner registration for verification review" })
+  async submitOnboarding(@Body() body: any) {
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/submit`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      }
+    );
+  }
+
+  @Get("onboarding/status/:identifier")
+  @ApiOperation({ summary: "Get registration status by Application ID or Mobile Number" })
+  @ApiParam({ name: "identifier", description: "Application ID or mobile phone number" })
+  async getOnboardingStatus(@Param("identifier") identifier: string) {
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/status/${encodeURIComponent(identifier)}`,
+      { method: "GET" }
+    );
+  }
+
+  @Post("onboarding/:applicationId/documents")
+  @ApiOperation({ summary: "Upload and attach business verification document" })
+  @ApiParam({ name: "applicationId", description: "Application ID" })
+  async uploadOnboardingDocument(
+    @Param("applicationId") applicationId: string,
+    @Body() body: any
+  ) {
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/${applicationId}/documents`,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      }
+    );
+  }
+
+  @Patch("onboarding/:applicationId/status")
+  @ApiOperation({ summary: "Update application verification status" })
+  @ApiParam({ name: "applicationId", description: "Application ID" })
+  async updateOnboardingStatus(
+    @Param("applicationId") applicationId: string,
+    @Body() body: any
+  ) {
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/${applicationId}/status`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }
+    );
+  }
+
+  @Get("onboarding")
+  @ApiOperation({ summary: "List partner registrations" })
+  @ApiQuery({ name: "status", required: false })
+  async listOnboarding(@Query("status") status?: string) {
+    const qs = status ? `?status=${encodeURIComponent(status)}` : "";
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding${qs}`,
+      { method: "GET" }
+    );
   }
 
   // --- Catalog & Products (SaaS Merchant Autonomy) ---

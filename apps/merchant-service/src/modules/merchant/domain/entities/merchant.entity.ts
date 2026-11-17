@@ -4,6 +4,10 @@ export interface MerchantProps {
   legalBusinessName?: string;
   contactName: string;
   contactPhone: string;
+  email?: string;
+  businessType?: string;
+  category?: string;
+  description?: string;
   verificationStatus: "PENDING" | "VERIFIED" | "REJECTED";
   createdAt: Date;
   updatedAt: Date;
@@ -17,6 +21,10 @@ export class Merchant {
   get legalBusinessName(): string | undefined { return this.props.legalBusinessName; }
   get contactName(): string { return this.props.contactName; }
   get contactPhone(): string { return this.props.contactPhone; }
+  get email(): string | undefined { return this.props.email; }
+  get businessType(): string | undefined { return this.props.businessType; }
+  get category(): string | undefined { return this.props.category; }
+  get description(): string | undefined { return this.props.description; }
   get verificationStatus(): string { return this.props.verificationStatus; }
 
   verify(): void {
