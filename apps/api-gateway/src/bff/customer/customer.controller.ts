@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Req, Headers, Post, Body } from "@nestjs/common";
+import { Controller, Get, Param, Query, Req, Headers, Post, Put, Delete, Body } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 
@@ -953,4 +953,148 @@ export class CustomerController {
       distanceKm: "2.8 km"
     };
   }
+
+  @Get("profile")
+  @ApiOperation({ summary: "Get customer profile" })
+  getProfile() {
+    const orders = (this.getMyOrders() as any).data || [];
+    return {
+      success: true,
+      data: {
+        ...CUSTOMER_PROFILE,
+        totalOrders: orders.length
+      }
+    };
+  }
+
+  @Put("profile")
+  @ApiOperation({ summary: "Update customer profile" })
+  updateProfile(@Body() body: any) {
+    CUSTOMER_PROFILE = {
+      ...CUSTOMER_PROFILE,
+      ...(body.name && { name: body.name }),
+      ...(body.email && { email: body.email }),
+      ...(body.phone && { phone: body.phone }),
+      ...(body.avatar && { avatar: body.avatar })
+    };
+    const orders = (this.getMyOrders() as any).data || [];
+    return {
+      success: true,
+      data: {
+        ...CUSTOMER_PROFILE,
+        totalOrders: orders.length
+      }
+    };
+  }
+
+  @Get("addresses")
+  @ApiOperation({ summary: "Get saved customer delivery addresses" })
+  getAddresses() {
+    return {
+      success: true,
+      data: CUSTOMER_ADDRESSES
+    };
+  }
+
+  @Post("addresses")
+  @ApiOperation({ summary: "Save a new customer delivery address" })
+  saveAddress(@Body() body: any) {
+    const newId = Date.now();
+    const isFirst = CUSTOMER_ADDRESSES.length === 0;
+    const shouldBeDefault = body.isDefault !== undefined ? Boolean(body.isDefault) : isFirst;
+
+    if (shouldBeDefault) {
+      CUSTOMER_ADDRESSES.forEach(a => a.isDefault = false);
+    }
+
+    const newAddr = {
+      id: newId,
+      type: body.type || "Home",
+      isDefault: shouldBeDefault,
+      fullAddress: body.fullAddress || "",
+      city: body.city || "Nagpur",
+      pincode: body.pincode || "440010",
+      latitude: typeof body.latitude === 'number' ? body.latitude : 21.1385,
+      longitude: typeof body.longitude === 'number' ? body.longitude : 79.0610
+    };
+
+    CUSTOMER_ADDRESSES.push(newAddr);
+    return {
+      success: true,
+      data: newAddr
+    };
+  }
+
+  @Put("addresses/:id")
+  @ApiOperation({ summary: "Update an existing customer delivery address" })
+  updateAddress(@Param("id") idStr: string, @Body() body: any) {
+    const id = parseInt(idStr, 10);
+    const index = CUSTOMER_ADDRESSES.findIndex(a => a.id === id);
+    if (index !== -1) {
+      if (body.isDefault) {
+        CUSTOMER_ADDRESSES.forEach(a => a.isDefault = false);
+      }
+      CUSTOMER_ADDRESSES[index] = {
+        ...CUSTOMER_ADDRESSES[index],
+        ...body,
+        id // preserve id
+      };
+      return {
+        success: true,
+        data: CUSTOMER_ADDRESSES[index]
+      };
+    }
+    return {
+      success: false,
+      message: "Address not found"
+    };
+  }
+
+  @Delete("addresses/:id")
+  @ApiOperation({ summary: "Delete a customer delivery address" })
+  deleteAddress(@Param("id") idStr: string) {
+    const id = parseInt(idStr, 10);
+    CUSTOMER_ADDRESSES = CUSTOMER_ADDRESSES.filter(a => a.id !== id);
+    return {
+      success: true,
+      message: "Address deleted successfully",
+      remainingCount: CUSTOMER_ADDRESSES.length
+    };
+  }
 }
+
+// In-memory customer state backing the customer profile and address BFF
+let CUSTOMER_PROFILE = {
+  id: "cust-ajay-001",
+  name: "Ajay Patil",
+  phone: "+91 98230 55443",
+  email: "ajay.patil@nukkadnow.in",
+  verified: true,
+  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
+  favouritesCount: 3,
+  followedShopsCount: 4,
+  totalSavings: 45
+};
+
+let CUSTOMER_ADDRESSES = [
+  {
+    id: 1,
+    type: "Home",
+    isDefault: true,
+    fullAddress: "Flat 402, Shivneri Heights, Dharampeth, Nagpur – 440010",
+    city: "Nagpur",
+    pincode: "440010",
+    latitude: 21.1385,
+    longitude: 79.0610
+  },
+  {
+    id: 2,
+    type: "Work",
+    isDefault: false,
+    fullAddress: "Office 301, IT Park, Gayatri Nagar, Nagpur – 440022",
+    city: "Nagpur",
+    pincode: "440022",
+    latitude: 21.1250,
+    longitude: 79.0550
+  }
+];
