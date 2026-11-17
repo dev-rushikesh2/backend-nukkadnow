@@ -30,6 +30,8 @@ export interface MerchantOrder {
   distance?: string;
   status: "New" | "Preparing" | "Ready" | "Completed" | "Cancelled";
   stepIndex: number; // 0: New/Accepted, 1: Preparing, 2: Ready, 3: Completed/Out for Delivery
+  token?: string;
+  notes?: string;
   items: Array<{
     name: string;
     quantity: number;
@@ -821,6 +823,86 @@ export class MerchantController {
       success: true,
       message: `Order ${order.orderNumber} updated to ${order.status}`,
       order,
+    };
+  }
+
+  @Get("orders/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get order details with strict tenant ownership validation" })
+  async getOrderById(@Param("id") id: string, @Headers() headers: any, @Req() req: any) {
+    const tenantId = this.resolveTenantId(headers, req);
+    const normalizedId = id.startsWith("#") ? id : `#${id}`;
+
+    const order = SEEDED_ORDERS.find(
+      (o) => (o.id === id || o.id === normalizedId || o.orderNumber === id || o.orderNumber === normalizedId)
+    );
+
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found.`);
+    }
+
+    // STRICT MULTI-TENANT ISOLATION CHECK
+    if (order.tenantId !== tenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden: Cannot view order of another merchant.");
+    }
+
+    return {
+      success: true,
+      data: order,
+    };
+  }
+
+  @Post("orders/walkin")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create a walk-in POS order for the active tenant" })
+  async createWalkinOrder(
+    @Body()
+    body: {
+      customerName?: string;
+      customerPhone?: string;
+      items: Array<{ name: string; quantity: number; price: number; meta?: string }>;
+      paymentMode?: string;
+      discount?: number;
+      token?: string;
+    },
+    @Headers() headers: any,
+    @Req() req: any
+  ) {
+    const tenantId = this.resolveTenantId(headers, req);
+    const profile = SEEDED_PROFILES[tenantId] || SEEDED_PROFILES["merchant-kirana-002"];
+    const outletId = profile.outletId || "outlet-001";
+
+    const orderNum = Math.floor(1000 + Math.random() * 9000);
+    const orderId = `#ORD${orderNum}`;
+    const token = body.token || `W-${Math.floor(10 + Math.random() * 90)}`;
+    const subtotal = body.items.reduce((s, it) => s + it.price * it.quantity, 0);
+    const discount = body.discount || 0;
+    const totalAmount = Math.max(0, subtotal - discount);
+
+    const newOrder: MerchantOrder = {
+      id: orderId,
+      orderNumber: orderId,
+      tenantId,
+      outletId,
+      time: "Just now",
+      date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      amount: totalAmount,
+      itemsCount: body.items.reduce((c, it) => c + it.quantity, 0),
+      customerName: body.customerName || "Walk-in Guest",
+      customerPhone: body.customerPhone || "",
+      fulfilmentType: "Self Pickup",
+      status: "Completed",
+      stepIndex: 3,
+      token,
+      items: body.items,
+    };
+
+    SEEDED_ORDERS.unshift(newOrder);
+
+    return {
+      success: true,
+      message: `Walk-in order ${orderId} created successfully.`,
+      order: newOrder,
     };
   }
 
