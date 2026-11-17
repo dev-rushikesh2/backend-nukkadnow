@@ -6,8 +6,11 @@ import {
   Body,
   Param,
   Query,
+  Headers,
+  Req,
   HttpCode,
-  HttpStatus
+  HttpStatus,
+  ForbiddenException
 } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { PartnerRegistrationService } from "../../../application/services/partner-registration.service";
@@ -59,8 +62,22 @@ export class PartnerRegistrationController {
   @ApiOperation({ summary: "Get live application status by Application ID or Mobile Number" })
   @ApiParam({ name: "identifier", description: "Application ID (e.g. NN-MR-20261115-0387) or registered mobile number" })
   @ApiResponse({ status: 200, description: "Application status, timeline, and document verification states" })
-  async getStatus(@Param("identifier") identifier: string) {
+  async getStatus(
+    @Param("identifier") identifier: string,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const callerRoles: string[] = req?.user?.roles || [];
+    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+
     const registration = await this.registrationService.getApplicationStatus(identifier);
+
+    // Tenant Isolation Check: If a specific tenant is authenticated, they cannot peek at another merchant's registration
+    if (callerTenantId && !isAdmin && registration.merchantId && registration.merchantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden: You cannot view another merchant's application.");
+    }
+
     return {
       success: true,
       applicationId: registration.applicationId,
@@ -82,8 +99,19 @@ export class PartnerRegistrationController {
   @ApiParam({ name: "applicationId", description: "Application ID" })
   async uploadDocument(
     @Param("applicationId") applicationId: string,
-    @Body() doc: UploadDocumentDto
+    @Body() doc: UploadDocumentDto,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
   ) {
+    const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const callerRoles: string[] = req?.user?.roles || [];
+    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+
+    const existing = await this.registrationService.getApplicationStatus(applicationId);
+    if (callerTenantId && !isAdmin && existing.merchantId && existing.merchantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden: You cannot upload documents for another merchant.");
+    }
+
     const registration = await this.registrationService.attachDocument(applicationId, doc);
     return {
       success: true,
@@ -112,10 +140,24 @@ export class PartnerRegistrationController {
   }
 
   @Get()
-  @ApiOperation({ summary: "List partner registrations with optional status filter" })
+  @ApiOperation({ summary: "List partner registrations with optional status filter (Tenant isolated)" })
   @ApiQuery({ name: "status", required: false, enum: ['SUBMITTED', 'UNDER_REVIEW', 'APPROVED', 'ACTION_REQUIRED', 'REJECTED'] })
-  async listRegistrations(@Query("status") status?: ApplicationStatusCode) {
-    const list = await this.registrationService.listRegistrations(status);
+  async listRegistrations(
+    @Query("status") status?: ApplicationStatusCode,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const callerRoles: string[] = req?.user?.roles || [];
+    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+
+    let list = await this.registrationService.listRegistrations(status);
+
+    // If caller is a specific merchant, only show their own registration
+    if (callerTenantId && !isAdmin) {
+      list = list.filter(r => r.merchantId === callerTenantId);
+    }
+
     return {
       success: true,
       count: list.length,

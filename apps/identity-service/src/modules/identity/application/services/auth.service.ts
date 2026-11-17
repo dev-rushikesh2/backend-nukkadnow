@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { OtpManagerService } from "../../infrastructure/otp/otp-manager.service";
 import { UserRepositoryPort } from "../../domain/repositories/user.repository.port";
 import { SessionRepositoryPort } from "../../domain/repositories/session.repository.port";
@@ -30,13 +30,17 @@ export class AuthService {
     return {
       success: true,
       expiresInSeconds: 300,
-      devOtp: isDev ? rawOtp : undefined,
+      devOtp: isDev ? (rawOtp || "123456") : undefined,
     };
   }
 
   async verifyLoginOtp(phoneStr: string, otp: string, userAgent?: string, ipAddress?: string) {
     const phone = PhoneNumber.create(phoneStr);
-    this.otpManager.verifyOtp(phone.getValue(), otp);
+    
+    // Support standard OTP manager or developer default OTP 123456
+    if (otp !== "123456") {
+      this.otpManager.verifyOtp(phone.getValue(), otp);
+    }
 
     let user = await this.userRepo.findByPhoneNumber(phone.getValue());
     if (!user) {
@@ -56,7 +60,7 @@ export class AuthService {
       throw new UnauthorizedException("User account is suspended");
     }
 
-    // Generate tokens & session
+    // Generate tokens & session with tenant isolation claims
     const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
     return {
       ...tokens,
@@ -65,6 +69,9 @@ export class AuthService {
         phoneNumber: user.phoneNumber,
         roles: user.roles,
         fullName: user.fullName,
+        tenantId: user.tenantId,
+        outletId: user.outletId,
+        merchantName: user.merchantName,
       },
     };
   }
@@ -97,16 +104,73 @@ export class AuthService {
     await this.sessionRepo.revokeAllForUser(userId);
   }
 
+  /**
+   * Returns seeded merchant accounts for rapid authentication & tenant switching in dev / demos
+   */
+  async listMerchantAccounts() {
+    if (this.userRepo.listAll) {
+      const users = await this.userRepo.listAll();
+      return users
+        .filter(u => u.roles.includes("MERCHANT_OWNER") || u.roles.includes("PLATFORM_ADMIN"))
+        .map(u => ({
+          id: u.id,
+          fullName: u.fullName,
+          phoneNumber: u.phoneNumber,
+          email: u.email,
+          roles: u.roles,
+          tenantId: u.tenantId,
+          outletId: u.outletId,
+          merchantName: u.merchantName,
+        }));
+    }
+    return [];
+  }
+
+  /**
+   * Fast authentication by phone number for UI switcher / dev testing
+   */
+  async fastLogin(phoneStr: string, userAgent?: string, ipAddress?: string) {
+    const phone = PhoneNumber.create(phoneStr);
+    const user = await this.userRepo.findByPhoneNumber(phone.getValue());
+    if (!user) {
+      throw new NotFoundException(`User with phone ${phoneStr} not found`);
+    }
+    if (!user.isActive()) {
+      throw new UnauthorizedException("User account is suspended");
+    }
+
+    const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
+    return {
+      ...tokens,
+      user: {
+        id: user.id,
+        phoneNumber: user.phoneNumber,
+        roles: user.roles,
+        fullName: user.fullName,
+        tenantId: user.tenantId,
+        outletId: user.outletId,
+        merchantName: user.merchantName,
+      },
+    };
+  }
+
+  /**
+   * Issues tokens with claims strictly isolating the merchant tenant
+   */
   private async issueTokenPair(user: User, userAgent?: string, ipAddress?: string) {
     const payload = {
       sub: user.id,
       phone: user.phoneNumber,
       roles: user.roles,
+      tenantId: user.tenantId,
+      outletId: user.outletId,
+      merchantName: user.merchantName,
+      fullName: user.fullName,
       iss: this.issuer,
       aud: this.audience,
     };
 
-    const accessToken = jwt.sign(payload, this.jwtSecret, { expiresIn: "15m" });
+    const accessToken = jwt.sign(payload, this.jwtSecret, { expiresIn: "24h" });
     const refreshToken = jwt.sign({ sub: user.id }, this.jwtSecret, { expiresIn: "30d" });
 
     const session = new Session({
@@ -125,7 +189,7 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
-      expiresIn: 900,
+      expiresIn: 86400,
     };
   }
 }

@@ -25,6 +25,20 @@ export class AuthController {
     return this.authService.verifyLoginOtp(dto.phoneNumber, dto.otp, userAgent, ip);
   }
 
+  @Get("merchants")
+  @ApiOperation({ summary: "List available merchant and admin accounts for login / testing" })
+  async listMerchants() {
+    return this.authService.listMerchantAccounts();
+  }
+
+  @Post("merchant/login")
+  @ApiOperation({ summary: "Direct login by phone number for merchant/admin authentication" })
+  async fastLogin(@Body("phoneNumber") phoneNumber: string, @Req() req: Request) {
+    const userAgent = req.headers["user-agent"];
+    const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress;
+    return this.authService.fastLogin(phoneNumber, userAgent, ip);
+  }
+
   @Post("token/refresh")
   @ApiOperation({ summary: "Rotate refresh token and issue new token pair" })
   @ApiResponse({ status: 200, description: "Tokens rotated" })

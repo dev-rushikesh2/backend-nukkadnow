@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from "@nestjs/common";
+import { Injectable, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { MerchantRepositoryPort, OutletRepositoryPort } from "../../domain/repositories/merchant.repository.port";
 import { Merchant } from "../../domain/entities/merchant.entity";
 import { Outlet } from "../../domain/entities/outlet.entity";
@@ -31,17 +31,52 @@ export class MerchantService {
     return merchant;
   }
 
-  async getMerchant(id: string, callerTenantId?: string): Promise<Merchant> {
-    if (callerTenantId && callerTenantId !== id) {
-      throw new ForbiddenException("Cross-tenant access: You cannot access another organization profile.");
+  async getMerchant(id: string, callerTenantId?: string, callerRoles?: string[]): Promise<Merchant> {
+    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    if (!isAdmin && callerTenantId && callerTenantId !== id) {
+      throw new ForbiddenException("Cross-tenant access forbidden: You cannot access another organization profile.");
     }
     const merchant = await this.merchantRepo.findById(id);
     if (!merchant) throw new MerchantNotFoundError(id);
     return merchant;
   }
 
-  async createOutlet(dto: CreateOutletDto, callerTenantId?: string): Promise<Outlet> {
-    if (callerTenantId && callerTenantId !== dto.merchantId) {
+  async getMyProfile(tenantId: string) {
+    const merchant = await this.merchantRepo.findById(tenantId);
+    if (!merchant) throw new MerchantNotFoundError(tenantId);
+    const outlets = await this.outletRepo.findByMerchantId(tenantId);
+    return {
+      merchant,
+      outlets: outlets.map(o => ({
+        id: o.id,
+        name: o.name,
+        sellerMode: o.sellerMode,
+        address: o.address,
+        isActive: o.isActive,
+        hours: o.hours.getSlots(),
+      })),
+    };
+  }
+
+  async listMerchants(callerTenantId?: string, callerRoles?: string[]): Promise<Merchant[]> {
+    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    if (this.merchantRepo.listAll) {
+      const all = await this.merchantRepo.listAll();
+      if (isAdmin) return all;
+      if (callerTenantId) {
+        return all.filter(m => m.id === callerTenantId);
+      }
+    }
+    if (callerTenantId) {
+      const m = await this.merchantRepo.findById(callerTenantId);
+      return m ? [m] : [];
+    }
+    return [];
+  }
+
+  async createOutlet(dto: CreateOutletDto, callerTenantId?: string, callerRoles?: string[]): Promise<Outlet> {
+    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    if (!isAdmin && callerTenantId && callerTenantId !== dto.merchantId) {
       throw new ForbiddenException("Tenant Mismatch: Cannot create outlet under another organization.");
     }
 
@@ -85,11 +120,12 @@ export class MerchantService {
     return outlet.getPublicProfile();
   }
 
-  async updateOperatingHours(outletId: string, dto: UpdateOperatingHoursDto, callerTenantId?: string) {
+  async updateOperatingHours(outletId: string, dto: UpdateOperatingHoursDto, callerTenantId?: string, callerRoles?: string[]) {
     const outlet = await this.outletRepo.findById(outletId);
     if (!outlet) throw new OutletNotFoundError(outletId);
 
-    if (callerTenantId && callerTenantId !== outlet.merchantId) {
+    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    if (!isAdmin && callerTenantId && callerTenantId !== outlet.merchantId) {
       throw new ForbiddenException("Permission Denied: You do not own this outlet.");
     }
 

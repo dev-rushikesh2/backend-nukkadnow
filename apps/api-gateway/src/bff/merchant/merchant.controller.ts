@@ -20,42 +20,78 @@ export class MerchantController {
     };
   }
 
-  // --- Partner Onboarding & Registration (Real Dynamic Persistence) ---
+  // --- Merchant Profile & Tenant Scope ---
+
+  @Get("profile")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get current authenticated merchant profile and active outlets" })
+  async getProfile(@Headers() headers: any, @Req() req: any) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
+    return this.proxy.dispatch<any>(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/my-profile`,
+      {
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
+      }
+    );
+  }
+
+  // --- Partner Onboarding & Registration (Real Dynamic Persistence with Tenant Isolation) ---
 
   @Post("onboarding/draft")
   @ApiOperation({ summary: "Save progressive partner registration draft" })
-  async saveOnboardingDraft(@Body() body: any) {
+  async saveOnboardingDraft(@Body() body: any, @Headers() headers: any, @Req() req: any) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding/draft`,
       {
         method: "POST",
         body: JSON.stringify(body),
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
       }
     );
   }
 
   @Post("onboarding/submit")
   @ApiOperation({ summary: "Submit partner registration for verification review" })
-  async submitOnboarding(@Body() body: any) {
+  async submitOnboarding(@Body() body: any, @Headers() headers: any, @Req() req: any) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding/submit`,
       {
         method: "POST",
         body: JSON.stringify(body),
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
       }
     );
   }
 
   @Get("onboarding/status/:identifier")
-  @ApiOperation({ summary: "Get registration status by Application ID or Mobile Number" })
+  @ApiOperation({ summary: "Get registration status by Application ID or Mobile Number with Tenant Isolation" })
   @ApiParam({ name: "identifier", description: "Application ID or mobile phone number" })
-  async getOnboardingStatus(@Param("identifier") identifier: string) {
+  async getOnboardingStatus(@Param("identifier") identifier: string, @Headers() headers: any, @Req() req: any) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding/status/${encodeURIComponent(identifier)}`,
-      { method: "GET" }
+      {
+        method: "GET",
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
+      }
     );
   }
 
@@ -64,14 +100,21 @@ export class MerchantController {
   @ApiParam({ name: "applicationId", description: "Application ID" })
   async uploadOnboardingDocument(
     @Param("applicationId") applicationId: string,
-    @Body() body: any
+    @Body() body: any,
+    @Headers() headers: any,
+    @Req() req: any
   ) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding/${applicationId}/documents`,
       {
         method: "POST",
         body: JSON.stringify(body),
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
       }
     );
   }
@@ -81,31 +124,45 @@ export class MerchantController {
   @ApiParam({ name: "applicationId", description: "Application ID" })
   async updateOnboardingStatus(
     @Param("applicationId") applicationId: string,
-    @Body() body: any
+    @Body() body: any,
+    @Headers() headers: any,
+    @Req() req: any
   ) {
+    const tenantId = headers["x-tenant-id"] || req.user?.tenantId;
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding/${applicationId}/status`,
       {
         method: "PATCH",
         body: JSON.stringify(body),
+        headers: {
+          authorization: headers.authorization,
+          "x-tenant-id": tenantId,
+        },
       }
     );
   }
 
   @Get("onboarding")
-  @ApiOperation({ summary: "List partner registrations" })
+  @ApiOperation({ summary: "List partner registrations (Isolated per merchant tenant)" })
   @ApiQuery({ name: "status", required: false })
-  async listOnboarding(@Query("status") status?: string) {
+  async listOnboarding(@Query("status") status?: string, @Headers() headers?: any, @Req() req?: any) {
+    const tenantId = headers?.["x-tenant-id"] || req?.user?.tenantId;
     const qs = status ? `?status=${encodeURIComponent(status)}` : "";
     return this.proxy.dispatch<any>(
       this.merchantServiceUrl,
       `/api/v1/merchants/onboarding${qs}`,
-      { method: "GET" }
+      {
+        method: "GET",
+        headers: {
+          authorization: headers?.authorization,
+          "x-tenant-id": tenantId,
+        },
+      }
     );
   }
 
-  // --- Catalog & Products (SaaS Merchant Autonomy) ---
+  // --- Catalog & Products (SaaS Merchant Autonomy & Isolation) ---
 
   @Get("catalog/products")
   @ApiBearerAuth()
@@ -115,7 +172,7 @@ export class MerchantController {
     return this.proxy.dispatch<any[]>(
       this.catalogServiceUrl,
       `/api/v1/catalog/outlets/${targetOutlet}/products`,
-      { headers: { authorization: headers.authorization } }
+      { headers: { authorization: headers.authorization, "x-tenant-id": headers["x-tenant-id"] } }
     );
   }
 
@@ -125,7 +182,7 @@ export class MerchantController {
   @ApiResponse({ status: 201, description: "Product created" })
   @ApiResponse({ status: 422, description: "Price Cap or MRP violation" })
   async createProduct(@Body() body: any, @Req() req: any, @Headers() headers: any) {
-    const tenantId = req.user?.tenantId || body.tenantId || "tenant-default";
+    const tenantId = req.user?.tenantId || headers["x-tenant-id"] || body.tenantId || "tenant-default";
     const outletId = body.outletId || "outlet-main";
 
     return this.proxy.dispatch<any>(
@@ -134,7 +191,7 @@ export class MerchantController {
       {
         method: "POST",
         body: JSON.stringify({ ...body, tenantId, outletId }),
-        headers: { authorization: headers.authorization },
+        headers: { authorization: headers.authorization, "x-tenant-id": tenantId },
       }
     );
   }
@@ -149,7 +206,7 @@ export class MerchantController {
       {
         method: "PATCH",
         body: JSON.stringify(body),
-        headers: { authorization: headers.authorization },
+        headers: { authorization: headers.authorization, "x-tenant-id": headers["x-tenant-id"] },
       }
     );
   }
@@ -164,7 +221,7 @@ export class MerchantController {
     return this.proxy.dispatch<any[]>(
       this.catalogServiceUrl,
       `/api/v1/catalog/outlets/${targetOutlet}/products`,
-      { headers: { authorization: headers.authorization } }
+      { headers: { authorization: headers.authorization, "x-tenant-id": headers["x-tenant-id"] } }
     );
   }
 
@@ -178,7 +235,7 @@ export class MerchantController {
       {
         method: "POST",
         body: JSON.stringify(body),
-        headers: { authorization: headers.authorization },
+        headers: { authorization: headers.authorization, "x-tenant-id": headers["x-tenant-id"] },
       }
     );
   }
@@ -191,7 +248,7 @@ export class MerchantController {
     return this.proxy.dispatch<any[]>(
       this.catalogServiceUrl,
       `/api/v1/catalog/outlets/${targetOutlet}/movements?limit=${limit || 50}`,
-      { headers: { authorization: headers.authorization } }
+      { headers: { authorization: headers.authorization, "x-tenant-id": headers["x-tenant-id"] } }
     );
   }
 }
