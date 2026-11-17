@@ -844,68 +844,16 @@ export class CustomerController {
 
   @Get("orders/my")
   @ApiOperation({ summary: "Get customer real order history" })
-  getMyOrders() {
+  getMyOrders(@Headers("authorization") authHeader?: string) {
+    if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer guest" || authHeader === "Bearer null") {
+      return {
+        success: true,
+        data: []
+      };
+    }
     return {
       success: true,
-      data: [
-        {
-          id: "NN-ORD-20261117-0104",
-          orderNumber: "NN123456789",
-          shopId: "outlet-sabji-001",
-          shopName: "Patil Fresh Sabji Mandi",
-          verified: true,
-          dateStr: "17 Nov 2026, 10:24 AM",
-          status: "out_for_delivery",
-          statusLabel: "On the Way",
-          totalAmount: 185,
-          shopImage: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80",
-          itemCount: 3,
-          deliveryAddress: "Flat 402, Shivneri Heights, Dharampeth, Nagpur - 440010",
-          items: [
-            { name: "Fresh Nagpur Palak (Spinach)", meta: "500 g × 1", price: 25, image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=150&q=80" },
-            { name: "Farm Fresh Desi Tomatoes", meta: "1 kg × 1", price: 40, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=150&q=80" },
-            { name: "Green Shimla Mirch (Capsicum)", meta: "500 g × 1", price: 35, image: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=150&q=80" }
-          ],
-          timeline: [
-            { step: "Order Placed", time: "10:24 AM", date: "17 Nov", done: true },
-            { step: "Preparing", time: "10:28 AM", date: "17 Nov", done: true },
-            { step: "On the Way", time: "10:45 AM", date: "17 Nov", done: true },
-            { step: "Delivered", time: "11:15 AM", date: "17 Nov", done: false }
-          ],
-          rider: {
-            name: "Rahul K.",
-            phone: "+919876500000",
-            rating: 4.9,
-            deliveries: "1,420",
-            role: "Express Delivery Partner",
-            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-          }
-        },
-        {
-          id: "NN-ORD-20261116-8921",
-          orderNumber: "NN123456780",
-          shopId: "outlet-garguti-003",
-          shopName: "Garguti Homemade Chivda & Snacks",
-          verified: true,
-          dateStr: "16 Nov 2026, 04:15 PM",
-          status: "delivered",
-          statusLabel: "Delivered",
-          totalAmount: 420,
-          shopImage: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=400&q=80",
-          itemCount: 2,
-          deliveryAddress: "Flat 201, Ramdaspeth, Akola - 444001",
-          items: [
-            { name: "Vidarbha Special Spicy Poha Chivda", meta: "500 g × 1", price: 160, image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=150&q=80" },
-            { name: "Pure Cow Ghee Besan Laddoo", meta: "500 g × 1", price: 260, image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=150&q=80" }
-          ],
-          timeline: [
-            { step: "Order Placed", time: "04:15 PM", date: "16 Nov", done: true },
-            { step: "Fresh Packed", time: "04:22 PM", date: "16 Nov", done: true },
-            { step: "On the Way", time: "04:35 PM", date: "16 Nov", done: true },
-            { step: "Delivered", time: "04:55 PM", date: "16 Nov", done: true }
-          ]
-        }
-      ]
+      data: SEEDED_CUSTOMER_ORDERS
     };
   }
 
@@ -956,20 +904,71 @@ export class CustomerController {
 
   @Get("profile")
   @ApiOperation({ summary: "Get customer profile" })
-  getProfile() {
-    const orders = (this.getMyOrders() as any).data || [];
+  getProfile(@Headers("authorization") authHeader?: string) {
+    if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer guest" || authHeader === "Bearer null") {
+      return {
+        success: true,
+        data: {
+          id: "guest",
+          name: "Guest User",
+          phone: "",
+          email: "",
+          verified: false,
+          isGuest: true,
+          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80",
+          totalOrders: 0,
+          favouritesCount: 0,
+          followedShopsCount: 0,
+          totalSavings: 0
+        }
+      };
+    }
+
+    const orders = (this.getMyOrders(authHeader) as any).data || [];
     return {
       success: true,
       data: {
         ...CUSTOMER_PROFILE,
+        isGuest: false,
         totalOrders: orders.length
+      }
+    };
+  }
+
+  @Post("auth/login")
+  @ApiOperation({ summary: "Customer login/session creation" })
+  customerLogin(@Body() body: any) {
+    const name = body.name || "Ajay Patil";
+    const phone = body.phone || "+91 98230 55443";
+    const email = body.email || (name.toLowerCase().replace(/\s+/g, '.') + "@nukkadnow.in");
+
+    CUSTOMER_PROFILE = {
+      ...CUSTOMER_PROFILE,
+      name,
+      phone,
+      email,
+      verified: true
+    };
+
+    const token = "cust_token_" + Buffer.from(phone).toString("base64");
+    return {
+      success: true,
+      data: {
+        token,
+        user: {
+          id: CUSTOMER_PROFILE.id,
+          name: CUSTOMER_PROFILE.name,
+          phone: CUSTOMER_PROFILE.phone,
+          email: CUSTOMER_PROFILE.email,
+          roles: ["customer"]
+        }
       }
     };
   }
 
   @Put("profile")
   @ApiOperation({ summary: "Update customer profile" })
-  updateProfile(@Body() body: any) {
+  updateProfile(@Body() body: any, @Headers("authorization") authHeader?: string) {
     CUSTOMER_PROFILE = {
       ...CUSTOMER_PROFILE,
       ...(body.name && { name: body.name }),
@@ -977,11 +976,12 @@ export class CustomerController {
       ...(body.phone && { phone: body.phone }),
       ...(body.avatar && { avatar: body.avatar })
     };
-    const orders = (this.getMyOrders() as any).data || [];
+    const orders = (this.getMyOrders(authHeader) as any).data || [];
     return {
       success: true,
       data: {
         ...CUSTOMER_PROFILE,
+        isGuest: false,
         totalOrders: orders.length
       }
     };
@@ -989,7 +989,13 @@ export class CustomerController {
 
   @Get("addresses")
   @ApiOperation({ summary: "Get saved customer delivery addresses" })
-  getAddresses() {
+  getAddresses(@Headers("authorization") authHeader?: string) {
+    if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer guest" || authHeader === "Bearer null") {
+      return {
+        success: true,
+        data: []
+      };
+    }
     return {
       success: true,
       data: CUSTOMER_ADDRESSES
@@ -1096,5 +1102,65 @@ let CUSTOMER_ADDRESSES = [
     pincode: "440022",
     latitude: 21.1250,
     longitude: 79.0550
+  }
+];
+
+const SEEDED_CUSTOMER_ORDERS = [
+  {
+    id: "NN-ORD-20261117-0104",
+    orderNumber: "NN123456789",
+    shopId: "outlet-sabji-001",
+    shopName: "Patil Fresh Sabji Mandi",
+    verified: true,
+    dateStr: "17 Nov 2026, 10:24 AM",
+    status: "out_for_delivery",
+    statusLabel: "On the Way",
+    totalAmount: 185,
+    shopImage: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80",
+    itemCount: 3,
+    deliveryAddress: "Flat 402, Shivneri Heights, Dharampeth, Nagpur - 440010",
+    items: [
+      { name: "Fresh Nagpur Palak (Spinach)", meta: "500 g × 1", price: 25, image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=150&q=80" },
+      { name: "Farm Fresh Desi Tomatoes", meta: "1 kg × 1", price: 40, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=150&q=80" },
+      { name: "Green Shimla Mirch (Capsicum)", meta: "500 g × 1", price: 35, image: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=150&q=80" }
+    ],
+    timeline: [
+      { step: "Order Placed", time: "10:24 AM", date: "17 Nov", done: true },
+      { step: "Preparing", time: "10:28 AM", date: "17 Nov", done: true },
+      { step: "On the Way", time: "10:45 AM", date: "17 Nov", done: true },
+      { step: "Delivered", time: "11:15 AM", date: "17 Nov", done: false }
+    ],
+    rider: {
+      name: "Rahul K.",
+      phone: "+919876500000",
+      rating: 4.9,
+      deliveries: "1,420",
+      role: "Express Delivery Partner",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    }
+  },
+  {
+    id: "NN-ORD-20261116-8921",
+    orderNumber: "NN123456780",
+    shopId: "outlet-garguti-003",
+    shopName: "Garguti Homemade Chivda & Snacks",
+    verified: true,
+    dateStr: "16 Nov 2026, 04:15 PM",
+    status: "delivered",
+    statusLabel: "Delivered",
+    totalAmount: 420,
+    shopImage: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=400&q=80",
+    itemCount: 2,
+    deliveryAddress: "Flat 201, Ramdaspeth, Akola - 444001",
+    items: [
+      { name: "Vidarbha Special Spicy Poha Chivda", meta: "500 g × 1", price: 160, image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=150&q=80" },
+      { name: "Pure Cow Ghee Besan Laddoo", meta: "500 g × 1", price: 260, image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=150&q=80" }
+    ],
+    timeline: [
+      { step: "Order Placed", time: "04:15 PM", date: "16 Nov", done: true },
+      { step: "Fresh Packed", time: "04:22 PM", date: "16 Nov", done: true },
+      { step: "On the Way", time: "04:35 PM", date: "16 Nov", done: true },
+      { step: "Delivered", time: "04:55 PM", date: "16 Nov", done: true }
+    ]
   }
 ];
