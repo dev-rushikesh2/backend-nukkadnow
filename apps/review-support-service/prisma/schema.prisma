@@ -12,12 +12,14 @@ model Review {
   orderId     String   @unique
   customerId  String
   outletId    String
+  cityCode    String   @default("IN-MH-NGP") // Municipal partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
   rating      Int      // 1 to 5
   comment     String?
   isModerated Boolean  @default(false)
   createdAt   DateTime @default(now())
 
   @@index([outletId])
+  @@index([cityCode, isModerated])
   @@map("reviews")
 }
 
@@ -27,6 +29,7 @@ model SupportTicket {
   customerId   String
   tenantId     String?
   orderId      String?
+  cityCode     String          @default("IN-MH-NGP") // Municipal partition
   subject      String
   status       String          @default("OPEN")
   priority     String          @default("NORMAL")
@@ -34,6 +37,8 @@ model SupportTicket {
   messages     TicketMessage[]
 
   @@index([customerId])
+  @@index([cityCode, status])
+  @@index([cityCode, priority])
   @@map("support_tickets")
 }
 

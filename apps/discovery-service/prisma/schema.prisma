@@ -13,6 +13,7 @@ model OutletSearchDocument {
   merchantName         String
   locality             String
   city                 String   @default("Nagpur")
+  cityCode             String   @default("IN-MH-NGP") // Municipal boundary
   latitude             Float
   longitude            Float
   rating               Float    @default(0.0)
@@ -21,6 +22,7 @@ model OutletSearchDocument {
   queueEstimateMinutes Int      @default(5)
   updatedAt            DateTime @updatedAt
 
+  @@index([cityCode, isCurrentlyOpen])
   @@index([locality])
   @@map("outlet_search_documents")
 }

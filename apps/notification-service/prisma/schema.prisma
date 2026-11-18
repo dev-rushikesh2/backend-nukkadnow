@@ -22,12 +22,14 @@ model NotificationJob {
   recipient    String
   channel      String
   templateId   String
+  cityCode     String?           @default("GLOBAL") // Municipal target or GLOBAL
   status       String            @default("PENDING")
   sentAt       DateTime?
   createdAt    DateTime          @default(now())
   template     NotificationTemplate @relation(fields: [templateId], references: [id])
   attempts     DeliveryAttempt[]
 
+  @@index([cityCode, status])
   @@map("notification_jobs")
 }
 

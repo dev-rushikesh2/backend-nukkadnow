@@ -24,12 +24,14 @@ model MerchantSubscription {
   id                 String           @id @default(uuid())
   merchantId         String           @unique
   planId             String
+  cityCode           String           @default("IN-MH-NGP") // Municipal city partition
   status             String           @default("ACTIVE")
   currentPeriodStart DateTime
   currentPeriodEnd   DateTime
   plan               SubscriptionPlan @relation(fields: [planId], references: [id])
   invoices           Invoice[]
 
+  @@index([cityCode, status])
   @@map("merchant_subscriptions")
 }
 
@@ -49,6 +51,7 @@ model Invoice {
   id             String               @id @default(uuid())
   subscriptionId String
   merchantId     String
+  cityCode       String               @default("IN-MH-NGP")
   amountPaise    Int
   status         String               @default("PAID")
   dueDate        DateTime
@@ -56,5 +59,6 @@ model Invoice {
   createdAt      DateTime             @default(now())
   subscription   MerchantSubscription @relation(fields: [subscriptionId], references: [id])
 
+  @@index([cityCode, status])
   @@map("invoices")
 }

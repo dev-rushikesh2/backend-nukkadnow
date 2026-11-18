@@ -42,6 +42,8 @@ const mutableMerchantStatuses: Record<string, 'ACTIVE' | 'SUSPENDED' | 'PENDING_
   "merchant-kirana-002": "ACTIVE",
   "merchant-garguti-003": "ACTIVE",
   "merchant-sweets-004": "ACTIVE",
+  "merchant-amravati-001": "ACTIVE",
+  "merchant-pune-001": "ACTIVE",
 };
 
 const mutableKycApplications: any[] = [
@@ -51,6 +53,8 @@ const mutableKycApplications: any[] = [
     businessName: "Patil Fresh Sabji Mandi",
     legalEntityName: "Patil Agro & Fresh Vegetables Private Limited",
     locality: "Sitabuldi",
+    city: "Nagpur",
+    cityCode: "IN-MH-NGP",
     phone: "+91 98230 11223",
     mode: "RETAIL",
     submittedAt: "2026-11-10T14:00:00Z",
@@ -95,6 +99,8 @@ const mutableKycApplications: any[] = [
     businessName: "Mahalaxmi Sweets, Dairy & Bakery",
     legalEntityName: "Mahalaxmi Food & Confectioneries LLP",
     locality: "Dharampeth",
+    city: "Nagpur",
+    cityCode: "IN-MH-NGP",
     phone: "+91 98900 77889",
     mode: "FOOD_STALL",
     submittedAt: "2026-11-11T09:30:00Z",
@@ -134,11 +140,13 @@ const mutableKycApplications: any[] = [
     },
   },
   {
-    id: "KYC-NGP-503",
+    id: "KYC-AKL-503",
     merchantId: "merchant-garguti-003",
     businessName: "Garguti Homemade Chivda & Snacks",
     legalEntityName: "Kulkarni Traditional Food Products",
     locality: "Ramdaspeth",
+    city: "Akola",
+    cityCode: "IN-MH-AKL",
     phone: "+91 98221 44556",
     mode: "HOME_MAKER",
     submittedAt: "2026-11-12T11:00:00Z",
@@ -170,6 +178,84 @@ const mutableKycApplications: any[] = [
       verifiedAt: "2026-11-12T11:05:00Z",
     },
   },
+  {
+    id: "KYC-AMR-504",
+    merchantId: "merchant-amravati-001",
+    businessName: "Rajkamal Spices & Dry Fruits",
+    legalEntityName: "Rajkamal Agro Trading Company",
+    locality: "Rajkamal Chowk",
+    city: "Amravati",
+    cityCode: "IN-MH-AMR",
+    phone: "+91 98224 88771",
+    mode: "RETAIL",
+    submittedAt: "2026-11-13T10:00:00Z",
+    slaExpiresAt: "2026-11-15T10:00:00Z",
+    status: "IN_REVIEW",
+    documents: [
+      {
+        type: "FSSAI_LICENSE",
+        title: "FSSAI Commercial License",
+        documentNumber: "11522036000505",
+        fileUrl: "/assets/mock/fssai-license.png",
+        verified: true,
+      },
+      {
+        type: "GSTIN_CERTIFICATE",
+        title: "GST Registration Certificate",
+        documentNumber: "27AAZPD4921K1Z3",
+        fileUrl: "/assets/mock/gstin-cert.png",
+        verified: true,
+      },
+    ],
+    bankPennyDrop: {
+      accountNumberMasked: "*******3312",
+      ifscCode: "MAHB0000412",
+      bankName: "Bank of Maharashtra (Rajkamal Chowk)",
+      beneficiaryNameMatch: "RAJKAMAL AGRO TRADING COMPANY",
+      registeredBusinessName: "Rajkamal Agro Trading Company",
+      isMatch: true,
+      verifiedAt: "2026-11-13T10:04:00Z",
+    },
+  },
+  {
+    id: "KYC-PUN-505",
+    merchantId: "merchant-pune-001",
+    businessName: "Chitale Dairy & Traditional Sweets",
+    legalEntityName: "Chitale Bandhu Foods Private Limited",
+    locality: "Deccan Gymkhana",
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    phone: "+91 98220 99881",
+    mode: "FOOD_STALL",
+    submittedAt: "2026-11-14T09:00:00Z",
+    slaExpiresAt: "2026-11-16T09:00:00Z",
+    status: "VERIFIED",
+    documents: [
+      {
+        type: "FSSAI_LICENSE",
+        title: "FSSAI Manufacturing License",
+        documentNumber: "11522036000606",
+        fileUrl: "/assets/mock/fssai-license.png",
+        verified: true,
+      },
+      {
+        type: "GSTIN_CERTIFICATE",
+        title: "GST Registration Certificate",
+        documentNumber: "27AABCC3321N1Z1",
+        fileUrl: "/assets/mock/gstin-cert.png",
+        verified: true,
+      },
+    ],
+    bankPennyDrop: {
+      accountNumberMasked: "*******8890",
+      ifscCode: "ICIC0000005",
+      bankName: "ICICI Bank (Deccan Gymkhana)",
+      beneficiaryNameMatch: "CHITALE BANDHU FOODS PVT LTD",
+      registeredBusinessName: "Chitale Bandhu Foods Private Limited",
+      isMatch: true,
+      verifiedAt: "2026-11-14T09:05:00Z",
+    },
+  },
 ];
 
 const mutableRefunds: any[] = [
@@ -185,6 +271,8 @@ const mutableRefunds: any[] = [
     customerClaim: "Store shutter was closed when arrived at designated pickup slot.",
     merchantRebuttal: "Emergency electricity outage occurred for 40 minutes.",
     evidencePhotoUrls: ["/assets/mock/closed-shutter.jpg"],
+    city: "Akola",
+    cityCode: "IN-MH-AKL",
     status: "PENDING_FIRST_APPROVAL",
     createdAt: "2026-11-17T14:20:00Z",
     requiresDualSign: false,
@@ -201,9 +289,47 @@ const mutableRefunds: any[] = [
     customerClaim: "Fresh spinach leaves were bruised and damaged in bag.",
     merchantRebuttal: "Offered immediate replacement bunches to customer.",
     evidencePhotoUrls: ["/assets/mock/damaged-boxes.jpg"],
+    city: "Nagpur",
+    cityCode: "IN-MH-NGP",
     status: "APPROVED_DISPATCHED",
     firstApprover: { operatorId: "operator-sa-001", operatorName: "Rushi Platform Architect", approvedAt: "2026-11-17T16:00:00Z" },
     createdAt: "2026-11-17T11:10:00Z",
+    requiresDualSign: false,
+  },
+  {
+    id: "REF-8803",
+    orderId: "ORD-AMR-9901",
+    merchantId: "merchant-amravati-001",
+    merchantName: "Rajkamal Spices & Dry Fruits",
+    customerId: "cust-106",
+    customerName: "Vinay Vaidya",
+    amountPaise: 24000, // ₹ 240.00
+    reasonCode: "DAMAGED_PACKAGING",
+    customerClaim: "Spice packet was punctured in transit during delivery.",
+    merchantRebuttal: "Will provide replacement or credit immediately.",
+    evidencePhotoUrls: ["/assets/mock/damaged-packaging.jpg"],
+    city: "Amravati",
+    cityCode: "IN-MH-AMR",
+    status: "PENDING_FIRST_APPROVAL",
+    createdAt: "2026-11-17T15:00:00Z",
+    requiresDualSign: false,
+  },
+  {
+    id: "REF-8804",
+    orderId: "ORD-PUN-7701",
+    merchantId: "merchant-pune-001",
+    merchantName: "Chitale Dairy & Traditional Sweets",
+    customerId: "cust-108",
+    customerName: "Abhay Joshi",
+    amountPaise: 34000, // ₹ 340.00
+    reasonCode: "PICKUP_SLOT_MISSED",
+    customerClaim: "Order preparation took 30 mins longer than promised window.",
+    merchantRebuttal: "High festival counter rush caused packaging delay.",
+    evidencePhotoUrls: ["/assets/mock/receipt-delay.jpg"],
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    status: "PENDING_FIRST_APPROVAL",
+    createdAt: "2026-11-17T16:00:00Z",
     requiresDualSign: false,
   },
 ];
@@ -334,6 +460,7 @@ const AVAILABLE_CITIES = [
   {
     id: "city-ngp-01",
     name: "Nagpur",
+    code: "IN-MH-NGP",
     state: "Maharashtra",
     district: "Nagpur",
     localities: ["Sitabuldi", "Dharampeth", "Sadar", "Ramdaspeth", "Mahal", "Wardha Road", "Manish Nagar"],
@@ -341,9 +468,26 @@ const AVAILABLE_CITIES = [
   {
     id: "city-pun-01",
     name: "Pune",
+    code: "IN-MH-PUN",
     state: "Maharashtra",
     district: "Pune",
     localities: ["Kothrud", "Viman Nagar", "Baner", "Shivajinagar", "Hinjewadi", "Aundh", "Kalyani Nagar"],
+  },
+  {
+    id: "city-akl-01",
+    name: "Akola",
+    code: "IN-MH-AKL",
+    state: "Maharashtra",
+    district: "Akola",
+    localities: ["Gandhi Chowk", "Tilak Road", "Civil Lines", "Ratanlal Plot", "Jatharpeth", "Toshniwal Layout"],
+  },
+  {
+    id: "city-amr-01",
+    name: "Amravati",
+    code: "IN-MH-AMR",
+    state: "Maharashtra",
+    district: "Amravati",
+    localities: ["Rajkamal Chowk", "Badnera Road", "Gadge Nagar", "Camp", "Rukmini Nagar", "Panchavati"],
   },
 ];
 
@@ -503,6 +647,46 @@ const mutableAdminUsers: DynamicAdminUser[] = [
     lastLoginAt: "2026-11-18T14:10:00Z",
   },
   {
+    id: "usr-cm-akl-001",
+    name: "Rajesh Sharma (Akola City Lead)",
+    email: "akola.ops@nukkadnow.com",
+    phone: "+91 98220 00007",
+    roleCode: "CITY_OPERATIONS_MANAGER",
+    roleTitle: "City Operations Manager",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Akola",
+      cityId: "city-akl-01",
+      cityName: "Akola",
+      localities: ["Gandhi Chowk", "Tilak Road", "Civil Lines", "Ratanlal Plot", "Jatharpeth", "Toshniwal Layout"],
+    },
+    createdAt: "2026-09-20T10:00:00Z",
+    lastLoginAt: "2026-11-18T15:00:00Z",
+  },
+  {
+    id: "usr-cm-amr-001",
+    name: "Pooja Deshmukh (Amravati City Lead)",
+    email: "amravati.ops@nukkadnow.com",
+    phone: "+91 98220 00008",
+    roleCode: "CITY_OPERATIONS_MANAGER",
+    roleTitle: "City Operations Manager",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Amravati",
+      cityId: "city-amr-01",
+      cityName: "Amravati",
+      localities: ["Rajkamal Chowk", "Badnera Road", "Gadge Nagar", "Camp", "Rukmini Nagar", "Panchavati"],
+    },
+    createdAt: "2026-09-25T11:30:00Z",
+    lastLoginAt: "2026-11-18T14:30:00Z",
+  },
+  {
     id: "usr-vrf-001",
     name: "Sunita Compliance Officer",
     email: "sunita.kyc@nukkadnow.com",
@@ -571,6 +755,33 @@ export class AdminController {
     });
   }
 
+  /**
+   * Cryptographically and hierarchically resolves the caller's operational scope.
+   * Root and Super Admin have unrestricted global scope.
+   * City Operations Managers, Verification Staff, and Support Staff are bound to their assigned city.
+   */
+  private resolveOperatorScope(headers?: any, req?: any): { role?: string; city?: string; isGlobal: boolean } {
+    let role = headers?.["x-operator-role"];
+    let city = headers?.["x-operator-city"];
+
+    const authHeader = headers?.authorization || req?.headers?.authorization;
+    if (authHeader && typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      try {
+        const token = authHeader.substring(7);
+        const decoded: any = jwt.decode(token);
+        if (decoded) {
+          if (!role && decoded.roles?.[0]) role = decoded.roles[0];
+          if (!city && decoded.geoAssignment?.cityName) city = decoded.geoAssignment.cityName;
+        }
+      } catch {
+        // Fall back to headers
+      }
+    }
+
+    const isGlobal = role === "ROOT_ADMIN" || role === "SUPER_ADMIN" || !city;
+    return { role, city, isGlobal };
+  }
+
   // --- Authentication & Session ---
 
   @Post("auth/login")
@@ -606,13 +817,17 @@ export class AdminController {
   @Get("auth/me")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get current authenticated administrator operator session" })
-  async getAdminMe(@Req() req: any) {
+  async getAdminMe(@Req() req: any, @Headers() headers?: any) {
+    const scope = this.resolveOperatorScope(headers, req);
+    const roleDef = mutableDynamicRoles.find(r => r.code === scope.role) || mutableDynamicRoles[1];
+
     return this.wrapResponse({
       operatorId: "operator-sa-001",
-      name: "Rushi Platform Architect",
+      name: scope.role === "ROOT_ADMIN" ? "Rajesh Nukkad (Platform Founder)" : "Rushi Platform Architect",
       email: "admin@nukkadnow.com",
-      role: "SUPER_ADMIN",
-      permissions: ["*"],
+      role: scope.role || "SUPER_ADMIN",
+      permissions: roleDef.permissions,
+      geoScope: scope.city || "GLOBAL",
       mfaVerified: true,
     });
   }
@@ -622,50 +837,99 @@ export class AdminController {
   @Get("overview")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get real-time platform operations command center metrics and live order stream" })
-  async getOverview() {
-    // Real dynamic aggregations calculated from SEEDED_ORDERS and SEEDED_PROFILES
-    const allOrders = SEEDED_ORDERS;
+  async getOverview(@Headers() headers?: any, @Req() req?: any) {
+    const scope = this.resolveOperatorScope(headers, req);
+
+    // Multi-city isolation filter
+    let allOrders = SEEDED_ORDERS;
+    if (!scope.isGlobal && scope.city) {
+      allOrders = allOrders.filter(o => {
+        const p = SEEDED_PROFILES[o.tenantId];
+        return p?.city?.toLowerCase() === scope.city!.toLowerCase();
+      });
+    }
+
     const totalGmvPaise = allOrders.reduce((sum, o) => sum + (o.amount * 100), 0);
     const inFlightOrders = allOrders.filter(o => o.status === "New" || o.status === "Preparing" || o.status === "Ready");
-    const activeMerchantsCount = Object.keys(SEEDED_PROFILES).filter(k => k !== "system-admin-tenant").length;
-    const kycPendingCount = mutableKycApplications.filter(k => k.status === "SUBMITTED" || k.status === "IN_REVIEW").length;
-    const pendingRefundsCount = mutableRefunds.filter(r => r.status.startsWith("PENDING")).length;
 
-    // Locality fulfillment breakdown
-    const localities = [
-      { name: "Sitabuldi", outlets: 48, activeBatches: 14, pressure: 45, status: "normal" },
-      { name: "Civil Lines", outlets: 36, activeBatches: 8, pressure: 78, status: "high" },
-      { name: "Ramdaspeth", outlets: 28, activeBatches: 6, pressure: 32, status: "low" },
-      { name: "Dharampeth", outlets: 30, activeBatches: 11, pressure: 52, status: "normal" },
+    let activeMerchants = Object.entries(SEEDED_PROFILES).filter(([id]) => id !== "system-admin-tenant");
+    if (!scope.isGlobal && scope.city) {
+      activeMerchants = activeMerchants.filter(([_, p]) => p.city?.toLowerCase() === scope.city!.toLowerCase());
+    }
+    const activeMerchantsCount = activeMerchants.length;
+
+    let kycList = mutableKycApplications;
+    if (!scope.isGlobal && scope.city) {
+      kycList = kycList.filter(k => k.city?.toLowerCase() === scope.city!.toLowerCase());
+    }
+    const kycPendingCount = kycList.filter(k => k.status === "SUBMITTED" || k.status === "IN_REVIEW").length;
+
+    let refundsList = mutableRefunds;
+    if (!scope.isGlobal && scope.city) {
+      refundsList = refundsList.filter(r => r.city?.toLowerCase() === scope.city!.toLowerCase());
+    }
+    const pendingRefundsCount = refundsList.filter(r => r.status.startsWith("PENDING")).length;
+
+    // Locality fulfillment breakdown (filtered to scope)
+    const allLocalities = [
+      { name: "Sitabuldi", city: "Nagpur", outlets: 48, activeBatches: 14, pressure: 45, status: "normal" },
+      { name: "Dharampeth", city: "Nagpur", outlets: 30, activeBatches: 11, pressure: 52, status: "normal" },
+      { name: "Sadar", city: "Nagpur", outlets: 36, activeBatches: 8, pressure: 78, status: "high" },
+      { name: "Civil Lines", city: "Akola", outlets: 32, activeBatches: 7, pressure: 60, status: "normal" },
+      { name: "Ramdaspeth", city: "Akola", outlets: 28, activeBatches: 6, pressure: 32, status: "low" },
+      { name: "Rajkamal Chowk", city: "Amravati", outlets: 26, activeBatches: 9, pressure: 55, status: "normal" },
+      { name: "Badnera Road", city: "Amravati", outlets: 22, activeBatches: 5, pressure: 40, status: "low" },
+      { name: "Kothrud", city: "Pune", outlets: 64, activeBatches: 21, pressure: 72, status: "high" },
+      { name: "Deccan Gymkhana", city: "Pune", outlets: 52, activeBatches: 16, pressure: 48, status: "normal" },
     ];
 
-    // Priority Action Triage
-    const actionTriage = [
+    const localities = !scope.isGlobal && scope.city
+      ? allLocalities.filter(l => l.city.toLowerCase() === scope.city!.toLowerCase())
+      : allLocalities;
+
+    // Priority Action Triage (filtered to scope)
+    const allActionTriage = [
       {
         id: "tri-1",
         type: "KYC",
-        title: "Mahalaxmi Sweets (Dharampeth) - FSSAI Renewal Uploaded",
+        title: "Mahalaxmi Sweets (Dharampeth, Nagpur) - FSSAI Renewal Uploaded",
         meta: "Submitted by Anand Joshi · License #11522036000404",
+        city: "Nagpur",
         route: "/merchant-verification",
         severity: "urgent",
       },
       {
         id: "tri-2",
         type: "REFUND",
-        title: "Refund Escalation: ₹ 420 (Order #ORD-8822)",
+        title: "Refund Escalation: ₹ 420 (Order #ORD-8822, Akola)",
         meta: "Store closed before pickup slot · Customer requested full refund",
+        city: "Akola",
         route: "/refunds-disputes",
         severity: "danger",
       },
       {
         id: "tri-3",
         type: "CATALOG",
-        title: "Catalog Moderation: Price Anomaly Flag",
+        title: "Catalog Moderation: Price Anomaly Flag (Akola)",
         meta: "Seller listed Vidarbha Special Spicy Poha Chivda at ₹ 10 (potential typo)",
+        city: "Akola",
         route: "/catalogue-moderation",
         severity: "warning",
       },
+      {
+        id: "tri-4",
+        type: "KYC",
+        title: "Rajkamal Spices & Dry Fruits (Amravati) - FSSAI Submitted",
+        meta: "Submitted by Sanjay Deshmukh · License #11522036000505",
+        city: "Amravati",
+        route: "/merchant-verification",
+        severity: "urgent",
+      },
     ];
+
+    const actionTriage = !scope.isGlobal && scope.city
+      ? allActionTriage.filter(t => t.city.toLowerCase() === scope.city!.toLowerCase())
+      : allActionTriage;
 
     // Recent real-time orders formatted for Overview table
     const recentOrders = allOrders.map((o) => {
@@ -673,7 +937,7 @@ export class AdminController {
       return {
         id: o.orderNumber,
         merchantName: profile?.shopName || "Nukkad Merchant",
-        locality: profile?.locality || "Nagpur",
+        locality: `${profile?.locality || "Central"}, ${profile?.city || "Nagpur"}`,
         amount: `₹ ${o.amount.toFixed(2)}`,
         status: o.status === "New" ? "IN_PREPARATION" : o.status === "Preparing" ? "IN_PREPARATION" : o.status === "Ready" ? "READY_FOR_PICKUP" : "COMPLETED",
         placedAt: `${o.time} (${o.date})`,
@@ -691,7 +955,7 @@ export class AdminController {
         kycVerificationQueue: kycPendingCount,
         kycQueueSla: "SLA: < 4 hrs",
         pendingRefunds: pendingRefundsCount,
-        pendingRefundsAmount: "₹ 1,420 total",
+        pendingRefundsAmount: `₹ ${refundsList.reduce((sum, r) => sum + r.amountPaise, 0) / 100} total`,
         meshLatency: "42 ms",
         meshLatencyHealth: "Healthy (< 100ms) · 12 microservices",
       },
@@ -706,7 +970,16 @@ export class AdminController {
   @Get("merchants")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List all merchants with live catalog, outlet counts and compliance status" })
-  async getMerchants(@Query("search") search?: string, @Query("status") status?: string, @Query("locality") locality?: string) {
+  async getMerchants(
+    @Query("search") search?: string, 
+    @Query("status") status?: string, 
+    @Query("locality") locality?: string,
+    @Query("city") cityQuery?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
+
     const list = Object.entries(SEEDED_PROFILES)
       .filter(([id]) => id !== "system-admin-tenant")
       .map(([id, p]) => {
@@ -723,6 +996,7 @@ export class AdminController {
           mode: p.businessCategory.includes("Home") ? "HOME_MAKER" : p.businessCategory.includes("Sweets") ? "FOOD_STALL" : "RETAIL",
           status: liveStatus,
           locality: p.locality,
+          city: p.city,
           address: `${p.addressStreet}, ${p.locality}, ${p.city} - ${p.pincode}`,
           fssaiNumber: p.fssai,
           gstin: p.gstin,
@@ -735,6 +1009,14 @@ export class AdminController {
       });
 
     let filtered = list;
+
+    // Strict multi-city boundary isolation (e.g. Akola manager CANNOT see Amravati shops)
+    if (!scope.isGlobal && scope.city) {
+      filtered = filtered.filter(m => m.city.toLowerCase() === scope.city!.toLowerCase());
+    } else if (cityQuery) {
+      filtered = filtered.filter(m => m.city.toLowerCase() === cityQuery.toLowerCase());
+    }
+
     if (search) {
       const q = search.toLowerCase();
       filtered = filtered.filter(m => m.name.toLowerCase().includes(q) || m.legalEntityName.toLowerCase().includes(q) || m.id.toLowerCase().includes(q));
@@ -752,9 +1034,16 @@ export class AdminController {
   @Get("merchants/:id")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get detailed merchant profile by ID" })
-  async getMerchantById(@Param("id") id: string) {
+  async getMerchantById(@Param("id") id: string, @Headers() headers?: any, @Req() req?: any) {
     const p = SEEDED_PROFILES[id];
     if (!p) throw new NotFoundException(`Merchant ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && p.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: merchant belongs to ${p.city}, outside your assigned jurisdiction (${scope.city}).`
+      );
+    }
 
     const liveStatus = mutableMerchantStatuses[id] || (p.isShopLiveOpen ? "ACTIVE" : "SUSPENDED");
     const outletProducts = SEEDED_PRODUCTS.filter(prod => prod.outletId === p.outletId);
@@ -769,6 +1058,7 @@ export class AdminController {
       mode: p.businessCategory.includes("Home") ? "HOME_MAKER" : "RETAIL",
       status: liveStatus,
       locality: p.locality,
+      city: p.city,
       address: `${p.addressStreet}, ${p.locality}, ${p.city} - ${p.pincode}`,
       fssaiNumber: p.fssai,
       gstin: p.gstin,
@@ -789,7 +1079,17 @@ export class AdminController {
   @Patch("merchants/:id/suspend")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Suspend a merchant store from accepting orders" })
-  async suspendMerchant(@Param("id") id: string, @Body() body: any) {
+  async suspendMerchant(@Param("id") id: string, @Body() body: any, @Headers() headers?: any, @Req() req?: any) {
+    const p = SEEDED_PROFILES[id];
+    if (!p) throw new NotFoundException(`Merchant ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && p.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: cannot suspend merchant in ${p.city} from ${scope.city} jurisdiction.`
+      );
+    }
+
     mutableMerchantStatuses[id] = "SUSPENDED";
     adminAuditLogs.unshift({
       id: `AUD-${Date.now()}`,
@@ -803,13 +1103,23 @@ export class AdminController {
       timestamp: new Date().toISOString(),
     });
 
-    return this.getMerchantById(id);
+    return this.getMerchantById(id, headers, req);
   }
 
   @Patch("merchants/:id/activate")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Activate or unsuspend a merchant store" })
-  async activateMerchant(@Param("id") id: string, @Body() body: any) {
+  async activateMerchant(@Param("id") id: string, @Body() body: any, @Headers() headers?: any, @Req() req?: any) {
+    const p = SEEDED_PROFILES[id];
+    if (!p) throw new NotFoundException(`Merchant ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && p.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: cannot activate merchant in ${p.city} from ${scope.city} jurisdiction.`
+      );
+    }
+
     mutableMerchantStatuses[id] = "ACTIVE";
     adminAuditLogs.unshift({
       id: `AUD-${Date.now()}`,
@@ -823,7 +1133,7 @@ export class AdminController {
       timestamp: new Date().toISOString(),
     });
 
-    return this.getMerchantById(id);
+    return this.getMerchantById(id, headers, req);
   }
 
   // --- Merchant KYC & Onboarding Verification ---
@@ -831,8 +1141,20 @@ export class AdminController {
   @Get("merchant-verification")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List KYC verification queue items" })
-  async getVerificationQueue(@Query("search") search?: string, @Query("status") status?: string) {
+  async getVerificationQueue(
+    @Query("search") search?: string, 
+    @Query("status") status?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
     let items = [...mutableKycApplications];
+
+    // Multi-city isolation for KYC verification queue
+    if (!scope.isGlobal && scope.city) {
+      items = items.filter(v => v.city?.toLowerCase() === scope.city!.toLowerCase());
+    }
+
     if (search) {
       const q = search.toLowerCase();
       items = items.filter(v => v.businessName.toLowerCase().includes(q) || v.id.toLowerCase().includes(q));
@@ -846,8 +1168,16 @@ export class AdminController {
   @Get("merchant-verification/:id")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get single KYC application by ID" })
-  async getVerificationById(@Param("id") id: string) {
-    const item = mutableKycApplications.find(v => v.id === id) || mutableKycApplications[0];
+  async getVerificationById(@Param("id") id: string, @Headers() headers?: any, @Req() req?: any) {
+    const item = mutableKycApplications.find(v => v.id === id);
+    if (!item) throw new NotFoundException(`KYC Application ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && item.city && item.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: KYC application belongs to ${item.city}, outside your assigned jurisdiction (${scope.city}).`
+      );
+    }
     return this.wrapResponse(item);
   }
 
@@ -908,7 +1238,15 @@ export class AdminController {
   @Get("orders")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List platform orders across all merchants and customers" })
-  async getOrders(@Query("search") search?: string, @Query("status") status?: string, @Query("locality") locality?: string) {
+  async getOrders(
+    @Query("search") search?: string, 
+    @Query("status") status?: string, 
+    @Query("locality") locality?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
+
     const mappedOrders = SEEDED_ORDERS.map((o) => {
       const profile = SEEDED_PROFILES[o.tenantId];
       const itemsFormatted = o.items.map((it, idx) => ({
@@ -933,6 +1271,7 @@ export class AdminController {
         merchantName: profile?.shopName || "Nukkad Merchant",
         outletId: o.outletId,
         locality: profile?.locality || "Nagpur",
+        city: profile?.city || "Nagpur",
         customerId: "cust-102",
         customerName: o.customerName,
         customerPhone: o.customerPhone,
@@ -956,6 +1295,12 @@ export class AdminController {
     });
 
     let items = mappedOrders;
+
+    // Strict multi-city boundary isolation (e.g. Akola manager CANNOT see Amravati orders)
+    if (!scope.isGlobal && scope.city) {
+      items = items.filter(o => o.city.toLowerCase() === scope.city!.toLowerCase());
+    }
+
     if (search) {
       const q = search.toLowerCase();
       items = items.filter(o => o.id.toLowerCase().includes(q) || o.customerName.toLowerCase().includes(q) || o.merchantName.toLowerCase().includes(q));
@@ -973,8 +1318,21 @@ export class AdminController {
   @Get("orders/:id")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get single order details by reference number" })
-  async getOrderById(@Param("id") id: string) {
-    const listRes = await this.getOrders();
+  async getOrderById(@Param("id") id: string, @Headers() headers?: any, @Req() req?: any) {
+    const scope = this.resolveOperatorScope(headers, req);
+    const targetOrder = SEEDED_ORDERS.find(o => o.orderNumber === id || o.id === id);
+    if (!targetOrder) throw new NotFoundException(`Order ${id} not found`);
+
+    const profile = SEEDED_PROFILES[targetOrder.tenantId];
+    const orderCity = profile?.city || "Nagpur";
+
+    if (!scope.isGlobal && scope.city && orderCity.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: Order belongs to ${orderCity}, outside your assigned jurisdiction (${scope.city}).`
+      );
+    }
+
+    const listRes = await this.getOrders(undefined, undefined, undefined, headers, req);
     const found = listRes.data.items.find(o => o.id === id) || listRes.data.items[0];
     return this.wrapResponse(found);
   }
@@ -982,7 +1340,10 @@ export class AdminController {
   @Post("orders/:id/force-cancel")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Emergency administrative cancellation of an order" })
-  async forceCancelOrder(@Param("id") id: string, @Body() body: any) {
+  async forceCancelOrder(@Param("id") id: string, @Body() body: any, @Headers() headers?: any, @Req() req?: any) {
+    const orderRes = await this.getOrderById(id, headers, req);
+    const order = orderRes.data as any;
+
     adminAuditLogs.unshift({
       id: `AUD-${Date.now()}`,
       operatorId: "operator-sa-001",
@@ -991,12 +1352,10 @@ export class AdminController {
       targetEntity: "Order",
       targetId: id,
       reasonCode: body.reasonCode || "MERCHANT_NON_RESPONSIVE",
-      justification: body.justification || "Administrative cancellation triggered by SuperAdmin.",
+      justification: body.justification || "Administrative cancellation triggered via console.",
       timestamp: new Date().toISOString(),
     });
 
-    const orderRes = await this.getOrderById(id);
-    const order = orderRes.data as any;
     order.status = "FORCE_CANCELLED";
     order.cancellationReason = body.justification;
     return this.wrapResponse(order);
@@ -1007,8 +1366,20 @@ export class AdminController {
   @Get("refunds")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List customer disputes and refund approval requests" })
-  async getRefunds(@Query("search") search?: string, @Query("status") status?: string) {
+  async getRefunds(
+    @Query("search") search?: string, 
+    @Query("status") status?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
     let items = [...mutableRefunds];
+
+    // Multi-city isolation (e.g. Akola manager CANNOT see Amravati refunds)
+    if (!scope.isGlobal && scope.city) {
+      items = items.filter(r => r.city?.toLowerCase() === scope.city!.toLowerCase());
+    }
+
     if (search) {
       const q = search.toLowerCase();
       items = items.filter(r => r.orderId.toLowerCase().includes(q) || r.customerName.toLowerCase().includes(q) || r.merchantName.toLowerCase().includes(q));
@@ -1022,17 +1393,32 @@ export class AdminController {
   @Get("refunds/:id")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get single refund dispute by ID" })
-  async getRefundById(@Param("id") id: string) {
-    const item = mutableRefunds.find(r => r.id === id) || mutableRefunds[0];
+  async getRefundById(@Param("id") id: string, @Headers() headers?: any, @Req() req?: any) {
+    const item = mutableRefunds.find(r => r.id === id);
+    if (!item) throw new NotFoundException(`Refund record ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && item.city && item.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: Refund dispute belongs to ${item.city}, outside your assigned jurisdiction (${scope.city}).`
+      );
+    }
     return this.wrapResponse(item);
   }
 
   @Patch("refunds/:id/approve")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Authorize customer refund" })
-  async approveRefund(@Param("id") id: string, @Body() body: any) {
+  async approveRefund(@Param("id") id: string, @Body() body: any, @Headers() headers?: any, @Req() req?: any) {
     const item = mutableRefunds.find(r => r.id === id);
     if (!item) throw new NotFoundException(`Refund record ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && item.city && item.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: cannot approve refund in ${item.city} from ${scope.city} jurisdiction.`
+      );
+    }
 
     item.status = "APPROVED_DISPATCHED";
     item.firstApprover = {
@@ -1059,9 +1445,16 @@ export class AdminController {
   @Patch("refunds/:id/reject")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Decline customer refund dispute" })
-  async rejectRefund(@Param("id") id: string, @Body() body: any) {
+  async rejectRefund(@Param("id") id: string, @Body() body: any, @Headers() headers?: any, @Req() req?: any) {
     const item = mutableRefunds.find(r => r.id === id);
     if (!item) throw new NotFoundException(`Refund record ${id} not found`);
+
+    const scope = this.resolveOperatorScope(headers, req);
+    if (!scope.isGlobal && scope.city && item.city && item.city.toLowerCase() !== scope.city.toLowerCase()) {
+      throw new ForbiddenException(
+        `Cross-city access denied: cannot reject refund in ${item.city} from ${scope.city} jurisdiction.`
+      );
+    }
 
     item.status = "REJECTED";
     adminAuditLogs.unshift({
@@ -1084,14 +1477,25 @@ export class AdminController {
   @Get("localities")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List supported hyper-local pilot localities and geofences" })
-  async getLocalities() {
-    const zones = [
+  async getLocalities(@Headers() headers?: any, @Req() req?: any) {
+    const scope = this.resolveOperatorScope(headers, req);
+
+    const allZones = [
       { id: "loc-1", name: "Sitabuldi", city: "Nagpur", pincode: "440012", activeOutlets: 48, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 5 },
       { id: "loc-2", name: "Dharampeth", city: "Nagpur", pincode: "440010", activeOutlets: 30, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6 },
       { id: "loc-3", name: "Sadar", city: "Nagpur", pincode: "440001", activeOutlets: 36, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 5 },
-      { id: "loc-4", name: "Ramdaspeth", city: "Nagpur & Akola", pincode: "444005", activeOutlets: 28, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 5 },
-      { id: "loc-5", name: "Civil Lines", city: "Akola", pincode: "444001", activeOutlets: 32, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6 },
+      { id: "loc-4", name: "Civil Lines", city: "Akola", pincode: "444001", activeOutlets: 32, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6 },
+      { id: "loc-5", name: "Ramdaspeth", city: "Akola", pincode: "444005", activeOutlets: 28, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 5 },
+      { id: "loc-6", name: "Rajkamal Chowk", city: "Amravati", pincode: "444601", activeOutlets: 26, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 5 },
+      { id: "loc-7", name: "Badnera Road", city: "Amravati", pincode: "444607", activeOutlets: 22, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6 },
+      { id: "loc-8", name: "Kothrud", city: "Pune", pincode: "411038", activeOutlets: 64, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 7 },
+      { id: "loc-9", name: "Deccan Gymkhana", city: "Pune", pincode: "411004", activeOutlets: 52, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6 },
     ];
+
+    const zones = !scope.isGlobal && scope.city
+      ? allZones.filter(z => z.city.toLowerCase() === scope.city!.toLowerCase())
+      : allZones;
+
     return this.wrapPaginated(zones);
   }
 

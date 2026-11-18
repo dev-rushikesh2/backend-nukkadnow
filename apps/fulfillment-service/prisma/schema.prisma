@@ -15,6 +15,7 @@ model CapacitySlot {
   endTime        String            // "10:30"
   maxCapacity    Int               @default(10)
   reservedCount  Int               @default(0)
+  version        Int               @default(1) // Optimistic concurrency lock
   isWalkIn       Boolean           @default(false)
   reservations   SlotReservation[]
 
@@ -62,10 +63,12 @@ model DeliveryTask {
   id              String   @id @default(uuid())
   orderId         String   @unique
   outletId        String
+  cityCode        String   @default("IN-MH-NGP") // Municipal city boundary
   deliveryAddress String
   status          String   @default("PENDING")
   assignedStaffId String?
   createdAt       DateTime @default(now())
 
+  @@index([cityCode, status])
   @@map("delivery_tasks")
 }

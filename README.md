@@ -173,3 +173,29 @@ Added complete relational entities for dynamic role management and geographic sc
 #### 3. Merchant Catalog Fallback & Tenant Scoping (`apps/api-gateway/src/bff/merchant/merchant.controller.ts`)
 - Enhanced `GET /api/v1/merchant/catalog/products` endpoint to resolve active tenant outlet profile (`outlet-sabji-001`, `outlet-kirana-002`, `outlet-garguti-003`, `outlet-sweets-004`) when `outletId` is omitted or set to default, eliminating empty catalog response anomalies in walk-in POS billing.
 
+#### 4. 11-Microservice Prisma Schema Security Hardening
+Hardened all 11 microservice schemas with municipal geographic partitioning, DPDP Act 2023 compliance, and tamper-evident audit trails:
+- `merchant-service`: Added `cityCode`, `districtCode`, `stateCode`, `isSuspended` and composite indexes (`[cityCode, verificationStatus]`).
+- `order-service`: Added `cityCode`, `districtCode`, `stateCode` and composite indexes (`[cityCode, status]`, `[tenantId, cityCode]`).
+- `payment-service`: Added `cityCode` to `PaymentIntent`, `Payment`, and `Refund` with `[cityCode, status]` index.
+- `review-support-service`: Added `cityCode` to `Review` and `SupportTicket` with `[cityCode, status]` index.
+- `analytics-service`: Added `cityCode` and composite unique key `[factDate, cityCode]` on `PlatformReportingFact`.
+- `identity-service`: Added `tokenVersion` (instant JWT revocation), `failedLoginAttempts`, `lockedUntil`, `PiiAccessAuditLog`, and HMAC SHA-256 cryptographic chaining (`previousHash` & `recordHash`) on `AdminAuditLog`.
+- `catalog-service`: Added `tenantId` and composite indexes (`[tenantId, outletId]`) on inventory movements and reservations.
+- `discovery-service`: Added `cityCode` and `[cityCode, isCurrentlyOpen]` index on `OutletSearchDocument`.
+- `fulfillment-service`: Added optimistic concurrency `version` lock to `CapacitySlot` and `cityCode` to `DeliveryTask`.
+- `subscription-service`: Added `cityCode` to `MerchantSubscription` and `Invoice`.
+- `notification-service`: Added `cityCode` to `NotificationJob`.
+- **Validation:** All 11 schemas validated via `pnpm exec prisma validate` $\rightarrow$ **Exit Code 0 (Valid 🚀)**.
+
+#### 5. Gateway Multi-City Boundary Enforcement (`apps/api-gateway/src/bff/admin/admin.controller.ts`)
+- Implemented `resolveOperatorScope` resolving operator role and assigned city from JWT and request headers.
+- Multi-city isolation strictly enforced across `overview`, `merchants`, `merchant-verification`, `orders`, `refunds`, and `localities`.
+- IDOR Protection: Cross-city access attempts (e.g. Akola manager requesting Amravati merchant or order) throw `ForbiddenException (403)`.
+- Expanded live seed network to 4 major cities:
+  - **Nagpur (`IN-MH-NGP`):** Patil Fresh Sabji, Mahalaxmi Sweets
+  - **Akola (`IN-MH-AKL`):** Sharma Kirana, Garguti Homemade Chivda
+  - **Amravati (`IN-MH-AMR`):** Rajkamal Spices & Dry Fruits
+  - **Pune (`IN-MH-PUN`):** Chitale Dairy & Traditional Sweets
+- **Build Verification:** `pnpm --filter @nukkadnow/api-gateway build` $\rightarrow$ **Exit Code 0 (`nest build` successful)**.
+

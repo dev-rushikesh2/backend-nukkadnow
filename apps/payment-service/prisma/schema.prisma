@@ -11,6 +11,7 @@ model PaymentIntent {
   id           String    @id @default(uuid())
   orderId      String    @unique
   tenantId     String
+  cityCode     String    @default("IN-MH-NGP") // Municipal city partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
   amountPaise  Int
   currency     String    @default("INR")
   status       String    @default("CREATED") // CREATED, SUCCEEDED, FAILED
@@ -20,6 +21,7 @@ model PaymentIntent {
   payment      Payment?
 
   @@index([orderId])
+  @@index([cityCode, status])
   @@map("payment_intents")
 }
 
@@ -27,6 +29,7 @@ model Payment {
   id             String        @id @default(uuid())
   intentId       String        @unique
   orderId        String
+  cityCode       String        @default("IN-MH-NGP")
   amountPaise    Int
   pspPaymentId   String
   pspSignature   String?
@@ -35,6 +38,7 @@ model Payment {
   intent         PaymentIntent @relation(fields: [intentId], references: [id], onDelete: Cascade)
   refunds        Refund[]
 
+  @@index([cityCode, verifiedAt])
   @@map("payments")
 }
 
@@ -42,6 +46,7 @@ model Refund {
   id          String   @id @default(uuid())
   paymentId   String
   orderId     String
+  cityCode    String   @default("IN-MH-NGP")
   amountPaise Int
   reason      String
   status      String   @default("COMPLETED")
@@ -49,6 +54,7 @@ model Refund {
   createdAt   DateTime @default(now())
   payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
+  @@index([cityCode, status])
   @@map("refunds")
 }
 

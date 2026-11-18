@@ -13,6 +13,10 @@ model Order {
   customerId       String
   tenantId         String       // Merchant Org ID
   outletId         String
+  cityCode         String       @default("IN-MH-NGP") // Municipal city partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
+  districtCode     String       @default("NGP")
+  stateCode        String       @default("IN-MH")
+  locality         String?
   status           String       @default("PENDING_PAYMENT")
   totalAmountPaise Int
   paymentStatus    String       @default("UNPAID")
@@ -26,6 +30,9 @@ model Order {
 
   @@index([customerId])
   @@index([tenantId, outletId])
+  @@index([cityCode, status])
+  @@index([cityCode, createdAt])
+  @@index([tenantId, cityCode])
   @@map("orders")
 }
 
