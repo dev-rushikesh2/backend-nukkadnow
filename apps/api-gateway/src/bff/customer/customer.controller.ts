@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 
 // Baseline reference data matching the seeded in-memory databases in merchant-service & catalog-service
-const SEEDED_PRODUCTS = [
+export const SEEDED_PRODUCTS = [
   // 1. Patil Fresh Sabji Mandi
   {
     id: "prod-sabji-001",
