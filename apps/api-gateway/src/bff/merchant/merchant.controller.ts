@@ -93,7 +93,7 @@ const DEFAULT_SCHEDULE: DayOperatingHours[] = [
 ];
 
 // Authoritative multi-tenant merchant profiles
-const SEEDED_PROFILES: Record<string, MerchantProfileData> = {
+export const SEEDED_PROFILES: Record<string, MerchantProfileData> = {
   "merchant-sabji-001": {
     id: "merchant-sabji-001",
     tenantId: "merchant-sabji-001",
@@ -284,7 +284,7 @@ const SEEDED_PROFILES: Record<string, MerchantProfileData> = {
 };
 
 // Authoritative multi-tenant merchant orders store
-const SEEDED_ORDERS: MerchantOrder[] = [
+export const SEEDED_ORDERS: MerchantOrder[] = [
   // 1. Patil Fresh Sabji Mandi (merchant-sabji-001)
   {
     id: "#ORD78291",
