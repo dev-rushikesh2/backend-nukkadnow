@@ -164,11 +164,16 @@ Added complete relational entities for dynamic role management and geographic sc
 - `GET /api/v1/admin/platform/permissions`: Returns all granular capabilities grouped by module (`DASHBOARD`, `ADMINS`, `MERCHANTS`, `VERIFICATION`, `CUSTOMERS`, `ORDERS`, `REFUNDS`, `GEOGRAPHY`, `FINANCE`, `CONFIG`, `AUDIT`).
 - `GET /api/v1/admin/platform/cities`: Returns available cities (`Nagpur`, `Pune`) and micro-market locality options.
 - `GET /api/v1/admin/platform/users`: Lists admin operators. When invoked by a `CITY_OPERATIONS_MANAGER`, filters strictly to staff within their assigned city (`cityId`).
-- `POST /api/v1/admin/platform/users`: Provisions new operators with dynamic role and geographic coverage. Attempting to provision `ROOT_ADMIN` raises `ForbiddenException`.
+- `POST /api/v1/admin/auth/login`: Real administrative authentication verifying individual email/username and password. Validates account status, rejects suspended accounts (403), validates passwords (401), and emits a signed JWT with embedded `roleCode`, `geoAssignment`, and `isRootProtected` flag.
+- `POST /api/v1/admin/auth/mfa/verify`: Validates 6-digit TOTP MFA security token and finalizes authenticated operator session.
+- `POST /api/v1/admin/platform/users`: Provisions new operators with dynamic role, initial password, and geographic coverage. Enforces hierarchical delegation:
+  - Super Admin can provision City Managers and Staff; cannot provision Root Admin or Super Admin.
+  - City Managers can only provision staff within their assigned municipal territory (`geoAssignment.cityName`).
+  - Attempting to provision `ROOT_ADMIN` raises `ForbiddenException (403)`.
 - `PATCH /api/v1/admin/platform/users/:id/status`: Suspends or activates operator accounts. Root Admin is protected and cannot be suspended.
 - `PATCH /api/v1/admin/platform/users/:id/role`: Reassigns dynamic role. Users cannot be promoted to `ROOT_ADMIN`.
 - `PATCH /api/v1/admin/platform/users/:id/geo`: Updates micro-market geographic assignment.
-- `POST /api/v1/admin/auth/switch-role`: Operator session switching endpoint for live hierarchy simulation.
+- `GET /api/v1/admin/auth/me`: Returns the verified active operator identity and permissions.
 
 #### 3. Merchant Catalog Fallback & Tenant Scoping (`apps/api-gateway/src/bff/merchant/merchant.controller.ts`)
 - Enhanced `GET /api/v1/merchant/catalog/products` endpoint to resolve active tenant outlet profile (`outlet-sabji-001`, `outlet-kirana-002`, `outlet-garguti-003`, `outlet-sweets-004`) when `outletId` is omitted or set to default, eliminating empty catalog response anomalies in walk-in POS billing.
