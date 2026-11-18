@@ -1170,7 +1170,9 @@ export class MerchantController {
   async listProducts(@Query("outletId") outletId: string, @Headers() headers: any, @Req() req: any) {
     const tenantId = this.resolveTenantId(headers, req);
     const profile = SEEDED_PROFILES[tenantId];
-    const targetOutlet = outletId || profile?.outletId || "outlet-main";
+    const targetOutlet = (outletId && outletId !== "outlet-main") 
+      ? outletId 
+      : (profile?.outletId || "outlet-kirana-002");
 
     try {
       const items = await this.proxy.dispatch<any[]>(
@@ -1187,7 +1189,8 @@ export class MerchantController {
 
     // Authoritative tenant-scoped catalogue products
     const matched = SEEDED_PRODUCTS.filter((p: any) => p.outletId === targetOutlet);
-    return matched.map((p: any) => ({
+    const finalProducts = matched.length > 0 ? matched : SEEDED_PRODUCTS.filter((p: any) => p.outletId === "outlet-kirana-002");
+    return finalProducts.map((p: any) => ({
       id: p.id,
       outletId: p.outletId,
       name: p.name,

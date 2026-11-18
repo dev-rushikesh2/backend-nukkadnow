@@ -11,7 +11,8 @@ import {
   Headers, 
   Req,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
+  ForbiddenException
 } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
@@ -256,6 +257,290 @@ const adminAuditLogs: AuditLogEntry[] = [
     reasonCode: "ESSENTIAL_COMMODITY_ACT",
     justification: "Capped maximum retail price of loose Sharbati Wheat Atta to prevent price spikes.",
     timestamp: "2026-11-17T11:30:00Z",
+  },
+];
+
+export interface DynamicAdminRole {
+  id: string;
+  code: string;
+  title: string;
+  subtitle?: string;
+  hierarchyLevel: number;
+  description: string;
+  requiresMfa: boolean;
+  isSystem: boolean;
+  permissions: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminGeoAssignment {
+  state: string;
+  district: string;
+  cityId: string;
+  cityName: string;
+  localities: string[];
+}
+
+export interface DynamicAdminUser {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  roleCode: string;
+  roleTitle?: string;
+  status: "ACTIVE" | "SUSPENDED";
+  mfaEnabled: boolean;
+  isRootProtected: boolean;
+  geoAssignment?: AdminGeoAssignment;
+  createdAt: string;
+  lastLoginAt?: string;
+}
+
+const AVAILABLE_PERMISSIONS = [
+  { code: "admin:merchants:read", module: "MERCHANTS", description: "View merchant directories, profiles, and outlets" },
+  { code: "admin:merchants:create", module: "MERCHANTS", description: "Register and onboard merchant accounts" },
+  { code: "admin:merchants:update", module: "MERCHANTS", description: "Update merchant profile, hours, and catalog" },
+  { code: "admin:merchants:suspend", module: "MERCHANTS", description: "Emergency freeze and suspend merchant shop" },
+  { code: "admin:merchants:terminate", module: "MERCHANTS", description: "Permanently offboard merchant" },
+  { code: "admin:kyc:read", module: "KYC", description: "Read KYC documents and submitted proof records" },
+  { code: "admin:kyc:review", module: "KYC", description: "Inspect submitted licenses, GSTIN, PAN, and passbooks" },
+  { code: "admin:kyc:approve", module: "KYC", description: "Grant statutory compliance approval and activate store" },
+  { code: "admin:kyc:reject", module: "KYC", description: "Reject KYC with mandatory audit reason code" },
+  { code: "admin:orders:read", module: "ORDERS", description: "View order lifecycle, tokens, and handover status" },
+  { code: "admin:orders:intervene", module: "ORDERS", description: "Intervene in delayed or stalled orders" },
+  { code: "admin:orders:force_cancel", module: "ORDERS", description: "Emergency administrative force-cancellation" },
+  { code: "admin:refunds:read", module: "REFUNDS", description: "View customer refund disputes and claims" },
+  { code: "admin:refunds:approve_low", module: "REFUNDS", description: "Single-signature approval for refunds <= ₹5,000" },
+  { code: "admin:refunds:approve_high", module: "REFUNDS", description: "Dual-sign approval for refunds > ₹5,000" },
+  { code: "admin:localities:read", module: "GEOGRAPHY", description: "View localities, polygon geofences, and cities" },
+  { code: "admin:localities:manage", module: "GEOGRAPHY", description: "Modify locality boundaries and geofence radii" },
+  { code: "admin:categories:manage", module: "CATALOG", description: "Manage product categories and taxonomies" },
+  { code: "admin:catalog:moderate", module: "CATALOG", description: "Review and approve merchant catalog items" },
+  { code: "admin:support:read", module: "SUPPORT", description: "View support tickets and incident escalation queue" },
+  { code: "admin:support:resolve", module: "SUPPORT", description: "Respond to customer and merchant support inquiries" },
+  { code: "admin:analytics:read", module: "ANALYTICS", description: "View platform GMV, volume, and locality heatmaps" },
+  { code: "admin:platform:users_read", module: "ADMIN_GOVERNANCE", description: "View administrative staff and managers" },
+  { code: "admin:platform:users_manage", module: "ADMIN_GOVERNANCE", description: "Provision and manage admin accounts" },
+  { code: "admin:platform:roles_manage", module: "ADMIN_GOVERNANCE", description: "Create and edit dynamic roles and permissions" },
+  { code: "admin:feature_flags:read", module: "SYSTEM", description: "View platform feature flags and circuit breakers" },
+  { code: "admin:feature_flags:toggle", module: "SYSTEM", description: "Toggle platform feature flags" },
+  { code: "admin:system_health:read", module: "SYSTEM", description: "View telemetry, redis, postgres, and microservices" },
+  { code: "admin:audit_logs:read", module: "AUDIT", description: "Inspect immutable audit log records" },
+  { code: "admin:audit:unmask_pii", module: "AUDIT", description: "Audit-logged temporary unmask of restricted PII" },
+];
+
+const AVAILABLE_CITIES = [
+  {
+    id: "city-ngp-01",
+    name: "Nagpur",
+    state: "Maharashtra",
+    district: "Nagpur",
+    localities: ["Sitabuldi", "Dharampeth", "Sadar", "Ramdaspeth", "Mahal", "Wardha Road", "Manish Nagar"],
+  },
+  {
+    id: "city-pun-01",
+    name: "Pune",
+    state: "Maharashtra",
+    district: "Pune",
+    localities: ["Kothrud", "Viman Nagar", "Baner", "Shivajinagar", "Hinjewadi", "Aundh", "Kalyani Nagar"],
+  },
+];
+
+const mutableDynamicRoles: DynamicAdminRole[] = [
+  {
+    id: "role-root-01",
+    code: "ROOT_ADMIN",
+    title: "Root Admin",
+    subtitle: "Company Owner · Ultimate Platform Authority",
+    hierarchyLevel: 1,
+    description: "Ultimate platform authority with complete control across all modules, cities, and security policies.",
+    requiresMfa: true,
+    isSystem: true,
+    permissions: AVAILABLE_PERMISSIONS.map(p => p.code),
+    createdAt: "2026-08-01T00:00:00Z",
+    updatedAt: "2026-08-01T00:00:00Z",
+  },
+  {
+    id: "role-super-02",
+    code: "SUPER_ADMIN",
+    title: "Super Admin",
+    subtitle: "Central Platform Operations & Governance",
+    hierarchyLevel: 2,
+    description: "Central management across all cities. Supervise staff, configure feature flags, manage merchants, and approve refunds.",
+    requiresMfa: true,
+    isSystem: true,
+    permissions: AVAILABLE_PERMISSIONS.map(p => p.code),
+    createdAt: "2026-08-15T00:00:00Z",
+    updatedAt: "2026-08-15T00:00:00Z",
+  },
+  {
+    id: "role-cm-03",
+    code: "CITY_OPERATIONS_MANAGER",
+    title: "City Operations Manager",
+    subtitle: "Assigned City Operations & Oversight",
+    hierarchyLevel: 3,
+    description: "Responsible for assigned city operations (e.g. Pune, Nagpur). Monitors verification, manages local orders, and supervises city staff.",
+    requiresMfa: true,
+    isSystem: true,
+    permissions: [
+      "admin:merchants:read", "admin:merchants:update", "admin:merchants:suspend",
+      "admin:kyc:read", "admin:kyc:review",
+      "admin:orders:read", "admin:orders:intervene",
+      "admin:refunds:read",
+      "admin:localities:read",
+      "admin:support:read", "admin:support:resolve",
+      "admin:analytics:read",
+      "admin:platform:users_read", "admin:platform:users_manage",
+      "admin:audit_logs:read",
+    ],
+    createdAt: "2026-09-01T00:00:00Z",
+    updatedAt: "2026-09-01T00:00:00Z",
+  },
+  {
+    id: "role-vrf-04",
+    code: "VERIFICATION_STAFF",
+    title: "Verification Staff",
+    subtitle: "Merchant Document Verification Queue",
+    hierarchyLevel: 4,
+    description: "Specialized merchant KYC verification queue: validates FSSAI licenses, GSTIN, PAN, and Bank penny-drop confirmations.",
+    requiresMfa: true,
+    isSystem: true,
+    permissions: [
+      "admin:merchants:read",
+      "admin:kyc:read", "admin:kyc:review", "admin:kyc:approve", "admin:kyc:reject",
+      "admin:catalog:moderate",
+      "admin:audit_logs:read",
+    ],
+    createdAt: "2026-10-01T00:00:00Z",
+    updatedAt: "2026-10-01T00:00:00Z",
+  },
+  {
+    id: "role-spt-05",
+    code: "SUPPORT_STAFF",
+    title: "Support Staff",
+    subtitle: "Customer & Merchant Support Specialist",
+    hierarchyLevel: 4,
+    description: "Assists consumers and store owners with order lifecycle inquiries, delivery delays, and ticket resolution.",
+    requiresMfa: false,
+    isSystem: true,
+    permissions: [
+      "admin:merchants:read",
+      "admin:orders:read", "admin:orders:intervene",
+      "admin:support:read", "admin:support:resolve",
+      "admin:audit_logs:read", "admin:audit:unmask_pii",
+    ],
+    createdAt: "2026-10-10T00:00:00Z",
+    updatedAt: "2026-10-10T00:00:00Z",
+  },
+];
+
+const mutableAdminUsers: DynamicAdminUser[] = [
+  {
+    id: "usr-root-001",
+    name: "Rajesh Nukkad (Platform Founder)",
+    email: "founder@nukkadnow.com",
+    phone: "+91 98220 00001",
+    roleCode: "ROOT_ADMIN",
+    roleTitle: "Root Admin",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: true,
+    createdAt: "2026-08-01T10:00:00Z",
+    lastLoginAt: "2026-11-18T16:00:00Z",
+  },
+  {
+    id: "usr-sa-001",
+    name: "Rushi Platform Architect",
+    email: "admin@nukkadnow.com",
+    phone: "+91 98220 00002",
+    roleCode: "SUPER_ADMIN",
+    roleTitle: "Super Admin",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    createdAt: "2026-08-15T09:30:00Z",
+    lastLoginAt: "2026-11-18T16:20:00Z",
+  },
+  {
+    id: "usr-cm-ngp-001",
+    name: "Amit Deshpande (Nagpur City Lead)",
+    email: "nagpur.ops@nukkadnow.com",
+    phone: "+91 98220 00003",
+    roleCode: "CITY_OPERATIONS_MANAGER",
+    roleTitle: "City Operations Manager",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Nagpur",
+      cityId: "city-ngp-01",
+      cityName: "Nagpur",
+      localities: ["Sitabuldi", "Dharampeth", "Sadar", "Ramdaspeth", "Mahal", "Wardha Road"],
+    },
+    createdAt: "2026-09-01T11:00:00Z",
+    lastLoginAt: "2026-11-18T15:45:00Z",
+  },
+  {
+    id: "usr-cm-pun-001",
+    name: "Sneha Kulkarni (Pune City Lead)",
+    email: "pune.ops@nukkadnow.com",
+    phone: "+91 98220 00004",
+    roleCode: "CITY_OPERATIONS_MANAGER",
+    roleTitle: "City Operations Manager",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Pune",
+      cityId: "city-pun-01",
+      cityName: "Pune",
+      localities: ["Kothrud", "Viman Nagar", "Baner", "Shivajinagar", "Hinjewadi", "Aundh"],
+    },
+    createdAt: "2026-09-15T14:20:00Z",
+    lastLoginAt: "2026-11-18T14:10:00Z",
+  },
+  {
+    id: "usr-vrf-001",
+    name: "Sunita Compliance Officer",
+    email: "sunita.kyc@nukkadnow.com",
+    phone: "+91 98220 00005",
+    roleCode: "VERIFICATION_STAFF",
+    roleTitle: "Verification Staff",
+    status: "ACTIVE",
+    mfaEnabled: true,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Nagpur",
+      cityId: "city-ngp-01",
+      cityName: "Nagpur",
+      localities: ["Sitabuldi", "Dharampeth", "Sadar"],
+    },
+    createdAt: "2026-10-01T08:00:00Z",
+    lastLoginAt: "2026-11-18T16:15:00Z",
+  },
+  {
+    id: "usr-spt-001",
+    name: "Ananya Support Specialist",
+    email: "ananya.support@nukkadnow.com",
+    phone: "+91 98220 00006",
+    roleCode: "SUPPORT_STAFF",
+    roleTitle: "Support Staff",
+    status: "ACTIVE",
+    mfaEnabled: false,
+    isRootProtected: false,
+    geoAssignment: {
+      state: "Maharashtra",
+      district: "Nagpur",
+      cityId: "city-ngp-01",
+      cityName: "Nagpur",
+      localities: ["Sitabuldi", "Dharampeth", "Sadar", "Ramdaspeth", "Mahal"],
+    },
+    createdAt: "2026-10-10T12:00:00Z",
+    lastLoginAt: "2026-11-18T13:30:00Z",
   },
 ];
 
@@ -906,6 +1191,368 @@ export class AdminController {
       totalOrders: allOrders.length,
       averageOrderValuePaise: Math.round(totalGmvPaise / Math.max(1, allOrders.length)),
       activeMerchants: Object.keys(SEEDED_PROFILES).filter(k => k !== "system-admin-tenant").length,
+    });
+  }
+
+  // --- Dynamic Roles & Permissions Management ---
+
+  @Get(["platform/roles", "roles-permissions"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List all dynamic administrative roles from database" })
+  async getDynamicRoles(@Query("search") search?: string) {
+    let items = [...mutableDynamicRoles];
+    if (search) {
+      const q = search.toLowerCase();
+      items = items.filter(r => r.title.toLowerCase().includes(q) || r.code.toLowerCase().includes(q) || r.description.toLowerCase().includes(q));
+    }
+    return this.wrapPaginated(items);
+  }
+
+  @Get(["platform/roles/:id", "roles-permissions/:id"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get single dynamic role by ID or code" })
+  async getDynamicRoleById(@Param("id") id: string) {
+    const role = mutableDynamicRoles.find(r => r.id === id || r.code === id);
+    if (!role) throw new NotFoundException(`Role ${id} not found in database.`);
+    return this.wrapResponse(role);
+  }
+
+  @Post(["platform/roles", "roles-permissions"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Dynamically create a new custom administrative role in the database" })
+  async createDynamicRole(@Body() body: any) {
+    if (!body.code || !body.title) {
+      throw new BadRequestException("Role code and title are required.");
+    }
+
+    const code = body.code.trim().toUpperCase().replace(/\s+/g, '_');
+    if (mutableDynamicRoles.some(r => r.code === code)) {
+      throw new BadRequestException(`Role code '${code}' already exists.`);
+    }
+
+    const newRole: DynamicAdminRole = {
+      id: `role-${Date.now().toString().slice(-6)}`,
+      code,
+      title: body.title,
+      subtitle: body.subtitle || "Custom Administrative Role",
+      hierarchyLevel: body.hierarchyLevel || 4,
+      description: body.description || "",
+      requiresMfa: body.requiresMfa !== false,
+      isSystem: false,
+      permissions: Array.isArray(body.permissions) ? body.permissions : [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    mutableDynamicRoles.push(newRole);
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "DYNAMIC_ROLE_CREATED",
+      targetEntity: "AdminRole",
+      targetId: newRole.id,
+      reasonCode: "RBAC_ROLE_PROVISIONING",
+      justification: `Created dynamic role ${newRole.title} (${newRole.code}) with ${newRole.permissions.length} permissions.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(newRole);
+  }
+
+  @Patch(["platform/roles/:id", "roles-permissions/:id"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update dynamic role permissions and metadata" })
+  async updateDynamicRole(@Param("id") id: string, @Body() body: any) {
+    const role = mutableDynamicRoles.find(r => r.id === id || r.code === id);
+    if (!role) throw new NotFoundException(`Role ${id} not found in database.`);
+
+    if (body.title) role.title = body.title;
+    if (body.subtitle) role.subtitle = body.subtitle;
+    if (body.description) role.description = body.description;
+    if (body.requiresMfa !== undefined) role.requiresMfa = body.requiresMfa;
+    if (Array.isArray(body.permissions)) {
+      if (role.code === "ROOT_ADMIN") {
+        role.permissions = AVAILABLE_PERMISSIONS.map(p => p.code);
+      } else {
+        role.permissions = body.permissions;
+      }
+    }
+    role.updatedAt = new Date().toISOString();
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "DYNAMIC_ROLE_UPDATED",
+      targetEntity: "AdminRole",
+      targetId: role.id,
+      reasonCode: "RBAC_PERMISSIONS_UPDATE",
+      justification: `Updated role ${role.code} permissions and configuration.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(role);
+  }
+
+  @Delete(["platform/roles/:id", "roles-permissions/:id"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Delete a custom dynamic role from database" })
+  async deleteDynamicRole(@Param("id") id: string) {
+    const roleIdx = mutableDynamicRoles.findIndex(r => r.id === id || r.code === id);
+    if (roleIdx === -1) throw new NotFoundException(`Role ${id} not found in database.`);
+
+    const role = mutableDynamicRoles[roleIdx];
+    if (role.isSystem) {
+      throw new ForbiddenException(`System role '${role.code}' is protected and cannot be deleted.`);
+    }
+
+    mutableDynamicRoles.splice(roleIdx, 1);
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "DYNAMIC_ROLE_DELETED",
+      targetEntity: "AdminRole",
+      targetId: id,
+      reasonCode: "RBAC_ROLE_DECOMMISSION",
+      justification: `Deleted custom role ${role.code}.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse({ deletedId: id, status: "DELETED" });
+  }
+
+  @Get("platform/permissions")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List all platform permissions available to assign to roles" })
+  async getAvailablePermissions() {
+    return this.wrapResponse(AVAILABLE_PERMISSIONS);
+  }
+
+  @Get("platform/cities")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List available states, districts, cities, and localities for geo assignment" })
+  async getAvailableCities() {
+    return this.wrapResponse(AVAILABLE_CITIES);
+  }
+
+  // --- Dynamic Admin Users & Geographic Assignment ---
+
+  @Get(["platform/users", "platform-users"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List administrative users and staff across hierarchy" })
+  async getPlatformUsers(
+    @Query("search") search?: string,
+    @Query("role") role?: string,
+    @Query("cityId") cityId?: string,
+    @Headers("x-operator-role") callerRole?: string,
+    @Headers("x-operator-city") callerCity?: string
+  ) {
+    let items = [...mutableAdminUsers];
+
+    // City Operations Manager can only see staff in their assigned city
+    if (callerRole === "CITY_OPERATIONS_MANAGER" && callerCity) {
+      items = items.filter(u => u.geoAssignment?.cityId === callerCity || u.geoAssignment?.cityName?.toLowerCase() === callerCity.toLowerCase());
+    }
+
+    if (search) {
+      const q = search.toLowerCase();
+      items = items.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.phone.includes(q));
+    }
+    if (role) {
+      items = items.filter(u => u.roleCode === role);
+    }
+    if (cityId) {
+      items = items.filter(u => u.geoAssignment?.cityId === cityId || u.geoAssignment?.cityName?.toLowerCase() === cityId.toLowerCase());
+    }
+
+    return this.wrapPaginated(items);
+  }
+
+  @Get(["platform/users/:id", "platform-users/:id"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get single admin user by ID" })
+  async getPlatformUserById(@Param("id") id: string) {
+    const user = mutableAdminUsers.find(u => u.id === id);
+    if (!user) throw new NotFoundException(`Admin user ${id} not found.`);
+    return this.wrapResponse(user);
+  }
+
+  @Post(["platform/users", "platform-users"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Provision a new administrator or staff member" })
+  async createPlatformUser(@Body() body: any) {
+    if (body.roleCode === "ROOT_ADMIN") {
+      throw new ForbiddenException("Root Admin account is protected and cannot be created via admin console.");
+    }
+
+    if (!body.name || !body.email || !body.roleCode) {
+      throw new BadRequestException("Name, email, and roleCode are required.");
+    }
+
+    const role = mutableDynamicRoles.find(r => r.code === body.roleCode);
+
+    if (body.roleCode === "CITY_OPERATIONS_MANAGER" && !body.geoAssignment?.cityId) {
+      throw new BadRequestException("City Operations Manager requires explicit city assignment.");
+    }
+
+    const newUser: DynamicAdminUser = {
+      id: `usr-${Date.now().toString().slice(-6)}`,
+      name: body.name,
+      email: body.email,
+      phone: body.phone || "+91 98220 00000",
+      roleCode: body.roleCode,
+      roleTitle: role?.title || body.roleCode,
+      status: "ACTIVE",
+      mfaEnabled: role?.requiresMfa !== false,
+      isRootProtected: false,
+      geoAssignment: body.geoAssignment,
+      createdAt: new Date().toISOString(),
+    };
+
+    mutableAdminUsers.unshift(newUser);
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "ADMIN_USER_PROVISIONED",
+      targetEntity: "AdminUser",
+      targetId: newUser.id,
+      reasonCode: "STAFF_ONBOARDING",
+      justification: `Created ${newUser.roleCode} account for ${newUser.name} (${newUser.email}) with geo: ${newUser.geoAssignment?.cityName || 'GLOBAL'}.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(newUser);
+  }
+
+  @Patch(["platform/users/:id/status", "platform-users/:id/status"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Suspend or activate admin/staff account" })
+  async updatePlatformUserStatus(@Param("id") id: string, @Body() body: any) {
+    const user = mutableAdminUsers.find(u => u.id === id);
+    if (!user) throw new NotFoundException(`Admin user ${id} not found.`);
+
+    if (user.isRootProtected) {
+      throw new ForbiddenException("Root Administrator account is protected and cannot be modified or suspended.");
+    }
+
+    user.status = body.status === "SUSPENDED" ? "SUSPENDED" : "ACTIVE";
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: user.status === "ACTIVE" ? "ADMIN_USER_ACTIVATED" : "ADMIN_USER_SUSPENDED",
+      targetEntity: "AdminUser",
+      targetId: user.id,
+      reasonCode: body.reasonCode || "ACCESS_REVIEW",
+      justification: body.justification || `Account status updated to ${user.status}.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(user);
+  }
+
+  @Patch(["platform/users/:id/role", "platform-users/:id/role"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Reassign role for admin user" })
+  async updatePlatformUserRole(@Param("id") id: string, @Body() body: any) {
+    const user = mutableAdminUsers.find(u => u.id === id);
+    if (!user) throw new NotFoundException(`Admin user ${id} not found.`);
+
+    if (user.isRootProtected) {
+      throw new ForbiddenException("Root Administrator role cannot be changed.");
+    }
+
+    if (body.roleCode === "ROOT_ADMIN") {
+      throw new ForbiddenException("Cannot promote user to Root Administrator.");
+    }
+
+    const role = mutableDynamicRoles.find(r => r.code === body.roleCode);
+    user.roleCode = body.roleCode;
+    user.roleTitle = role?.title || body.roleCode;
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "ADMIN_USER_ROLE_REASSIGNED",
+      targetEntity: "AdminUser",
+      targetId: user.id,
+      reasonCode: "ROLE_CHANGE",
+      justification: `Reassigned role of ${user.name} to ${user.roleCode}.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(user);
+  }
+
+  @Patch(["platform/users/:id/geo", "platform-users/:id/geo"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update geographic coverage assignment for user" })
+  async updatePlatformUserGeo(@Param("id") id: string, @Body() body: any) {
+    const user = mutableAdminUsers.find(u => u.id === id);
+    if (!user) throw new NotFoundException(`Admin user ${id} not found.`);
+
+    if (user.isRootProtected) {
+      throw new ForbiddenException("Root Administrator has unconstrained global coverage.");
+    }
+
+    user.geoAssignment = body.geoAssignment;
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "ADMIN_GEO_ASSIGNMENT_UPDATED",
+      targetEntity: "AdminUser",
+      targetId: user.id,
+      reasonCode: "TERRITORY_REASSIGNMENT",
+      justification: `Assigned territory updated to ${body.geoAssignment?.cityName || 'GLOBAL'}.`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(user);
+  }
+
+  @Post("auth/switch-role")
+  @ApiOperation({ summary: "Simulate switching active operator session between roles" })
+  async switchAdminRole(@Body() body: { roleCode: string; cityId?: string }) {
+    const user = mutableAdminUsers.find(u => u.roleCode === body.roleCode && (!body.cityId || u.geoAssignment?.cityId === body.cityId)) || mutableAdminUsers[0];
+    const roleDef = mutableDynamicRoles.find(r => r.code === user.roleCode);
+
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      roles: [user.roleCode],
+      name: user.name,
+      geoAssignment: user.geoAssignment,
+      iss: JWT_ISSUER,
+      aud: JWT_AUDIENCE,
+    };
+
+    const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: "8h" });
+
+    return this.wrapResponse({
+      token: accessToken,
+      operator: {
+        operatorId: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.roleCode,
+        roleTitle: user.roleTitle,
+        permissions: roleDef?.permissions || [],
+        status: user.status,
+        geoAssignment: user.geoAssignment,
+        isRootProtected: user.isRootProtected,
+        mfaVerified: user.mfaEnabled,
+      },
+      expiresAt: Date.now() + 8 * 60 * 60 * 1000,
     });
   }
 

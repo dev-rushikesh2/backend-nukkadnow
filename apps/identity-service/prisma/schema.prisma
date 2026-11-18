@@ -62,3 +62,103 @@ model AuditEvent {
   @@index([actorId])
   @@map("audit_events")
 }
+
+model AdminUser {
+  id              String                @id @default(uuid())
+  name            String
+  email           String                @unique
+  phone           String
+  status          String                @default("ACTIVE") // ACTIVE, SUSPENDED
+  mfaEnabled      Boolean               @default(true)
+  isRootProtected Boolean               @default(false)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  roleAssignments AdminRoleAssignment[]
+  geoAssignments  AdminGeoAssignment[]
+  auditLogs       AdminAuditLog[]
+
+  @@map("admin_users")
+}
+
+model AdminRole {
+  id              String                @id @default(uuid())
+  code            String                @unique
+  title           String
+  subtitle        String?
+  hierarchyLevel  Int                   @default(4)
+  description     String?
+  requiresMfa     Boolean               @default(true)
+  isSystem        Boolean               @default(false)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  roleAssignments AdminRoleAssignment[]
+  rolePermissions AdminRolePermission[]
+
+  @@map("admin_roles")
+}
+
+model AdminPermission {
+  id              String                @id @default(uuid())
+  code            String                @unique
+  module          String
+  description     String?
+  rolePermissions AdminRolePermission[]
+
+  @@map("admin_permissions")
+}
+
+model AdminRoleAssignment {
+  id         String    @id @default(uuid())
+  userId     String
+  roleId     String
+  assignedAt DateTime  @default(now())
+  user       AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       AdminRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("admin_role_assignments")
+}
+
+model AdminRolePermission {
+  id           String          @id @default(uuid())
+  roleId       String
+  permissionId String
+  assignedAt   DateTime        @default(now())
+  role         AdminRole       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   AdminPermission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("admin_role_permissions")
+}
+
+model AdminGeoAssignment {
+  id         String    @id @default(uuid())
+  userId     String
+  state      String
+  district   String
+  cityId     String
+  cityName   String
+  localities Json
+  assignedAt DateTime  @default(now())
+  user       AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([cityId])
+  @@map("admin_geo_assignments")
+}
+
+model AdminAuditLog {
+  id            String     @id @default(uuid())
+  operatorId    String
+  operatorName  String
+  action        String
+  targetEntity  String
+  targetId      String
+  reasonCode    String
+  justification String
+  timestamp     DateTime   @default(now())
+  user          AdminUser? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+
+  @@index([operatorId])
+  @@index([targetEntity])
+  @@map("admin_audit_logs")
+}
