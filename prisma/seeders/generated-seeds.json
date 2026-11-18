@@ -1,0 +1,3695 @@
+{
+  "generatedAt": "2026-11-18T18:07:12.830Z",
+  "engine": "NukkadNow Enterprise Seeder v3.0",
+  "census": {
+    "countries": 1,
+    "states": 1,
+    "districts": 4,
+    "cities": 4,
+    "localities": 17,
+    "adminPermissions": 55,
+    "adminRoles": 5,
+    "adminUsers": 8,
+    "merchants": 8,
+    "outlets": 8,
+    "categories": 6,
+    "products": 9,
+    "variants": 13,
+    "customers": 8,
+    "customerAddresses": 10,
+    "orders": 6,
+    "orderItems": 9,
+    "paymentTransactions": 5,
+    "settlementBatches": 2,
+    "refundDisputes": 2,
+    "subscriptionPlans": 3,
+    "merchantSubscriptions": 4,
+    "cannedReplies": 3,
+    "supportTickets": 2,
+    "customerReviews": 3,
+    "platformSettings": 8,
+    "auditLogs": 3,
+    "piiAccessLogs": 2
+  },
+  "data": {
+    "geo": {
+      "countries": [
+        {
+          "code": "IN",
+          "name": "India",
+          "currency": "INR",
+          "phoneCode": "+91"
+        }
+      ],
+      "states": [
+        {
+          "code": "IN-MH",
+          "name": "Maharashtra",
+          "countryCode": "IN"
+        }
+      ],
+      "districts": [
+        {
+          "code": "NGP",
+          "name": "Nagpur",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "AKL",
+          "name": "Akola",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "AMR",
+          "name": "Amravati",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "PUN",
+          "name": "Pune",
+          "stateCode": "IN-MH"
+        }
+      ],
+      "cities": [
+        {
+          "code": "IN-MH-NGP",
+          "name": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "latitude": 21.1458,
+          "longitude": 79.0882,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "06:00",
+            "closeTime": "23:00",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-AKL",
+          "name": "Akola",
+          "districtCode": "AKL",
+          "stateCode": "IN-MH",
+          "latitude": 20.7002,
+          "longitude": 77.0082,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "07:00",
+            "closeTime": "22:00",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-AMR",
+          "name": "Amravati",
+          "districtCode": "AMR",
+          "stateCode": "IN-MH",
+          "latitude": 20.9374,
+          "longitude": 77.7796,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "07:00",
+            "closeTime": "22:00",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-PUN",
+          "name": "Pune",
+          "districtCode": "PUN",
+          "stateCode": "IN-MH",
+          "latitude": 18.5204,
+          "longitude": 73.8567,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "06:00",
+            "closeTime": "23:30",
+            "timezone": "Asia/Kolkata"
+          }
+        }
+      ],
+      "localities": [
+        {
+          "id": "loc-ngp-sitabuldi",
+          "name": "Sitabuldi",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "pincode": "440012",
+          "isActive": true,
+          "latitude": 21.1465,
+          "longitude": 79.0835,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              21.148,
+              79.08
+            ],
+            [
+              21.149,
+              79.087
+            ],
+            [
+              21.143,
+              79.088
+            ],
+            [
+              21.142,
+              79.081
+            ]
+          ]
+        },
+        {
+          "id": "loc-ngp-dharampeth",
+          "name": "Dharampeth",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "pincode": "440010",
+          "isActive": true,
+          "latitude": 21.1408,
+          "longitude": 79.062,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              21.144,
+              79.058
+            ],
+            [
+              21.145,
+              79.066
+            ],
+            [
+              21.137,
+              79.065
+            ],
+            [
+              21.136,
+              79.059
+            ]
+          ]
+        },
+        {
+          "id": "loc-ngp-dhantoli",
+          "name": "Dhantoli",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "pincode": "440012",
+          "isActive": true,
+          "latitude": 21.132,
+          "longitude": 79.082,
+          "radiusMeters": 2500,
+          "coordinates": [
+            [
+              21.135,
+              79.078
+            ],
+            [
+              21.136,
+              79.086
+            ],
+            [
+              21.128,
+              79.085
+            ],
+            [
+              21.127,
+              79.079
+            ]
+          ]
+        },
+        {
+          "id": "loc-ngp-ramdaspeth",
+          "name": "Ramdaspeth",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "pincode": "440010",
+          "isActive": true,
+          "latitude": 21.136,
+          "longitude": 79.072,
+          "radiusMeters": 2500,
+          "coordinates": [
+            [
+              21.139,
+              79.068
+            ],
+            [
+              21.14,
+              79.076
+            ],
+            [
+              21.132,
+              79.075
+            ],
+            [
+              21.131,
+              79.069
+            ]
+          ]
+        },
+        {
+          "id": "loc-ngp-sadar",
+          "name": "Sadar",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "districtCode": "NGP",
+          "stateCode": "IN-MH",
+          "pincode": "440001",
+          "isActive": true,
+          "latitude": 21.162,
+          "longitude": 79.084,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              21.166,
+              79.08
+            ],
+            [
+              21.167,
+              79.088
+            ],
+            [
+              21.158,
+              79.087
+            ],
+            [
+              21.157,
+              79.081
+            ]
+          ]
+        },
+        {
+          "id": "loc-akl-civillines",
+          "name": "Civil Lines",
+          "cityCode": "IN-MH-AKL",
+          "cityName": "Akola",
+          "districtCode": "AKL",
+          "stateCode": "IN-MH",
+          "pincode": "444001",
+          "isActive": true,
+          "latitude": 20.702,
+          "longitude": 77.012,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              20.706,
+              77.008
+            ],
+            [
+              20.707,
+              77.016
+            ],
+            [
+              20.698,
+              77.015
+            ],
+            [
+              20.697,
+              77.009
+            ]
+          ]
+        },
+        {
+          "id": "loc-akl-oldcity",
+          "name": "Old City & Sarafa Bazaar",
+          "cityCode": "IN-MH-AKL",
+          "cityName": "Akola",
+          "districtCode": "AKL",
+          "stateCode": "IN-MH",
+          "pincode": "444002",
+          "isActive": true,
+          "latitude": 20.694,
+          "longitude": 77.004,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              20.698,
+              77
+            ],
+            [
+              20.699,
+              77.008
+            ],
+            [
+              20.69,
+              77.007
+            ],
+            [
+              20.689,
+              77.001
+            ]
+          ]
+        },
+        {
+          "id": "loc-akl-toshniwal",
+          "name": "Toshniwal Layout",
+          "cityCode": "IN-MH-AKL",
+          "cityName": "Akola",
+          "districtCode": "AKL",
+          "stateCode": "IN-MH",
+          "pincode": "444005",
+          "isActive": true,
+          "latitude": 20.689,
+          "longitude": 77.025,
+          "radiusMeters": 2500,
+          "coordinates": [
+            [
+              20.693,
+              77.021
+            ],
+            [
+              20.694,
+              77.029
+            ],
+            [
+              20.685,
+              77.028
+            ],
+            [
+              20.684,
+              77.022
+            ]
+          ]
+        },
+        {
+          "id": "loc-akl-gandhi-rd",
+          "name": "Gandhi Road",
+          "cityCode": "IN-MH-AKL",
+          "cityName": "Akola",
+          "districtCode": "AKL",
+          "stateCode": "IN-MH",
+          "pincode": "444001",
+          "isActive": true,
+          "latitude": 20.705,
+          "longitude": 77.005,
+          "radiusMeters": 2000,
+          "coordinates": [
+            [
+              20.709,
+              77.001
+            ],
+            [
+              20.71,
+              77.009
+            ],
+            [
+              20.701,
+              77.008
+            ],
+            [
+              20.7,
+              77.002
+            ]
+          ]
+        },
+        {
+          "id": "loc-amr-rajapeth",
+          "name": "Rajapeth",
+          "cityCode": "IN-MH-AMR",
+          "cityName": "Amravati",
+          "districtCode": "AMR",
+          "stateCode": "IN-MH",
+          "pincode": "444601",
+          "isActive": true,
+          "latitude": 20.928,
+          "longitude": 77.765,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              20.932,
+              77.761
+            ],
+            [
+              20.933,
+              77.769
+            ],
+            [
+              20.924,
+              77.768
+            ],
+            [
+              20.923,
+              77.762
+            ]
+          ]
+        },
+        {
+          "id": "loc-amr-gadgenagar",
+          "name": "Gadge Nagar",
+          "cityCode": "IN-MH-AMR",
+          "cityName": "Amravati",
+          "districtCode": "AMR",
+          "stateCode": "IN-MH",
+          "pincode": "444603",
+          "isActive": true,
+          "latitude": 20.945,
+          "longitude": 77.772,
+          "radiusMeters": 2500,
+          "coordinates": [
+            [
+              20.949,
+              77.768
+            ],
+            [
+              20.95,
+              77.776
+            ],
+            [
+              20.941,
+              77.775
+            ],
+            [
+              20.94,
+              77.769
+            ]
+          ]
+        },
+        {
+          "id": "loc-amr-camp",
+          "name": "Camp Area",
+          "cityCode": "IN-MH-AMR",
+          "cityName": "Amravati",
+          "districtCode": "AMR",
+          "stateCode": "IN-MH",
+          "pincode": "444602",
+          "isActive": true,
+          "latitude": 20.941,
+          "longitude": 77.755,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              20.945,
+              77.751
+            ],
+            [
+              20.946,
+              77.759
+            ],
+            [
+              20.937,
+              77.758
+            ],
+            [
+              20.936,
+              77.752
+            ]
+          ]
+        },
+        {
+          "id": "loc-amr-badnera",
+          "name": "Badnera Road",
+          "cityCode": "IN-MH-AMR",
+          "cityName": "Amravati",
+          "districtCode": "AMR",
+          "stateCode": "IN-MH",
+          "pincode": "444607",
+          "isActive": true,
+          "latitude": 20.915,
+          "longitude": 77.745,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              20.919,
+              77.741
+            ],
+            [
+              20.92,
+              77.749
+            ],
+            [
+              20.911,
+              77.748
+            ],
+            [
+              20.91,
+              77.742
+            ]
+          ]
+        },
+        {
+          "id": "loc-pun-kothrud",
+          "name": "Kothrud",
+          "cityCode": "IN-MH-PUN",
+          "cityName": "Pune",
+          "districtCode": "PUN",
+          "stateCode": "IN-MH",
+          "pincode": "411038",
+          "isActive": true,
+          "latitude": 18.5074,
+          "longitude": 73.8077,
+          "radiusMeters": 4000,
+          "coordinates": [
+            [
+              18.512,
+              73.803
+            ],
+            [
+              18.513,
+              73.812
+            ],
+            [
+              18.502,
+              73.811
+            ],
+            [
+              18.501,
+              73.804
+            ]
+          ]
+        },
+        {
+          "id": "loc-pun-vimannagar",
+          "name": "Viman Nagar",
+          "cityCode": "IN-MH-PUN",
+          "cityName": "Pune",
+          "districtCode": "PUN",
+          "stateCode": "IN-MH",
+          "pincode": "411014",
+          "isActive": true,
+          "latitude": 18.5679,
+          "longitude": 73.9143,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              18.572,
+              73.91
+            ],
+            [
+              18.573,
+              73.919
+            ],
+            [
+              18.563,
+              73.918
+            ],
+            [
+              18.562,
+              73.911
+            ]
+          ]
+        },
+        {
+          "id": "loc-pun-baner",
+          "name": "Baner",
+          "cityCode": "IN-MH-PUN",
+          "cityName": "Pune",
+          "districtCode": "PUN",
+          "stateCode": "IN-MH",
+          "pincode": "411045",
+          "isActive": true,
+          "latitude": 18.559,
+          "longitude": 73.7868,
+          "radiusMeters": 4000,
+          "coordinates": [
+            [
+              18.564,
+              73.782
+            ],
+            [
+              18.565,
+              73.791
+            ],
+            [
+              18.554,
+              73.79
+            ],
+            [
+              18.553,
+              73.783
+            ]
+          ]
+        },
+        {
+          "id": "loc-pun-koregaon",
+          "name": "Koregaon Park",
+          "cityCode": "IN-MH-PUN",
+          "cityName": "Pune",
+          "districtCode": "PUN",
+          "stateCode": "IN-MH",
+          "pincode": "411001",
+          "isActive": true,
+          "latitude": 18.5362,
+          "longitude": 73.894,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              18.541,
+              73.89
+            ],
+            [
+              18.542,
+              73.898
+            ],
+            [
+              18.532,
+              73.897
+            ],
+            [
+              18.531,
+              73.891
+            ]
+          ]
+        }
+      ]
+    },
+    "governance": {
+      "permissions": [
+        {
+          "code": "admin:merchants:read",
+          "module": "Merchants",
+          "description": "View merchant directory & profiles"
+        },
+        {
+          "code": "admin:merchants:create",
+          "module": "Merchants",
+          "description": "Onboard new merchants"
+        },
+        {
+          "code": "admin:merchants:update",
+          "module": "Merchants",
+          "description": "Update merchant profiles"
+        },
+        {
+          "code": "admin:merchants:suspend",
+          "module": "Merchants",
+          "description": "Suspend or reinstate merchant operations"
+        },
+        {
+          "code": "admin:merchants:terminate",
+          "module": "Merchants",
+          "description": "Permanently terminate merchant account"
+        },
+        {
+          "code": "admin:merchants:export",
+          "module": "Merchants",
+          "description": "Export merchant datasets to CSV/Excel"
+        },
+        {
+          "code": "admin:kyc:read",
+          "module": "KYC",
+          "description": "View merchant verification queue"
+        },
+        {
+          "code": "admin:kyc:review",
+          "module": "KYC",
+          "description": "Review submitted KYC documents"
+        },
+        {
+          "code": "admin:kyc:approve",
+          "module": "KYC",
+          "description": "Approve merchant verification"
+        },
+        {
+          "code": "admin:kyc:reject",
+          "module": "KYC",
+          "description": "Reject or request clarification for KYC"
+        },
+        {
+          "code": "admin:kyc:re_verify",
+          "module": "KYC",
+          "description": "Trigger periodic KYC re-verification"
+        },
+        {
+          "code": "admin:outlets:read",
+          "module": "Outlets",
+          "description": "View outlet locations and capacity"
+        },
+        {
+          "code": "admin:outlets:manage",
+          "module": "Outlets",
+          "description": "Create and edit merchant outlets"
+        },
+        {
+          "code": "admin:outlets:override_hours",
+          "module": "Outlets",
+          "description": "Override outlet operating schedules"
+        },
+        {
+          "code": "admin:outlets:geofence_edit",
+          "module": "Outlets",
+          "description": "Modify delivery radius and geofences"
+        },
+        {
+          "code": "admin:localities:read",
+          "module": "Localities",
+          "description": "View municipal localities and zones"
+        },
+        {
+          "code": "admin:localities:manage",
+          "module": "Localities",
+          "description": "Add, edit, or toggle locality service status"
+        },
+        {
+          "code": "admin:categories:manage",
+          "module": "Categories",
+          "description": "Manage product taxonomy and GST/commissions"
+        },
+        {
+          "code": "admin:catalog:read",
+          "module": "Catalog",
+          "description": "View merchant product catalog"
+        },
+        {
+          "code": "admin:catalog:moderate",
+          "module": "Catalog",
+          "description": "Approve or reject merchant product listings"
+        },
+        {
+          "code": "admin:catalog:takedown",
+          "module": "Catalog",
+          "description": "Enforce immediate product takedown"
+        },
+        {
+          "code": "admin:orders:read",
+          "module": "Orders",
+          "description": "View live order stream and historical orders"
+        },
+        {
+          "code": "admin:orders:intervene",
+          "module": "Orders",
+          "description": "Update status or reassign delayed orders"
+        },
+        {
+          "code": "admin:orders:force_cancel",
+          "module": "Orders",
+          "description": "Emergency cancellation with refund initiation"
+        },
+        {
+          "code": "admin:payments:read",
+          "module": "Payments",
+          "description": "View transactions and escrow ledgers"
+        },
+        {
+          "code": "admin:payments:reconcile",
+          "module": "Payments",
+          "description": "Execute gateway reconciliation"
+        },
+        {
+          "code": "admin:payments:webhook_retry",
+          "module": "Payments",
+          "description": "Trigger manual gateway webhook retries"
+        },
+        {
+          "code": "admin:refunds:read",
+          "module": "Refunds",
+          "description": "View refund requests and disputes"
+        },
+        {
+          "code": "admin:refunds:approve_low",
+          "module": "Refunds",
+          "description": "Approve refunds <= ₹5,000"
+        },
+        {
+          "code": "admin:refunds:approve_high",
+          "module": "Refunds",
+          "description": "Approve high-value refunds > ₹5,000 (Step-up)"
+        },
+        {
+          "code": "admin:disputes:resolve",
+          "module": "Disputes",
+          "description": "Resolve bank chargebacks and disputes"
+        },
+        {
+          "code": "admin:subscriptions:read",
+          "module": "Subscriptions",
+          "description": "View merchant SaaS subscriptions"
+        },
+        {
+          "code": "admin:subscriptions:manage",
+          "module": "Subscriptions",
+          "description": "Extend, adjust or pause subscriptions"
+        },
+        {
+          "code": "admin:pricing:manage",
+          "module": "Pricing",
+          "description": "Configure subscription plan tiers and pricing"
+        },
+        {
+          "code": "admin:support:read",
+          "module": "Support",
+          "description": "View support ticket queues"
+        },
+        {
+          "code": "admin:support:assign",
+          "module": "Support",
+          "description": "Assign tickets to support agents"
+        },
+        {
+          "code": "admin:support:respond",
+          "module": "Support",
+          "description": "Post customer and merchant replies"
+        },
+        {
+          "code": "admin:support:escalate",
+          "module": "Support",
+          "description": "Escalate ticket to city operations"
+        },
+        {
+          "code": "admin:support:resolve",
+          "module": "Support",
+          "description": "Close and resolve support tickets"
+        },
+        {
+          "code": "admin:reviews:read",
+          "module": "Reviews",
+          "description": "View UGC product and store reviews"
+        },
+        {
+          "code": "admin:reviews:moderate",
+          "module": "Reviews",
+          "description": "Approve, hide, or delete abusive reviews"
+        },
+        {
+          "code": "admin:notifications:send_broadcast",
+          "module": "Notifications",
+          "description": "Send push/SMS broadcasts"
+        },
+        {
+          "code": "admin:notifications:templates_manage",
+          "module": "Notifications",
+          "description": "Manage notification templates"
+        },
+        {
+          "code": "admin:analytics:read",
+          "module": "Analytics",
+          "description": "View operational and revenue analytics"
+        },
+        {
+          "code": "admin:analytics:financial_export",
+          "module": "Analytics",
+          "description": "Export financial GMV and audit reports"
+        },
+        {
+          "code": "admin:platform:users_read",
+          "module": "Governance",
+          "description": "View administrative users"
+        },
+        {
+          "code": "admin:platform:users_manage",
+          "module": "Governance",
+          "description": "Create and manage admin/staff accounts"
+        },
+        {
+          "code": "admin:platform:roles_manage",
+          "module": "Governance",
+          "description": "Define dynamic administrative roles"
+        },
+        {
+          "code": "admin:feature_flags:read",
+          "module": "FeatureFlags",
+          "description": "View system feature flags"
+        },
+        {
+          "code": "admin:feature_flags:toggle",
+          "module": "FeatureFlags",
+          "description": "Toggle kill-switches and canary rollouts"
+        },
+        {
+          "code": "admin:system_health:read",
+          "module": "SystemHealth",
+          "description": "View microservice health and telemetry"
+        },
+        {
+          "code": "admin:system:maintenance_toggle",
+          "module": "SystemHealth",
+          "description": "Toggle maintenance mode"
+        },
+        {
+          "code": "admin:audit_logs:read",
+          "module": "Audit",
+          "description": "Inspect cryptographic audit logs"
+        },
+        {
+          "code": "admin:audit:unmask_pii",
+          "module": "Audit",
+          "description": "Unmask customer PII with mandatory audit logging"
+        },
+        {
+          "code": "admin:settings:manage",
+          "module": "Settings",
+          "description": "Configure platform-wide operational settings"
+        }
+      ],
+      "roles": [
+        {
+          "id": "role-root-admin",
+          "code": "ROOT_ADMIN",
+          "title": "Root Admin",
+          "subtitle": "Company Owner · Ultimate Platform Authority",
+          "hierarchyLevel": 1,
+          "description": "Complete unconstrained platform authority and ownership. Protected account that cannot be modified or suspended by lower tiers.",
+          "requiresMfa": true,
+          "isSystem": true,
+          "permissionCodes": [
+            "admin:merchants:read",
+            "admin:merchants:create",
+            "admin:merchants:update",
+            "admin:merchants:suspend",
+            "admin:merchants:terminate",
+            "admin:merchants:export",
+            "admin:kyc:read",
+            "admin:kyc:review",
+            "admin:kyc:approve",
+            "admin:kyc:reject",
+            "admin:kyc:re_verify",
+            "admin:outlets:read",
+            "admin:outlets:manage",
+            "admin:outlets:override_hours",
+            "admin:outlets:geofence_edit",
+            "admin:localities:read",
+            "admin:localities:manage",
+            "admin:categories:manage",
+            "admin:catalog:read",
+            "admin:catalog:moderate",
+            "admin:catalog:takedown",
+            "admin:orders:read",
+            "admin:orders:intervene",
+            "admin:orders:force_cancel",
+            "admin:payments:read",
+            "admin:payments:reconcile",
+            "admin:payments:webhook_retry",
+            "admin:refunds:read",
+            "admin:refunds:approve_low",
+            "admin:refunds:approve_high",
+            "admin:disputes:resolve",
+            "admin:subscriptions:read",
+            "admin:subscriptions:manage",
+            "admin:pricing:manage",
+            "admin:support:read",
+            "admin:support:assign",
+            "admin:support:respond",
+            "admin:support:escalate",
+            "admin:support:resolve",
+            "admin:reviews:read",
+            "admin:reviews:moderate",
+            "admin:notifications:send_broadcast",
+            "admin:notifications:templates_manage",
+            "admin:analytics:read",
+            "admin:analytics:financial_export",
+            "admin:platform:users_read",
+            "admin:platform:users_manage",
+            "admin:platform:roles_manage",
+            "admin:feature_flags:read",
+            "admin:feature_flags:toggle",
+            "admin:system_health:read",
+            "admin:system:maintenance_toggle",
+            "admin:audit_logs:read",
+            "admin:audit:unmask_pii",
+            "admin:settings:manage"
+          ]
+        },
+        {
+          "id": "role-super-admin",
+          "code": "SUPER_ADMIN",
+          "title": "Super Admin",
+          "subtitle": "Central Platform Operations & Management",
+          "hierarchyLevel": 2,
+          "description": "Central operations management across all cities, merchants, finances, and platform settings.",
+          "requiresMfa": true,
+          "isSystem": true,
+          "permissionCodes": [
+            "admin:merchants:read",
+            "admin:merchants:create",
+            "admin:merchants:update",
+            "admin:merchants:suspend",
+            "admin:merchants:terminate",
+            "admin:merchants:export",
+            "admin:kyc:read",
+            "admin:kyc:review",
+            "admin:kyc:approve",
+            "admin:kyc:reject",
+            "admin:kyc:re_verify",
+            "admin:outlets:read",
+            "admin:outlets:manage",
+            "admin:outlets:override_hours",
+            "admin:outlets:geofence_edit",
+            "admin:localities:read",
+            "admin:localities:manage",
+            "admin:categories:manage",
+            "admin:catalog:read",
+            "admin:catalog:moderate",
+            "admin:catalog:takedown",
+            "admin:orders:read",
+            "admin:orders:intervene",
+            "admin:orders:force_cancel",
+            "admin:payments:read",
+            "admin:payments:reconcile",
+            "admin:payments:webhook_retry",
+            "admin:refunds:read",
+            "admin:refunds:approve_low",
+            "admin:refunds:approve_high",
+            "admin:disputes:resolve",
+            "admin:subscriptions:read",
+            "admin:subscriptions:manage",
+            "admin:pricing:manage",
+            "admin:support:read",
+            "admin:support:assign",
+            "admin:support:respond",
+            "admin:support:escalate",
+            "admin:support:resolve",
+            "admin:reviews:read",
+            "admin:reviews:moderate",
+            "admin:notifications:send_broadcast",
+            "admin:notifications:templates_manage",
+            "admin:analytics:read",
+            "admin:analytics:financial_export",
+            "admin:platform:users_read",
+            "admin:platform:users_manage",
+            "admin:feature_flags:read",
+            "admin:feature_flags:toggle",
+            "admin:system_health:read",
+            "admin:system:maintenance_toggle",
+            "admin:audit_logs:read",
+            "admin:audit:unmask_pii",
+            "admin:settings:manage"
+          ]
+        },
+        {
+          "id": "role-city-manager",
+          "code": "CITY_OPERATIONS_MANAGER",
+          "title": "City Operations Manager",
+          "subtitle": "Municipal Territory Leader",
+          "hierarchyLevel": 3,
+          "description": "Dedicated leader responsible for a single municipal territory (Nagpur, Akola, Amravati, Pune). Scoped to assigned city data.",
+          "requiresMfa": true,
+          "isSystem": false,
+          "permissionCodes": [
+            "admin:merchants:read",
+            "admin:merchants:update",
+            "admin:merchants:suspend",
+            "admin:kyc:read",
+            "admin:outlets:read",
+            "admin:outlets:manage",
+            "admin:outlets:override_hours",
+            "admin:localities:read",
+            "admin:catalog:read",
+            "admin:catalog:moderate",
+            "admin:orders:read",
+            "admin:orders:intervene",
+            "admin:payments:read",
+            "admin:refunds:read",
+            "admin:refunds:approve_low",
+            "admin:subscriptions:read",
+            "admin:support:read",
+            "admin:support:assign",
+            "admin:support:respond",
+            "admin:support:resolve",
+            "admin:reviews:read",
+            "admin:reviews:moderate",
+            "admin:notifications:send_broadcast",
+            "admin:analytics:read",
+            "admin:audit_logs:read"
+          ]
+        },
+        {
+          "id": "role-verification-staff",
+          "code": "VERIFICATION_STAFF",
+          "title": "Verification Staff",
+          "subtitle": "Merchant KYC & Regulatory Compliance Specialist",
+          "hierarchyLevel": 4,
+          "description": "Specialist tasked with validating merchant identities, business registration, FSSAI licenses, and GST certificates.",
+          "requiresMfa": false,
+          "isSystem": false,
+          "permissionCodes": [
+            "admin:merchants:read",
+            "admin:kyc:read",
+            "admin:kyc:review",
+            "admin:kyc:approve",
+            "admin:kyc:reject",
+            "admin:outlets:read",
+            "admin:catalog:read",
+            "admin:support:read",
+            "admin:support:respond",
+            "admin:audit_logs:read"
+          ]
+        },
+        {
+          "id": "role-support-staff",
+          "code": "SUPPORT_STAFF",
+          "title": "Support Staff",
+          "subtitle": "Customer & Merchant Helpdesk Agent",
+          "hierarchyLevel": 4,
+          "description": "Frontline helpdesk team handling customer order inquiries, merchant support tickets, and live chat triage.",
+          "requiresMfa": false,
+          "isSystem": false,
+          "permissionCodes": [
+            "admin:merchants:read",
+            "admin:outlets:read",
+            "admin:orders:read",
+            "admin:orders:intervene",
+            "admin:payments:read",
+            "admin:refunds:read",
+            "admin:support:read",
+            "admin:support:respond",
+            "admin:support:escalate",
+            "admin:support:resolve",
+            "admin:reviews:read",
+            "admin:reviews:moderate",
+            "admin:audit_logs:read",
+            "admin:audit:unmask_pii"
+          ]
+        }
+      ],
+      "users": [
+        {
+          "id": "adm-root-001",
+          "name": "Rushi Deshmukh",
+          "email": "root.admin@nukkadnow.com",
+          "phone": "+919800000001",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": true,
+          "tokenVersion": 1,
+          "roleCode": "ROOT_ADMIN"
+        },
+        {
+          "id": "adm-super-001",
+          "name": "Aditya Sharma",
+          "email": "super.admin@nukkadnow.com",
+          "phone": "+919800000002",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "SUPER_ADMIN"
+        },
+        {
+          "id": "adm-city-ngp-001",
+          "name": "Vikram Wankhede",
+          "email": "citymgr.nagpur@nukkadnow.com",
+          "phone": "+919823000011",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Nagpur",
+            "districtCode": "NGP",
+            "cityId": "city-ngp",
+            "cityCode": "IN-MH-NGP",
+            "cityName": "Nagpur",
+            "localities": [
+              "Sitabuldi",
+              "Dharampeth",
+              "Dhantoli",
+              "Ramdaspeth",
+              "Sadar"
+            ]
+          }
+        },
+        {
+          "id": "adm-city-akl-002",
+          "name": "Pradeep Deshmukh",
+          "email": "citymgr.akola@nukkadnow.com",
+          "phone": "+919823000012",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Akola",
+            "districtCode": "AKL",
+            "cityId": "city-akl",
+            "cityCode": "IN-MH-AKL",
+            "cityName": "Akola",
+            "localities": [
+              "Civil Lines",
+              "Old City & Sarafa Bazaar",
+              "Toshniwal Layout",
+              "Gandhi Road"
+            ]
+          }
+        },
+        {
+          "id": "adm-city-amr-003",
+          "name": "Gajanan Thakre",
+          "email": "citymgr.amravati@nukkadnow.com",
+          "phone": "+919823000013",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Amravati",
+            "districtCode": "AMR",
+            "cityId": "city-amr",
+            "cityCode": "IN-MH-AMR",
+            "cityName": "Amravati",
+            "localities": [
+              "Rajapeth",
+              "Gadge Nagar",
+              "Camp Area",
+              "Badnera Road"
+            ]
+          }
+        },
+        {
+          "id": "adm-city-pun-004",
+          "name": "Sneha Kulkarni",
+          "email": "citymgr.pune@nukkadnow.com",
+          "phone": "+919823000014",
+          "status": "ACTIVE",
+          "mfaEnabled": true,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Pune",
+            "districtCode": "PUN",
+            "cityId": "city-pun",
+            "cityCode": "IN-MH-PUN",
+            "cityName": "Pune",
+            "localities": [
+              "Kothrud",
+              "Viman Nagar",
+              "Baner",
+              "Koregaon Park"
+            ]
+          }
+        },
+        {
+          "id": "adm-staff-kyc-001",
+          "name": "Pooja Raut",
+          "email": "kyc.staff@nukkadnow.com",
+          "phone": "+919823000021",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "VERIFICATION_STAFF"
+        },
+        {
+          "id": "adm-staff-sup-001",
+          "name": "Rahul Meshram",
+          "email": "support.agent@nukkadnow.com",
+          "phone": "+919823000022",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "SUPPORT_STAFF"
+        }
+      ]
+    },
+    "merchants": [
+      {
+        "id": "mer-ngp-sabji-001",
+        "organizationName": "Patil Fresh Sabji Mandi",
+        "legalBusinessName": "Patil Agro & Fresh Vegetables Private Limited",
+        "contactName": "Vinod Patil",
+        "contactPhone": "+919823011223",
+        "email": "vinod.patil@patilsabji.com",
+        "businessType": "retail",
+        "category": "Vegetables & Fruits",
+        "description": "Direct farm-sourced daily fresh vegetables, green leafy veggies, herbs, and seasonal fruits from local Vidarbha farmers.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "State Bank of India",
+          "accountNumberMasked": "**********1245",
+          "ifscCode": "SBIN0000432"
+        },
+        "outlets": [
+          {
+            "id": "out-ngp-sabji-001",
+            "name": "Patil Fresh Mandi - Sitabuldi Main",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 12, Cotton Market Yard, Sitabuldi",
+            "locality": "Sitabuldi",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "district": "Nagpur",
+            "districtCode": "NGP",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "440012",
+            "latitude": 21.1465,
+            "longitude": 79.0835,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 6,
+            "minOrderValue": 150,
+            "prepTimeMinutes": 15,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "PAN",
+            "documentNumber": "AAACP1234D",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/patil_pan.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-10T10:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11521034000123",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/patil_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-10T10:15:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-ngp-kirana-002",
+        "organizationName": "Sharma Kirana & General Store",
+        "legalBusinessName": "Sharma Brothers Retail Traders",
+        "contactName": "Rajesh Sharma",
+        "contactPhone": "+919822233445",
+        "email": "rajesh.sharma@sharmakirana.com",
+        "businessType": "retail",
+        "category": "Grocery & Daily Needs",
+        "description": "Trusted neighborhood grocery store serving premium Sharbati wheat, Kolam rice, pure pulses, cold-pressed oils, and household goods.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "HDFC Bank",
+          "accountNumberMasked": "**********9981",
+          "ifscCode": "HDFC0001234"
+        },
+        "outlets": [
+          {
+            "id": "out-ngp-kirana-002",
+            "name": "Sharma Kirana - Dharampeth Outlet",
+            "sellerMode": "PERMANENT",
+            "addressLine": "45, Laxmi Bhuvan Chowk, Dharampeth",
+            "locality": "Dharampeth",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "district": "Nagpur",
+            "districtCode": "NGP",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "440010",
+            "latitude": 21.1408,
+            "longitude": 79.062,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 5,
+            "minOrderValue": 200,
+            "prepTimeMinutes": 20,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "PAN",
+            "documentNumber": "BBBSP5678K",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/sharma_pan.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-12T14:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27BBBSP5678K1Z5",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/sharma_gst.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-12T14:10:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-akl-homechef-003",
+        "organizationName": "Garguti Homemade Chivda & Snacks",
+        "legalBusinessName": "Kulkarni Traditional Food Products",
+        "contactName": "Sunita Kulkarni",
+        "contactPhone": "+919822144556",
+        "email": "sunita.kulkarni@gargutichivda.in",
+        "businessType": "home",
+        "category": "Home Bakery & Traditional Snacks",
+        "description": "Authentic homemade Vidarbha special spicy poha chivda, bakarwadi, cornflakes chivda, chakli, besan laddoo, and festive faral made with pure groundnut oil.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-AKL",
+        "districtCode": "AKL",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "Bank of Maharashtra",
+          "accountNumberMasked": "**********6789",
+          "ifscCode": "MAHB0000123"
+        },
+        "outlets": [
+          {
+            "id": "out-akl-garguti-003",
+            "name": "Garguti Artisan Kitchen - Old City",
+            "sellerMode": "HOME_CHEF",
+            "addressLine": "Flat 302, Radha Krishna Heights, Sarafa Bazaar",
+            "locality": "Old City & Sarafa Bazaar",
+            "city": "Akola",
+            "cityCode": "IN-MH-AKL",
+            "district": "Akola",
+            "districtCode": "AKL",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "444002",
+            "latitude": 20.694,
+            "longitude": 77.004,
+            "isAddressPublic": false,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 8,
+            "minOrderValue": 200,
+            "prepTimeMinutes": 45,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "AADHAAR",
+            "documentNumber": "XXXXXXXX8891",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/garguti_aadhaar.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-14T11:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "21522045000567",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/garguti_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-14T11:30:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-ngp-sweets-004",
+        "organizationName": "Mahalaxmi Sweets, Dairy & Bakery",
+        "legalBusinessName": "Mahalaxmi Food & Confectioneries LLP",
+        "contactName": "Anand Joshi",
+        "contactPhone": "+919890077889",
+        "email": "anand.joshi@mahalaxmisweets.com",
+        "businessType": "retail",
+        "category": "Dairy, Sweets & Bakery",
+        "description": "Nagpur orange barfi, motichoor laddoo, fresh buffalo paneer, pure cow ghee, daily milk, hot jalebi, and sourdough breads.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "Axis Bank",
+          "accountNumberMasked": "**********5512",
+          "ifscCode": "UTIB0000045"
+        },
+        "outlets": [
+          {
+            "id": "out-ngp-sweets-004",
+            "name": "Mahalaxmi Sweets - Ramdaspeth Flagship",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Plot 18, Central Bazaar Road, Ramdaspeth",
+            "locality": "Ramdaspeth",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "district": "Nagpur",
+            "districtCode": "NGP",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "440010",
+            "latitude": 21.136,
+            "longitude": 79.072,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 8,
+            "minOrderValue": 250,
+            "prepTimeMinutes": 20,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AAAFM1234F1Z8",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/mahalaxmi_gst.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-15T15:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11521033000890",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/mahalaxmi_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-15T15:15:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-akl-agro-005",
+        "organizationName": "Vidarbha Agro & Grains",
+        "legalBusinessName": "Vidarbha Farmers Trading Syndicate",
+        "contactName": "Nitin Deshmukh",
+        "contactPhone": "+919822355667",
+        "email": "nitin@vidarbhaagro.com",
+        "businessType": "retail",
+        "category": "Grocery & Daily Needs",
+        "description": "Wholesale & retail supplier of Akola cotton oil, organic tur dal, chana dal, soybean oil, and organic grains.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-AKL",
+        "districtCode": "AKL",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "ICICI Bank",
+          "accountNumberMasked": "**********3341",
+          "ifscCode": "ICIC0000214"
+        },
+        "outlets": [
+          {
+            "id": "out-akl-agro-005",
+            "name": "Vidarbha Agro - Civil Lines Depo",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Grain Market Yard, Civil Lines",
+            "locality": "Civil Lines",
+            "city": "Akola",
+            "cityCode": "IN-MH-AKL",
+            "district": "Akola",
+            "districtCode": "AKL",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "444001",
+            "latitude": 20.702,
+            "longitude": 77.012,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 10,
+            "minOrderValue": 300,
+            "prepTimeMinutes": 30,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AABCV8912H1ZQ",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/vidarbha_gst.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-16T12:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-amr-spices-006",
+        "organizationName": "Amravati Spices & Masala",
+        "legalBusinessName": "Shri Ganesh Agro & Spices Works",
+        "contactName": "Sanjay Mundhada",
+        "contactPhone": "+919822466778",
+        "email": "sanjay@amravatispices.com",
+        "businessType": "retail",
+        "category": "Grocery & Daily Needs",
+        "description": "Specialty stone-ground Vidarbha goda masala, red chilli powder (Guntur & Byadgi blend), turmeric, coriander seed powder, and homemade pickles.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-AMR",
+        "districtCode": "AMR",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "State Bank of India",
+          "accountNumberMasked": "**********7823",
+          "ifscCode": "SBIN0000312"
+        },
+        "outlets": [
+          {
+            "id": "out-amr-spices-006",
+            "name": "Amravati Spices - Rajapeth Market",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 8, Near Rajapeth Police Station, Rajapeth",
+            "locality": "Rajapeth",
+            "city": "Amravati",
+            "cityCode": "IN-MH-AMR",
+            "district": "Amravati",
+            "districtCode": "AMR",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "444601",
+            "latitude": 20.928,
+            "longitude": 77.765,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 6,
+            "minOrderValue": 200,
+            "prepTimeMinutes": 20,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11522041000912",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/amravati_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-16T14:30:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-pun-organic-007",
+        "organizationName": "Pune Organic Farm Produce",
+        "legalBusinessName": "Sahyadri Organic Agro Producer Co Ltd",
+        "contactName": "Rohit Kadam",
+        "contactPhone": "+919822577889",
+        "email": "rohit@puneorganic.in",
+        "businessType": "retail",
+        "category": "Vegetables & Fruits",
+        "description": "Certified organic vegetables, hydroponic salad greens, cold-pressed cold oils, and natural honey sourced from Sahyadri farmer cooperatives.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-PUN",
+        "districtCode": "PUN",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "Kotak Mahindra Bank",
+          "accountNumberMasked": "**********4421",
+          "ifscCode": "KKBK0000512"
+        },
+        "outlets": [
+          {
+            "id": "out-pun-organic-007",
+            "name": "Pune Organic - Baner Hub",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 4, High Street, Baner",
+            "locality": "Baner",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "district": "Pune",
+            "districtCode": "PUN",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "411045",
+            "latitude": 18.559,
+            "longitude": 73.7868,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 8,
+            "minOrderValue": 350,
+            "prepTimeMinutes": 25,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AAGCS1234P1Z4",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/pune_organic_gst.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-17T09:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11520023000781",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/pune_organic_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-17T09:30:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-pun-bakery-008",
+        "organizationName": "Kothrud Artisan Bakers",
+        "legalBusinessName": "Pune Patisserie & Bakehouse LLP",
+        "contactName": "Tanvi Shinde",
+        "contactPhone": "+919822688990",
+        "email": "tanvi@kothrudbakers.com",
+        "businessType": "retail",
+        "category": "Dairy, Sweets & Bakery",
+        "description": "Artisan sourdough loaves, brioche buns, fresh French croissants, gluten-free cookies, and custom celebration cakes.",
+        "verificationStatus": "PENDING",
+        "isSuspended": false,
+        "cityCode": "IN-MH-PUN",
+        "districtCode": "PUN",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "HDFC Bank",
+          "accountNumberMasked": "**********8812",
+          "ifscCode": "HDFC0000145"
+        },
+        "outlets": [
+          {
+            "id": "out-pun-bakery-008",
+            "name": "Kothrud Artisan Bakehouse",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 10, Paud Road, Kothrud",
+            "locality": "Kothrud",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "district": "Pune",
+            "districtCode": "PUN",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "411038",
+            "latitude": 18.5074,
+            "longitude": 73.8077,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 7,
+            "minOrderValue": 250,
+            "prepTimeMinutes": 30,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11523024000345",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/kothrud_bakers_fssai.pdf",
+            "verificationStatus": "PENDING"
+          }
+        ]
+      }
+    ],
+    "catalog": {
+      "categories": [
+        {
+          "id": "cat-veg-fruits",
+          "name": "Vegetables & Fruits",
+          "slug": "vegetables-fruits",
+          "gstRatePercent": 0,
+          "commissionRatePercent": 3,
+          "description": "Farm-fresh green leafy vegetables, daily potatoes, onions, tomatoes, and seasonal Vidarbha fruits.",
+          "isActive": true,
+          "subcategories": [
+            "Daily Vegetables",
+            "Leafy Greens",
+            "Root Vegetables",
+            "Seasonal Fruits",
+            "Herbs & Ginger Garlic"
+          ]
+        },
+        {
+          "id": "cat-grocery",
+          "name": "Grocery & Daily Needs",
+          "slug": "grocery-daily-needs",
+          "gstRatePercent": 5,
+          "commissionRatePercent": 2.5,
+          "description": "Grains, whole wheat atta, basmati rice, lentils, pulses, cooking oils, and spices.",
+          "isActive": true,
+          "subcategories": [
+            "Atta & Flours",
+            "Rice & Poha",
+            "Dals & Pulses",
+            "Edible Oils & Ghee",
+            "Salt, Sugar & Jaggery"
+          ]
+        },
+        {
+          "id": "cat-dairy",
+          "name": "Dairy & Breakfast",
+          "slug": "dairy-breakfast",
+          "gstRatePercent": 5,
+          "commissionRatePercent": 3.5,
+          "description": "Pasteurized milk, buffalo milk, curd, fresh paneer, butter, and breakfast essentials.",
+          "isActive": true,
+          "subcategories": [
+            "Milk",
+            "Paneer & Tofu",
+            "Curd & Chaas",
+            "Butter & Cream",
+            "Eggs & Bread"
+          ]
+        },
+        {
+          "id": "cat-bakery",
+          "name": "Dairy, Sweets & Bakery",
+          "slug": "dairy-sweets-bakery",
+          "gstRatePercent": 12,
+          "commissionRatePercent": 7,
+          "description": "Nagpur orange barfi, pedha, motichoor laddoo, sourdough bread, cakes, and pastries.",
+          "isActive": true,
+          "subcategories": [
+            "Regional Sweets",
+            "Fresh Cakes",
+            "Artisan Breads",
+            "Biscuits & Cookies",
+            "Festive Faral"
+          ]
+        },
+        {
+          "id": "cat-snacks",
+          "name": "Home Bakery & Traditional Snacks",
+          "slug": "home-bakery-traditional-snacks",
+          "gstRatePercent": 12,
+          "commissionRatePercent": 8,
+          "description": "Vidarbha spicy poha chivda, bakarwadi, cornflakes chivda, chakli, besan laddoo, and homemade pickles.",
+          "isActive": true,
+          "subcategories": [
+            "Chivda & Faral",
+            "Savory Snacks",
+            "Pickles & Papads",
+            "Homemade Laddoos"
+          ]
+        },
+        {
+          "id": "cat-packaged",
+          "name": "Packaged Foods & Beverages",
+          "slug": "packaged-foods-beverages",
+          "gstRatePercent": 18,
+          "commissionRatePercent": 4.5,
+          "description": "Noodles, biscuits, namkeen, health drinks, syrups, tea, and specialty roasted coffee.",
+          "isActive": true,
+          "subcategories": [
+            "Tea & Coffee",
+            "Biscuits & Namkeen",
+            "Sauces & Spreads",
+            "Beverages & Juices"
+          ]
+        }
+      ],
+      "products": [
+        {
+          "id": "prod-patil-001",
+          "tenantId": "mer-ngp-sabji-001",
+          "outletId": "out-ngp-sabji-001",
+          "name": "Fresh Farm Spinach (Palak)",
+          "description": "Crisp green farm-fresh palak harvested early morning from local Saoner farms. Washed and tied in bundles.",
+          "category": "Vegetables & Fruits",
+          "subCategory": "Leafy Greens",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-patil-palak-250g",
+              "name": "250g Bundle",
+              "sku": "PAT-PLK-250",
+              "barcode": "890123400101",
+              "pricePaise": 2000,
+              "compareAtPricePaise": 2500,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 80,
+              "reservedStock": 2,
+              "safetyStock": 10
+            },
+            {
+              "id": "var-patil-palak-500g",
+              "name": "500g Value Pack",
+              "sku": "PAT-PLK-500",
+              "barcode": "890123400102",
+              "pricePaise": 3500,
+              "compareAtPricePaise": 4500,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 50,
+              "reservedStock": 0,
+              "safetyStock": 5
+            }
+          ]
+        },
+        {
+          "id": "prod-patil-002",
+          "tenantId": "mer-ngp-sabji-001",
+          "outletId": "out-ngp-sabji-001",
+          "name": "Nagpur Native Desi Tomatoes",
+          "description": "Juicy, naturally ripened tangy desi tomatoes perfect for rich curries and fresh salads.",
+          "category": "Vegetables & Fruits",
+          "subCategory": "Daily Vegetables",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-patil-tomato-1kg",
+              "name": "1 kg Pack",
+              "sku": "PAT-TOM-1KG",
+              "barcode": "890123400103",
+              "pricePaise": 3500,
+              "compareAtPricePaise": 4000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 120,
+              "reservedStock": 5,
+              "safetyStock": 15
+            }
+          ]
+        },
+        {
+          "id": "prod-sharma-001",
+          "tenantId": "mer-ngp-kirana-002",
+          "outletId": "out-ngp-kirana-002",
+          "name": "Madhya Pradesh Sharbati Whole Wheat Atta",
+          "description": "100% stone ground pure Sharbati wheat flour, stone milled without maida adulteration for soft rotis.",
+          "category": "Grocery & Daily Needs",
+          "subCategory": "Atta & Flours",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-sharma-atta-5kg",
+              "name": "5 kg Bag",
+              "sku": "SHR-ATT-5KG",
+              "barcode": "890123400201",
+              "pricePaise": 24500,
+              "compareAtPricePaise": 27500,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 45,
+              "reservedStock": 1,
+              "safetyStock": 5
+            },
+            {
+              "id": "var-sharma-atta-10kg",
+              "name": "10 kg Value Bag",
+              "sku": "SHR-ATT-10KG",
+              "barcode": "890123400202",
+              "pricePaise": 46000,
+              "compareAtPricePaise": 52000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 30,
+              "reservedStock": 0,
+              "safetyStock": 4
+            }
+          ]
+        },
+        {
+          "id": "prod-sharma-002",
+          "tenantId": "mer-ngp-kirana-002",
+          "outletId": "out-ngp-kirana-002",
+          "name": "Vidarbha Organic Unpolished Tur Dal",
+          "description": "Direct-farm yellow pigeon pea lentils, water washed and unpolished retaining natural proteins.",
+          "category": "Grocery & Daily Needs",
+          "subCategory": "Dals & Pulses",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-sharma-turdal-1kg",
+              "name": "1 kg Pouch",
+              "sku": "SHR-DAL-1KG",
+              "barcode": "890123400203",
+              "pricePaise": 16500,
+              "compareAtPricePaise": 18500,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 60,
+              "reservedStock": 3,
+              "safetyStock": 8
+            }
+          ]
+        },
+        {
+          "id": "prod-garguti-001",
+          "tenantId": "mer-akl-homechef-003",
+          "outletId": "out-akl-garguti-003",
+          "name": "Akola Special Spicy Poha Chivda",
+          "description": "Traditional Vidarbha recipe roasted thin poha with fried groundnuts, roasted dal, curry leaves, and secret spice mix.",
+          "category": "Home Bakery & Traditional Snacks",
+          "subCategory": "Chivda & Faral",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-garguti-chivda-500g",
+              "name": "500g Fresh Pack",
+              "sku": "GAR-CHV-500",
+              "barcode": "890123400301",
+              "pricePaise": 19000,
+              "compareAtPricePaise": 22000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 35,
+              "reservedStock": 2,
+              "safetyStock": 5
+            },
+            {
+              "id": "var-garguti-chivda-1kg",
+              "name": "1 kg Family Tin Box",
+              "sku": "GAR-CHV-1KG",
+              "barcode": "890123400302",
+              "pricePaise": 36000,
+              "compareAtPricePaise": 40000,
+              "isPreorder": true,
+              "leadTimeMinutes": 120,
+              "initialStock": 15,
+              "reservedStock": 0,
+              "safetyStock": 2
+            }
+          ]
+        },
+        {
+          "id": "prod-mahalaxmi-001",
+          "tenantId": "mer-ngp-sweets-004",
+          "outletId": "out-ngp-sweets-004",
+          "name": "Nagpur GI-Certified Orange Barfi",
+          "description": "The world-famous signature sweet of Nagpur made from concentrated fresh Nagpur orange pulp, khoya, and silver foil.",
+          "category": "Dairy, Sweets & Bakery",
+          "subCategory": "Regional Sweets",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-mahalaxmi-barfi-500g",
+              "name": "500g Gift Box",
+              "sku": "MHL-BRF-500",
+              "barcode": "890123400401",
+              "pricePaise": 38000,
+              "compareAtPricePaise": 42000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 50,
+              "reservedStock": 4,
+              "safetyStock": 10
+            },
+            {
+              "id": "var-mahalaxmi-barfi-1kg",
+              "name": "1 kg Festive Box",
+              "sku": "MHL-BRF-1KG",
+              "barcode": "890123400402",
+              "pricePaise": 72000,
+              "compareAtPricePaise": 80000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 25,
+              "reservedStock": 1,
+              "safetyStock": 5
+            }
+          ]
+        },
+        {
+          "id": "prod-mahalaxmi-002",
+          "tenantId": "mer-ngp-sweets-004",
+          "outletId": "out-ngp-sweets-004",
+          "name": "Fresh Malai Buffalo Paneer (Vacuum Packed)",
+          "description": "Soft, melt-in-the-mouth paneer made fresh every morning from pure full-cream buffalo milk.",
+          "category": "Dairy & Breakfast",
+          "subCategory": "Paneer & Tofu",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-mahalaxmi-paneer-250g",
+              "name": "250g Vacuum Block",
+              "sku": "MHL-PNR-250",
+              "barcode": "890123400403",
+              "pricePaise": 12000,
+              "compareAtPricePaise": 13500,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 40,
+              "reservedStock": 3,
+              "safetyStock": 8
+            }
+          ]
+        },
+        {
+          "id": "prod-pune-001",
+          "tenantId": "mer-pun-organic-007",
+          "outletId": "out-pun-organic-007",
+          "name": "Organic Hydroponic Salad Greens Box",
+          "description": "Pesticide-free Italian basil, butterhead lettuce, and baby arugula grown hydroponically in clean water.",
+          "category": "Vegetables & Fruits",
+          "subCategory": "Leafy Greens",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-pune-salad-200g",
+              "name": "200g Fresh Clamshell",
+              "sku": "PUN-SLD-200",
+              "barcode": "890123400701",
+              "pricePaise": 15000,
+              "compareAtPricePaise": 18000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 30,
+              "reservedStock": 1,
+              "safetyStock": 5
+            }
+          ]
+        },
+        {
+          "id": "prod-kothrud-001",
+          "tenantId": "mer-pun-bakery-008",
+          "outletId": "out-pun-bakery-008",
+          "name": "Country Sourdough Boule (Wild Ferment)",
+          "description": "Slow-fermented 36-hour sourdough boule with a crisp blistering crust and open chewy crumb.",
+          "category": "Dairy, Sweets & Bakery",
+          "subCategory": "Artisan Breads",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-kothrud-sourdough-650g",
+              "name": "650g Fresh Baked Loaf",
+              "sku": "KOT-SDR-650",
+              "barcode": "890123400801",
+              "pricePaise": 22000,
+              "compareAtPricePaise": 25000,
+              "isPreorder": true,
+              "leadTimeMinutes": 180,
+              "initialStock": 20,
+              "reservedStock": 0,
+              "safetyStock": 3
+            }
+          ]
+        }
+      ]
+    },
+    "customers": [
+      {
+        "id": "cust-ngp-001",
+        "fullName": "Amitabh Joshi",
+        "phoneNumber": "+919823099881",
+        "email": "amitabh.joshi@gmail.com",
+        "cityCode": "IN-MH-NGP",
+        "cityName": "Nagpur",
+        "status": "ACTIVE",
+        "segment": "VIP",
+        "totalOrdersCount": 24,
+        "lifetimeSpendPaise": 3850000,
+        "registeredAt": "2026-08-15T09:30:00Z",
+        "lastActiveAt": "2026-11-18T18:45:00Z",
+        "addresses": [
+          {
+            "id": "addr-ngp-001-1",
+            "label": "Home",
+            "addressLine": "A-402, Shivom Enclave, Dharampeth",
+            "locality": "Dharampeth",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "pincode": "440010",
+            "latitude": 21.1415,
+            "longitude": 79.0635,
+            "isDefault": true
+          },
+          {
+            "id": "addr-ngp-001-2",
+            "label": "Work",
+            "addressLine": "Tech Tower, Civil Lines",
+            "locality": "Sadar",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "pincode": "440001",
+            "latitude": 21.161,
+            "longitude": 79.0825,
+            "isDefault": false
+          }
+        ]
+      },
+      {
+        "id": "cust-ngp-002",
+        "fullName": "Neha Pande",
+        "phoneNumber": "+919823099882",
+        "email": "neha.pande@outlook.com",
+        "cityCode": "IN-MH-NGP",
+        "cityName": "Nagpur",
+        "status": "ACTIVE",
+        "segment": "REPEAT",
+        "totalOrdersCount": 11,
+        "lifetimeSpendPaise": 1420000,
+        "registeredAt": "2026-09-01T11:15:00Z",
+        "lastActiveAt": "2026-11-18T15:20:00Z",
+        "addresses": [
+          {
+            "id": "addr-ngp-002-1",
+            "label": "Home",
+            "addressLine": "22, Anand Nagar, Sitabuldi",
+            "locality": "Sitabuldi",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "pincode": "440012",
+            "latitude": 21.1472,
+            "longitude": 79.0845,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-akl-003",
+        "fullName": "Girish Wagh",
+        "phoneNumber": "+919823099883",
+        "email": "girish.wagh@yahoo.in",
+        "cityCode": "IN-MH-AKL",
+        "cityName": "Akola",
+        "status": "ACTIVE",
+        "segment": "REPEAT",
+        "totalOrdersCount": 8,
+        "lifetimeSpendPaise": 960000,
+        "registeredAt": "2026-09-20T14:00:00Z",
+        "lastActiveAt": "2026-11-17T19:10:00Z",
+        "addresses": [
+          {
+            "id": "addr-akl-003-1",
+            "label": "Home",
+            "addressLine": "Bunglow 5, Toshniwal Layout",
+            "locality": "Toshniwal Layout",
+            "city": "Akola",
+            "cityCode": "IN-MH-AKL",
+            "pincode": "444005",
+            "latitude": 20.69,
+            "longitude": 77.026,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-akl-004",
+        "fullName": "Shrikant Patil",
+        "phoneNumber": "+919823099884",
+        "cityCode": "IN-MH-AKL",
+        "cityName": "Akola",
+        "status": "ACTIVE",
+        "segment": "NEW",
+        "totalOrdersCount": 1,
+        "lifetimeSpendPaise": 45000,
+        "registeredAt": "2026-11-16T16:45:00Z",
+        "lastActiveAt": "2026-11-18T10:00:00Z",
+        "addresses": [
+          {
+            "id": "addr-akl-004-1",
+            "label": "Home",
+            "addressLine": "Near Durga Chowk, Old City",
+            "locality": "Old City & Sarafa Bazaar",
+            "city": "Akola",
+            "cityCode": "IN-MH-AKL",
+            "pincode": "444002",
+            "latitude": 20.695,
+            "longitude": 77.003,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-amr-005",
+        "fullName": "Pallavi Deshpande",
+        "phoneNumber": "+919823099885",
+        "email": "pallavi.deshpande@rediffmail.com",
+        "cityCode": "IN-MH-AMR",
+        "cityName": "Amravati",
+        "status": "ACTIVE",
+        "segment": "ACTIVE",
+        "totalOrdersCount": 5,
+        "lifetimeSpendPaise": 680000,
+        "registeredAt": "2026-10-05T08:20:00Z",
+        "lastActiveAt": "2026-11-18T12:30:00Z",
+        "addresses": [
+          {
+            "id": "addr-amr-005-1",
+            "label": "Home",
+            "addressLine": "Row House 12, Camp Area",
+            "locality": "Camp Area",
+            "city": "Amravati",
+            "cityCode": "IN-MH-AMR",
+            "pincode": "444602",
+            "latitude": 20.942,
+            "longitude": 77.756,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-pun-006",
+        "fullName": "Sameer Joshi",
+        "phoneNumber": "+919823099886",
+        "email": "sameer.j@gmail.com",
+        "cityCode": "IN-MH-PUN",
+        "cityName": "Pune",
+        "status": "ACTIVE",
+        "segment": "VIP",
+        "totalOrdersCount": 38,
+        "lifetimeSpendPaise": 8250000,
+        "registeredAt": "2026-07-10T10:00:00Z",
+        "lastActiveAt": "2026-11-18T20:15:00Z",
+        "addresses": [
+          {
+            "id": "addr-pun-006-1",
+            "label": "Home",
+            "addressLine": "Flat 1102, Marvel Cerise, Kothrud",
+            "locality": "Kothrud",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "pincode": "411038",
+            "latitude": 18.5085,
+            "longitude": 73.809,
+            "isDefault": true
+          },
+          {
+            "id": "addr-pun-006-2",
+            "label": "Work",
+            "addressLine": "Quadron Business Park, Hinjawadi",
+            "locality": "Baner",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "pincode": "411045",
+            "latitude": 18.56,
+            "longitude": 73.788,
+            "isDefault": false
+          }
+        ]
+      },
+      {
+        "id": "cust-pun-007",
+        "fullName": "Ananya Roy",
+        "phoneNumber": "+919823099887",
+        "email": "ananya.roy@corporate.com",
+        "cityCode": "IN-MH-PUN",
+        "cityName": "Pune",
+        "status": "ACTIVE",
+        "segment": "ACTIVE",
+        "totalOrdersCount": 7,
+        "lifetimeSpendPaise": 1140000,
+        "registeredAt": "2026-10-12T13:40:00Z",
+        "lastActiveAt": "2026-11-18T17:00:00Z",
+        "addresses": [
+          {
+            "id": "addr-pun-007-1",
+            "label": "Home",
+            "addressLine": "Building B, Rohan Leher, Baner",
+            "locality": "Baner",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "pincode": "411045",
+            "latitude": 18.561,
+            "longitude": 73.785,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-ngp-008-flagged",
+        "fullName": "Unknown Caller",
+        "phoneNumber": "+919823099888",
+        "cityCode": "IN-MH-NGP",
+        "cityName": "Nagpur",
+        "status": "RESTRICTED",
+        "segment": "INACTIVE",
+        "totalOrdersCount": 3,
+        "lifetimeSpendPaise": 85000,
+        "registeredAt": "2026-11-01T10:00:00Z",
+        "lastActiveAt": "2026-11-05T12:00:00Z",
+        "addresses": [
+          {
+            "id": "addr-ngp-008-1",
+            "label": "Other",
+            "addressLine": "Railway Station Road, Nagpur",
+            "locality": "Sitabuldi",
+            "city": "Nagpur",
+            "cityCode": "IN-MH-NGP",
+            "pincode": "440001",
+            "latitude": 21.15,
+            "longitude": 79.085,
+            "isDefault": true
+          }
+        ]
+      }
+    ],
+    "orders": [
+      {
+        "id": "ord-ngp-1001",
+        "orderNumber": "NN-20261118-001",
+        "customerId": "cust-ngp-001",
+        "customerName": "Amitabh Joshi",
+        "customerPhone": "+919823099881",
+        "tenantId": "mer-ngp-sabji-001",
+        "merchantName": "Patil Fresh Sabji Mandi",
+        "outletId": "out-ngp-sabji-001",
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "locality": "Sitabuldi",
+        "status": "PREPARING",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupSlot": "18:30 - 18:45",
+        "pickupToken": "TKN-042",
+        "isPreorder": false,
+        "totalAmountPaise": 5500,
+        "taxAmountPaise": 0,
+        "platformFeePaise": 500,
+        "commissionPaise": 165,
+        "merchantEarningsPaise": 4835,
+        "createdAt": "2026-11-18T18:15:00Z",
+        "items": [
+          {
+            "id": "item-1001-1",
+            "productId": "prod-patil-001",
+            "variantId": "var-patil-palak-250g",
+            "title": "Fresh Farm Spinach (Palak) - 250g Bundle",
+            "quantity": 1,
+            "unitPricePaise": 2000,
+            "totalPricePaise": 2000
+          },
+          {
+            "id": "item-1001-2",
+            "productId": "prod-patil-002",
+            "variantId": "var-patil-tomato-1kg",
+            "title": "Nagpur Native Desi Tomatoes - 1 kg Pack",
+            "quantity": 1,
+            "unitPricePaise": 3500,
+            "totalPricePaise": 3500
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T18:15:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T18:16:00Z",
+            "note": "Razorpay UPI payment verified"
+          }
+        ]
+      },
+      {
+        "id": "ord-ngp-1002",
+        "orderNumber": "NN-20261118-002",
+        "customerId": "cust-ngp-002",
+        "customerName": "Neha Pande",
+        "customerPhone": "+919823099882",
+        "tenantId": "mer-ngp-sweets-004",
+        "merchantName": "Mahalaxmi Sweets, Dairy & Bakery",
+        "outletId": "out-ngp-sweets-004",
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "locality": "Ramdaspeth",
+        "status": "READY_FOR_PICKUP",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupSlot": "18:45 - 19:00",
+        "pickupToken": "TKN-089",
+        "isPreorder": false,
+        "totalAmountPaise": 50000,
+        "taxAmountPaise": 4800,
+        "platformFeePaise": 1000,
+        "commissionPaise": 3500,
+        "merchantEarningsPaise": 40700,
+        "createdAt": "2026-11-18T18:00:00Z",
+        "items": [
+          {
+            "id": "item-1002-1",
+            "productId": "prod-mahalaxmi-001",
+            "variantId": "var-mahalaxmi-barfi-500g",
+            "title": "Nagpur GI-Certified Orange Barfi - 500g Gift Box",
+            "quantity": 1,
+            "unitPricePaise": 38000,
+            "totalPricePaise": 38000
+          },
+          {
+            "id": "item-1002-2",
+            "productId": "prod-mahalaxmi-002",
+            "variantId": "var-mahalaxmi-paneer-250g",
+            "title": "Fresh Malai Buffalo Paneer - 250g Vacuum Block",
+            "quantity": 1,
+            "unitPricePaise": 12000,
+            "totalPricePaise": 12000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T18:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T18:01:00Z"
+          },
+          {
+            "eventType": "READY_FOR_PICKUP",
+            "fromStatus": "PREPARING",
+            "toStatus": "READY_FOR_PICKUP",
+            "occurredAt": "2026-11-18T18:20:00Z",
+            "note": "Store packaged and ready at counter"
+          }
+        ]
+      },
+      {
+        "id": "ord-ngp-1003",
+        "orderNumber": "NN-20261118-003",
+        "customerId": "cust-ngp-001",
+        "customerName": "Amitabh Joshi",
+        "customerPhone": "+919823099881",
+        "tenantId": "mer-ngp-kirana-002",
+        "merchantName": "Sharma Kirana & General Store",
+        "outletId": "out-ngp-kirana-002",
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "locality": "Dharampeth",
+        "status": "COMPLETED",
+        "paymentStatus": "PAID",
+        "paymentMethod": "CARD",
+        "fulfillmentType": "MERCHANT_DELIVERY",
+        "isPreorder": false,
+        "totalAmountPaise": 41000,
+        "taxAmountPaise": 2050,
+        "platformFeePaise": 1500,
+        "commissionPaise": 1025,
+        "merchantEarningsPaise": 36425,
+        "createdAt": "2026-11-18T14:30:00Z",
+        "items": [
+          {
+            "id": "item-1003-1",
+            "productId": "prod-sharma-001",
+            "variantId": "var-sharma-atta-5kg",
+            "title": "Madhya Pradesh Sharbati Whole Wheat Atta - 5 kg Bag",
+            "quantity": 1,
+            "unitPricePaise": 24500,
+            "totalPricePaise": 24500
+          },
+          {
+            "id": "item-1003-2",
+            "productId": "prod-sharma-002",
+            "variantId": "var-sharma-turdal-1kg",
+            "title": "Vidarbha Organic Unpolished Tur Dal - 1 kg Pouch",
+            "quantity": 1,
+            "unitPricePaise": 16500,
+            "totalPricePaise": 16500
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T14:30:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T14:31:00Z"
+          },
+          {
+            "eventType": "OUT_FOR_DELIVERY",
+            "fromStatus": "PREPARING",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T15:00:00Z"
+          },
+          {
+            "eventType": "DELIVERED",
+            "fromStatus": "PREPARING",
+            "toStatus": "COMPLETED",
+            "occurredAt": "2026-11-18T15:25:00Z",
+            "note": "Customer signed handover OTP"
+          }
+        ]
+      },
+      {
+        "id": "ord-akl-2001",
+        "orderNumber": "NN-20261118-004",
+        "customerId": "cust-akl-003",
+        "customerName": "Girish Wagh",
+        "customerPhone": "+919823099883",
+        "tenantId": "mer-akl-homechef-003",
+        "merchantName": "Garguti Homemade Chivda & Snacks",
+        "outletId": "out-akl-garguti-003",
+        "cityCode": "IN-MH-AKL",
+        "districtCode": "AKL",
+        "stateCode": "IN-MH",
+        "locality": "Old City & Sarafa Bazaar",
+        "status": "PREPARING",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupSlot": "Tomorrow 10:00 - 10:30",
+        "pickupToken": "TKN-015",
+        "isPreorder": true,
+        "totalAmountPaise": 36000,
+        "taxAmountPaise": 4320,
+        "platformFeePaise": 1000,
+        "commissionPaise": 2880,
+        "merchantEarningsPaise": 27800,
+        "createdAt": "2026-11-18T16:00:00Z",
+        "items": [
+          {
+            "id": "item-2001-1",
+            "productId": "prod-garguti-001",
+            "variantId": "var-garguti-chivda-1kg",
+            "title": "Akola Special Spicy Poha Chivda - 1 kg Family Tin Box",
+            "quantity": 1,
+            "unitPricePaise": 36000,
+            "totalPricePaise": 36000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T16:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T16:02:00Z",
+            "note": "Artisan scheduled fresh morning frying batch"
+          }
+        ]
+      },
+      {
+        "id": "ord-pun-3001",
+        "orderNumber": "NN-20261118-005",
+        "customerId": "cust-pun-007",
+        "customerName": "Ananya Roy",
+        "customerPhone": "+919823099887",
+        "tenantId": "mer-pun-organic-007",
+        "merchantName": "Pune Organic Farm Produce",
+        "outletId": "out-pun-organic-007",
+        "cityCode": "IN-MH-PUN",
+        "districtCode": "PUN",
+        "stateCode": "IN-MH",
+        "locality": "Baner",
+        "status": "CANCELLED",
+        "paymentStatus": "REFUNDED",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "MERCHANT_DELIVERY",
+        "isPreorder": false,
+        "totalAmountPaise": 15000,
+        "taxAmountPaise": 0,
+        "platformFeePaise": 500,
+        "commissionPaise": 0,
+        "merchantEarningsPaise": 0,
+        "createdAt": "2026-11-18T11:00:00Z",
+        "items": [
+          {
+            "id": "item-3001-1",
+            "productId": "prod-pune-001",
+            "variantId": "var-pune-salad-200g",
+            "title": "Organic Hydroponic Salad Greens Box - 200g Fresh Clamshell",
+            "quantity": 1,
+            "unitPricePaise": 15000,
+            "totalPricePaise": 15000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T11:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T11:01:00Z"
+          },
+          {
+            "eventType": "ORDER_CANCELLED",
+            "fromStatus": "PREPARING",
+            "toStatus": "CANCELLED",
+            "occurredAt": "2026-11-18T11:20:00Z",
+            "note": "Customer requested cancellation due to change of plans; full refund processed"
+          }
+        ]
+      },
+      {
+        "id": "ord-ngp-bulk-099",
+        "orderNumber": "NN-20261117-911",
+        "customerId": "cust-ngp-001",
+        "customerName": "Amitabh Joshi",
+        "customerPhone": "+919823099881",
+        "tenantId": "mer-ngp-sweets-004",
+        "merchantName": "Mahalaxmi Sweets, Dairy & Bakery",
+        "outletId": "out-ngp-sweets-004",
+        "cityCode": "IN-MH-NGP",
+        "districtCode": "NGP",
+        "stateCode": "IN-MH",
+        "locality": "Ramdaspeth",
+        "status": "COMPLETED",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "STORE_PICKUP",
+        "isPreorder": true,
+        "totalAmountPaise": 720000,
+        "taxAmountPaise": 86400,
+        "platformFeePaise": 2500,
+        "commissionPaise": 50400,
+        "merchantEarningsPaise": 580700,
+        "createdAt": "2026-11-17T12:00:00Z",
+        "items": [
+          {
+            "id": "item-bulk-099-1",
+            "productId": "prod-mahalaxmi-001",
+            "variantId": "var-mahalaxmi-barfi-1kg",
+            "title": "Nagpur GI-Certified Orange Barfi - 1 kg Festive Box",
+            "quantity": 10,
+            "unitPricePaise": 72000,
+            "totalPricePaise": 720000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-17T12:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-17T12:05:00Z"
+          },
+          {
+            "eventType": "READY_FOR_PICKUP",
+            "fromStatus": "PREPARING",
+            "toStatus": "READY_FOR_PICKUP",
+            "occurredAt": "2026-11-17T16:00:00Z"
+          },
+          {
+            "eventType": "DELIVERED",
+            "fromStatus": "READY_FOR_PICKUP",
+            "toStatus": "COMPLETED",
+            "occurredAt": "2026-11-17T17:00:00Z",
+            "note": "Customer collected boxes for wedding event"
+          }
+        ]
+      }
+    ],
+    "finance": {
+      "plans": [
+        {
+          "id": "plan-basic",
+          "name": "Nukkad Starter",
+          "code": "BASIC",
+          "monthlyPricePaise": 49900,
+          "annualPricePaise": 499900,
+          "featureList": [
+            "Digital Storefront",
+            "Store Counter QR Code",
+            "Up to 50 Products",
+            "Single Staff Login",
+            "Email Support"
+          ],
+          "maxProducts": 50,
+          "maxStaffLogins": 1,
+          "isActive": true
+        },
+        {
+          "id": "plan-growth",
+          "name": "Nukkad Growth",
+          "code": "GROWTH",
+          "monthlyPricePaise": 99900,
+          "annualPricePaise": 999900,
+          "featureList": [
+            "Everything in Starter",
+            "Up to 250 Products",
+            "WhatsApp Order Notifications",
+            "3 Staff POS Terminals",
+            "Daily Settlements"
+          ],
+          "maxProducts": 250,
+          "maxStaffLogins": 3,
+          "isActive": true
+        },
+        {
+          "id": "plan-pro",
+          "name": "Nukkad Pro & Hyperlocal Empire",
+          "code": "PRO",
+          "monthlyPricePaise": 199900,
+          "annualPricePaise": 1999900,
+          "featureList": [
+            "Unlimited Products",
+            "Multi-Outlet Support",
+            "Thermal POS Printer Integration",
+            "Dedicated Account Manager",
+            "Priority KYC"
+          ],
+          "maxProducts": 10000,
+          "maxStaffLogins": 10,
+          "isActive": true
+        }
+      ],
+      "subscriptions": [
+        {
+          "id": "sub-001",
+          "merchantId": "mer-ngp-sabji-001",
+          "merchantName": "Patil Fresh Sabji Mandi",
+          "planCode": "BASIC",
+          "billingCycle": "MONTHLY",
+          "amountPaise": 49900,
+          "status": "ACTIVE",
+          "startDate": "2026-11-01T00:00:00Z",
+          "renewalDate": "2026-12-01T00:00:00Z",
+          "cityCode": "IN-MH-NGP"
+        },
+        {
+          "id": "sub-002",
+          "merchantId": "mer-ngp-kirana-002",
+          "merchantName": "Sharma Kirana & General Store",
+          "planCode": "GROWTH",
+          "billingCycle": "ANNUAL",
+          "amountPaise": 999900,
+          "status": "ACTIVE",
+          "startDate": "2026-10-15T00:00:00Z",
+          "renewalDate": "2027-10-15T00:00:00Z",
+          "cityCode": "IN-MH-NGP"
+        },
+        {
+          "id": "sub-003",
+          "merchantId": "mer-akl-homechef-003",
+          "merchantName": "Garguti Homemade Chivda & Snacks",
+          "planCode": "BASIC",
+          "billingCycle": "MONTHLY",
+          "amountPaise": 49900,
+          "status": "TRIAL",
+          "startDate": "2026-11-10T00:00:00Z",
+          "renewalDate": "2026-12-10T00:00:00Z",
+          "cityCode": "IN-MH-AKL"
+        },
+        {
+          "id": "sub-004",
+          "merchantId": "mer-ngp-sweets-004",
+          "merchantName": "Mahalaxmi Sweets, Dairy & Bakery",
+          "planCode": "PRO",
+          "billingCycle": "MONTHLY",
+          "amountPaise": 199900,
+          "status": "ACTIVE",
+          "startDate": "2026-09-01T00:00:00Z",
+          "renewalDate": "2026-12-01T00:00:00Z",
+          "cityCode": "IN-MH-NGP"
+        }
+      ],
+      "transactions": [
+        {
+          "id": "tx-pay-001",
+          "orderId": "ord-ngp-1001",
+          "orderNumber": "NN-20261118-001",
+          "gatewayTransactionId": "pay_NUKKAD_NGP_001",
+          "amountPaise": 5500,
+          "currency": "INR",
+          "method": "UPI",
+          "status": "CAPTURED",
+          "gatewayFeePaise": 110,
+          "platformCommissionPaise": 165,
+          "merchantPayablePaise": 4835,
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T18:16:00Z"
+        },
+        {
+          "id": "tx-pay-002",
+          "orderId": "ord-ngp-1002",
+          "orderNumber": "NN-20261118-002",
+          "gatewayTransactionId": "pay_NUKKAD_NGP_002",
+          "amountPaise": 50000,
+          "currency": "INR",
+          "method": "UPI",
+          "status": "CAPTURED",
+          "gatewayFeePaise": 1000,
+          "platformCommissionPaise": 3500,
+          "merchantPayablePaise": 40700,
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T18:01:00Z"
+        },
+        {
+          "id": "tx-pay-003",
+          "orderId": "ord-ngp-1003",
+          "orderNumber": "NN-20261118-003",
+          "gatewayTransactionId": "pay_NUKKAD_NGP_003",
+          "amountPaise": 41000,
+          "currency": "INR",
+          "method": "CARD",
+          "status": "CAPTURED",
+          "gatewayFeePaise": 820,
+          "platformCommissionPaise": 1025,
+          "merchantPayablePaise": 36425,
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T14:31:00Z"
+        },
+        {
+          "id": "tx-pay-004",
+          "orderId": "ord-akl-2001",
+          "orderNumber": "NN-20261118-004",
+          "gatewayTransactionId": "pay_NUKKAD_AKL_004",
+          "amountPaise": 36000,
+          "currency": "INR",
+          "method": "UPI",
+          "status": "CAPTURED",
+          "gatewayFeePaise": 720,
+          "platformCommissionPaise": 2880,
+          "merchantPayablePaise": 27800,
+          "cityCode": "IN-MH-AKL",
+          "createdAt": "2026-11-18T16:02:00Z"
+        },
+        {
+          "id": "tx-pay-005",
+          "orderId": "ord-pun-3001",
+          "orderNumber": "NN-20261118-005",
+          "gatewayTransactionId": "pay_NUKKAD_PUN_005",
+          "amountPaise": 15000,
+          "currency": "INR",
+          "method": "UPI",
+          "status": "REFUNDED",
+          "gatewayFeePaise": 0,
+          "platformCommissionPaise": 0,
+          "merchantPayablePaise": 0,
+          "cityCode": "IN-MH-PUN",
+          "createdAt": "2026-11-18T11:01:00Z"
+        }
+      ],
+      "settlements": [
+        {
+          "id": "set-ngp-001",
+          "merchantId": "mer-ngp-kirana-002",
+          "merchantName": "Sharma Kirana & General Store",
+          "bankName": "HDFC Bank",
+          "bankAccountMasked": "**********9981",
+          "utrNumber": "HDFCN26322001892",
+          "totalAmountPaise": 1425000,
+          "ordersCount": 38,
+          "status": "SETTLED",
+          "cityCode": "IN-MH-NGP",
+          "settledAt": "2026-11-18T10:00:00Z",
+          "createdAt": "2026-11-18T06:00:00Z"
+        },
+        {
+          "id": "set-ngp-002",
+          "merchantId": "mer-ngp-sabji-001",
+          "merchantName": "Patil Fresh Sabji Mandi",
+          "bankName": "State Bank of India",
+          "bankAccountMasked": "**********1245",
+          "totalAmountPaise": 842000,
+          "ordersCount": 65,
+          "status": "PENDING",
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T18:00:00Z"
+        }
+      ],
+      "refunds": [
+        {
+          "id": "ref-001",
+          "orderId": "ord-pun-3001",
+          "orderNumber": "NN-20261118-005",
+          "customerId": "cust-pun-007",
+          "customerName": "Ananya Roy",
+          "merchantId": "mer-pun-organic-007",
+          "merchantName": "Pune Organic Farm Produce",
+          "amountPaise": 15000,
+          "reasonCode": "CUSTOMER_CANCELLED",
+          "reasonDescription": "Customer cancelled before dispatch; automatic full refund initiated.",
+          "requiresStepUpApproval": false,
+          "status": "APPROVED",
+          "cityCode": "IN-MH-PUN",
+          "reviewedBy": "adm-city-pun-004",
+          "reviewedAt": "2026-11-18T11:22:00Z",
+          "createdAt": "2026-11-18T11:20:00Z"
+        },
+        {
+          "id": "ref-002-high-value",
+          "orderId": "ord-ngp-bulk-099",
+          "orderNumber": "NN-20261117-911",
+          "customerId": "cust-ngp-001",
+          "customerName": "Amitabh Joshi",
+          "merchantId": "mer-ngp-sweets-004",
+          "merchantName": "Mahalaxmi Sweets, Dairy & Bakery",
+          "amountPaise": 720000,
+          "reasonCode": "ITEM_SPOILED",
+          "reasonDescription": "Customer received damaged sweet boxes intended for family wedding function.",
+          "requiresStepUpApproval": true,
+          "status": "PENDING",
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T16:30:00Z"
+        }
+      ]
+    },
+    "support": {
+      "cannedReplies": [
+        {
+          "id": "can-001",
+          "shortcut": "#pickup-ready",
+          "title": "Store Pickup Token Ready",
+          "category": "CUSTOMER",
+          "body": "Hello! Your order is freshly packed and ready at the store pickup counter. Please show your Pickup Token to the storekeeper for instant handover."
+        },
+        {
+          "id": "can-002",
+          "shortcut": "#payout-timeline",
+          "title": "Daily Settlement Schedule",
+          "category": "MERCHANT",
+          "body": "Dear Partner, daily settlements are processed every business day at 10:00 AM via NEFT. Transactions captured until midnight are cleared in the morning batch."
+        },
+        {
+          "id": "can-003",
+          "shortcut": "#kyc-doc-req",
+          "title": "KYC Document Clarification",
+          "category": "MERCHANT",
+          "body": "Dear Merchant, your FSSAI certificate image was blurry. Kindly upload a clear scanned PDF of your active license from the merchant portal to complete verification."
+        }
+      ],
+      "tickets": [
+        {
+          "id": "tkt-ngp-001",
+          "ticketNumber": "TKT-20261118-01",
+          "category": "CUSTOMER",
+          "subject": "Order delayed beyond estimated pickup slot",
+          "priority": "HIGH",
+          "status": "IN_PROGRESS",
+          "assignedAgentId": "adm-staff-sup-001",
+          "assignedAgentName": "Rahul Meshram",
+          "requesterName": "Neha Pande",
+          "requesterPhone": "+919823099882",
+          "cityCode": "IN-MH-NGP",
+          "cityName": "Nagpur",
+          "relatedOrderId": "ord-ngp-1002",
+          "relatedMerchantId": "mer-ngp-sweets-004",
+          "createdAt": "2026-11-18T18:25:00Z",
+          "updatedAt": "2026-11-18T18:30:00Z",
+          "slaDeadline": "2026-11-18T19:25:00Z",
+          "messages": [
+            {
+              "id": "msg-001",
+              "senderType": "CUSTOMER",
+              "senderName": "Neha Pande",
+              "messageText": "I reached the store at 18:20 but the sweets packaging took longer. Token #089.",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T18:25:00Z"
+            },
+            {
+              "id": "msg-002",
+              "senderType": "SUPPORT_AGENT",
+              "senderName": "Rahul Meshram",
+              "messageText": "Store manager contacted directly via hotline. Box is now handed over. Apologies for the 5-min delay.",
+              "isInternalNote": true,
+              "sentAt": "2026-11-18T18:29:00Z"
+            },
+            {
+              "id": "msg-003",
+              "senderType": "SUPPORT_AGENT",
+              "senderName": "Rahul Meshram",
+              "messageText": "Hi Neha, the store counter has expedited your order box. We have credited ₹50 NukkadCash to your wallet for the slight delay.",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T18:30:00Z"
+            }
+          ]
+        },
+        {
+          "id": "tkt-pun-002",
+          "ticketNumber": "TKT-20261118-02",
+          "category": "MERCHANT",
+          "subject": "High-value bulk refund dispute for damaged goods",
+          "priority": "URGENT",
+          "status": "ESCALATED",
+          "assignedAgentId": "adm-city-pun-004",
+          "assignedAgentName": "Sneha Kulkarni",
+          "requesterName": "Rohit Kadam",
+          "requesterPhone": "+919822577889",
+          "cityCode": "IN-MH-PUN",
+          "cityName": "Pune",
+          "relatedMerchantId": "mer-pun-organic-007",
+          "createdAt": "2026-11-18T16:00:00Z",
+          "updatedAt": "2026-11-18T16:40:00Z",
+          "slaDeadline": "2026-11-18T18:00:00Z",
+          "messages": [
+            {
+              "id": "msg-004",
+              "senderType": "MERCHANT",
+              "senderName": "Rohit Kadam",
+              "messageText": "Customer requested refund claiming damaged hydroponics, but delivery agent states box was dropped at customer gate.",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T16:00:00Z"
+            },
+            {
+              "id": "msg-005",
+              "senderType": "SUPPORT_AGENT",
+              "senderName": "Sneha Kulkarni",
+              "messageText": "Reviewing photo proof submitted by customer and delivery handover geostamp.",
+              "isInternalNote": true,
+              "sentAt": "2026-11-18T16:40:00Z"
+            }
+          ]
+        }
+      ],
+      "reviews": [
+        {
+          "id": "rev-001",
+          "merchantId": "mer-ngp-sabji-001",
+          "merchantName": "Patil Fresh Sabji Mandi",
+          "orderId": "ord-ngp-1001",
+          "customerId": "cust-ngp-001",
+          "customerName": "Amitabh Joshi",
+          "rating": 5,
+          "reviewText": "Exceptionally fresh palak and desi tomatoes! Store pickup was done in 30 seconds with the QR token. True Vidarbha farm quality.",
+          "sentiment": "POSITIVE",
+          "moderationStatus": "APPROVED",
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T19:00:00Z"
+        },
+        {
+          "id": "rev-002",
+          "merchantId": "mer-akl-homechef-003",
+          "merchantName": "Garguti Homemade Chivda & Snacks",
+          "orderId": "ord-akl-2001",
+          "customerId": "cust-akl-003",
+          "customerName": "Girish Wagh",
+          "rating": 5,
+          "reviewText": "The best spicy poha chivda in Akola! Authentic home kitchen taste, crispy groundnuts and zero excess oil. Highly recommended!",
+          "sentiment": "POSITIVE",
+          "moderationStatus": "APPROVED",
+          "cityCode": "IN-MH-AKL",
+          "createdAt": "2026-11-17T18:00:00Z"
+        },
+        {
+          "id": "rev-003-flagged",
+          "merchantId": "mer-ngp-sweets-004",
+          "merchantName": "Mahalaxmi Sweets, Dairy & Bakery",
+          "orderId": "ord-ngp-1002",
+          "customerId": "cust-ngp-008-flagged",
+          "customerName": "Unknown Caller",
+          "rating": 1,
+          "reviewText": "Abusive spam text with external spam links www.fake-coupon.biz",
+          "sentiment": "NEGATIVE",
+          "moderationStatus": "REJECTED",
+          "cityCode": "IN-MH-NGP",
+          "createdAt": "2026-11-18T12:00:00Z"
+        }
+      ]
+    },
+    "audit": {
+      "settings": [
+        {
+          "key": "platform.brand_name",
+          "value": "NukkadNow Hyperlocal Commerce",
+          "category": "GENERAL",
+          "description": "Public platform brand display title",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        },
+        {
+          "key": "platform.default_currency",
+          "value": "INR",
+          "category": "GENERAL",
+          "description": "System-wide base monetary currency",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        },
+        {
+          "key": "platform.timezone",
+          "value": "Asia/Kolkata",
+          "category": "GENERAL",
+          "description": "Default operational timezone",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        },
+        {
+          "key": "orders.min_order_value_paise",
+          "value": "10000",
+          "category": "OPERATIONS",
+          "description": "Global minimum basket threshold for pickup orders",
+          "isEncrypted": false,
+          "updatedBy": "adm-super-001"
+        },
+        {
+          "key": "orders.auto_cancel_unpaid_minutes",
+          "value": "15",
+          "category": "OPERATIONS",
+          "description": "Auto-cancel orders awaiting payment confirmation",
+          "isEncrypted": false,
+          "updatedBy": "adm-super-001"
+        },
+        {
+          "key": "finance.default_commission_percent",
+          "value": "3.5",
+          "category": "FINANCE",
+          "description": "Default platform take rate on retail orders",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        },
+        {
+          "key": "finance.refund_step_up_threshold_paise",
+          "value": "500000",
+          "category": "FINANCE",
+          "description": "Threshold requiring dual operator authorization for refunds",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        },
+        {
+          "key": "security.mfa_enforced_levels",
+          "value": "1,2,3",
+          "category": "SECURITY",
+          "description": "Hierarchy levels mandating TOTP two-factor authentication",
+          "isEncrypted": false,
+          "updatedBy": "adm-root-001"
+        }
+      ],
+      "auditLogs": [
+        {
+          "id": "aud-001-genesis",
+          "operatorId": "adm-root-001",
+          "operatorName": "Rushi Deshmukh",
+          "action": "PLATFORM_INITIALIZATION",
+          "targetEntity": "System",
+          "targetId": "SYS-GLOBAL-001",
+          "reasonCode": "GENESIS_BOOTSTRAP",
+          "justification": "Initial pilot platform provisioning for Maharashtra municipal clusters.",
+          "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "recordHash": "a7f1c24e89b345a90d8ef6712390ab56cd894312389a0b12cdef56789012345a",
+          "ipAddress": "127.0.0.1",
+          "userAgent": "NukkadNow Admin Core Console/1.0",
+          "cityCode": "GLOBAL",
+          "timestamp": "2026-11-18T00:00:00Z"
+        },
+        {
+          "id": "aud-002-kyc",
+          "operatorId": "adm-staff-kyc-001",
+          "operatorName": "Pooja Raut",
+          "action": "MERCHANT_KYC_APPROVAL",
+          "targetEntity": "Merchant",
+          "targetId": "mer-ngp-sabji-001",
+          "reasonCode": "DOCUMENTS_VERIFIED",
+          "justification": "Physical shop act license and FSSAI certificate cross-verified against MCA database.",
+          "previousHash": "a7f1c24e89b345a90d8ef6712390ab56cd894312389a0b12cdef56789012345a",
+          "recordHash": "b8e2d35f90c456ba1e9f07823401bc67de905423490b1c23def067890123456b",
+          "ipAddress": "192.168.1.45",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0",
+          "cityCode": "IN-MH-NGP",
+          "timestamp": "2026-11-18T10:15:00Z"
+        },
+        {
+          "id": "aud-003-geo",
+          "operatorId": "adm-city-ngp-001",
+          "operatorName": "Vikram Wankhede",
+          "action": "LOCALITY_GEOFENCE_EXPANSION",
+          "targetEntity": "Locality",
+          "targetId": "loc-ngp-dharampeth",
+          "reasonCode": "COMMERCIAL_EXPANSION",
+          "justification": "Expanded coverage radius by 500m to include West High Court Road residential societies.",
+          "previousHash": "b8e2d35f90c456ba1e9f07823401bc67de905423490b1c23def067890123456b",
+          "recordHash": "c9f3e46001d567cb2f0a18934512cd78ef016534501c2d34ef0178901234567c",
+          "ipAddress": "192.168.1.12",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0",
+          "cityCode": "IN-MH-NGP",
+          "timestamp": "2026-11-18T12:00:00Z"
+        }
+      ],
+      "piiLogs": [
+        {
+          "id": "pii-001",
+          "operatorId": "adm-staff-sup-001",
+          "operatorName": "Rahul Meshram",
+          "targetEntity": "Customer",
+          "targetId": "cust-ngp-002",
+          "accessedFields": [
+            "phoneNumber",
+            "residentialAddress"
+          ],
+          "purposeCode": "ORDER_FULFILLMENT_TRIAGE",
+          "justification": "Customer reported delayed pickup counter handover for Order NN-20261118-002.",
+          "timestamp": "2026-11-18T18:27:00Z"
+        },
+        {
+          "id": "pii-002",
+          "operatorId": "adm-staff-kyc-001",
+          "operatorName": "Pooja Raut",
+          "targetEntity": "MerchantBank",
+          "targetId": "mer-akl-homechef-003",
+          "accessedFields": [
+            "bankAccountNumber",
+            "ifscCode",
+            "residentialAddress"
+          ],
+          "purposeCode": "REGULATORY_KYC_VERIFICATION",
+          "justification": "Verifying bank penny drop settlement for Home Chef artisan registration.",
+          "timestamp": "2026-11-14T11:15:00Z"
+        }
+      ]
+    }
+  }
+}

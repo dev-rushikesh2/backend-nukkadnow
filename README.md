@@ -204,3 +204,52 @@ Hardened all 11 microservice schemas with municipal geographic partitioning, DPD
   - **Pune (`IN-MH-PUN`):** Chitale Dairy & Traditional Sweets
 - **Build Verification:** `pnpm --filter @nukkadnow/api-gateway build` $\rightarrow$ **Exit Code 0 (`nest build` successful)**.
 
+#### 6. Unified Database Seeders Suite (`prisma/seeders/`)
+- Production-grade modular reference data seed framework in `prisma/seeders/`:
+  - `geo.seed.ts`: India, Maharashtra, 4 Districts, 4 Cities, 17 Localities with polygon geofences.
+  - `admin-users.seed.ts`: 5 dynamic roles, 55 granular permissions, 8 admin accounts with municipal territory scoping.
+  - `merchants.seed.ts`: 8 local merchants across Nagpur, Akola, Amravati, Pune with outlets, hours, KYC documents, and bank records.
+  - `catalog.seed.ts`: Categories, GST slabs, commission slabs, products, variants with integer paise pricing.
+  - `customers.seed.ts`: Customer directory, saved addresses, segmentation cohorts (`VIP`, `REPEAT`, etc.).
+  - `orders.seed.ts`: Counter QR pickup & delivery orders, line items, timestamps, lifecycle events.
+  - `finance.seed.ts`: Payments, settlement batches, refunds with step-up threshold logic, SaaS plans & subscriptions.
+  - `support.seed.ts`: Canned responses, support ticket threads with private notes, UGC customer reviews.
+  - `audit.seed.ts`: System settings, cryptographic HMAC-SHA256 audit logs with hash chain continuity, PII access logs.
+  - `seed-all.ts`: Master validation and runner generating `generated-seeds.json`.
+- **Command:** `pnpm run seed:all` or `node --experimental-strip-types prisma/seeders/seed-all.ts`.
+
+#### 7. Admin BFF Gateway API Endpoints (Sprints 6–10 Production Surface)
+- **Sprint 6 (Personas & Omni-Search):**
+  - `GET /api/v1/admin/search`: Global debounced multi-entity search (`Ctrl+K`).
+  - `GET /api/v1/admin/me`, `POST /api/v1/admin/me/change-password`, `GET /me/sessions`, `GET /me/activity`: Operator profile self-service and active session management.
+- **Sprint 7 (Inventory Monitoring & Merchant Governance):**
+  - `GET /api/v1/admin/inventory/overview`: Telemetry on SKUs, low-stock, stockouts, near-expiry perishables, valuation in paise.
+  - `GET /api/v1/admin/inventory/stocks`, `/low-stock`, `/movements`, `/reconciliations`, `/data-quality`: Granular inventory oversight.
+  - `GET /api/v1/admin/merchants/complaints`, `POST /merchants/:mId/complaints/:cId/resolve`: Customer complaints queue.
+  - `GET /api/v1/admin/merchants/suspensions`, `GET /merchants/:id/suspension-log`: Merchant disciplinary history.
+- **Sprint 8 (Customer Hub & DPDP Unmasking):**
+  - `GET /api/v1/admin/customers/overview`: Customer growth, MAU, repeat rate, average LTV.
+  - `GET /api/v1/admin/customers`, `GET /customers/:id`, `GET /customers/:id/orders`: Customer directory with masked PII.
+  - `POST /api/v1/admin/customers/:id/unmask-pii`: DPDP Act 2023 compliant PII unmasking endpoint with purpose code & audit logging.
+  - `PATCH /api/v1/admin/customers/:id/status`: Account restriction, suspension, and restoration.
+- **Sprint 9 (Commerce Scheduling & Catalog Compliance):**
+  - `GET /api/v1/admin/orders/qr-monitoring`: Live monitoring of storefront QR counter orders.
+  - `GET /api/v1/admin/orders/pre-orders`: Pre-orders and scheduled festival pickup bookings calendar.
+  - `GET /api/v1/admin/orders/capacity-monitoring`, `POST /orders/capacity-throttle/:outletId`: Outlet capacity slot throttler.
+  - `GET /api/v1/admin/orders/disputes`: Order disputes queue with frozen escrow indicator.
+  - `GET /api/v1/admin/orders/:id/lifecycle`: 6-stage milestone event audit trail.
+  - `GET /api/v1/admin/catalog/restricted-policies`, `GET /catalog/reported-items`: Prohibited products policies and reported items.
+- **Sprint 10 (Fiduciary, Compliance & Governance):**
+  - `GET /api/v1/admin/finance/invoices`: Merchant billing archive and monthly commission invoices.
+  - `GET /api/v1/admin/finance/gst-reports`: Statutory GSTR-1, GSTR-3B, and TCS Sec 52 reports across Maharashtra territories.
+  - `GET /api/v1/admin/finance/gateway-failures`: Payment failure diagnostics and webhook latency graphs.
+  - `GET /api/v1/admin/finance/audit-log`: Financial dual-sign and payout release audit entries.
+  - `GET /api/v1/admin/subscriptions/payments`: Merchant SaaS subscription payment receipts.
+  - `GET /api/v1/admin/subscriptions/renewals`: Upcoming merchant plan expiries and dunning tracking.
+  - `GET & POST /api/v1/admin/subscriptions/coupons`: Promotional discount codes and voucher management.
+  - `GET /api/v1/admin/subscriptions/churn-analytics`: MRR trajectory, cohort retention, and churn telemetry.
+  - `POST /api/v1/admin/system/gateway-ping`: Live diagnostic latency ping for Razorpay, UPI Switch, SMS, and SES.
+  - `GET /api/v1/admin/system/siem-alerts`: SIEM intrusion detection, suspicious geo-velocity and security alerts feed.
+
+
+

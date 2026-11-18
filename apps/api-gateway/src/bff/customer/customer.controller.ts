@@ -440,7 +440,7 @@ export const SEEDED_PRODUCTS = [
   }
 ];
 
-const SEEDED_MERCHANTS_OUTLETS = [
+export const SEEDED_MERCHANTS_OUTLETS = [
   {
     id: "outlet-sabji-001",
     merchantId: "merchant-sabji-001",
