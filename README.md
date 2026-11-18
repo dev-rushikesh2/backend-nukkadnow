@@ -139,3 +139,37 @@ pnpm dev
 - **Traceability:** Every incoming request receives a W3C `traceparent` header propagated across all downstream sync and async hops.
 - **Auditing:** Privilege escalation, financial transactions, and catalog alterations write immutable audit records.
 - **Safe Migrations:** Expand/Contract pattern only. No destructive DDL executed on live databases without transition grace periods.
+
+---
+
+## 6. Comprehensive Changelog & Architectural Log
+
+### [Release: 2026-11-18] — Dynamic Database-Backed RBAC, Micro-Market Geographic Assignment & Root Admin Protection
+
+#### 1. Prisma Database Schema (`apps/identity-service/prisma/schema.prisma`)
+Added complete relational entities for dynamic role management and geographic scoping:
+- `AdminUser`: Platform operator identity model with `isRootProtected` flag, phone, status, and audit relationships.
+- `AdminRole`: Dynamic role definitions containing `code`, `title`, `hierarchyLevel` (1=Root, 2=Super, 3=City, 4=Staff, 5=Custom), `isSystem`, `requiresMfa`, and `description`.
+- `AdminPermission`: Granular capability catalog partitioned by module domain.
+- `AdminRoleAssignment`: User-to-role assignment junction table.
+- `AdminRolePermission`: Role-to-permission mapping table.
+- `AdminGeoAssignment`: Geographic micro-market assignment (`state`, `district`, `cityId`, `cityName`, `localities`) for City Managers and City Staff.
+- `AdminAuditLog`: Immutable tamper-evident operator activity audit trail.
+
+#### 2. Administrative BFF Gateway Endpoints (`apps/api-gateway/src/bff/admin/admin.controller.ts`)
+- `GET /api/v1/admin/platform/roles`: List dynamic database roles with user counts and search filter.
+- `POST /api/v1/admin/platform/roles`: Dynamically creates custom roles in the database with assigned capabilities and hierarchy tier. Logs `DYNAMIC_ROLE_CREATED` audit event.
+- `PATCH /api/v1/admin/platform/roles/:id`: Updates role description, title, MFA requirement, or permissions list.
+- `DELETE /api/v1/admin/platform/roles/:id`: Deletes custom roles. Core system roles (`ROOT_ADMIN`, `SUPER_ADMIN`, etc.) are protected from deletion.
+- `GET /api/v1/admin/platform/permissions`: Returns all granular capabilities grouped by module (`DASHBOARD`, `ADMINS`, `MERCHANTS`, `VERIFICATION`, `CUSTOMERS`, `ORDERS`, `REFUNDS`, `GEOGRAPHY`, `FINANCE`, `CONFIG`, `AUDIT`).
+- `GET /api/v1/admin/platform/cities`: Returns available cities (`Nagpur`, `Pune`) and micro-market locality options.
+- `GET /api/v1/admin/platform/users`: Lists admin operators. When invoked by a `CITY_OPERATIONS_MANAGER`, filters strictly to staff within their assigned city (`cityId`).
+- `POST /api/v1/admin/platform/users`: Provisions new operators with dynamic role and geographic coverage. Attempting to provision `ROOT_ADMIN` raises `ForbiddenException`.
+- `PATCH /api/v1/admin/platform/users/:id/status`: Suspends or activates operator accounts. Root Admin is protected and cannot be suspended.
+- `PATCH /api/v1/admin/platform/users/:id/role`: Reassigns dynamic role. Users cannot be promoted to `ROOT_ADMIN`.
+- `PATCH /api/v1/admin/platform/users/:id/geo`: Updates micro-market geographic assignment.
+- `POST /api/v1/admin/auth/switch-role`: Operator session switching endpoint for live hierarchy simulation.
+
+#### 3. Merchant Catalog Fallback & Tenant Scoping (`apps/api-gateway/src/bff/merchant/merchant.controller.ts`)
+- Enhanced `GET /api/v1/merchant/catalog/products` endpoint to resolve active tenant outlet profile (`outlet-sabji-001`, `outlet-kirana-002`, `outlet-garguti-003`, `outlet-sweets-004`) when `outletId` is omitted or set to default, eliminating empty catalog response anomalies in walk-in POS billing.
+
