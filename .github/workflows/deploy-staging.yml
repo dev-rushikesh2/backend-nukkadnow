@@ -10,6 +10,6 @@ jobs:
     name: Rolling Update to Staging
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Echo Staging Deploy Trigger
         run: echo "Staging deployment pipeline triggered for sha ${{ github.sha }}"
