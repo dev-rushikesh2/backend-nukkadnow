@@ -10,6 +10,8 @@ CREATE DATABASE fulfillment_db OWNER postgres;
 CREATE DATABASE payment_db OWNER postgres;
 CREATE DATABASE subscription_db OWNER postgres;
 CREATE DATABASE analytics_db OWNER postgres;
+CREATE DATABASE notification_db OWNER postgres;
+CREATE DATABASE review_support_db OWNER postgres;
 
 GRANT ALL PRIVILEGES ON DATABASE identity_db TO root;
 GRANT ALL PRIVILEGES ON DATABASE merchant_db TO root;
@@ -20,3 +22,5 @@ GRANT ALL PRIVILEGES ON DATABASE fulfillment_db TO root;
 GRANT ALL PRIVILEGES ON DATABASE payment_db TO root;
 GRANT ALL PRIVILEGES ON DATABASE subscription_db TO root;
 GRANT ALL PRIVILEGES ON DATABASE analytics_db TO root;
+GRANT ALL PRIVILEGES ON DATABASE notification_db TO root;
+GRANT ALL PRIVILEGES ON DATABASE review_support_db TO root;

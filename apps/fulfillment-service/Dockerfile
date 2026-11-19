@@ -15,4 +15,4 @@ USER nestjs
 COPY --from=builder /app/apps/fulfillment-service/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 4006
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "if [ -f dist/apps/fulfillment-service/src/main.js ]; then exec node dist/apps/fulfillment-service/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]

@@ -15,4 +15,4 @@ USER nestjs
 COPY --from=builder /app/apps/api-gateway/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 4000
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "if [ -f dist/apps/api-gateway/src/main.js ]; then exec node dist/apps/api-gateway/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]

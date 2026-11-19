@@ -1,0 +1,464 @@
+version: "3.9"
+
+services:
+  # ==============================================================================
+  # 1. API Gateway (Publicly Accessible via Traefik Reverse Proxy)
+  # ==============================================================================
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: api-gateway
+        SERVICE_PORT: 4000
+    container_name: commerce-api-gateway
+    restart: unless-stopped
+    expose:
+      - "4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - GATEWAY_PORT=4000
+      - GATEWAY_PUBLIC_URL=https://api.rushi.cloud
+      - IDENTITY_SERVICE_URL=http://identity-service:4001
+      - MERCHANT_SERVICE_URL=http://merchant-service:4002
+      - CATALOG_SERVICE_URL=http://catalog-service:4003
+      - DISCOVERY_SERVICE_URL=http://discovery-service:4004
+      - ORDER_SERVICE_URL=http://order-service:4005
+      - FULFILLMENT_SERVICE_URL=http://fulfillment-service:4006
+      - PAYMENT_SERVICE_URL=http://payment-service:4007
+      - SUBSCRIPTION_SERVICE_URL=http://subscription-service:4008
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4009
+      - REVIEW_SUPPORT_SERVICE_URL=http://review-support-service:4010
+      - ANALYTICS_SERVICE_URL=http://analytics-service:4011
+      - JWT_SECRET=local-development-secret-must-be-min-32-chars-long!
+      - JWT_ISSUER=https://auth.nukkadnow.internal
+      - JWT_AUDIENCE=nukkadnow-api
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+      - REDIS_URL=redis://redis:6379
+    networks:
+      - commerce-internal
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.commerce-api-websecure.rule=Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-websecure.entrypoints=websecure"
+      - "traefik.http.routers.commerce-api-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.commerce-api-web.rule=Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-web.entrypoints=web"
+      - "traefik.http.services.commerce-api.loadbalancer.server.port=4000"
+    depends_on:
+      - identity-service
+      - merchant-service
+      - catalog-service
+
+  # ==============================================================================
+  # 2. Identity Service
+  # ==============================================================================
+  identity-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: identity-service
+        SERVICE_PORT: 4001
+    container_name: commerce-identity-service
+    restart: unless-stopped
+    expose:
+      - "4001"
+    environment:
+      - NODE_ENV=production
+      - PORT=4001
+      - SERVICE_NAME=identity-service
+      - IDENTITY_SERVICE_PORT=4001
+      - IDENTITY_DATABASE_URL=postgresql://root:root@postgres:5432/identity_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/identity_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - JWT_SECRET=local-development-secret-must-be-min-32-chars-long!
+      - JWT_ISSUER=https://auth.nukkadnow.internal
+      - JWT_AUDIENCE=nukkadnow-api
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 3. Merchant Service
+  # ==============================================================================
+  merchant-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: merchant-service
+        SERVICE_PORT: 4002
+    container_name: commerce-merchant-service
+    restart: unless-stopped
+    expose:
+      - "4002"
+    environment:
+      - NODE_ENV=production
+      - PORT=4002
+      - SERVICE_NAME=merchant-service
+      - MERCHANT_SERVICE_PORT=4002
+      - MERCHANT_DATABASE_URL=postgresql://root:root@postgres:5432/merchant_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/merchant_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 4. Catalog Service
+  # ==============================================================================
+  catalog-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: catalog-service
+        SERVICE_PORT: 4003
+    container_name: commerce-catalog-service
+    restart: unless-stopped
+    expose:
+      - "4003"
+    environment:
+      - NODE_ENV=production
+      - PORT=4003
+      - SERVICE_NAME=catalog-service
+      - CATALOG_SERVICE_PORT=4003
+      - CATALOG_DATABASE_URL=postgresql://root:root@postgres:5432/catalog_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/catalog_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 5. Discovery Service
+  # ==============================================================================
+  discovery-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: discovery-service
+        SERVICE_PORT: 4004
+    container_name: commerce-discovery-service
+    restart: unless-stopped
+    expose:
+      - "4004"
+    environment:
+      - NODE_ENV=production
+      - PORT=4004
+      - SERVICE_NAME=discovery-service
+      - DISCOVERY_SERVICE_PORT=4004
+      - DISCOVERY_DATABASE_URL=postgresql://root:root@postgres:5432/discovery_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/discovery_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 6. Order Service
+  # ==============================================================================
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: order-service
+        SERVICE_PORT: 4005
+    container_name: commerce-order-service
+    restart: unless-stopped
+    expose:
+      - "4005"
+    environment:
+      - NODE_ENV=production
+      - PORT=4005
+      - SERVICE_NAME=order-service
+      - ORDER_SERVICE_PORT=4005
+      - ORDER_DATABASE_URL=postgresql://root:root@postgres:5432/order_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/order_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 7. Fulfillment Service
+  # ==============================================================================
+  fulfillment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: fulfillment-service
+        SERVICE_PORT: 4006
+    container_name: commerce-fulfillment-service
+    restart: unless-stopped
+    expose:
+      - "4006"
+    environment:
+      - NODE_ENV=production
+      - PORT=4006
+      - SERVICE_NAME=fulfillment-service
+      - FULFILLMENT_SERVICE_PORT=4006
+      - FULFILLMENT_DATABASE_URL=postgresql://root:root@postgres:5432/fulfillment_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/fulfillment_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 8. Payment Service
+  # ==============================================================================
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: payment-service
+        SERVICE_PORT: 4007
+    container_name: commerce-payment-service
+    restart: unless-stopped
+    expose:
+      - "4007"
+    environment:
+      - NODE_ENV=production
+      - PORT=4007
+      - SERVICE_NAME=payment-service
+      - PAYMENT_SERVICE_PORT=4007
+      - PAYMENT_DATABASE_URL=postgresql://root:root@postgres:5432/payment_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/payment_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - PAYMENT_PROVIDER=mock_psp
+      - PAYMENT_KEY_ID=rzp_test_dummykey
+      - PAYMENT_KEY_SECRET=rzp_test_dummysecret
+      - PAYMENT_WEBHOOK_SECRET=webhook_signing_secret_xyz
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 9. Subscription Service
+  # ==============================================================================
+  subscription-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: subscription-service
+        SERVICE_PORT: 4008
+    container_name: commerce-subscription-service
+    restart: unless-stopped
+    expose:
+      - "4008"
+    environment:
+      - NODE_ENV=production
+      - PORT=4008
+      - SERVICE_NAME=subscription-service
+      - SUBSCRIPTION_SERVICE_PORT=4008
+      - SUBSCRIPTION_DATABASE_URL=postgresql://root:root@postgres:5432/subscription_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/subscription_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 10. Notification Service
+  # ==============================================================================
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: notification-service
+        SERVICE_PORT: 4009
+    container_name: commerce-notification-service
+    restart: unless-stopped
+    expose:
+      - "4009"
+    environment:
+      - NODE_ENV=production
+      - PORT=4009
+      - SERVICE_NAME=notification-service
+      - NOTIFICATION_SERVICE_PORT=4009
+      - NOTIFICATION_DATABASE_URL=postgresql://root:root@postgres:5432/notification_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/notification_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 11. Review Support Service
+  # ==============================================================================
+  review-support-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: review-support-service
+        SERVICE_PORT: 4010
+    container_name: commerce-review-support-service
+    restart: unless-stopped
+    expose:
+      - "4010"
+    environment:
+      - NODE_ENV=production
+      - PORT=4010
+      - SERVICE_NAME=review-support-service
+      - REVIEW_SUPPORT_SERVICE_PORT=4010
+      - REVIEW_SUPPORT_DATABASE_URL=postgresql://root:root@postgres:5432/review_support_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/review_support_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 12. Analytics Service
+  # ==============================================================================
+  analytics-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: analytics-service
+        SERVICE_PORT: 4011
+    container_name: commerce-analytics-service
+    restart: unless-stopped
+    expose:
+      - "4011"
+    environment:
+      - NODE_ENV=production
+      - PORT=4011
+      - SERVICE_NAME=analytics-service
+      - ANALYTICS_SERVICE_PORT=4011
+      - ANALYTICS_DATABASE_URL=postgresql://root:root@postgres:5432/analytics_db?schema=public
+      - DATABASE_URL=postgresql://root:root@postgres:5432/analytics_db?schema=public
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
+    networks:
+      - commerce-internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==============================================================================
+  # 13. Infrastructure: PostgreSQL (PostGIS 16)
+  # ==============================================================================
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: commerce-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    volumes:
+      - commerce-pgdata:/var/lib/postgresql/data
+      - ./init_microservices_dbs.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - commerce-internal
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==============================================================================
+  # 14. Infrastructure: Redis 7.2
+  # ==============================================================================
+  redis:
+    image: redis:7.2-alpine
+    container_name: commerce-redis
+    restart: unless-stopped
+    volumes:
+      - commerce-redisdata:/data
+    networks:
+      - commerce-internal
+    expose:
+      - "6379"
+
+  # ==============================================================================
+  # 15. Infrastructure: RabbitMQ 3.13
+  # ==============================================================================
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: commerce-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - commerce-rabbitmqdata:/var/lib/rabbitmq
+    networks:
+      - commerce-internal
+    expose:
+      - "5672"
+      - "15672"
+
+# ==============================================================================
+# Persistent Volumes
+# ==============================================================================
+volumes:
+  commerce-pgdata:
+  commerce-redisdata:
+  commerce-rabbitmqdata:
+
+# ==============================================================================
+# Networks Isolation
+# ==============================================================================
+networks:
+  commerce-internal:
+    driver: bridge
+  dokploy-network:
+    external: true
