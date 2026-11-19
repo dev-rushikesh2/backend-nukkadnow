@@ -34,9 +34,6 @@ RUN if [ -f "./apps/${SERVICE_NAME}/prisma/schema.prisma" ]; then \
 # Build workspace packages and target microservice
 RUN pnpm --filter @nukkadnow/${SERVICE_NAME}... build
 
-# Ensure prisma folder exists so subsequent COPY does not fail
-RUN mkdir -p /app/apps/${SERVICE_NAME}/prisma
-
 # ------------------------------------------------------------------------------
 # Runner Stage
 # ------------------------------------------------------------------------------
@@ -51,15 +48,18 @@ ENV PORT=${SERVICE_PORT}
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
 
-# Copy runtime node_modules, packages, and build artifacts
+# Copy the monorepo root node_modules and shared packages
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/packages ./packages
-COPY --from=builder --chown=nestjs:nodejs /app/apps/${SERVICE_NAME}/package.json ./package.json
-COPY --from=builder --chown=nestjs:nodejs /app/apps/${SERVICE_NAME}/dist ./dist
-COPY --from=builder --chown=nestjs:nodejs /app/apps/${SERVICE_NAME}/prisma ./prisma
+
+# Copy the target app directory completely (includes node_modules, dist, prisma, package.json)
+COPY --from=builder --chown=nestjs:nodejs /app/apps/${SERVICE_NAME} ./apps/${SERVICE_NAME}
+
+# Run from the application directory so Node resolves its scoped node_modules and symlinks
+WORKDIR /app/apps/${SERVICE_NAME}
 
 USER nestjs
 EXPOSE ${SERVICE_PORT}
 
 # Run prisma db push if schema exists, then start service with fallback to all common dist layouts
-CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ./node_modules/.bin/prisma db push --skip-generate --accept-data-loss || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]
+CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ../../node_modules/.bin/prisma db push --skip-generate --accept-data-loss || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]
