@@ -19,7 +19,7 @@ services:
       - NODE_ENV=production
       - PORT=4000
       - GATEWAY_PORT=4000
-      - GATEWAY_PUBLIC_URL=https://api.rushi.cloud
+      - GATEWAY_PUBLIC_URL=https://api.nukkadnow.logixspire.tech
       - IDENTITY_SERVICE_URL=http://identity-service:4001
       - MERCHANT_SERVICE_URL=http://merchant-service:4002
       - CATALOG_SERVICE_URL=http://catalog-service:4003
@@ -42,10 +42,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=dokploy-network"
-      - "traefik.http.routers.commerce-api-websecure.rule=Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-websecure.rule=Host(`api.nukkadnow.logixspire.tech`) || Host(`api.rushi.cloud`)"
       - "traefik.http.routers.commerce-api-websecure.entrypoints=websecure"
       - "traefik.http.routers.commerce-api-websecure.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.commerce-api-web.rule=Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-web.rule=Host(`api.nukkadnow.logixspire.tech`) || Host(`api.rushi.cloud`)"
       - "traefik.http.routers.commerce-api-web.entrypoints=web"
       - "traefik.http.services.commerce-api.loadbalancer.server.port=4000"
     depends_on:

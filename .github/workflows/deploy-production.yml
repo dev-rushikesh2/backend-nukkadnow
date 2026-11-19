@@ -1,16 +1,25 @@
 name: Deploy to Production Environment
 
 on:
-  release:
-    types: [ published ]
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  deploy-prod:
-    name: Canary Deploy to Production Cluster
+  deploy-dokploy:
+    name: Trigger Dokploy Deployment
     runs-on: ubuntu-latest
-    environment: production
     steps:
-      - uses: actions/checkout@v4
-      - name: Echo Production Deploy Trigger
-        run: echo "Production deployment approved and initiated for release ${{ github.ref_name }}"
+      - name: Trigger Dokploy Webhook
+        run: |
+          echo "Triggering Dokploy deployment for commit ${{ github.sha }}..."
+          response=$(curl -s -w "\n%{http_code}" -X POST "https://admin.agronomos.in/api/deploy/compose/aN6hyYmvftG_oZ6Auz-ln")
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          echo "Dokploy Response ($http_code): $body"
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "Deployment webhook triggered successfully!"
+          else
+            echo "Failed to trigger Dokploy deployment"
+            exit 1
+          fi
