@@ -13,11 +13,14 @@ jobs:
       - name: Trigger Dokploy Webhook
         run: |
           echo "Triggering Dokploy deployment for commit ${{ github.sha }}..."
-          response=$(curl -s -w "\n%{http_code}" -X POST "https://admin.agronomos.in/api/deploy/compose/aN6hyYmvftG_oZ6Auz-ln")
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"ref":"refs/heads/main"}' \
+            "https://admin.agronomos.in/api/deploy/compose/aN6hyYmvftG_oZ6Auz-ln")
           http_code=$(echo "$response" | tail -n1)
           body=$(echo "$response" | sed '$d')
           echo "Dokploy Response ($http_code): $body"
-          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 400 ]; then
             echo "Deployment webhook triggered successfully!"
           else
             echo "Failed to trigger Dokploy deployment"
