@@ -18,6 +18,7 @@
 8. [Automated CI/CD Pipeline (GitHub Actions + Dokploy Webhook)](#8-automated-cicd-pipeline)
 9. [Verification & Smoke Testing Commands](#9-verification--smoke-testing-commands)
 10. [Troubleshooting & Common Pitfalls Reference](#10-troubleshooting--common-pitfalls-reference)
+11. [VPS SSH Access & Server Management](#11-vps-ssh-access--server-management)
 
 ---
 
@@ -353,6 +354,9 @@ name: Deploy to Production Environment
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 jobs:
@@ -447,6 +451,114 @@ HTTP/1.1 200 OK
 | **`OP_TIMEOUT` in Browser when viewing Dokploy Logs** | Streaming terminal DOM contains 10,000+ nodes freezing webview. | Press `Escape` to close the log modal, or navigate to **Docker** sidebar to inspect container logs directly. |
 | **SSL / Untrusted Certificate Warning** | Let's Encrypt is in the middle of ACME challenge resolution. | Wait 30 seconds for Let's Encrypt challenge to complete and refresh browser. |
 | **Microservice Database Not Found** | A new microservice was added without database in init script. | Add `CREATE DATABASE <name>_db OWNER postgres;` and `GRANT ALL` to `init_microservices_dbs.sql`. |
+
+---
+
+## 11. VPS SSH Access & Server Management
+
+The Dokploy Hetzner VPS host can be accessed securely via SSH for maintenance, database inspection, log streaming, and container monitoring.
+
+### Server Connection Details
+- **IP Address:** `62.72.30.149`
+- **SSH Port:** `22` (Active & Open)
+- **Default User:** `root`
+- **Dokploy Dashboard Host:** `admin.agronomos.in`
+- **Registered SSH Key:** `commerce` (Public key type: `ssh-ed25519`)
+
+---
+
+### Access Method 1: Direct SSH from Terminal (PowerShell / Git Bash / macOS / Linux)
+
+Open your terminal or command prompt:
+
+```bash
+# Connect as root
+ssh root@62.72.30.149
+```
+
+#### If using a specific private key file:
+If your Hetzner VPS was configured with a specific private key (such as the key paired with Dokploy's `commerce` key):
+```bash
+# On Linux / macOS / Git Bash:
+ssh -i ~/.ssh/id_ed25519 root@62.72.30.149
+
+# On Windows PowerShell:
+ssh -i "$HOME\.ssh\id_ed25519" root@62.72.30.149
+```
+
+---
+
+### Access Method 2: Dokploy Web Terminal (Instant Browser Access)
+
+If you do not have your local SSH private key available:
+1. Open the Dokploy Web Dashboard: **`https://admin.agronomos.in`**
+2. Navigate to **Projects** → **`commerce`** → **`commerce-backend-rxqpc5`**.
+3. Under the **General** tab or in the top right menu, click **Open Terminal**.
+4. Alternatively, click **Docker** in the left sidebar to open an interactive terminal session inside any running container (e.g. `commerce-api-gateway`, `commerce-postgres`).
+
+---
+
+### Essential Operations & Diagnostic Commands on the VPS
+
+Once connected to the server via SSH:
+
+#### 1. Filter and Inspect Only Commerce Fleet Containers
+```bash
+docker ps --filter "name=commerce" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+```
+
+#### 2. Stream Live Microservice Logs
+```bash
+# Follow live logs for API Gateway:
+docker logs -f --tail 100 commerce-api-gateway
+
+# Follow live logs for Identity Service:
+docker logs -f --tail 100 commerce-identity-service
+
+# Follow live logs for Order Service:
+docker logs -f --tail 100 commerce-order-service
+```
+
+#### 3. Direct PostgreSQL Database CLI Access
+```bash
+# Drop into psql inside the commerce-postgres container
+docker exec -it commerce-postgres psql -U root -d identity_db
+
+# Common psql commands:
+\l                    # List all 11 microservice databases
+\c order_db           # Connect to order database
+\dt                   # List all tables in current database
+SELECT count(*) FROM "User";
+\q                    # Exit psql
+```
+
+#### 4. Test Redis Cache Connection
+```bash
+docker exec -it commerce-redis redis-cli ping
+# Expected output: PONG
+
+# Monitor real-time Redis operations:
+docker exec -it commerce-redis redis-cli monitor
+```
+
+#### 5. Inspect RabbitMQ Message Broker Status
+```bash
+docker exec -it commerce-rabbitmq rabbitmqctl status
+docker exec -it commerce-rabbitmq rabbitmqctl list_queues
+```
+
+---
+
+### ⚠️ Critical Multi-Tenant VPS Safety Rules
+
+The VPS host runs multiple independent production systems (`agronomos.in`, `profile`, `user-web`, and Dokploy core services). Always adhere strictly to these rules:
+
+| Forbidden Command ❌ | Allowed Command ✅ | Reason |
+|---|---|---|
+| `docker system prune -a` | `docker image prune` | Global prune deletes images and stopped containers of existing production projects! |
+| `docker kill $(docker ps -q)` | `docker restart commerce-<service>` | Killing all containers destroys live production applications. |
+| `docker volume prune` | `docker volume rm <specific_unused_commerce_vol>` | Volume prune destroys active production PostgreSQL & persistent data. |
+| Binding host ports (`-p 5432:5432`) | Use Docker internal bridge network (`commerce-internal`) | Collides with other databases already bound to host ports on the VPS. |
 
 ---
 
