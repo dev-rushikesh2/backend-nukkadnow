@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Req, Headers, Post, Put, Delete, Body } from "@nestjs/common";
+import { Controller, Get, Param, Query, Req, Headers, Post, Put, Patch, Delete, Body, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 
@@ -915,6 +915,132 @@ export class CustomerController {
     };
   }
 
+  @Post("orders")
+  @ApiOperation({ summary: "Create customer order" })
+  createOrder(@Body() body: any, @Headers("authorization") authHeader?: string) {
+    const orderId = "NN-ORD-" + Date.now().toString(36).toUpperCase();
+    const orderNumber = "NN" + Math.floor(100000000 + Math.random() * 900000000);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    const timeStr = now.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true });
+
+    const items = (body.items || []).map((item: any, idx: number) => ({
+      id: item.id || `item-${idx}`,
+      name: item.name || "Item",
+      meta: `${item.weight || '1 unit'} × ${item.quantity || 1}`,
+      quantity: item.quantity || 1,
+      unitWeight: item.weight || '1 unit',
+      price: item.price || 0,
+      image: item.image || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80"
+    }));
+
+    const itemTotal = items.reduce((sum: number, it: any) => sum + (it.price * it.quantity), 0) || (body.totalAmount ? body.totalAmount - (body.deliveryFee || 0) : 100);
+    const deliveryFee = body.fulfilmentType === 'PICKUP' || body.fulfilmentMethod === 'pickup' ? 0 : (body.deliveryFee ?? 20);
+    const discount = body.discount || body.discountCoupon || 0;
+    const totalAmount = body.totalAmount || (itemTotal + deliveryFee - discount);
+
+    const newOrder = {
+      id: orderId,
+      orderNumber,
+      shopId: body.shopId || "outlet-sabji-001",
+      shopName: body.shopName || "Patil Fresh Sabji Mandi",
+      verified: true,
+      shopImage: body.shopImage || "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80",
+      status: "placed",
+      statusLabel: "Order Placed",
+      statusColor: "#7C3AED",
+      dateStr: `${dateStr}, ${timeStr}`,
+      placedDate: `${dateStr}, ${timeStr}`,
+      itemCount: items.reduce((acc: number, i: any) => acc + i.quantity, 0) || 1,
+      itemSummary: items.map((i: any) => i.name).join(", "),
+      totalAmount,
+      fulfilmentType: body.fulfilmentType || "DELIVERY",
+      deliveryAddress: body.deliveryAddress || "Flat 402, Shivneri Heights, Dharampeth, Nagpur - 440010",
+      rider: {
+        name: "Rahul K.",
+        phone: "+91 98XXX XX000",
+        rating: 4.9,
+        deliveries: "1,420",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+      },
+      timeline: [
+        { step: "Order Placed", time: timeStr, date: dateStr, done: true },
+        { step: "Preparing", time: "Pending", date: dateStr, done: false },
+        { step: "On the Way", time: "Pending", date: dateStr, done: false },
+        { step: "Delivered", time: "Pending", date: dateStr, done: false }
+      ],
+      items,
+      payment: {
+        method: body.paymentMethod || "UPI",
+        status: "Paid",
+        transactionId: `UPI-${orderNumber}`,
+        paidOn: `${dateStr}, ${timeStr}`
+      },
+      pricing: {
+        itemTotal,
+        discount,
+        deliveryFee,
+        totalPaid: totalAmount
+      }
+    };
+
+    SEEDED_CUSTOMER_ORDERS.unshift(newOrder as any);
+
+    return {
+      success: true,
+      data: newOrder
+    };
+  }
+
+  @Post("coupons/validate")
+  @ApiOperation({ summary: "Validate promo coupon for cart" })
+  validateCoupon(@Body() body: any) {
+    const code = (body.code || "").trim().toUpperCase();
+    if (code === "NUKKADNEW" || code === "WELCOME30") {
+      return {
+        success: true,
+        valid: true,
+        code,
+        discountAmount: 30,
+        message: "Coupon applied! ₹30 promotional discount applied."
+      };
+    } else if (code === "NUKKAD50" || code === "BIGSAVINGS") {
+      return {
+        success: true,
+        valid: true,
+        code,
+        discountAmount: 50,
+        message: "Super saver! ₹50 discount applied."
+      };
+    } else {
+      return {
+        success: false,
+        valid: false,
+        code,
+        discountAmount: 0,
+        message: "Invalid or expired coupon code. Try NUKKADNEW for ₹30 off."
+      };
+    }
+  }
+
+  @Get("outlets/:id/slots")
+  @ApiOperation({ summary: "Get dynamic pickup slots for outlet" })
+  getOutletSlots(@Param("id") outletId: string, @Query("date") date?: string) {
+    return {
+      success: true,
+      outletId,
+      date: date || new Date().toISOString().split("T")[0],
+      slots: [
+        { id: "slot-1", time: "10:00 AM – 11:00 AM", sla: "Ready in ~15 min", remainingCapacity: 8, available: true },
+        { id: "slot-2", time: "11:00 AM – 12:00 PM", sla: "Ready in ~20 min", remainingCapacity: 5, available: true },
+        { id: "slot-3", time: "12:00 PM – 01:00 PM", sla: "Standard pickup", remainingCapacity: 12, available: true },
+        { id: "slot-4", time: "04:00 PM – 05:00 PM", sla: "Evening rush", remainingCapacity: 3, available: true },
+        { id: "slot-5", time: "05:00 PM – 06:00 PM", sla: "Peak hours", remainingCapacity: 6, available: true },
+        { id: "slot-6", time: "06:00 PM – 07:00 PM", sla: "Standard pickup", remainingCapacity: 10, available: true }
+      ]
+    };
+  }
+
   @Get("orders/:id")
   @ApiOperation({ summary: "Get order details by order ID" })
   getOrderById(@Param("id") id: string) {
@@ -994,34 +1120,9 @@ export class CustomerController {
   }
 
   @Post("auth/login")
-  @ApiOperation({ summary: "Customer login/session creation" })
-  customerLogin(@Body() body: any) {
-    const name = body.name || "Ajay Patil";
-    const phone = body.phone || "+91 98230 55443";
-    const email = body.email || (name.toLowerCase().replace(/\s+/g, '.') + "@nukkadnow.in");
-
-    CUSTOMER_PROFILE = {
-      ...CUSTOMER_PROFILE,
-      name,
-      phone,
-      email,
-      verified: true
-    };
-
-    const token = "cust_token_" + Buffer.from(phone).toString("base64");
-    return {
-      success: true,
-      data: {
-        token,
-        user: {
-          id: CUSTOMER_PROFILE.id,
-          name: CUSTOMER_PROFILE.name,
-          phone: CUSTOMER_PROFILE.phone,
-          email: CUSTOMER_PROFILE.email,
-          roles: ["customer"]
-        }
-      }
-    };
+  @ApiOperation({ summary: "Customer login (Deprecated - Use OTP verification)" })
+  customerLogin() {
+    throw new ForbiddenException("Direct login has been disabled for security compliance. Please use /api/v1/customer/auth/otp/verify.");
   }
 
   @Put("profile")
@@ -1125,6 +1226,194 @@ export class CustomerController {
       remainingCount: CUSTOMER_ADDRESSES.length
     };
   }
+
+  // ==============================================================================
+  // Notifications Endpoints (HS-02)
+  // ==============================================================================
+  @Get("notifications")
+  @ApiOperation({ summary: "Fetch customer notification list" })
+  getNotifications() {
+    return {
+      success: true,
+      data: CUSTOMER_NOTIFICATIONS
+    };
+  }
+
+  @Patch("notifications/read-all")
+  @ApiOperation({ summary: "Mark all notifications as read" })
+  markNotificationsRead() {
+    CUSTOMER_NOTIFICATIONS.forEach(n => (n as any).isUnread = false);
+    return {
+      success: true,
+      message: "All notifications marked as read"
+    };
+  }
+
+  @Post("notifications/register-token")
+  @ApiOperation({ summary: "Register FCM device token for customer push notifications" })
+  registerDeviceToken(@Body() body: { token: string; platform?: string; userId?: string }) {
+    return {
+      success: true,
+      message: "Device token registered successfully for push notifications",
+      tokenPreview: body.token ? body.token.slice(0, 15) + "..." : undefined
+    };
+  }
+
+  @Post("notifications/test-push")
+  @ApiOperation({ summary: "Dispatch test push notification via FCM" })
+  async testPushNotification(@Body() body: { token?: string; topic?: string; title?: string; message?: string }) {
+    const notifServiceUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
+
+    // Add to in-app notifications feed
+    const newNotif = {
+      id: `n-${Date.now()}`,
+      category: "orders",
+      group: "today",
+      title: body.title || "Order Ready for Pickup! 🛍️",
+      body: body.message || "Your NukkadNow order #ORD78291 is ready at Patil Fresh.",
+      timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      icon: "🛍️",
+      iconBg: "#FEF3C7",
+      isUnread: true,
+      actionText: "Track Order",
+      actionRoute: "/order-tracking/ORD78291",
+      actionIcon: "📍"
+    };
+    CUSTOMER_NOTIFICATIONS.unshift(newNotif);
+
+    try {
+      const result = await this.proxy.dispatch(notifServiceUrl, "/api/v1/notifications/dispatch", {
+        method: "POST",
+        body: JSON.stringify({
+          recipient: body.token || body.topic || "customer_general",
+          templateCode: "CUSTOMER_ORDER_READY_PUSH",
+          variables: {
+            orderNumber: "#ORD78291",
+            tokenNumber: "7829"
+          }
+        })
+      });
+      return {
+        success: true,
+        message: "Push notification dispatched via Firebase FCM",
+        notification: newNotif,
+        result
+      };
+    } catch (err: any) {
+      return {
+        success: true,
+        message: "Push notification dispatched (simulated/downstream)",
+        notification: newNotif,
+        details: err?.message || err
+      };
+    }
+  }
+
+  // ==============================================================================
+  // Favourites Endpoints (HS-03, MS-08)
+  // ==============================================================================
+  @Get("favourites")
+  @ApiOperation({ summary: "Fetch customer saved products and shops" })
+  getFavourites() {
+    return {
+      success: true,
+      data: CUSTOMER_FAVOURITES
+    };
+  }
+
+  @Post("favourites")
+  @ApiOperation({ summary: "Add or toggle a customer favourite" })
+  addFavourite(@Body() body: any) {
+    const targetId = body.id || body.targetId;
+    const type = body.type || 'PRODUCT';
+    const existing = CUSTOMER_FAVOURITES.products.find(p => p.id === targetId) ||
+                     CUSTOMER_FAVOURITES.shops.find(s => s.id === targetId);
+
+    if (existing) {
+      return { success: true, isFavourite: true, message: "Item is in your favourites" };
+    }
+
+    if (type === 'PRODUCT' && body.product) {
+      CUSTOMER_FAVOURITES.products.unshift(body.product);
+    } else if (type === 'SHOP' && body.shop) {
+      CUSTOMER_FAVOURITES.shops.unshift(body.shop);
+    }
+
+    return { success: true, isFavourite: true, message: "Added to favourites" };
+  }
+
+  @Delete("favourites/:id")
+  @ApiOperation({ summary: "Remove item from favourites" })
+  removeFavourite(@Param("id") id: string) {
+    CUSTOMER_FAVOURITES.products = CUSTOMER_FAVOURITES.products.filter(p => p.id !== id);
+    CUSTOMER_FAVOURITES.shops = CUSTOMER_FAVOURITES.shops.filter(s => s.id !== id);
+    return {
+      success: true,
+      message: "Removed from favourites"
+    };
+  }
+
+  // ==============================================================================
+  // Reviews, Invoices & Search Trending (HS-05, HS-06, MS-06)
+  // ==============================================================================
+  @Post("reviews")
+  @ApiOperation({ summary: "Submit customer order rating and review" })
+  submitReview(@Body() body: any) {
+    return {
+      success: true,
+      reviewId: "rev-" + Date.now().toString(36),
+      message: `Thank you for rating your order from ${body.shopName || "store"}!`
+    };
+  }
+
+  @Get("orders/:id/invoice")
+  @ApiOperation({ summary: "Generate and download tax invoice" })
+  getOrderInvoice(@Param("id") id: string) {
+    return {
+      success: true,
+      orderId: id,
+      invoiceNumber: `INV-2026-${id.slice(-6)}`,
+      invoiceUrl: `https://api.nukkadnow.logixspire.tech/api/v1/customer/orders/${id}/invoice.pdf`
+    };
+  }
+
+  @Get("search/trending")
+  @ApiOperation({ summary: "Get trending search terms in locality" })
+  getTrendingSearches() {
+    return {
+      success: true,
+      data: ["Fresh Nagpur Palak", "Santra Barfi", "MP Sharbati Atta", "Desi Cow Ghee", "Vidarbha Toor Dal"]
+    };
+  }
+
+  // ==============================================================================
+  // Support Ticketing & Account Deletion (HS-07, HS-08)
+  // ==============================================================================
+  @Post("support/tickets")
+  @ApiOperation({ summary: "Submit a customer support ticket" })
+  createSupportTicket(@Body() body: any) {
+    const ticketId = "TKT-" + Math.floor(100000 + Math.random() * 900000);
+    return {
+      success: true,
+      ticketId,
+      message: `Ticket #${ticketId} created. A customer support specialist has been assigned.`
+    };
+  }
+
+  @Delete("account")
+  @ApiOperation({ summary: "Submit account deletion request in compliance with DPDP" })
+  deleteAccount() {
+    CUSTOMER_PROFILE = {
+      ...CUSTOMER_PROFILE,
+      name: "Deactivated User",
+      email: "deactivated@nukkadnow.in",
+      phone: ""
+    };
+    return {
+      success: true,
+      message: "Your account deletion request has been processed. All personal data will be purged in compliance with DPDP regulations."
+    };
+  }
 }
 
 // In-memory customer state backing the customer profile and address BFF
@@ -1222,3 +1511,88 @@ const SEEDED_CUSTOMER_ORDERS = [
     ]
   }
 ];
+
+let CUSTOMER_NOTIFICATIONS = [
+  {
+    id: "n-1",
+    category: "orders",
+    group: "today",
+    title: "Your order is Out for Delivery! 🚚",
+    body: "Order #NN123456789 from Patil Fresh Sabji Mandi is on the way.",
+    timeStr: "10:55 AM",
+    icon: "🚚",
+    iconBg: "#FFF7ED",
+    isUnread: true,
+    actionText: "Track Order",
+    actionRoute: "/order-tracking/NN123456789",
+    actionIcon: "📍"
+  },
+  {
+    id: "n-2",
+    category: "orders",
+    group: "today",
+    title: "Order Delivered ✅",
+    body: "Your order #NN123456780 has been delivered successfully.",
+    timeStr: "11:15 AM",
+    icon: "✓",
+    iconBg: "#DCFCE7",
+    isUnread: false
+  },
+  {
+    id: "n-3",
+    category: "offers",
+    group: "today",
+    title: "Weekend Veggie Market 🥬",
+    body: "Up to 25% off on fresh leafy greens and Vidarbha tomatoes.",
+    timeStr: "09:00 AM",
+    icon: "🏷️",
+    iconBg: "#EEF2FF",
+    isUnread: true,
+    actionText: "Shop Fresh",
+    actionRoute: "/discovery",
+    actionIcon: "🛍️"
+  }
+];
+
+let CUSTOMER_FAVOURITES = {
+  products: [
+    {
+      id: "prod-sabji-001",
+      name: "Fresh Nagpur Palak (Spinach)",
+      shopName: "Patil Fresh Sabji Mandi",
+      rating: 4.9,
+      reviewsCount: 128,
+      distance: "2.4 km",
+      price: 25,
+      originalPrice: 30,
+      discountPercent: "16% OFF",
+      unit: "500 g",
+      image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      id: "prod-sabji-002",
+      name: "Farm Fresh Desi Tomatoes",
+      shopName: "Patil Fresh Sabji Mandi",
+      rating: 4.8,
+      reviewsCount: 215,
+      distance: "2.4 km",
+      price: 40,
+      originalPrice: 50,
+      discountPercent: "20% OFF",
+      unit: "1 kg",
+      image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=300&q=80"
+    }
+  ],
+  shops: [
+    {
+      id: "outlet-sabji-001",
+      name: "Patil Fresh Sabji Mandi",
+      categories: "Vegetables & Fruits",
+      rating: 4.9,
+      reviewsCount: 128,
+      distance: "2.4 km",
+      image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=300&q=80",
+      isOpen: true
+    }
+  ]
+};

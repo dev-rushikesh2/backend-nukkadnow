@@ -73,5 +73,15 @@ export class NotificationService {
       channel: "EMAIL",
       templateBody: "Your NukkadNow Merchant verification code is {otp}. Valid for 10 minutes. Do not share this code with anyone.",
     });
+    this.createTemplate({
+      code: "MERCHANT_NEW_ORDER_PUSH",
+      channel: "PUSH",
+      templateBody: "New order {orderNumber} received for ₹{amount}! Customer: {customerName}",
+    });
+    this.createTemplate({
+      code: "CUSTOMER_ORDER_READY_PUSH",
+      channel: "PUSH",
+      templateBody: "Order {orderNumber} is ready for pickup! Token: {tokenNumber}",
+    });
   }
 }

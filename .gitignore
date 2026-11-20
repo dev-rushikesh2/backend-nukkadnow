@@ -46,6 +46,13 @@ Thumbs.db
 .turbo/
 **/.turbo/
 
+# Secrets and credentials
+secrets/
+**/secrets/
+*firebase*.json
+*-adminsdk-*.json
+serviceAccountKey.json
+
 # Prisma
 apps/**/prisma/*.db
 apps/**/prisma/*.db-journal

@@ -4,6 +4,7 @@ import { MockChannelAdapter } from "./mock-channel.adapter";
 import { Msg91SmsAdapter } from "./msg91-sms.adapter";
 import { WhatsAppCloudAdapter } from "./whatsapp-cloud.adapter";
 import { SmtpEmailAdapter } from "./smtp-email.adapter";
+import { FcmPushAdapter } from "./fcm-push.adapter";
 
 @Injectable()
 export class NotificationChannelFactory {
@@ -11,12 +12,17 @@ export class NotificationChannelFactory {
     private readonly mockAdapter: MockChannelAdapter,
     private readonly msg91Adapter: Msg91SmsAdapter,
     private readonly waAdapter: WhatsAppCloudAdapter,
-    private readonly emailAdapter: SmtpEmailAdapter
+    private readonly emailAdapter: SmtpEmailAdapter,
+    private readonly fcmPushAdapter: FcmPushAdapter
   ) {}
 
   getAdapter(channel: "SMS" | "WHATSAPP" | "EMAIL" | "PUSH"): ChannelDispatchPort {
     if (channel === "EMAIL") {
       return this.emailAdapter;
+    }
+
+    if (channel === "PUSH") {
+      return this.fcmPushAdapter;
     }
 
     const provider = process.env.NOTIFICATION_PROVIDER || "MOCK";
