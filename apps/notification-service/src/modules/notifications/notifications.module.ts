@@ -6,6 +6,7 @@ import { InMemoryNotificationRepository } from "./infrastructure/persistence/rep
 import { MockChannelAdapter } from "./infrastructure/external-clients/mock-channel.adapter";
 import { Msg91SmsAdapter } from "./infrastructure/external-clients/msg91-sms.adapter";
 import { WhatsAppCloudAdapter } from "./infrastructure/external-clients/whatsapp-cloud.adapter";
+import { SmtpEmailAdapter } from "./infrastructure/external-clients/smtp-email.adapter";
 import { NotificationChannelFactory } from "./infrastructure/external-clients/channel-factory.service";
 
 @Module({
@@ -15,12 +16,13 @@ import { NotificationChannelFactory } from "./infrastructure/external-clients/ch
     MockChannelAdapter,
     Msg91SmsAdapter,
     WhatsAppCloudAdapter,
+    SmtpEmailAdapter,
     NotificationChannelFactory,
     {
       provide: NotificationRepositoryPort,
       useClass: InMemoryNotificationRepository,
     },
   ],
-  exports: [NotificationService],
+  exports: [NotificationService, SmtpEmailAdapter],
 })
 export class NotificationsModule {}

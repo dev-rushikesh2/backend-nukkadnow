@@ -68,5 +68,10 @@ export class NotificationService {
       channel: "WHATSAPP",
       templateBody: "Your order {orderNumber} is READY for pickup! Show Token: {tokenNumber} at counter.",
     });
+    this.createTemplate({
+      code: "EMAIL_OTP",
+      channel: "EMAIL",
+      templateBody: "Your NukkadNow Merchant verification code is {otp}. Valid for 10 minutes. Do not share this code with anyone.",
+    });
   }
 }

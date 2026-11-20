@@ -10,10 +10,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("otp/request")
-  @ApiOperation({ summary: "Request login/signup OTP via phone number" })
+  @ApiOperation({ summary: "Request login/signup OTP via email or phone number" })
   @ApiResponse({ status: 200, description: "OTP sent successfully" })
   async requestOtp(@Body() dto: RequestOtpDto) {
-    return this.authService.requestLoginOtp(dto.phoneNumber);
+    const identifier = dto.email || dto.phoneNumber || dto.identifier;
+    return this.authService.requestLoginOtp(identifier || "");
   }
 
   @Post("otp/verify")
@@ -22,7 +23,8 @@ export class AuthController {
   async verifyOtp(@Body() dto: VerifyOtpDto, @Req() req: Request) {
     const userAgent = req.headers["user-agent"];
     const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress;
-    return this.authService.verifyLoginOtp(dto.phoneNumber, dto.otp, userAgent, ip);
+    const identifier = dto.email || dto.phoneNumber || dto.identifier;
+    return this.authService.verifyLoginOtp(identifier || "", dto.otp, userAgent, ip);
   }
 
   @Get("merchants")

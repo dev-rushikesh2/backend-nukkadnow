@@ -106,6 +106,14 @@ export class InMemoryUserRepository implements UserRepositoryPort {
     return null;
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    const cleaned = email.toLowerCase().trim();
+    for (const u of this.users.values()) {
+      if (u.email && u.email.toLowerCase().trim() === cleaned) return u;
+    }
+    return null;
+  }
+
   async listAll(): Promise<User[]> {
     return Array.from(new Set(this.users.values()));
   }

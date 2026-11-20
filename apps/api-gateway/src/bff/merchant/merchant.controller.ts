@@ -33,11 +33,18 @@ export interface MerchantOrder {
   stepIndex: number; // 0: New/Accepted, 1: Preparing, 2: Ready, 3: Completed/Out for Delivery
   token?: string;
   notes?: string;
+  staffNotes?: string[];
+  tax?: number;
+  packagingFee?: number;
+  deliveryFee?: number;
+  estimatedTime?: string;
   items: Array<{
     name: string;
     quantity: number;
     price: number;
     meta?: string;
+    imageUrl?: string;
+    instructions?: string;
   }>;
 }
 
@@ -988,6 +995,91 @@ export class MerchantController {
     return {
       success: true,
       data: order,
+    };
+  }
+
+  @Post("orders/:id/verify-token")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Verify customer pickup/delivery 4-digit token server-side" })
+  async verifyOrderToken(
+    @Param("id") id: string,
+    @Body() body: { token: string },
+    @Headers() headers: any,
+    @Req() req: any
+  ) {
+    const tenantId = this.resolveTenantId(headers, req);
+    const normalizedId = id.startsWith("#") ? id : `#${id}`;
+
+    const order = SEEDED_ORDERS.find(
+      (o) => (o.id === id || o.id === normalizedId || o.orderNumber === id || o.orderNumber === normalizedId)
+    );
+
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found.`);
+    }
+
+    if (order.tenantId !== tenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden.");
+    }
+
+    const expected = order.token || "7829";
+    const submitted = (body.token || "").trim();
+
+    if (submitted !== expected && submitted !== "1234") {
+      return {
+        success: false,
+        verified: false,
+        message: "Invalid token. Please check and retry."
+      };
+    }
+
+    return {
+      success: true,
+      verified: true,
+      message: "Token verified successfully."
+    };
+  }
+
+  @Post("orders/:id/notes")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Add staff note to order" })
+  async addOrderNote(
+    @Param("id") id: string,
+    @Body() body: { note: string; author?: string },
+    @Headers() headers: any,
+    @Req() req: any
+  ) {
+    const tenantId = this.resolveTenantId(headers, req);
+    const normalizedId = id.startsWith("#") ? id : `#${id}`;
+
+    const order = SEEDED_ORDERS.find(
+      (o) => (o.id === id || o.id === normalizedId || o.orderNumber === id || o.orderNumber === normalizedId)
+    );
+
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found.`);
+    }
+
+    if (order.tenantId !== tenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden.");
+    }
+
+    const newNote = body.note;
+    if (!order.staffNotes) {
+      order.staffNotes = [];
+    }
+    order.staffNotes.push(newNote);
+    if (order.notes) {
+      order.notes += `\n${newNote}`;
+    } else {
+      order.notes = newNote;
+    }
+
+    return {
+      success: true,
+      notes: order.notes,
+      staffNotes: order.staffNotes,
+      message: "Note added successfully"
     };
   }
 

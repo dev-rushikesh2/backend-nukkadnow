@@ -21,39 +21,81 @@ export class AuthService {
     private readonly sessionRepo: SessionRepositoryPort
   ) {}
 
-  async requestLoginOtp(phoneStr: string): Promise<{ success: boolean; expiresInSeconds: number; devOtp?: string }> {
-    const phone = PhoneNumber.create(phoneStr);
-    const rawOtp = this.otpManager.requestOtp(phone.getValue());
+  async requestLoginOtp(target: string): Promise<{ success: boolean; expiresInSeconds: number; devOtp?: string }> {
+    const isEmail = target.includes("@");
+    const cleanTarget = isEmail ? target.toLowerCase().trim() : PhoneNumber.create(target).getValue();
+    const rawOtp = this.otpManager.requestOtp(cleanTarget);
+
+    if (isEmail) {
+      // Dispatch email notification via notification-service or console
+      try {
+        const notifUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
+        await fetch(`${notifUrl}/api/v1/notifications/dispatch`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipient: cleanTarget,
+            templateCode: "EMAIL_OTP",
+            variables: { otp: rawOtp },
+          }),
+        }).catch(() => null);
+      } catch (err) {
+        // Notification service down; devOtp/console fallback
+      }
+    }
 
     // In development mode, return devOtp for ease of integration testing
     const isDev = process.env.NODE_ENV !== "production";
     return {
       success: true,
-      expiresInSeconds: 300,
+      expiresInSeconds: 600,
       devOtp: isDev ? (rawOtp || "123456") : undefined,
     };
   }
 
-  async verifyLoginOtp(phoneStr: string, otp: string, userAgent?: string, ipAddress?: string) {
-    const phone = PhoneNumber.create(phoneStr);
-    
+  async verifyLoginOtp(target: string, otp: string, userAgent?: string, ipAddress?: string) {
+    const isEmail = target.includes("@");
+    const cleanTarget = isEmail ? target.toLowerCase().trim() : PhoneNumber.create(target).getValue();
+
     // Support standard OTP manager or developer default OTP 123456
     if (otp !== "123456") {
-      this.otpManager.verifyOtp(phone.getValue(), otp);
+      this.otpManager.verifyOtp(cleanTarget, otp);
     }
 
-    let user = await this.userRepo.findByPhoneNumber(phone.getValue());
-    if (!user) {
-      // Auto-register new customer on first phone verification
-      user = new User({
-        id: UniqueIdentifier.generateV7(),
-        phoneNumber: phone,
-        status: "ACTIVE",
-        roles: ["CUSTOMER"],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-      await this.userRepo.save(user);
+    let user: User | null = null;
+    if (isEmail) {
+      user = await this.userRepo.findByEmail(cleanTarget);
+      if (!user) {
+        // Auto-register merchant on email verification
+        user = new User({
+          id: UniqueIdentifier.generateV7(),
+          phoneNumber: PhoneNumber.create("+91 98000 00000"),
+          email: cleanTarget,
+          fullName: cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+          status: "ACTIVE",
+          roles: ["MERCHANT_OWNER"],
+          tenantId: `tenant-${cleanTarget.split("@")[0].replace(/[^a-zA-Z0-9]/g, "")}`,
+          outletId: `outlet-${cleanTarget.split("@")[0].replace(/[^a-zA-Z0-9]/g, "")}`,
+          merchantName: `${cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} Store`,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        await this.userRepo.save(user);
+      }
+    } else {
+      user = await this.userRepo.findByPhoneNumber(cleanTarget);
+      if (!user) {
+        // Auto-register new customer on first phone verification
+        user = new User({
+          id: UniqueIdentifier.generateV7(),
+          phoneNumber: PhoneNumber.create(target),
+          status: "ACTIVE",
+          roles: ["CUSTOMER"],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        await this.userRepo.save(user);
+      }
     }
 
     if (!user.isActive()) {
@@ -67,6 +109,7 @@ export class AuthService {
       user: {
         id: user.id,
         phoneNumber: user.phoneNumber,
+        email: user.email,
         roles: user.roles,
         fullName: user.fullName,
         tenantId: user.tenantId,
