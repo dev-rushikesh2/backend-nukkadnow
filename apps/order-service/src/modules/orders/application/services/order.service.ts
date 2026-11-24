@@ -7,6 +7,7 @@ import { AddToCartDto, CheckoutDto, AcceptOrderDto } from "../dto/order.dto";
 import { OrderNotFoundError, EmptyCartError } from "../../domain/errors/order-errors";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 import { CatalogClient } from "../../infrastructure/external-clients/catalog.client";
+import * as crypto from "crypto";
 
 @Injectable()
 export class OrderService {
@@ -65,7 +66,7 @@ export class OrderService {
     }
 
     const orderId = UniqueIdentifier.generateV7();
-    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
+    const orderNumber = `ORD-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
 
     // 2. Atomic Stock Reservation across all cart items (Two-Phase Hold)
     const reservedItems: Array<{ variantId: string; quantity: number }> = [];
@@ -82,9 +83,15 @@ export class OrderService {
     }
 
     const subtotalPaise = cart.calculateSubtotalPaise();
-    const packagingPaise = 1000; // Rs. 10.00
-    const deliveryPaise = dto.fulfillmentType === "MERCHANT_DELIVERY" ? 3000 : 0;
-    const taxPaise = Math.round(subtotalPaise * 0.05); // 5% GST
+    const packagingPaiseStr = process.env.ORDER_PACKAGING_PAISE || "1000";
+    const taxRateBpsStr = process.env.ORDER_TAX_RATE_BPS || "500";
+    const deliveryPaiseStr = process.env.ORDER_DELIVERY_PAISE || "3000";
+
+    const packagingPaise = parseInt(packagingPaiseStr, 10);
+    const taxRateBps = parseInt(taxRateBpsStr, 10);
+    const configuredDeliveryPaise = parseInt(deliveryPaiseStr, 10);
+    const deliveryPaise = dto.fulfillmentType === "MERCHANT_DELIVERY" ? configuredDeliveryPaise : 0;
+    const taxPaise = Math.round((subtotalPaise * taxRateBps) / 10000);
 
     const pricing = new OrderPricing({
       subtotalPaise,
@@ -116,8 +123,16 @@ export class OrderService {
       updatedAt: new Date(),
     });
 
-    await this.orderRepo.save(order);
-    await this.cartRepo.delete(customerId); // Clear cart after successful checkout creation
+    try {
+      await this.orderRepo.save(order);
+    } catch (err: any) {
+      if (idempotencyKey && (err?.code === "P2002" || err?.message?.includes("idempotencyKey"))) {
+        const existing = await this.orderRepo.findByIdempotencyKey(idempotencyKey);
+        if (existing) return this.formatOrderResponse(existing);
+      }
+      throw err;
+    }
+    // Cart is preserved until payment confirmation
 
     return this.formatOrderResponse(order);
   }
@@ -132,7 +147,7 @@ export class OrderService {
     const order = await this.orderRepo.findById(id);
     if (!order) throw new OrderNotFoundError(id);
 
-    if (callerTenantId && callerTenantId !== order.tenantId) {
+    if (!callerTenantId || callerTenantId !== order.tenantId) {
       throw new ForbiddenException("Tenant Mismatch: Cannot accept orders of another organization.");
     }
 
@@ -145,7 +160,7 @@ export class OrderService {
     const order = await this.orderRepo.findById(id);
     if (!order) throw new OrderNotFoundError(id);
 
-    if (callerTenantId && callerTenantId !== order.tenantId) {
+    if (!callerTenantId || callerTenantId !== order.tenantId) {
       throw new ForbiddenException("Tenant Mismatch: Cannot mark orders of another organization.");
     }
 

@@ -19,7 +19,7 @@ async function bootstrap() {
   setupOpenApi(app);
 
   const port = process.env.PORT || 4009;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   logger.info(`notification-service microservice running on port ${port}`);
 }
 

@@ -32,7 +32,8 @@ export class MerchantService {
   }
 
   async getMerchant(id: string, callerTenantId?: string, callerRoles?: string[]): Promise<Merchant> {
-    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    const isSystemAdmin = callerTenantId === "system-admin-tenant";
+    const isAdmin = isSystemAdmin || callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
     if (!isAdmin && callerTenantId && callerTenantId !== id) {
       throw new ForbiddenException("Cross-tenant access forbidden: You cannot access another organization profile.");
     }

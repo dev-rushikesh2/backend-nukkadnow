@@ -22,6 +22,7 @@ export interface SubProps {
   id: string;
   merchantId: string;
   planCode: string;
+  planId?: string;
   status: "ACTIVE" | "EXPIRED" | "CANCELLED";
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
@@ -33,7 +34,10 @@ export class MerchantSubscription {
   get id(): string { return this.props.id; }
   get merchantId(): string { return this.props.merchantId; }
   get planCode(): string { return this.props.planCode; }
+  get planId(): string | undefined { return this.props.planId; }
   get status(): string { return this.props.status; }
+  get currentPeriodStart(): Date { return this.props.currentPeriodStart; }
+  get currentPeriodEnd(): Date { return this.props.currentPeriodEnd; }
 
   isActive(): boolean {
     return this.props.status === "ACTIVE" && this.props.currentPeriodEnd.getTime() > Date.now();

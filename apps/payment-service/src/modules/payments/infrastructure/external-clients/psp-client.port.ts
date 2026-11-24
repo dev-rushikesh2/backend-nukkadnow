@@ -1,6 +1,7 @@
 export interface PspOrderResult {
   pspOrderId: string;
   status: string;
+  clientSecret?: string;
   rawResponse?: any;
 }
 

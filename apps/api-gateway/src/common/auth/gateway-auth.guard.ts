@@ -4,7 +4,25 @@ import * as jwt from "jsonwebtoken";
 
 @Injectable()
 export class GatewayAuthGuard implements CanActivate {
-  private readonly jwtSecret = process.env.JWT_SECRET || "local-development-secret-must-be-min-32-chars-long!";
+  private readonly jwtSecret: string;
+  private readonly issuer: string;
+  private readonly audience: string;
+
+  constructor() {
+    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+      throw new Error("JWT_SECRET env var is required and must be >= 32 chars");
+    }
+    if (!process.env.JWT_ISSUER) {
+      throw new Error("JWT_ISSUER env var is required");
+    }
+    if (!process.env.JWT_AUDIENCE) {
+      throw new Error("JWT_AUDIENCE env var is required");
+    }
+
+    this.jwtSecret = process.env.JWT_SECRET;
+    this.issuer = process.env.JWT_ISSUER;
+    this.audience = process.env.JWT_AUDIENCE;
+  }
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
@@ -20,7 +38,10 @@ export class GatewayAuthGuard implements CanActivate {
     const token = authHeader.substring(7);
 
     try {
-      const decoded = jwt.verify(token, this.jwtSecret) as Record<string, unknown>;
+      const decoded = jwt.verify(token, this.jwtSecret, {
+        issuer: this.issuer,
+        audience: this.audience,
+      }) as Record<string, unknown>;
       (request as any).user = decoded;
       return true;
     } catch (err) {

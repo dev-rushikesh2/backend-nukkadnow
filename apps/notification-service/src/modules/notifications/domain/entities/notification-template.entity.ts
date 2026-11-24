@@ -31,6 +31,7 @@ export interface JobProps {
   renderedMessage: string;
   status: "SENT" | "FAILED";
   sentAt: Date;
+  templateId?: string;
 }
 
 export class NotificationJob {
@@ -42,6 +43,7 @@ export class NotificationJob {
   get renderedMessage(): string { return this.props.renderedMessage; }
   get status(): string { return this.props.status; }
   get sentAt(): Date { return this.props.sentAt; }
+  get templateId(): string | undefined { return this.props.templateId; }
 }
 
 export abstract class NotificationRepositoryPort {

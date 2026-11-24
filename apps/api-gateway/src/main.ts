@@ -9,8 +9,28 @@ async function bootstrap() {
   const logger = new StructuredLogger("api-gateway");
   const app = await NestFactory.create(AppModule);
 
+  const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+    : [
+        "https://admin.nukkadnow.logixspire.tech",
+        "https://merchant.nukkadnow.logixspire.tech",
+        "https://nukkadnow.logixspire.tech",
+        "https://api.nukkadnow.logixspire.tech",
+        "http://localhost:3000",
+        "http://localhost:4200",
+        "http://localhost:8100",
+        "capacitor://localhost",
+        "http://localhost",
+      ];
+
   app.enableCors({
-    origin: "*", // Locked down in production via environment policy
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+      }
+    },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
   });

@@ -54,7 +54,7 @@ export class DiscoveryService {
       city: dto.city || "Nagpur",
       latitude: dto.latitude,
       longitude: dto.longitude,
-      rating: 4.8,
+      rating: (dto as any).rating ?? 0.0,
       categoryTags: dto.categoryTags,
       isCurrentlyOpen: dto.isCurrentlyOpen,
       queueEstimateMinutes: dto.queueEstimateMinutes,
@@ -65,14 +65,7 @@ export class DiscoveryService {
     await this.discoveryRepo.save(doc);
   }
 
-  listPopularLocalities() {
-    return [
-      { name: "Sitabuldi", city: "Nagpur", pincode: "440012", activeMerchantsCount: 15 },
-      { name: "Dharampeth", city: "Nagpur", pincode: "440010", activeMerchantsCount: 12 },
-      { name: "Sadar", city: "Nagpur", pincode: "440001", activeMerchantsCount: 8 },
-      { name: "Dhantoli", city: "Nagpur", pincode: "440012", activeMerchantsCount: 9 },
-      { name: "Ramdaspeth", city: "Nagpur", pincode: "440010", activeMerchantsCount: 6 },
-      { name: "Wardhaman Nagar", city: "Nagpur", pincode: "440008", activeMerchantsCount: 7 },
-    ];
+  async listPopularLocalities() {
+    return this.discoveryRepo.getPopularLocalities();
   }
 }

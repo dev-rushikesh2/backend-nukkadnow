@@ -72,3 +72,14 @@ model DeliveryTask {
   @@index([cityCode, status])
   @@map("delivery_tasks")
 }
+
+model OutletTokenSequence {
+  id           String   @id @default(uuid())
+  outletId     String   @map("outlet_id")
+  seqDate      String   @map("seq_date")
+  lastSequence Int      @default(1) @map("last_sequence")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([outletId, seqDate])
+  @@map("outlet_token_sequences")
+}

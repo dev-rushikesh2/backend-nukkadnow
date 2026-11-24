@@ -1,0 +1,218 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("MERCHANT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+model Merchant {
+  id                 String               @id @default(uuid())
+  organizationName   String
+  legalBusinessName  String?
+  contactName        String
+  contactPhone       String               @unique
+  email              String?
+  businessType       String?              @default("retail") // retail, home, manufacturer, seasonal, event
+  category           String?              @default("Grocery & Daily Needs")
+  description        String?
+  verificationStatus String               @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  isSuspended        Boolean              @default(false)
+  suspendedReason    String?
+  suspendedAt        DateTime?
+  cityCode           String               @default("IN-MH-NGP") // Immutable municipal partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
+  districtCode       String               @default("NGP")
+  stateCode          String               @default("IN-MH")
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  outlets            Outlet[]
+  verifications      VerificationRecord[]
+  partnerApplication PartnerRegistration?
+
+  @@index([cityCode, verificationStatus])
+  @@index([cityCode, isSuspended])
+  @@map("merchants")
+}
+
+model Outlet {
+  id               String        @id @default(uuid())
+  merchantId       String
+  name             String
+  sellerMode       String        @default("PERMANENT") // PERMANENT, HOME_CHEF, SEASONAL, EVENT, ARTISAN
+  addressLine      String
+  locality         String
+  city             String        @default("Nagpur")
+  cityCode         String        @default("IN-MH-NGP") // Municipal city partition
+  district         String?       @default("Nagpur")
+  districtCode     String?       @default("NGP")
+  state            String?       @default("Maharashtra")
+  stateCode        String?       @default("IN-MH")
+  pincode          String?       @default("440001")
+  latitude         Float
+  longitude        Float
+  isAddressPublic  Boolean       @default(true)
+  storePickup      Boolean       @default(true)
+  merchantDelivery Boolean       @default(true)
+  deliveryRadiusKm Float         @default(5.0)
+  minOrderValue    Int           @default(300)
+  prepTimeMinutes  Int           @default(30)
+  isActive         Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  merchant         Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  hours            OutletHours[]
+  serviceAreas     ServiceArea[]
+
+  @@index([merchantId])
+  @@index([cityCode, isActive])
+  @@index([cityCode, locality])
+  @@map("outlets")
+}
+
+model OutletHours {
+  id        String  @id @default(uuid())
+  outletId  String
+  dayOfWeek Int // 0 = Sunday, 1 = Monday ...
+  openTime  String // "09:00"
+  closeTime String // "21:00"
+  breakTime String? // "13:00 - 14:00"
+  isClosed  Boolean @default(false)
+  outlet    Outlet  @relation(fields: [outletId], references: [id], onDelete: Cascade)
+
+  @@unique([outletId, dayOfWeek])
+  @@map("outlet_hours")
+}
+
+model ServiceArea {
+  id           String @id @default(uuid())
+  outletId     String
+  radiusMeters Int
+  geoJson      Json?
+  outlet       Outlet @relation(fields: [outletId], references: [id], onDelete: Cascade)
+
+  @@map("service_areas")
+}
+
+model VerificationRecord {
+  id           String    @id @default(uuid())
+  merchantId   String
+  documentType String
+  documentUrl  String
+  status       String    @default("SUBMITTED")
+  notes        String?
+  verifiedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  merchant     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@map("verification_records")
+}
+
+// ==============================================================================
+// Comprehensive Partner Registration & Onboarding System (8 Steps)
+// ==============================================================================
+
+model PartnerRegistration {
+  id            String  @id @default(uuid())
+  applicationId String  @unique // Format: NN-MR-YYYYMMDD-XXXX
+  merchantId    String? @unique
+  currentStep   Int     @default(1) // 1 to 8
+  status        String  @default("UNDER_REVIEW") // SUBMITTED, UNDER_REVIEW, APPROVED, ACTION_REQUIRED, REJECTED
+
+  // Step 1: Business Type
+  businessType String @default("retail") // retail, home, manufacturer, seasonal, event
+
+  // Step 2: Business Information (Details)
+  businessName        String
+  ownerName           String
+  mobileNumber        String
+  email               String?
+  businessCategory    String  @default("Grocery & Daily Needs")
+  businessDescription String
+
+  // Step 3: Location
+  pincode             String
+  state               String  @default("Maharashtra")
+  stateCode           String  @default("IN-MH")
+  district            String  @default("Akola")
+  districtCode        String  @default("AKL")
+  city                String  @default("Akola")
+  cityCode            String  @default("IN-MH-AKL") // Municipal partition key
+  locality            String  @default("Civil Lines")
+  fullAddress         String
+  latitude            Float   @default(20.7002)
+  longitude           Float   @default(77.0082)
+  homeBusinessPrivacy Boolean @default(false)
+
+  // Step 4: Business Hours
+  scheduleMode     String @default("weekly") // weekly, same_every_day
+  operatingHours   Json // Array of { dayOfWeek, dayShort, isOpen, openTime, closeTime, breakTime }
+  holidays         Json? // Array of holiday strings
+  temporaryClosure Json? // { startDate, endDate, reason }
+
+  // Step 5: Fulfilment Configuration
+  storePickup         Boolean @default(true)
+  merchantDelivery    Boolean @default(true)
+  serviceRadius       String  @default("5 km")
+  serviceRadiusMeters Int     @default(5000)
+  minOrderValue       Int     @default(300)
+  prepTime            String  @default("30 minutes")
+
+  // Step 6: Bank Settlement Details
+  bankAccountHolder   String?
+  bankAccountNumber   String?
+  bankIfscCode        String?
+  bankName            String?
+  categoryLicenceUrl  String?
+  categoryLicenceName String?
+
+  // Step 7 & 8: Terms, Review, Status Tracking
+  termsAgreed Boolean   @default(true)
+  submittedAt DateTime?
+  reviewedAt  DateTime?
+  reviewNotes String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relationships
+  merchant      Merchant?                   @relation(fields: [merchantId], references: [id], onDelete: SetNull)
+  documents     RegistrationDocument[]
+  statusHistory RegistrationStatusHistory[]
+
+  @@index([mobileNumber])
+  @@index([status])
+  @@index([cityCode, status])
+  @@map("partner_registrations")
+}
+
+model RegistrationDocument {
+  id                 String              @id @default(uuid())
+  registrationId     String
+  documentType       String // PAN, OWNER_ID, BUSINESS_PROOF, CATEGORY_LICENCE
+  fileName           String
+  fileUrl            String
+  fileSize           String?
+  verificationStatus String              @default("PENDING") // PENDING, VERIFIED, REJECTED
+  rejectionReason    String?
+  uploadedAt         DateTime            @default(now())
+  registration       PartnerRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@index([registrationId])
+  @@map("registration_documents")
+}
+
+model RegistrationStatusHistory {
+  id             String              @id @default(uuid())
+  registrationId String
+  fromStatus     String
+  toStatus       String
+  changedBy      String // e.g. "MERCHANT", "SYSTEM", "ADMIN_VERIFIER"
+  reason         String?
+  notes          String?
+  createdAt      DateTime            @default(now())
+  registration   PartnerRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@index([registrationId])
+  @@map("registration_status_history")
+}

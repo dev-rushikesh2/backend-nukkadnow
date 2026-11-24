@@ -11,10 +11,14 @@ import {
   Headers,
   ForbiddenException,
   NotFoundException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 import { SEEDED_PRODUCTS } from "../customer/customer.controller";
+import * as jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET || "local-development-secret-must-be-min-32-chars-long!";
 
 export interface MerchantOrder {
   id: string;
@@ -808,14 +812,34 @@ export const SEEDED_ORDERS: MerchantOrder[] = [
 @ApiTags("Merchant BFF")
 @Controller("api/v1/merchant")
 export class MerchantController {
-  private readonly catalogServiceUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:3002";
+  private readonly catalogServiceUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:4003";
   private readonly merchantServiceUrl = process.env.MERCHANT_SERVICE_URL || "http://localhost:4002";
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
 
   private resolveTenantId(headers: any, req: any): string {
-    const raw = headers?.["x-tenant-id"] || req?.user?.tenantId || "merchant-kirana-002";
-    return raw;
+    const authHeader = headers?.authorization || req?.headers?.authorization;
+    if (authHeader && typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      try {
+        const token = authHeader.substring(7);
+        const decoded: any = jwt.verify(token, JWT_SECRET);
+        if (decoded?.tenantId) {
+          return decoded.tenantId;
+        }
+      } catch {
+        // Token verification failed
+      }
+    }
+
+    if (req?.user?.tenantId) {
+      return req.user.tenantId;
+    }
+
+    if (process.env.NODE_ENV !== "production") {
+      return headers?.["x-tenant-id"] || "merchant-kirana-002";
+    }
+
+    throw new UnauthorizedException("Authentication required with valid merchant tenant scope");
   }
 
   // --- Real Dynamic Dashboard Cockpit ---

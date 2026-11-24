@@ -61,5 +61,5 @@ WORKDIR /app/apps/${SERVICE_NAME}
 USER nestjs
 EXPOSE ${SERVICE_PORT}
 
-# Run prisma db push if schema exists, then start service with fallback to all common dist layouts
-CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ../../node_modules/.bin/prisma db push --skip-generate --accept-data-loss || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]
+# Run prisma db push without accept-data-loss if schema exists, then start service with fallback to all common dist layouts
+CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ../../node_modules/.bin/prisma db push --skip-generate || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]

@@ -10,6 +10,7 @@ export class MockPspAdapter implements PspClientPort {
     this.logger.info(`[MOCK PSP] Created order intent for ${orderId} - Amount: ${amountPaise} ${currency}`);
     return {
       pspOrderId: `mock_order_${Date.now()}`,
+      clientSecret: `mock_secret_${orderId}`,
       status: "created",
     };
   }

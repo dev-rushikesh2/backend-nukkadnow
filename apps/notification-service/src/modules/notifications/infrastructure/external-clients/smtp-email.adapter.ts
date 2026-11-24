@@ -20,6 +20,35 @@ export class SmtpEmailAdapter implements ChannelDispatchPort {
   }
 
   private initTransporter(): void {
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const envCandidates = [
+          path.resolve(process.cwd(), '.env'),
+          path.resolve(process.cwd(), '..', '..', '.env'),
+          'C:\\Nukkadnow\\nukkadnow-backend\\.env'
+        ];
+        for (const p of envCandidates) {
+          if (fs.existsSync(p)) {
+            const lines = fs.readFileSync(p, 'utf8').split(/\r?\n/);
+            for (const l of lines) {
+              const tr = l.trim();
+              if (!tr || tr.startsWith('#')) continue;
+              const eq = tr.indexOf('=');
+              if (eq !== -1) {
+                const k = tr.slice(0, eq).trim();
+                let v = tr.slice(eq + 1).trim();
+                if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
+                if (!process.env[k]) process.env[k] = v;
+              }
+            }
+            break;
+          }
+        }
+      } catch (e) {}
+    }
+
     const host = process.env.SMTP_HOST;
     const port = parseInt(process.env.SMTP_PORT || "587", 10);
     const user = process.env.SMTP_USER;

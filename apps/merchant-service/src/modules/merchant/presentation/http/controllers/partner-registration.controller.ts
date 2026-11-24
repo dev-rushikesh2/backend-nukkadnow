@@ -68,14 +68,28 @@ export class PartnerRegistrationController {
     @Req() req?: any
   ) {
     const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const isSystemAdmin = callerTenantId === "system-admin-tenant";
     const callerRoles: string[] = req?.user?.roles || [];
-    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+    const isAdmin = isSystemAdmin || callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
 
     const registration = await this.registrationService.getApplicationStatus(identifier);
 
     // Tenant Isolation Check: If a specific tenant is authenticated, they cannot peek at another merchant's registration
     if (callerTenantId && !isAdmin && registration.merchantId && registration.merchantId !== callerTenantId) {
       throw new ForbiddenException("Cross-tenant access forbidden: You cannot view another merchant's application.");
+    }
+
+    const primitives: any = registration.toPrimitives();
+    // Protect sensitive financial PII from unauthenticated or cross-tenant exposure
+    if (!isAdmin && (!callerTenantId || registration.merchantId !== callerTenantId)) {
+      delete primitives.bankAccountHolder;
+      delete primitives.bankAccountNumber;
+      delete primitives.bankIfscCode;
+      delete primitives.bankName;
+      delete primitives.categoryLicenceUrl;
+      if (primitives.mobileNumber && primitives.mobileNumber.length >= 6) {
+        primitives.mobileNumber = primitives.mobileNumber.slice(0, 4) + "XXXX" + primitives.mobileNumber.slice(-2);
+      }
     }
 
     return {
@@ -85,11 +99,11 @@ export class PartnerRegistrationController {
       currentStep: registration.currentStep,
       businessName: registration.businessName,
       ownerName: registration.ownerName,
-      mobileNumber: registration.mobileNumber,
+      mobileNumber: primitives.mobileNumber || registration.mobileNumber,
       timeline: registration.statusHistory,
-      documents: registration.documents,
+      documents: isAdmin ? registration.documents : [],
       submittedAt: registration.submittedAt,
-      data: registration.toPrimitives(),
+      data: primitives,
     };
   }
 
@@ -104,8 +118,9 @@ export class PartnerRegistrationController {
     @Req() req?: any
   ) {
     const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const isSystemAdmin = callerTenantId === "system-admin-tenant";
     const callerRoles: string[] = req?.user?.roles || [];
-    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+    const isAdmin = isSystemAdmin || callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
 
     const existing = await this.registrationService.getApplicationStatus(applicationId);
     if (callerTenantId && !isAdmin && existing.merchantId && existing.merchantId !== callerTenantId) {
@@ -126,8 +141,19 @@ export class PartnerRegistrationController {
   @ApiParam({ name: "applicationId", description: "Application ID" })
   async updateStatus(
     @Param("applicationId") applicationId: string,
-    @Body() dto: UpdateApplicationStatusDto
+    @Body() dto: UpdateApplicationStatusDto,
+    @Req() req?: any
   ) {
+    const callerTenantId = req?.headers?.["x-tenant-id"];
+    const isSystemAdmin = callerTenantId === "system-admin-tenant";
+    const callerRoles: string[] = req?.user?.roles || [];
+    const isInternal = req?.headers?.["x-internal-secret"] === process.env.INTERNAL_SERVICE_SECRET;
+    const isAdmin = isSystemAdmin || callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN") || callerRoles.includes("VERIFICATION_STAFF");
+
+    if (!isAdmin && !isInternal && process.env.NODE_ENV === "production") {
+      throw new ForbiddenException("Privileged operation: Only platform administrators or automated KYC engine can update application status.");
+    }
+
     const registration = await this.registrationService.updateApplicationStatus(applicationId, dto);
     return {
       success: true,
@@ -148,8 +174,9 @@ export class PartnerRegistrationController {
     @Req() req?: any
   ) {
     const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const isSystemAdmin = callerTenantId === "system-admin-tenant";
     const callerRoles: string[] = req?.user?.roles || [];
-    const isAdmin = callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
+    const isAdmin = isSystemAdmin || callerRoles.includes("PLATFORM_ADMIN") || callerRoles.includes("SUPER_ADMIN");
 
     let list = await this.registrationService.listRegistrations(status);
 

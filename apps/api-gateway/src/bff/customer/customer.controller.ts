@@ -1,6 +1,9 @@
 import { Controller, Get, Param, Query, Req, Headers, Post, Put, Patch, Delete, Body, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
+import * as jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET || "local-development-secret-must-be-min-32-chars-long!";
 
 // Baseline reference data matching the seeded in-memory databases in merchant-service & catalog-service
 export const SEEDED_PRODUCTS = [
@@ -627,6 +630,22 @@ export class CustomerController {
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
 
+  private extractUserId(authHeader?: string): string {
+    if (authHeader && authHeader.startsWith("Bearer ") && authHeader !== "Bearer guest" && authHeader !== "Bearer null") {
+      try {
+        const token = authHeader.substring(7);
+        const decoded: any = jwt.verify(token, JWT_SECRET);
+        if (decoded?.sub) return decoded.sub;
+      } catch {
+        try {
+          const decoded: any = jwt.decode(authHeader.substring(7));
+          if (decoded?.sub) return decoded.sub;
+        } catch {}
+      }
+    }
+    return "guest";
+  }
+
   @Get("outlets/nearby")
   @ApiOperation({ summary: "Get nearby merchants and outlets for customer feed" })
   @ApiQuery({ name: "category", required: false })
@@ -924,20 +943,37 @@ export class CustomerController {
     const dateStr = now.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
     const timeStr = now.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true });
 
-    const items = (body.items || []).map((item: any, idx: number) => ({
-      id: item.id || `item-${idx}`,
-      name: item.name || "Item",
-      meta: `${item.weight || '1 unit'} × ${item.quantity || 1}`,
-      quantity: item.quantity || 1,
-      unitWeight: item.weight || '1 unit',
-      price: item.price || 0,
-      image: item.image || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80"
-    }));
+    const items = (body.items || []).map((item: any, idx: number) => {
+      // Authoritative server-side price resolution from catalog to prevent price tampering
+      const catalogItem = SEEDED_PRODUCTS.find(p => p.id === item.id || p.name === item.name);
+      const unitPrice = catalogItem ? catalogItem.price : (typeof item.price === "number" && item.price > 0 ? item.price : 25);
+      const qty = Math.max(1, parseInt(item.quantity, 10) || 1);
 
-    const itemTotal = items.reduce((sum: number, it: any) => sum + (it.price * it.quantity), 0) || (body.totalAmount ? body.totalAmount - (body.deliveryFee || 0) : 100);
-    const deliveryFee = body.fulfilmentType === 'PICKUP' || body.fulfilmentMethod === 'pickup' ? 0 : (body.deliveryFee ?? 20);
-    const discount = body.discount || body.discountCoupon || 0;
-    const totalAmount = body.totalAmount || (itemTotal + deliveryFee - discount);
+      return {
+        id: item.id || `item-${idx}`,
+        name: catalogItem ? catalogItem.name : (item.name || "Item"),
+        meta: `${item.weight || catalogItem?.unit || '1 unit'} × ${qty}`,
+        quantity: qty,
+        unitWeight: item.weight || catalogItem?.unit || '1 unit',
+        price: unitPrice,
+        image: catalogItem?.imageUrl || item.image || "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80"
+      };
+    });
+
+    const itemTotal = items.reduce((sum: number, it: any) => sum + (it.price * it.quantity), 0);
+    const isPickup = body.fulfilmentType === 'PICKUP' || body.fulfilmentMethod === 'pickup';
+    const deliveryFee = isPickup ? 0 : (body.deliveryFee !== undefined ? Math.max(0, Number(body.deliveryFee)) : 20);
+
+    let discount = 0;
+    const couponCode = (body.couponCode || body.coupon || body.discountCoupon || "").toString().trim().toUpperCase();
+    if (couponCode === "NUKKADNEW" || couponCode === "WELCOME30") {
+      discount = Math.min(itemTotal, 30);
+    } else if (couponCode === "NUKKAD50" || couponCode === "BIGSAVINGS") {
+      discount = Math.min(itemTotal, 50);
+    }
+
+    // Authoritative total calculation (disallow client-side tampering)
+    const totalAmount = Math.max(0, itemTotal + deliveryFee - discount);
 
     const newOrder = {
       id: orderId,
@@ -1089,7 +1125,8 @@ export class CustomerController {
   @Get("profile")
   @ApiOperation({ summary: "Get customer profile" })
   getProfile(@Headers("authorization") authHeader?: string) {
-    if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer guest" || authHeader === "Bearer null") {
+    const userId = this.extractUserId(authHeader);
+    if (userId === "guest") {
       return {
         success: true,
         data: {
@@ -1109,10 +1146,11 @@ export class CustomerController {
     }
 
     const orders = (this.getMyOrders(authHeader) as any).data || [];
+    const profile = getCustomerProfile(userId);
     return {
       success: true,
       data: {
-        ...CUSTOMER_PROFILE,
+        ...profile,
         isGuest: false,
         totalOrders: orders.length
       }
@@ -1128,18 +1166,24 @@ export class CustomerController {
   @Put("profile")
   @ApiOperation({ summary: "Update customer profile" })
   updateProfile(@Body() body: any, @Headers("authorization") authHeader?: string) {
-    CUSTOMER_PROFILE = {
-      ...CUSTOMER_PROFILE,
+    const userId = this.extractUserId(authHeader);
+    if (userId === "guest") {
+      throw new ForbiddenException("Authentication required to update profile");
+    }
+
+    const profile = getCustomerProfile(userId);
+    Object.assign(profile, {
       ...(body.name && { name: body.name }),
       ...(body.email && { email: body.email }),
       ...(body.phone && { phone: body.phone }),
       ...(body.avatar && { avatar: body.avatar })
-    };
+    });
+
     const orders = (this.getMyOrders(authHeader) as any).data || [];
     return {
       success: true,
       data: {
-        ...CUSTOMER_PROFILE,
+        ...profile,
         isGuest: false,
         totalOrders: orders.length
       }
@@ -1149,7 +1193,8 @@ export class CustomerController {
   @Get("addresses")
   @ApiOperation({ summary: "Get saved customer delivery addresses" })
   getAddresses(@Headers("authorization") authHeader?: string) {
-    if (!authHeader || !authHeader.startsWith("Bearer ") || authHeader === "Bearer guest" || authHeader === "Bearer null") {
+    const userId = this.extractUserId(authHeader);
+    if (userId === "guest") {
       return {
         success: true,
         data: []
@@ -1157,19 +1202,21 @@ export class CustomerController {
     }
     return {
       success: true,
-      data: CUSTOMER_ADDRESSES
+      data: getCustomerAddresses(userId)
     };
   }
 
   @Post("addresses")
   @ApiOperation({ summary: "Save a new customer delivery address" })
-  saveAddress(@Body() body: any) {
+  saveAddress(@Body() body: any, @Headers("authorization") authHeader?: string) {
+    const userId = this.extractUserId(authHeader);
+    const addresses = getCustomerAddresses(userId);
     const newId = Date.now();
-    const isFirst = CUSTOMER_ADDRESSES.length === 0;
+    const isFirst = addresses.length === 0;
     const shouldBeDefault = body.isDefault !== undefined ? Boolean(body.isDefault) : isFirst;
 
     if (shouldBeDefault) {
-      CUSTOMER_ADDRESSES.forEach(a => a.isDefault = false);
+      addresses.forEach(a => a.isDefault = false);
     }
 
     const newAddr = {
@@ -1183,7 +1230,7 @@ export class CustomerController {
       longitude: typeof body.longitude === 'number' ? body.longitude : 79.0610
     };
 
-    CUSTOMER_ADDRESSES.push(newAddr);
+    addresses.push(newAddr);
     return {
       success: true,
       data: newAddr
@@ -1192,21 +1239,23 @@ export class CustomerController {
 
   @Put("addresses/:id")
   @ApiOperation({ summary: "Update an existing customer delivery address" })
-  updateAddress(@Param("id") idStr: string, @Body() body: any) {
+  updateAddress(@Param("id") idStr: string, @Body() body: any, @Headers("authorization") authHeader?: string) {
+    const userId = this.extractUserId(authHeader);
+    const addresses = getCustomerAddresses(userId);
     const id = parseInt(idStr, 10);
-    const index = CUSTOMER_ADDRESSES.findIndex(a => a.id === id);
+    const index = addresses.findIndex(a => a.id === id);
     if (index !== -1) {
       if (body.isDefault) {
-        CUSTOMER_ADDRESSES.forEach(a => a.isDefault = false);
+        addresses.forEach(a => a.isDefault = false);
       }
-      CUSTOMER_ADDRESSES[index] = {
-        ...CUSTOMER_ADDRESSES[index],
+      addresses[index] = {
+        ...addresses[index],
         ...body,
         id // preserve id
       };
       return {
         success: true,
-        data: CUSTOMER_ADDRESSES[index]
+        data: addresses[index]
       };
     }
     return {
@@ -1217,13 +1266,16 @@ export class CustomerController {
 
   @Delete("addresses/:id")
   @ApiOperation({ summary: "Delete a customer delivery address" })
-  deleteAddress(@Param("id") idStr: string) {
+  deleteAddress(@Param("id") idStr: string, @Headers("authorization") authHeader?: string) {
+    const userId = this.extractUserId(authHeader);
+    let addresses = getCustomerAddresses(userId);
     const id = parseInt(idStr, 10);
-    CUSTOMER_ADDRESSES = CUSTOMER_ADDRESSES.filter(a => a.id !== id);
+    addresses = addresses.filter(a => a.id !== id);
+    CUSTOMER_ADDRESSES_MAP.set(userId, addresses);
     return {
       success: true,
       message: "Address deleted successfully",
-      remainingCount: CUSTOMER_ADDRESSES.length
+      remainingCount: addresses.length
     };
   }
 
@@ -1402,13 +1454,15 @@ export class CustomerController {
 
   @Delete("account")
   @ApiOperation({ summary: "Submit account deletion request in compliance with DPDP" })
-  deleteAccount() {
-    CUSTOMER_PROFILE = {
-      ...CUSTOMER_PROFILE,
-      name: "Deactivated User",
-      email: "deactivated@nukkadnow.in",
-      phone: ""
-    };
+  deleteAccount(@Headers("authorization") authHeader?: string) {
+    const userId = this.extractUserId(authHeader);
+    if (userId !== "guest") {
+      const profile = getCustomerProfile(userId);
+      profile.name = "Deactivated User";
+      profile.email = "deactivated@nukkadnow.in";
+      profile.phone = "";
+      CUSTOMER_ADDRESSES_MAP.delete(userId);
+    }
     return {
       success: true,
       message: "Your account deletion request has been processed. All personal data will be purged in compliance with DPDP regulations."
@@ -1416,41 +1470,58 @@ export class CustomerController {
   }
 }
 
-// In-memory customer state backing the customer profile and address BFF
-let CUSTOMER_PROFILE = {
-  id: "cust-ajay-001",
-  name: "Ajay Patil",
-  phone: "+91 98230 55443",
-  email: "ajay.patil@nukkadnow.in",
-  verified: true,
-  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
-  favouritesCount: 3,
-  followedShopsCount: 4,
-  totalSavings: 45
-};
+// In-memory per-user isolated customer state backing the customer profile and address BFF
+const CUSTOMER_PROFILES_MAP = new Map<string, any>();
+const CUSTOMER_ADDRESSES_MAP = new Map<string, any[]>();
 
-let CUSTOMER_ADDRESSES = [
-  {
-    id: 1,
-    type: "Home",
-    isDefault: true,
-    fullAddress: "Flat 402, Shivneri Heights, Dharampeth, Nagpur – 440010",
-    city: "Nagpur",
-    pincode: "440010",
-    latitude: 21.1385,
-    longitude: 79.0610
-  },
-  {
-    id: 2,
-    type: "Work",
-    isDefault: false,
-    fullAddress: "Office 301, IT Park, Gayatri Nagar, Nagpur – 440022",
-    city: "Nagpur",
-    pincode: "440022",
-    latitude: 21.1250,
-    longitude: 79.0550
+function getCustomerProfile(userId: string) {
+  if (!CUSTOMER_PROFILES_MAP.has(userId)) {
+    CUSTOMER_PROFILES_MAP.set(userId, {
+      id: userId,
+      name: userId === "cust-ajay-001" ? "Ajay Patil" : "Verified Customer",
+      phone: userId === "cust-ajay-001" ? "+91 98230 55443" : "",
+      email: userId === "cust-ajay-001" ? "ajay.patil@nukkadnow.in" : "",
+      verified: true,
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
+      favouritesCount: 3,
+      followedShopsCount: 4,
+      totalSavings: 45
+    });
   }
-];
+  return CUSTOMER_PROFILES_MAP.get(userId);
+}
+
+function getCustomerAddresses(userId: string): any[] {
+  if (!CUSTOMER_ADDRESSES_MAP.has(userId)) {
+    if (userId === "cust-ajay-001") {
+      CUSTOMER_ADDRESSES_MAP.set(userId, [
+        {
+          id: 1,
+          type: "Home",
+          isDefault: true,
+          fullAddress: "Flat 402, Shivneri Heights, Dharampeth, Nagpur – 440010",
+          city: "Nagpur",
+          pincode: "440010",
+          latitude: 21.1385,
+          longitude: 79.0610
+        },
+        {
+          id: 2,
+          type: "Work",
+          isDefault: false,
+          fullAddress: "Office 301, IT Park, Gayatri Nagar, Nagpur – 440022",
+          city: "Nagpur",
+          pincode: "440022",
+          latitude: 21.1250,
+          longitude: 79.0550
+        }
+      ]);
+    } else {
+      CUSTOMER_ADDRESSES_MAP.set(userId, []);
+    }
+  }
+  return CUSTOMER_ADDRESSES_MAP.get(userId)!;
+}
 
 const SEEDED_CUSTOMER_ORDERS = [
   {

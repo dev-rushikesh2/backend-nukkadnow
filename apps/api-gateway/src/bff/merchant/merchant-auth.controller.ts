@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Req, Headers, UseGuards, UnauthorizedException } from "@nestjs/common";
+import { Controller, Post, Get, Body, Req, Headers, UseGuards, UnauthorizedException, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
 import { Request } from "express";
@@ -112,7 +112,10 @@ export class MerchantAuthController {
       }
     }
 
-    // Direct authentic JWT generation with email or phone lookup
+    // Direct authentic JWT generation with email or phone lookup (Dev/Test only)
+    if (process.env.NODE_ENV === "production") {
+      throw new ForbiddenException("Direct login without OTP verification is strictly disabled in production.");
+    }
     const emailClean = (body.email || (body.phoneNumber && body.phoneNumber.includes("@") ? body.phoneNumber : ""))?.toLowerCase().trim();
     const phoneClean = body.phoneNumber && !body.phoneNumber.includes("@") ? body.phoneNumber.replace(/\s+/g, "") : "";
     
@@ -191,9 +194,9 @@ export class MerchantAuthController {
     } catch {
       const email = body.email || (body.phoneNumber && body.phoneNumber.includes("@") ? body.phoneNumber : null);
       if (email) {
-        console.log(`\n📧 [MERCHANT EMAIL OTP DISPATCH] Sent login OTP code 123456 to: ${email}`);
+        console.log(`\n📧 [MERCHANT EMAIL OTP DISPATCH] Sent login OTP code to: ${email}`);
       }
-      return { success: true, devOtp: "123456", expiresInSeconds: 600 };
+      return { success: true, expiresInSeconds: 600 };
     }
   }
 
@@ -211,6 +214,9 @@ export class MerchantAuthController {
         body: JSON.stringify(body),
       });
     } catch {
+      if (process.env.NODE_ENV === "production") {
+        throw new UnauthorizedException("Invalid or expired verification code");
+      }
       return this.login(body, req);
     }
   }

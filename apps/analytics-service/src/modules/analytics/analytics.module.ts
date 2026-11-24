@@ -2,17 +2,19 @@ import { Module } from "@nestjs/common";
 import { AnalyticsController } from "./presentation/http/controllers/analytics.controller";
 import { AnalyticsService } from "./application/services/analytics.service";
 import { AnalyticsRepositoryPort } from "./domain/entities/daily-metric.entity";
-import { InMemoryAnalyticsRepository } from "./infrastructure/persistence/repositories/in-memory-analytics.repository";
+import { PrismaAnalyticsRepository } from "./infrastructure/persistence/repositories/prisma-analytics.repository";
+import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
 
 @Module({
   controllers: [AnalyticsController],
   providers: [
+    PrismaService,
     AnalyticsService,
     {
       provide: AnalyticsRepositoryPort,
-      useClass: InMemoryAnalyticsRepository,
+      useClass: PrismaAnalyticsRepository,
     },
   ],
-  exports: [AnalyticsService],
+  exports: [AnalyticsService, PrismaService],
 })
 export class AnalyticsModule {}

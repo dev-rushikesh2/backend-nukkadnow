@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ForbiddenException, NotFoundException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { OtpManagerService } from "../../infrastructure/otp/otp-manager.service";
 import { UserRepositoryPort } from "../../domain/repositories/user.repository.port";
 import { SessionRepositoryPort } from "../../domain/repositories/session.repository.port";
@@ -11,45 +11,39 @@ import * as crypto from "crypto";
 
 @Injectable()
 export class AuthService {
-  private readonly jwtSecret = process.env.JWT_SECRET || "local-development-secret-must-be-min-32-chars-long!";
-  private readonly issuer = process.env.JWT_ISSUER || "https://auth.nukkadnow.internal";
-  private readonly audience = process.env.JWT_AUDIENCE || "nukkadnow-api";
+  private readonly jwtSecret: string;
+  private readonly issuer: string;
+  private readonly audience: string;
 
   constructor(
     private readonly otpManager: OtpManagerService,
     private readonly userRepo: UserRepositoryPort,
     private readonly sessionRepo: SessionRepositoryPort
-  ) {}
+  ) {
+    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+      throw new Error("JWT_SECRET env var is required and must be >= 32 chars");
+    }
+    if (!process.env.JWT_ISSUER) {
+      throw new Error("JWT_ISSUER env var is required");
+    }
+    if (!process.env.JWT_AUDIENCE) {
+      throw new Error("JWT_AUDIENCE env var is required");
+    }
+
+    this.jwtSecret = process.env.JWT_SECRET;
+    this.issuer = process.env.JWT_ISSUER;
+    this.audience = process.env.JWT_AUDIENCE;
+  }
 
   async requestLoginOtp(target: string): Promise<{ success: boolean; expiresInSeconds: number; devOtp?: string }> {
     const isEmail = target.includes("@");
     const cleanTarget = isEmail ? target.toLowerCase().trim() : PhoneNumber.create(target).getValue();
-    const rawOtp = this.otpManager.requestOtp(cleanTarget);
+    const devOtp = await this.otpManager.requestOtp(cleanTarget);
 
-    if (isEmail) {
-      // Dispatch email notification via notification-service or console
-      try {
-        const notifUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
-        await fetch(`${notifUrl}/api/v1/notifications/dispatch`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            recipient: cleanTarget,
-            templateCode: "EMAIL_OTP",
-            variables: { otp: rawOtp },
-          }),
-        }).catch(() => null);
-      } catch (err) {
-        // Notification service down; devOtp/console fallback
-      }
-    }
-
-    // In development mode, return devOtp for ease of integration testing
-    const isDev = process.env.NODE_ENV !== "production";
     return {
       success: true,
-      expiresInSeconds: 600,
-      devOtp: isDev ? (rawOtp || "123456") : undefined,
+      expiresInSeconds: 300,
+      ...(process.env.NODE_ENV !== "production" && devOtp ? { devOtp } : {}),
     };
   }
 
@@ -57,26 +51,20 @@ export class AuthService {
     const isEmail = target.includes("@");
     const cleanTarget = isEmail ? target.toLowerCase().trim() : PhoneNumber.create(target).getValue();
 
-    // Support standard OTP manager or developer default OTP 123456
-    if (otp !== "123456") {
-      this.otpManager.verifyOtp(cleanTarget, otp);
-    }
+    await this.otpManager.verifyOtp(cleanTarget, otp);
 
     let user: User | null = null;
     if (isEmail) {
       user = await this.userRepo.findByEmail(cleanTarget);
       if (!user) {
-        // Auto-register merchant on email verification
+        // Auto-register pending merchant on email verification
         user = new User({
           id: UniqueIdentifier.generateV7(),
-          phoneNumber: PhoneNumber.create("+91 98000 00000"),
+          phoneNumber: PhoneNumber.create("+919800000000"),
           email: cleanTarget,
           fullName: cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
           status: "ACTIVE",
-          roles: ["MERCHANT_OWNER"],
-          tenantId: `tenant-${cleanTarget.split("@")[0].replace(/[^a-zA-Z0-9]/g, "")}`,
-          outletId: `outlet-${cleanTarget.split("@")[0].replace(/[^a-zA-Z0-9]/g, "")}`,
-          merchantName: `${cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} Store`,
+          roles: ["PENDING_MERCHANT"],
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -102,7 +90,6 @@ export class AuthService {
       throw new UnauthorizedException("User account is suspended");
     }
 
-    // Generate tokens & session with tenant isolation claims
     const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
     return {
       ...tokens,
@@ -121,7 +108,10 @@ export class AuthService {
 
   async refreshTokens(refreshToken: string) {
     try {
-      const decoded = jwt.verify(refreshToken, this.jwtSecret) as any;
+      const decoded = jwt.verify(refreshToken, this.jwtSecret, {
+        issuer: this.issuer,
+        audience: this.audience,
+      }) as any;
       const user = await this.userRepo.findById(decoded.sub);
       if (!user || !user.isActive()) {
         throw new UnauthorizedException("Invalid user or account suspended");
@@ -133,10 +123,7 @@ export class AuthService {
         throw new UnauthorizedException("Revoked or invalid refresh session");
       }
 
-      // Rotate session token
-      session.revoke();
-      await this.sessionRepo.save(session);
-
+      await this.sessionRepo.revokeAllForUser(user.id);
       return this.issueTokenPair(user);
     } catch (err) {
       throw new UnauthorizedException("Invalid refresh token");
@@ -147,59 +134,6 @@ export class AuthService {
     await this.sessionRepo.revokeAllForUser(userId);
   }
 
-  /**
-   * Returns seeded merchant accounts for rapid authentication & tenant switching in dev / demos
-   */
-  async listMerchantAccounts() {
-    if (this.userRepo.listAll) {
-      const users = await this.userRepo.listAll();
-      return users
-        .filter(u => u.roles.includes("MERCHANT_OWNER") || u.roles.includes("PLATFORM_ADMIN"))
-        .map(u => ({
-          id: u.id,
-          fullName: u.fullName,
-          phoneNumber: u.phoneNumber,
-          email: u.email,
-          roles: u.roles,
-          tenantId: u.tenantId,
-          outletId: u.outletId,
-          merchantName: u.merchantName,
-        }));
-    }
-    return [];
-  }
-
-  /**
-   * Fast authentication by phone number for UI switcher / dev testing
-   */
-  async fastLogin(phoneStr: string, userAgent?: string, ipAddress?: string) {
-    const phone = PhoneNumber.create(phoneStr);
-    const user = await this.userRepo.findByPhoneNumber(phone.getValue());
-    if (!user) {
-      throw new NotFoundException(`User with phone ${phoneStr} not found`);
-    }
-    if (!user.isActive()) {
-      throw new UnauthorizedException("User account is suspended");
-    }
-
-    const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
-    return {
-      ...tokens,
-      user: {
-        id: user.id,
-        phoneNumber: user.phoneNumber,
-        roles: user.roles,
-        fullName: user.fullName,
-        tenantId: user.tenantId,
-        outletId: user.outletId,
-        merchantName: user.merchantName,
-      },
-    };
-  }
-
-  /**
-   * Issues tokens with claims strictly isolating the merchant tenant
-   */
   private async issueTokenPair(user: User, userAgent?: string, ipAddress?: string) {
     const payload = {
       sub: user.id,
@@ -209,12 +143,18 @@ export class AuthService {
       outletId: user.outletId,
       merchantName: user.merchantName,
       fullName: user.fullName,
-      iss: this.issuer,
-      aud: this.audience,
     };
 
-    const accessToken = jwt.sign(payload, this.jwtSecret, { expiresIn: "24h" });
-    const refreshToken = jwt.sign({ sub: user.id }, this.jwtSecret, { expiresIn: "30d" });
+    const accessToken = jwt.sign(payload, this.jwtSecret, {
+      expiresIn: "15m",
+      issuer: this.issuer,
+      audience: this.audience,
+    });
+    const refreshToken = jwt.sign({ sub: user.id }, this.jwtSecret, {
+      expiresIn: "30d",
+      issuer: this.issuer,
+      audience: this.audience,
+    });
 
     const session = new Session({
       id: UniqueIdentifier.generateV7(),
@@ -232,7 +172,7 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
-      expiresIn: 86400,
+      expiresIn: 900,
     };
   }
 }

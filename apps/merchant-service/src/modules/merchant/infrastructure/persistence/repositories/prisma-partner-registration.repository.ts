@@ -2,16 +2,13 @@ import { Injectable, Logger } from "@nestjs/common";
 import { PartnerRegistrationRepositoryPort } from "../../../domain/repositories/partner-registration.repository.port";
 import { PartnerRegistration, ApplicationStatusCode, BusinessTypeEnum } from "../../../domain/entities/partner-registration.entity";
 import { PrismaService } from "../prisma/prisma.service";
-import { InMemoryPartnerRegistrationRepository } from "./in-memory-partner-registration.repository";
+import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
 @Injectable()
 export class PrismaPartnerRegistrationRepository implements PartnerRegistrationRepositoryPort {
   private readonly logger = new Logger(PrismaPartnerRegistrationRepository.name);
 
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly inMemoryRepo: InMemoryPartnerRegistrationRepository
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   private mapToDomain(record: any): PartnerRegistration {
     return new PartnerRegistration({
@@ -79,195 +76,248 @@ export class PrismaPartnerRegistrationRepository implements PartnerRegistrationR
   }
 
   async save(registration: PartnerRegistration): Promise<void> {
-    // Keep in-memory cache in sync
-    await this.inMemoryRepo.save(registration);
+    const prim = registration.toPrimitives();
 
-    if (!this.prisma.isConnected) {
-      return;
-    }
-
-    try {
-      const prim = registration.toPrimitives();
-      await this.prisma.partnerRegistration.upsert({
-        where: { applicationId: prim.applicationId },
-        create: {
-          id: prim.id,
-          applicationId: prim.applicationId,
-          merchantId: prim.merchantId,
-          currentStep: prim.currentStep,
-          status: prim.status,
-          businessType: prim.businessType,
-          businessName: prim.businessName,
-          ownerName: prim.ownerName,
-          mobileNumber: prim.mobileNumber,
-          email: prim.email,
-          businessCategory: prim.businessCategory,
-          businessDescription: prim.businessDescription,
-          pincode: prim.pincode,
-          state: prim.state,
-          district: prim.district,
-          city: prim.city,
-          locality: prim.locality,
-          fullAddress: prim.fullAddress,
-          latitude: prim.latitude,
-          longitude: prim.longitude,
-          homeBusinessPrivacy: prim.homeBusinessPrivacy,
-          scheduleMode: prim.scheduleMode,
-          operatingHours: prim.operatingHours as any,
-          holidays: prim.holidays as any,
-          temporaryClosure: prim.temporaryClosure as any,
-          storePickup: prim.storePickup,
-          merchantDelivery: prim.merchantDelivery,
-          serviceRadius: prim.serviceRadius,
-          serviceRadiusMeters: prim.serviceRadiusMeters,
-          minOrderValue: prim.minOrderValue,
-          prepTime: prim.prepTime,
-          bankAccountHolder: prim.bankAccountHolder,
-          bankAccountNumber: prim.bankAccountNumber,
-          bankIfscCode: prim.bankIfscCode,
-          bankName: prim.bankName,
-          categoryLicenceUrl: prim.categoryLicenceUrl,
-          categoryLicenceName: prim.categoryLicenceName,
-          termsAgreed: prim.termsAgreed,
-          submittedAt: prim.submittedAt,
-          reviewedAt: prim.reviewedAt,
-          reviewNotes: prim.reviewNotes,
-        },
+    // Satisfy foreign key constraint & persist approved merchant/outlet in PostgreSQL
+    if (prim.merchantId) {
+      await this.prisma.merchant.upsert({
+        where: { id: prim.merchantId },
         update: {
-          merchantId: prim.merchantId,
-          currentStep: prim.currentStep,
-          status: prim.status,
-          businessType: prim.businessType,
-          businessName: prim.businessName,
-          ownerName: prim.ownerName,
-          mobileNumber: prim.mobileNumber,
+          organizationName: prim.businessName,
+          legalBusinessName: prim.businessName,
+          contactName: prim.ownerName,
+          contactPhone: prim.mobileNumber,
           email: prim.email,
-          businessCategory: prim.businessCategory,
-          businessDescription: prim.businessDescription,
-          pincode: prim.pincode,
-          state: prim.state,
-          district: prim.district,
-          city: prim.city,
-          locality: prim.locality,
-          fullAddress: prim.fullAddress,
-          latitude: prim.latitude,
-          longitude: prim.longitude,
-          homeBusinessPrivacy: prim.homeBusinessPrivacy,
-          scheduleMode: prim.scheduleMode,
-          operatingHours: prim.operatingHours as any,
-          holidays: prim.holidays as any,
-          temporaryClosure: prim.temporaryClosure as any,
-          storePickup: prim.storePickup,
-          merchantDelivery: prim.merchantDelivery,
-          serviceRadius: prim.serviceRadius,
-          serviceRadiusMeters: prim.serviceRadiusMeters,
-          minOrderValue: prim.minOrderValue,
-          prepTime: prim.prepTime,
-          bankAccountHolder: prim.bankAccountHolder,
-          bankAccountNumber: prim.bankAccountNumber,
-          bankIfscCode: prim.bankIfscCode,
-          bankName: prim.bankName,
-          categoryLicenceUrl: prim.categoryLicenceUrl,
-          categoryLicenceName: prim.categoryLicenceName,
-          termsAgreed: prim.termsAgreed,
-          submittedAt: prim.submittedAt,
-          reviewedAt: prim.reviewedAt,
-          reviewNotes: prim.reviewNotes,
+          businessType: prim.businessType,
+          category: prim.businessCategory,
+          description: prim.businessDescription,
+          verificationStatus: 'VERIFIED',
+          updatedAt: new Date(),
+        },
+        create: {
+          id: prim.merchantId,
+          organizationName: prim.businessName,
+          legalBusinessName: prim.businessName,
+          contactName: prim.ownerName,
+          contactPhone: prim.mobileNumber,
+          email: prim.email,
+          businessType: prim.businessType,
+          category: prim.businessCategory,
+          description: prim.businessDescription,
+          verificationStatus: 'VERIFIED',
         },
       });
 
-      // Synchronize Documents
-      if (prim.documents && prim.documents.length > 0) {
-        for (const doc of prim.documents) {
-          if (doc.id) {
-            await this.prisma.registrationDocument.upsert({
-              where: { id: doc.id },
-              create: {
-                id: doc.id,
-                registrationId: prim.id,
-                documentType: doc.documentType,
-                fileName: doc.fileName,
-                fileUrl: doc.fileUrl,
-                fileSize: doc.fileSize,
-                verificationStatus: doc.verificationStatus || "PENDING",
-                rejectionReason: doc.rejectionReason,
-              },
-              update: {
-                fileName: doc.fileName,
-                fileUrl: doc.fileUrl,
-                fileSize: doc.fileSize,
-                verificationStatus: doc.verificationStatus || "PENDING",
-                rejectionReason: doc.rejectionReason,
-              },
-            });
-          }
+      const existingOutlets = await this.prisma.outlet.findMany({
+        where: { merchantId: prim.merchantId },
+      });
+
+      const outletId = existingOutlets[0]?.id || UniqueIdentifier.generateV7();
+      await this.prisma.outlet.upsert({
+        where: { id: outletId },
+        update: {
+          name: prim.businessName,
+          addressLine: prim.fullAddress,
+          locality: prim.locality,
+          city: prim.city,
+          pincode: prim.pincode,
+          latitude: prim.latitude,
+          longitude: prim.longitude,
+          storePickup: prim.storePickup,
+          merchantDelivery: prim.merchantDelivery,
+          minOrderValue: prim.minOrderValue,
+          isActive: true,
+          updatedAt: new Date(),
+        },
+        create: {
+          id: outletId,
+          merchantId: prim.merchantId,
+          name: prim.businessName,
+          addressLine: prim.fullAddress,
+          locality: prim.locality,
+          city: prim.city,
+          pincode: prim.pincode,
+          latitude: prim.latitude,
+          longitude: prim.longitude,
+          storePickup: prim.storePickup,
+          merchantDelivery: prim.merchantDelivery,
+          minOrderValue: prim.minOrderValue,
+          isActive: true,
+        },
+      });
+    }
+
+    await this.prisma.partnerRegistration.upsert({
+      where: { applicationId: prim.applicationId },
+      create: {
+        id: prim.id,
+        applicationId: prim.applicationId,
+        merchantId: prim.merchantId,
+        currentStep: prim.currentStep,
+        status: prim.status,
+        businessType: prim.businessType,
+        businessName: prim.businessName,
+        ownerName: prim.ownerName,
+        mobileNumber: prim.mobileNumber,
+        email: prim.email,
+        businessCategory: prim.businessCategory,
+        businessDescription: prim.businessDescription,
+        pincode: prim.pincode,
+        state: prim.state,
+        district: prim.district,
+        city: prim.city,
+        locality: prim.locality,
+        fullAddress: prim.fullAddress,
+        latitude: prim.latitude,
+        longitude: prim.longitude,
+        homeBusinessPrivacy: prim.homeBusinessPrivacy,
+        scheduleMode: prim.scheduleMode,
+        operatingHours: prim.operatingHours as any,
+        holidays: prim.holidays as any,
+        temporaryClosure: prim.temporaryClosure as any,
+        storePickup: prim.storePickup,
+        merchantDelivery: prim.merchantDelivery,
+        serviceRadius: prim.serviceRadius,
+        serviceRadiusMeters: prim.serviceRadiusMeters,
+        minOrderValue: prim.minOrderValue,
+        prepTime: prim.prepTime,
+        bankAccountHolder: prim.bankAccountHolder,
+        bankAccountNumber: prim.bankAccountNumber,
+        bankIfscCode: prim.bankIfscCode,
+        bankName: prim.bankName,
+        categoryLicenceUrl: prim.categoryLicenceUrl,
+        categoryLicenceName: prim.categoryLicenceName,
+        termsAgreed: prim.termsAgreed,
+        submittedAt: prim.submittedAt,
+        reviewedAt: prim.reviewedAt,
+        reviewNotes: prim.reviewNotes,
+      },
+      update: {
+        merchantId: prim.merchantId,
+        currentStep: prim.currentStep,
+        status: prim.status,
+        businessType: prim.businessType,
+        businessName: prim.businessName,
+        ownerName: prim.ownerName,
+        mobileNumber: prim.mobileNumber,
+        email: prim.email,
+        businessCategory: prim.businessCategory,
+        businessDescription: prim.businessDescription,
+        pincode: prim.pincode,
+        state: prim.state,
+        district: prim.district,
+        city: prim.city,
+        locality: prim.locality,
+        fullAddress: prim.fullAddress,
+        latitude: prim.latitude,
+        longitude: prim.longitude,
+        homeBusinessPrivacy: prim.homeBusinessPrivacy,
+        scheduleMode: prim.scheduleMode,
+        operatingHours: prim.operatingHours as any,
+        holidays: prim.holidays as any,
+        temporaryClosure: prim.temporaryClosure as any,
+        storePickup: prim.storePickup,
+        merchantDelivery: prim.merchantDelivery,
+        serviceRadius: prim.serviceRadius,
+        serviceRadiusMeters: prim.serviceRadiusMeters,
+        minOrderValue: prim.minOrderValue,
+        prepTime: prim.prepTime,
+        bankAccountHolder: prim.bankAccountHolder,
+        bankAccountNumber: prim.bankAccountNumber,
+        bankIfscCode: prim.bankIfscCode,
+        bankName: prim.bankName,
+        categoryLicenceUrl: prim.categoryLicenceUrl,
+        categoryLicenceName: prim.categoryLicenceName,
+        termsAgreed: prim.termsAgreed,
+        submittedAt: prim.submittedAt,
+        reviewedAt: prim.reviewedAt,
+        reviewNotes: prim.reviewNotes,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Synchronize Documents
+    if (prim.documents && prim.documents.length > 0) {
+      for (const doc of prim.documents) {
+        if (doc.id) {
+          await this.prisma.registrationDocument.upsert({
+            where: { id: doc.id },
+            create: {
+              id: doc.id,
+              registrationId: prim.id,
+              documentType: doc.documentType,
+              fileName: doc.fileName,
+              fileUrl: doc.fileUrl,
+              fileSize: doc.fileSize,
+              verificationStatus: doc.verificationStatus || "PENDING",
+              rejectionReason: doc.rejectionReason,
+            },
+            update: {
+              fileName: doc.fileName,
+              fileUrl: doc.fileUrl,
+              fileSize: doc.fileSize,
+              verificationStatus: doc.verificationStatus || "PENDING",
+              rejectionReason: doc.rejectionReason,
+            },
+          });
         }
       }
-    } catch (err) {
-      this.logger.error("Failed to persist registration to PostgreSQL via Prisma", err);
+    }
+
+    // Synchronize Status History
+    if (prim.statusHistory && prim.statusHistory.length > 0) {
+      await this.prisma.registrationStatusHistory.deleteMany({
+        where: { registrationId: prim.id },
+      });
+      for (const h of prim.statusHistory) {
+        await this.prisma.registrationStatusHistory.create({
+          data: {
+            id: UniqueIdentifier.generateV7(),
+            registrationId: prim.id,
+            fromStatus: h.fromStatus,
+            toStatus: h.toStatus,
+            changedBy: h.changedBy,
+            reason: h.reason ?? null,
+            notes: h.notes ?? null,
+            createdAt: h.createdAt ? new Date(h.createdAt) : new Date(),
+          },
+        });
+      }
     }
   }
 
   async findById(id: string): Promise<PartnerRegistration | null> {
-    if (this.prisma.isConnected) {
-      try {
-        const record = await this.prisma.partnerRegistration.findUnique({
-          where: { id },
-          include: { documents: true, statusHistory: true },
-        });
-        if (record) return this.mapToDomain(record);
-      } catch (err) {
-        this.logger.warn(`Prisma findById fallback to in-memory: ${err}`);
-      }
-    }
-    return this.inMemoryRepo.findById(id);
+    const record = await this.prisma.partnerRegistration.findUnique({
+      where: { id },
+      include: { documents: true, statusHistory: true },
+    });
+    return record ? this.mapToDomain(record) : null;
   }
 
   async findByApplicationId(applicationId: string): Promise<PartnerRegistration | null> {
-    if (this.prisma.isConnected) {
-      try {
-        const record = await this.prisma.partnerRegistration.findUnique({
-          where: { applicationId },
-          include: { documents: true, statusHistory: true },
-        });
-        if (record) return this.mapToDomain(record);
-      } catch (err) {
-        this.logger.warn(`Prisma findByApplicationId fallback to in-memory: ${err}`);
-      }
-    }
-    return this.inMemoryRepo.findByApplicationId(applicationId);
+    const record = await this.prisma.partnerRegistration.findUnique({
+      where: { applicationId },
+      include: { documents: true, statusHistory: true },
+    });
+    return record ? this.mapToDomain(record) : null;
   }
 
   async findByMobileNumber(mobileNumber: string): Promise<PartnerRegistration | null> {
-    if (this.prisma.isConnected) {
-      try {
-        const record = await this.prisma.partnerRegistration.findFirst({
-          where: { mobileNumber },
-          include: { documents: true, statusHistory: true },
-        });
-        if (record) return this.mapToDomain(record);
-      } catch (err) {
-        this.logger.warn(`Prisma findByMobileNumber fallback to in-memory: ${err}`);
-      }
-    }
-    return this.inMemoryRepo.findByMobileNumber(mobileNumber);
+    const record = await this.prisma.partnerRegistration.findFirst({
+      where: { mobileNumber },
+      include: { documents: true, statusHistory: true },
+    });
+    return record ? this.mapToDomain(record) : null;
   }
 
   async list(filters?: { status?: ApplicationStatusCode; limit?: number; offset?: number }): Promise<PartnerRegistration[]> {
-    if (this.prisma.isConnected) {
-      try {
-        const records = await this.prisma.partnerRegistration.findMany({
-          where: filters?.status ? { status: filters.status } : undefined,
-          include: { documents: true, statusHistory: true },
-          take: filters?.limit || 50,
-          skip: filters?.offset || 0,
-          orderBy: { createdAt: "desc" },
-        });
-        return records.map(r => this.mapToDomain(r));
-      } catch (err) {
-        this.logger.warn(`Prisma list fallback to in-memory: ${err}`);
-      }
-    }
-    return this.inMemoryRepo.list(filters);
+    const records = await this.prisma.partnerRegistration.findMany({
+      where: filters?.status ? { status: filters.status } : undefined,
+      include: { documents: true, statusHistory: true },
+      take: filters?.limit || 50,
+      skip: filters?.offset || 0,
+      orderBy: { createdAt: "desc" },
+    });
+    return records.map((r: any) => this.mapToDomain(r));
   }
 }

@@ -3,6 +3,25 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 
+const backendDir = path.join(__dirname, '..', '..');
+const envFile = path.join(backendDir, '.env');
+if (fs.existsSync(envFile)) {
+  const content = fs.readFileSync(envFile, 'utf8');
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx !== -1) {
+      const key = trimmed.slice(0, eqIdx).trim();
+      let val = trimmed.slice(eqIdx + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      process.env[key] = val;
+    }
+  }
+}
+
 const services = [
   { name: 'api-gateway', port: 4000, desc: 'API Gateway & Customer/Merchant/Admin BFF' },
   { name: 'identity-service', port: 4001, desc: 'Identity, Auth & RBAC Service' },
@@ -18,7 +37,7 @@ const services = [
   { name: 'analytics-service', port: 4011, desc: 'Realtime Telemetry & Business Analytics' },
 ];
 
-const backendDir = path.join(__dirname, '..', '..');
+// logs directory
 const logsDir = path.join(backendDir, 'logs');
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
@@ -67,6 +86,22 @@ async function waitForHealth(svc, maxAttempts = 10, intervalMs = 1200) {
 async function startAll() {
   const isWin = process.platform === 'win32';
   const pnpmCmd = isWin ? 'pnpm.cmd' : 'pnpm';
+
+  // Free all service ports before launching
+  for (const svc of services) {
+    try {
+      if (isWin) {
+        const out = execSync(`netstat -aon | findstr ":${svc.port} "`, { encoding: 'utf8' });
+        for (const line of out.split('\n')) {
+          const parts = line.trim().split(/\s+/);
+          const pid = parts[parts.length - 1];
+          if (pid && pid !== '0' && pid !== process.pid.toString()) {
+            try { execSync(`taskkill /PID ${pid} /F 2>nul`); } catch (e) {}
+          }
+        }
+      }
+    } catch (e) {}
+  }
 
   // 1. Launch all services concurrently
   for (const svc of services) {
@@ -123,7 +158,11 @@ async function startAll() {
   // If running in test mode with --check-and-exit, exit cleanly
   if (process.argv.includes('--check-and-exit')) {
     cleanup();
+    return;
   }
+
+  // Keep orchestrator active indefinitely to monitor child microservices
+  setInterval(() => {}, 1000 * 60 * 60);
 }
 
 function cleanup() {

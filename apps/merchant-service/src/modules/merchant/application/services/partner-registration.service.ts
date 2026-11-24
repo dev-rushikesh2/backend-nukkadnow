@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, Logger } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException, ConflictException, Logger } from "@nestjs/common";
 import { PartnerRegistrationRepositoryPort } from "../../domain/repositories/partner-registration.repository.port";
 import { MerchantRepositoryPort, OutletRepositoryPort } from "../../domain/repositories/merchant.repository.port";
 import { PartnerRegistration, ApplicationStatusCode, BusinessTypeEnum } from "../../domain/entities/partner-registration.entity";
@@ -14,6 +14,7 @@ import {
   UploadDocumentDto
 } from "../dto/partner-registration.dto";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
+import * as crypto from "crypto";
 
 @Injectable()
 export class PartnerRegistrationService {
@@ -33,7 +34,7 @@ export class PartnerRegistrationService {
     const yyyy = now.getFullYear();
     const mm = String(now.getMonth() + 1).padStart(2, "0");
     const dd = String(now.getDate()).padStart(2, "0");
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const randomSuffix = crypto.randomInt(1000, 10000);
     return `NN-MR-${yyyy}${mm}${dd}-${randomSuffix}`;
   }
 
@@ -109,7 +110,7 @@ export class PartnerRegistrationService {
       id: UniqueIdentifier.generateV7(),
       applicationId: newAppId,
       currentStep: dto.currentStep || 1,
-      status: "SUBMITTED",
+      status: "DRAFT",
       businessType: (dto.businessType as BusinessTypeEnum) || "retail",
       businessName: dto.businessName || "Pending Name",
       ownerName: dto.ownerName || "Pending Owner",
@@ -146,9 +147,9 @@ export class PartnerRegistrationService {
       statusHistory: [
         {
           fromStatus: "DRAFT",
-          toStatus: "SUBMITTED",
+          toStatus: "DRAFT",
           changedBy: "MERCHANT",
-          reason: "Partner application started",
+          reason: "Partner application draft initialized",
           createdAt: new Date(),
         },
       ],
@@ -227,6 +228,10 @@ export class PartnerRegistrationService {
 
     // If application is APPROVED, automatically onboard into Merchant & Outlet entities!
     if (dto.status === "APPROVED" && !registration.merchantId) {
+      const existing = await this.merchantRepo.findByContactPhone(registration.mobileNumber);
+      if (existing) {
+        throw new ConflictException("Merchant with this phone already exists");
+      }
       const merchantId = UniqueIdentifier.generateV7();
 
       const merchant = new Merchant({

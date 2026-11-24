@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Get, UseGuards } from "@nestjs/common";
+import { Controller, Post, Body, Req } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { AuthService } from "../../../application/services/auth.service";
 import { RequestOtpDto, VerifyOtpDto, RefreshTokenDto } from "../../../application/dto/auth-requests.dto";
@@ -25,20 +25,6 @@ export class AuthController {
     const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress;
     const identifier = dto.email || dto.phoneNumber || dto.identifier;
     return this.authService.verifyLoginOtp(identifier || "", dto.otp, userAgent, ip);
-  }
-
-  @Get("merchants")
-  @ApiOperation({ summary: "List available merchant and admin accounts for login / testing" })
-  async listMerchants() {
-    return this.authService.listMerchantAccounts();
-  }
-
-  @Post("merchant/login")
-  @ApiOperation({ summary: "Direct login by phone number for merchant/admin authentication" })
-  async fastLogin(@Body("phoneNumber") phoneNumber: string, @Req() req: Request) {
-    const userAgent = req.headers["user-agent"];
-    const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress;
-    return this.authService.fastLogin(phoneNumber, userAgent, ip);
   }
 
   @Post("token/refresh")

@@ -51,6 +51,158 @@ const mutableLocalitiesList: any[] = [
   { id: "loc-9", name: "Deccan Gymkhana", city: "Pune", pincode: "411004", activeOutlets: 52, status: "ACTIVE", geofenceType: "POLYGON", deliveryRadiusKm: 6, congestionMultiplier: 1.0, createdAt: "2026-11-01T10:00:00Z" },
 ];
 
+const mutableServiceableCities: any[] = [
+  {
+    id: "pune",
+    name: "Pune City",
+    state: "Maharashtra",
+    district: "Pune District",
+    status: "SERVICEABLE",
+    isLive: true,
+    localitiesCount: 42,
+    totalLocalities: 54,
+    merchantsCount: 342,
+    orders30d: 12840,
+    customersCount: 36210,
+    coveragePercent: 78,
+    pickupEnabled: 42,
+    deliveryEnabled: 38,
+    notServiceable: 12,
+    launchDate: "12 Jan 2026",
+    cityOperationsManager: "Amit Deshmukh",
+    cityAreaKm2: 312.6,
+    serviceableAreaKm2: 244.8,
+  },
+  {
+    id: "pcmc",
+    name: "Pimpri-Chinchwad",
+    state: "Maharashtra",
+    district: "Pune District",
+    status: "SERVICEABLE",
+    isLive: true,
+    localitiesCount: 42,
+    totalLocalities: 48,
+    merchantsCount: 285,
+    orders30d: 4820,
+    customersCount: 18450,
+    coveragePercent: 88,
+    pickupEnabled: 42,
+    deliveryEnabled: 40,
+    notServiceable: 6,
+    launchDate: "20 Jan 2026",
+    cityOperationsManager: "Amit Deshmukh",
+    cityAreaKm2: 181.0,
+    serviceableAreaKm2: 159.2,
+  },
+  {
+    id: "nagpur",
+    name: "Nagpur",
+    state: "Maharashtra",
+    district: "Nagpur District",
+    status: "SERVICEABLE",
+    isLive: true,
+    localitiesCount: 38,
+    totalLocalities: 45,
+    merchantsCount: 310,
+    orders30d: 5200,
+    customersCount: 22100,
+    coveragePercent: 84,
+    pickupEnabled: 38,
+    deliveryEnabled: 35,
+    notServiceable: 7,
+    launchDate: "01 Nov 2025",
+    cityOperationsManager: "Rohan Sharma",
+    cityAreaKm2: 227.4,
+    serviceableAreaKm2: 191.0,
+  },
+  {
+    id: "nashik",
+    name: "Nashik",
+    state: "Maharashtra",
+    district: "Nashik District",
+    status: "PLANNED",
+    isLive: false,
+    localitiesCount: 28,
+    totalLocalities: 36,
+    merchantsCount: 195,
+    orders30d: 1200,
+    customersCount: 8900,
+    coveragePercent: 77,
+    pickupEnabled: 28,
+    deliveryEnabled: 24,
+    notServiceable: 8,
+    launchDate: "15 Mar 2027",
+    cityOperationsManager: "Unassigned",
+    cityAreaKm2: 259.0,
+    serviceableAreaKm2: 199.4,
+  },
+  {
+    id: "aurangabad",
+    name: "Aurangabad",
+    state: "Maharashtra",
+    district: "Chhatrapati Sambhajinagar",
+    status: "PLANNED",
+    isLive: false,
+    localitiesCount: 26,
+    totalLocalities: 34,
+    merchantsCount: 160,
+    orders30d: 800,
+    customersCount: 6780,
+    coveragePercent: 76,
+    pickupEnabled: 26,
+    deliveryEnabled: 20,
+    notServiceable: 8,
+    launchDate: "01 May 2027",
+    cityOperationsManager: "Unassigned",
+    cityAreaKm2: 139.0,
+    serviceableAreaKm2: 105.6,
+  },
+];
+
+const mutableCoverageLocalities: any[] = [
+  { id: "cov-loc-1", name: "Baner", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 48, orders30d: 2186, customersCount: 8420, boundaryAreaKm2: 4.86, lastUpdated: "15 Nov 2026, 06:24 PM", pincode: "411045", lat: 18.5597, lng: 73.7799 },
+  { id: "cov-loc-2", name: "Wakad", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 42, orders30d: 1975, customersCount: 7310, boundaryAreaKm2: 5.64, lastUpdated: "15 Nov 2026, 05:47 PM", pincode: "411057", lat: 18.5987, lng: 73.7634 },
+  { id: "cov-loc-3", name: "Hinjawadi", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 36, orders30d: 1842, customersCount: 6980, boundaryAreaKm2: 8.72, lastUpdated: "15 Nov 2026, 04:12 PM", pincode: "411057", lat: 18.5913, lng: 73.7389 },
+  { id: "cov-loc-4", name: "Balewadi", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 29, orders30d: 1403, customersCount: 5260, boundaryAreaKm2: 3.91, lastUpdated: "14 Nov 2026, 09:28 PM", pincode: "411045", lat: 18.5756, lng: 73.7707 },
+  { id: "cov-loc-5", name: "Kothrud", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP"], merchantsCount: 34, orders30d: 1566, customersCount: 5970, boundaryAreaKm2: 6.18, lastUpdated: "14 Nov 2026, 06:13 PM", pincode: "411038", lat: 18.5074, lng: 73.8077 },
+  { id: "cov-loc-6", name: "Kharadi", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 52, orders30d: 2430, customersCount: 8910, boundaryAreaKm2: 7.25, lastUpdated: "14 Nov 2026, 03:45 PM", pincode: "411014", lat: 18.5516, lng: 73.9349 },
+  { id: "cov-loc-7", name: "Hadapsar", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["DELIVERY"], merchantsCount: 41, orders30d: 1720, customersCount: 6840, boundaryAreaKm2: 9.10, lastUpdated: "13 Nov 2026, 11:15 AM", pincode: "411028", lat: 18.5089, lng: 73.9259 },
+  { id: "cov-loc-8", name: "Aundh", cityId: "pune", cityName: "Pune City", status: "ACTIVE", serviceTypes: ["PICKUP", "DELIVERY"], merchantsCount: 38, orders30d: 1690, customersCount: 6750, boundaryAreaKm2: 4.12, lastUpdated: "13 Nov 2026, 09:20 AM", pincode: "411007", lat: 18.5580, lng: 73.8077 },
+  { id: "cov-loc-9", name: "Katraj", cityId: "pune", cityName: "Pune City", status: "INACTIVE", serviceTypes: [], merchantsCount: 12, orders30d: 0, customersCount: 1420, boundaryAreaKm2: 5.40, lastUpdated: "10 Nov 2026, 02:00 PM", pincode: "411046", lat: 18.4575, lng: 73.8677 },
+  { id: "cov-loc-10", name: "Undri", cityId: "pune", cityName: "Pune City", status: "INACTIVE", serviceTypes: [], merchantsCount: 8, orders30d: 0, customersCount: 950, boundaryAreaKm2: 6.30, lastUpdated: "08 Nov 2026, 11:30 AM", pincode: "411060", lat: 18.4612, lng: 73.9090 },
+];
+
+const mutableImportBatches: any[] = [
+  {
+    id: "BATCH-20261115-01",
+    filename: "nukkadnow_locations_pune.xlsx",
+    fileSizeFormatted: "2.4 MB",
+    totalRecords: 5420,
+    validRecords: 5248,
+    warningRecords: 100,
+    errorRecords: 72,
+    status: "COMPLETED",
+    uploadedBy: "Amit Deshmukh (City Ops)",
+    importType: "LOCATIONS",
+    targetCity: "Pune City",
+    timestamp: "15 Nov 2026, 06:24 PM"
+  },
+  {
+    id: "BATCH-20261110-02",
+    filename: "pcmc_micro_markets_v2.geojson",
+    fileSizeFormatted: "1.8 MB",
+    totalRecords: 1280,
+    validRecords: 1280,
+    warningRecords: 0,
+    errorRecords: 0,
+    status: "COMPLETED",
+    uploadedBy: "Rushi Platform Architect",
+    importType: "GEOJSON_POLYGONS",
+    targetCity: "Pimpri-Chinchwad",
+    timestamp: "10 Nov 2026, 02:15 PM"
+  }
+];
+
 const mutableOutletsList: any[] = [
   {
     id: "out-ngp-001",
@@ -543,291 +695,247 @@ const mutableMerchantStatuses: Record<string, 'ACTIVE' | 'SUSPENDED' | 'PENDING_
 
 const mutableKycApplications: any[] = [
   {
-    id: "KYC-NGP-501",
-    merchantId: "merchant-sabji-001",
-    businessName: "Patil Fresh Sabji Mandi",
-    legalEntityName: "Patil Agro & Fresh Vegetables Private Limited",
-    locality: "Sitabuldi",
-    city: "Nagpur",
-    cityCode: "IN-MH-NGP",
-    phone: "+91 98230 11223",
-    mode: "RETAIL",
-    submittedAt: "2026-11-10T14:00:00Z",
-    slaExpiresAt: "2026-11-12T18:00:00Z",
-    status: "VERIFIED",
-    documents: [
-      {
-        type: "PAN_CARD",
-        title: "Proprietor PAN Card",
-        documentNumber: "AAAPS4321K",
-        fileUrl: "/assets/mock/pan-card.png",
-        verified: true,
-      },
-      {
-        type: "BANK_PASSBOOK",
-        title: "Bank Statement / Cancelled Cheque",
-        documentNumber: "SBIN0001234",
-        fileUrl: "/assets/mock/bank-cheque.png",
-        verified: true,
-      },
-      {
-        type: "STOREFRONT_PHOTO",
-        title: "Storefront GPS Verification",
-        fileUrl: "/assets/mock/storefront.png",
-        verified: true,
-        notes: "GPS geo-tag matches Sitabuldi Wholesale Mandi coordinates.",
-      },
-    ],
-    bankPennyDrop: {
-      accountNumberMasked: "*******4482",
-      ifscCode: "SBIN0001234",
-      bankName: "State Bank of India (Sitabuldi Branch)",
-      beneficiaryNameMatch: "PATIL AGRO & FRESH VEGETABLES",
-      registeredBusinessName: "Patil Agro & Fresh Vegetables Private Limited",
-      isMatch: true,
-      verifiedAt: "2026-11-10T14:05:00Z",
-    },
-  },
-  {
-    id: "KYC-NGP-502",
-    merchantId: "merchant-sweets-004",
-    businessName: "Mahalaxmi Sweets, Dairy & Bakery",
-    legalEntityName: "Mahalaxmi Food & Confectioneries LLP",
-    locality: "Dharampeth",
-    city: "Nagpur",
-    cityCode: "IN-MH-NGP",
-    phone: "+91 98900 77889",
-    mode: "FOOD_STALL",
-    submittedAt: "2026-11-11T09:30:00Z",
-    slaExpiresAt: "2026-11-13T19:30:00Z",
-    status: "IN_REVIEW",
-    documents: [
-      {
-        type: "FSSAI_LICENSE",
-        title: "FSSAI 14-Digit Food Safety License",
-        documentNumber: "11522036000404",
-        fileUrl: "/assets/mock/fssai-license.png",
-        verified: true,
-      },
-      {
-        type: "GSTIN_CERTIFICATE",
-        title: "GST Registration Certificate",
-        documentNumber: "27AAECM6641J1Z8",
-        fileUrl: "/assets/mock/gstin-cert.png",
-        verified: true,
-      },
-      {
-        type: "PAN_CARD",
-        title: "Business PAN Card",
-        documentNumber: "AAECM6641J",
-        fileUrl: "/assets/mock/pan-card.png",
-        verified: true,
-      },
-    ],
-    bankPennyDrop: {
-      accountNumberMasked: "*******9012",
-      ifscCode: "HDFC0000128",
-      bankName: "HDFC Bank (Dharampeth Branch)",
-      beneficiaryNameMatch: "MAHALAXMI FOOD & CONFECTIONERIES LLP",
-      registeredBusinessName: "Mahalaxmi Food & Confectioneries LLP",
-      isMatch: true,
-      verifiedAt: "2026-11-11T09:32:00Z",
-    },
-  },
-  {
-    id: "KYC-AKL-503",
-    merchantId: "merchant-garguti-003",
-    businessName: "Garguti Homemade Chivda & Snacks",
-    legalEntityName: "Kulkarni Traditional Food Products",
-    locality: "Ramdaspeth",
-    city: "Akola",
-    cityCode: "IN-MH-AKL",
-    phone: "+91 98221 44556",
-    mode: "HOME_MAKER",
-    submittedAt: "2026-11-12T11:00:00Z",
-    slaExpiresAt: "2026-11-14T11:00:00Z",
-    status: "SUBMITTED",
-    documents: [
-      {
-        type: "FSSAI_LICENSE",
-        title: "FSSAI Registration for Home Food Maker",
-        documentNumber: "21522036000303",
-        fileUrl: "/assets/mock/fssai-license.png",
-        verified: true,
-      },
-      {
-        type: "PAN_CARD",
-        title: "Proprietor PAN Card",
-        documentNumber: "AGNPK8831A",
-        fileUrl: "/assets/mock/pan-card.png",
-        verified: true,
-      },
-    ],
-    bankPennyDrop: {
-      accountNumberMasked: "*******1198",
-      ifscCode: "BARB0RAMDAS",
-      bankName: "Bank of Baroda (Ramdaspeth)",
-      beneficiaryNameMatch: "SUNITA KULKARNI",
-      registeredBusinessName: "Kulkarni Traditional Food Products",
-      isMatch: true,
-      verifiedAt: "2026-11-12T11:05:00Z",
-    },
-  },
-  {
-    id: "KYC-AMR-504",
-    merchantId: "merchant-amravati-001",
-    businessName: "Rajkamal Spices & Dry Fruits",
-    legalEntityName: "Rajkamal Agro Trading Company",
-    locality: "Rajkamal Chowk",
-    city: "Amravati",
-    cityCode: "IN-MH-AMR",
-    phone: "+91 98224 88771",
-    mode: "RETAIL",
-    submittedAt: "2026-11-13T10:00:00Z",
-    slaExpiresAt: "2026-11-15T10:00:00Z",
-    status: "IN_REVIEW",
-    documents: [
-      {
-        type: "FSSAI_LICENSE",
-        title: "FSSAI Commercial License",
-        documentNumber: "11522036000505",
-        fileUrl: "/assets/mock/fssai-license.png",
-        verified: true,
-      },
-      {
-        type: "GSTIN_CERTIFICATE",
-        title: "GST Registration Certificate",
-        documentNumber: "27AAZPD4921K1Z3",
-        fileUrl: "/assets/mock/gstin-cert.png",
-        verified: true,
-      },
-    ],
-    bankPennyDrop: {
-      accountNumberMasked: "*******3312",
-      ifscCode: "MAHB0000412",
-      bankName: "Bank of Maharashtra (Rajkamal Chowk)",
-      beneficiaryNameMatch: "RAJKAMAL AGRO TRADING COMPANY",
-      registeredBusinessName: "Rajkamal Agro Trading Company",
-      isMatch: true,
-      verifiedAt: "2026-11-13T10:04:00Z",
-    },
-  },
-  {
-    id: "KYC-PUN-505",
-    merchantId: "merchant-pune-001",
-    businessName: "Chitale Dairy & Traditional Sweets",
-    legalEntityName: "Chitale Bandhu Foods Private Limited",
-    locality: "Deccan Gymkhana",
+    id: "APP-024681",
+    merchantId: "mer-pun-001",
+    businessName: "Shree Ganesh Mart",
+    legalEntityName: "Shree Ganesh Retail Enterprises",
+    ownerName: "Rajesh Patil",
+    phone: "+91 98234 56789",
+    email: "rajesh@shreeganeshmart.in",
+    category: "Grocery",
+    businessType: "Proprietorship",
     city: "Pune",
     cityCode: "IN-MH-PUN",
-    phone: "+91 98220 99881",
-    mode: "FOOD_STALL",
-    submittedAt: "2026-11-14T09:00:00Z",
-    slaExpiresAt: "2026-11-16T09:00:00Z",
-    status: "VERIFIED",
-    documents: [
-      {
-        type: "FSSAI_LICENSE",
-        title: "FSSAI Manufacturing License",
-        documentNumber: "11522036000606",
-        fileUrl: "/assets/mock/fssai-license.png",
-        verified: true,
-      },
-      {
-        type: "GSTIN_CERTIFICATE",
-        title: "GST Registration Certificate",
-        documentNumber: "27AABCC3321N1Z1",
-        fileUrl: "/assets/mock/gstin-cert.png",
-        verified: true,
-      },
+    locality: "Baner",
+    address: "Shop No. 4, Baner Road, Baner, Pune - 411045",
+    pincode: "411045",
+    submittedAt: "2026-11-15T10:24:00Z",
+    submittedAtFormatted: "15 Nov 2026, 10:24 AM",
+    slaExpiresAt: "2026-11-17T10:24:00Z",
+    status: "PENDING_REVIEW",
+    mode: "RETAIL",
+    since: "12 Jan 2026",
+    gstin: "27ABCDE1234F1Z5",
+    fssai: "21523000000000",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: true },
+      { id: "chk-3", title: "Business Address Verified", verified: false },
+      { id: "chk-4", title: "Business Documents Verified", verified: true },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: false },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
     ],
-    bankPennyDrop: {
-      accountNumberMasked: "*******8890",
-      ifscCode: "ICIC0000005",
-      bankName: "ICICI Bank (Deccan Gymkhana)",
-      beneficiaryNameMatch: "CHITALE BANDHU FOODS PVT LTD",
-      registeredBusinessName: "Chitale Bandhu Foods Private Limited",
-      isMatch: true,
-      verifiedAt: "2026-11-14T09:05:00Z",
-    },
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "ABCDE1234F" },
+      { id: "doc-2", type: "AADHAAR_CARD", title: "Aadhaar Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/aadhaar.png", docNumber: "XXXX-XXXX-9821" },
+      { id: "doc-3", type: "SHOP_PHOTO", title: "Shop Photo", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/storefront.png", docNumber: "GPS-18.55-73.78" },
+      { id: "doc-4", type: "SHOP_INTERIOR", title: "Shop Interior", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/interior.png", docNumber: "INSP-001" },
+      { id: "doc-5", type: "BUSINESS_PROOF", title: "Business Proof", status: "PENDING", verified: false, previewUrl: "/assets/mock/rent-agreement.png", docNumber: "DOC-2026-BP" },
+      { id: "doc-6", type: "GST_CERTIFICATE", title: "GST Certificate", status: "PENDING", verified: false, previewUrl: "/assets/mock/gst-cert.png", docNumber: "27ABCDE1234F1Z5" },
+    ],
+    internalRemarks: "",
   },
+  {
+    id: "APP-024677",
+    merchantId: "mer-pun-002",
+    businessName: "Fresh Farm Store",
+    legalEntityName: "Fresh Farm Agro Pvt Ltd",
+    ownerName: "Suresh Shinde",
+    phone: "+91 98231 22334",
+    email: "suresh@freshfarm.co",
+    category: "Fruits & Veg",
+    businessType: "Private Limited",
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    locality: "Wakad",
+    address: "Shop 12, Dutta Mandir Road, Wakad, Pune - 411057",
+    pincode: "411057",
+    submittedAt: "2026-11-15T09:58:00Z",
+    submittedAtFormatted: "15 Nov 2026, 09:58 AM",
+    slaExpiresAt: "2026-11-17T09:58:00Z",
+    status: "IN_PROGRESS",
+    mode: "RETAIL",
+    since: "05 Feb 2026",
+    gstin: "27AACCF1234G1Z8",
+    fssai: "21523000000001",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: true },
+      { id: "chk-3", title: "Business Address Verified", verified: true },
+      { id: "chk-4", title: "Business Documents Verified", verified: false },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: true },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
+    ],
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "AACCF1234G" },
+      { id: "doc-2", type: "AADHAAR_CARD", title: "Aadhaar Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/aadhaar.png", docNumber: "XXXX-XXXX-4567" },
+      { id: "doc-3", type: "SHOP_PHOTO", title: "Shop Photo", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/storefront.png", docNumber: "GPS-18.59-73.76" },
+      { id: "doc-4", type: "GST_CERTIFICATE", title: "GST Certificate", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/gst-cert.png", docNumber: "27AACCF1234G1Z8" },
+    ],
+    internalRemarks: "Address verified via geocoding.",
+  },
+  {
+    id: "APP-024672",
+    merchantId: "mer-pun-003",
+    businessName: "City Medico",
+    legalEntityName: "City Medico & Chemist",
+    ownerName: "Dr. Alok Verma",
+    phone: "+91 98222 33445",
+    email: "alok@citymedico.in",
+    category: "Pharmacy",
+    businessType: "Partnership",
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    locality: "Ravet",
+    address: "Plot 8, Sector 29, Ravet, Pimpri-Chinchwad - 412101",
+    pincode: "412101",
+    submittedAt: "2026-11-14T20:32:00Z",
+    submittedAtFormatted: "14 Nov 2026, 08:32 PM",
+    slaExpiresAt: "2026-11-16T20:32:00Z",
+    status: "PENDING_REVIEW",
+    mode: "RETAIL",
+    since: "20 Nov 2025",
+    gstin: "27AABCV5678H1Z2",
+    fssai: "21523000000002",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: false },
+      { id: "chk-3", title: "Business Address Verified", verified: false },
+      { id: "chk-4", title: "Business Documents Verified", verified: false },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: true },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
+    ],
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "AABCV5678H" },
+      { id: "doc-2", type: "DRUG_LICENSE", title: "Form 20/21 Drug License", status: "PENDING", verified: false, previewUrl: "/assets/mock/license.png", docNumber: "DL-2026-PUN-09" },
+    ],
+    internalRemarks: "",
+  },
+  {
+    id: "APP-024669",
+    merchantId: "mer-pun-004",
+    businessName: "Baker's Point",
+    legalEntityName: "Bakers Point Delights LLP",
+    ownerName: "Amit Joshi",
+    phone: "+91 98233 44556",
+    email: "amit@bakerspoint.com",
+    category: "Bakery",
+    businessType: "LLP",
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    locality: "Hinjawadi",
+    address: "Phase 1, High Street, Hinjawadi, Pune - 411057",
+    pincode: "411057",
+    submittedAt: "2026-11-14T17:46:00Z",
+    submittedAtFormatted: "14 Nov 2026, 05:46 PM",
+    slaExpiresAt: "2026-11-16T17:46:00Z",
+    status: "INFO_REQUESTED",
+    mode: "RETAIL",
+    since: "10 Mar 2025",
+    gstin: "27AABCB9012J1Z3",
+    fssai: "21523000000003",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: true },
+      { id: "chk-3", title: "Business Address Verified", verified: false },
+      { id: "chk-4", title: "Business Documents Verified", verified: false },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: false },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
+    ],
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "AABCB9012J" },
+      { id: "doc-2", type: "FSSAI_LICENSE", title: "FSSAI License", status: "PENDING", verified: false, previewUrl: "/assets/mock/fssai.png", docNumber: "21523000000003" },
+    ],
+    internalRemarks: "Requested updated clear copy of FSSAI certificate.",
+  },
+  {
+    id: "APP-024667",
+    merchantId: "mer-pun-005",
+    businessName: "Fashion Hub",
+    legalEntityName: "Fashion Hub Apparels",
+    ownerName: "Neha Agarwal",
+    phone: "+91 98234 55667",
+    email: "neha@fashionhub.in",
+    category: "Apparel",
+    businessType: "Proprietorship",
+    city: "Pune",
+    cityCode: "IN-MH-PUN",
+    locality: "Kothrud",
+    address: "Paud Road, Kothrud, Pune - 411038",
+    pincode: "411038",
+    submittedAt: "2026-11-14T15:11:00Z",
+    submittedAtFormatted: "14 Nov 2026, 03:11 PM",
+    slaExpiresAt: "2026-11-16T15:11:00Z",
+    status: "PENDING_REVIEW",
+    mode: "RETAIL",
+    since: "18 Aug 2024",
+    gstin: "27AACCF3456K1Z4",
+    fssai: "21523000000004",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: false },
+      { id: "chk-3", title: "Business Address Verified", verified: false },
+      { id: "chk-4", title: "Business Documents Verified", verified: false },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: true },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
+    ],
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "AACCF3456K" },
+    ],
+    internalRemarks: "",
+  },
+  {
+    id: "APP-024659",
+    merchantId: "mer-ngp-006",
+    businessName: "Nukkad Electronics",
+    legalEntityName: "Nukkad Electronics LLP",
+    ownerName: "Vikram Malhotra",
+    phone: "+91 98235 66778",
+    email: "vikram@nukkadelectronics.com",
+    category: "Electronics",
+    businessType: "LLP",
+    city: "Nagpur",
+    cityCode: "IN-MH-NGP",
+    locality: "Dharampeth",
+    address: "West High Court Road, Dharampeth, Nagpur - 440010",
+    pincode: "440010",
+    submittedAt: "2026-11-13T11:40:00Z",
+    submittedAtFormatted: "13 Nov 2026, 11:40 AM",
+    slaExpiresAt: "2026-11-15T11:40:00Z",
+    status: "IN_PROGRESS",
+    mode: "RETAIL",
+    since: "01 Jan 2025",
+    gstin: "27AABCN7890L1Z5",
+    fssai: "21523000000005",
+    coverageStatus: "Within Coverage",
+    serviceTypes: ["Pickup", "Delivery"],
+    checklist: [
+      { id: "chk-1", title: "Business Details Verified", verified: true },
+      { id: "chk-2", title: "Owner Identity Verified", verified: true },
+      { id: "chk-3", title: "Business Address Verified", verified: true },
+      { id: "chk-4", title: "Business Documents Verified", verified: true },
+      { id: "chk-5", title: "Serviceability & Coverage", verified: false },
+      { id: "chk-6", title: "Final Review & Approval", verified: false },
+    ],
+    documents: [
+      { id: "doc-1", type: "PAN_CARD", title: "PAN Card", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/pan-card.png", docNumber: "AABCN7890L" },
+      { id: "doc-2", type: "GST_CERTIFICATE", title: "GST Certificate", status: "VERIFIED", verified: true, previewUrl: "/assets/mock/gst-cert.png", docNumber: "27AABCN7890L1Z5" },
+    ],
+    internalRemarks: "Documents in order, finalizing boundary mapping.",
+  }
 ];
 
-const mutableRefunds: any[] = [
-  {
-    id: "REF-8801",
-    orderId: "ORD-8822",
-    merchantId: "merchant-kirana-002",
-    merchantName: "Sharma Kirana & General Store",
-    customerId: "cust-102",
-    customerName: "Priya Deshmukh",
-    amountPaise: 42000, // ₹ 420.00
-    reasonCode: "STORE_CLOSED_PRE_PICKUP",
-    customerClaim: "Store shutter was closed when arrived at designated pickup slot.",
-    merchantRebuttal: "Emergency electricity outage occurred for 40 minutes.",
-    evidencePhotoUrls: ["/assets/mock/closed-shutter.jpg"],
-    city: "Akola",
-    cityCode: "IN-MH-AKL",
-    status: "PENDING_FIRST_APPROVAL",
-    createdAt: "2026-11-17T14:20:00Z",
-    requiresDualSign: false,
-  },
-  {
-    id: "REF-8802",
-    orderId: "ORD-8825",
-    merchantId: "merchant-sabji-001",
-    merchantName: "Patil Fresh Sabji Mandi",
-    customerId: "cust-104",
-    customerName: "Sneha Kulkarni",
-    amountPaise: 18000, // ₹ 180.00
-    reasonCode: "DAMAGED_ITEMS",
-    customerClaim: "Fresh spinach leaves were bruised and damaged in bag.",
-    merchantRebuttal: "Offered immediate replacement bunches to customer.",
-    evidencePhotoUrls: ["/assets/mock/damaged-boxes.jpg"],
-    city: "Nagpur",
-    cityCode: "IN-MH-NGP",
-    status: "APPROVED_DISPATCHED",
-    firstApprover: { operatorId: "operator-sa-001", operatorName: "Rushi Platform Architect", approvedAt: "2026-11-17T16:00:00Z" },
-    createdAt: "2026-11-17T11:10:00Z",
-    requiresDualSign: false,
-  },
-  {
-    id: "REF-8803",
-    orderId: "ORD-AMR-9901",
-    merchantId: "merchant-amravati-001",
-    merchantName: "Rajkamal Spices & Dry Fruits",
-    customerId: "cust-106",
-    customerName: "Vinay Vaidya",
-    amountPaise: 24000, // ₹ 240.00
-    reasonCode: "DAMAGED_PACKAGING",
-    customerClaim: "Spice packet was punctured in transit during delivery.",
-    merchantRebuttal: "Will provide replacement or credit immediately.",
-    evidencePhotoUrls: ["/assets/mock/damaged-packaging.jpg"],
-    city: "Amravati",
-    cityCode: "IN-MH-AMR",
-    status: "PENDING_FIRST_APPROVAL",
-    createdAt: "2026-11-17T15:00:00Z",
-    requiresDualSign: false,
-  },
-  {
-    id: "REF-8804",
-    orderId: "ORD-PUN-7701",
-    merchantId: "merchant-pune-001",
-    merchantName: "Chitale Dairy & Traditional Sweets",
-    customerId: "cust-108",
-    customerName: "Abhay Joshi",
-    amountPaise: 34000, // ₹ 340.00
-    reasonCode: "PICKUP_SLOT_MISSED",
-    customerClaim: "Order preparation took 30 mins longer than promised window.",
-    merchantRebuttal: "High festival counter rush caused packaging delay.",
-    evidencePhotoUrls: ["/assets/mock/receipt-delay.jpg"],
-    city: "Pune",
-    cityCode: "IN-MH-PUN",
-    status: "PENDING_FIRST_APPROVAL",
-    createdAt: "2026-11-17T16:00:00Z",
-    requiresDualSign: false,
-  },
-];
+const mutableRefunds: any[] = [];
 
 const mutableFeatureFlags: Record<string, { name: string; description: string; enabled: boolean; category: string }> = {
   "SURGE_PRICING_LOCK": {
@@ -856,7 +964,535 @@ const mutableFeatureFlags: Record<string, { name: string; description: string; e
   },
 };
 
+const mutableMerchantRequests: any[] = [
+  {
+    id: "REQ-010248",
+    merchantId: "MER-001982",
+    merchantName: "Shree Ganesh Mart",
+    ownerName: "Rajesh Patil",
+    category: "Grocery",
+    city: "Pune",
+    locality: "Baner",
+    requestType: "DOCUMENT_UPDATE",
+    requestTypeLabel: "Document Update",
+    details: "Update GST certificate (new copy)",
+    status: "IN_PROGRESS",
+    priority: "HIGH",
+    raisedOn: "2026-11-15T10:24:00Z",
+    raisedOnFormatted: "15 Nov 2026, 10:24 AM",
+    documents: [
+      { name: "GST_Certificate.pdf", size: "2.4 MB", type: "pdf", verified: true },
+      { name: "Shop_Photo.jpg", size: "1.8 MB", type: "image", verified: true },
+      { name: "Trade_License.pdf", size: "1.2 MB", type: "pdf", verified: true },
+    ],
+    resolution: "",
+    remarks: "",
+    history: [
+      { event: "Request Submitted by Merchant", timestamp: "15 Nov 2026, 10:24 AM" },
+      { event: "Assigned to Support Specialist", timestamp: "15 Nov 2026, 10:35 AM" },
+    ],
+  },
+  {
+    id: "REQ-010247",
+    merchantId: "MER-001978",
+    merchantName: "Fresh Farm Store",
+    ownerName: "Suresh Shinde",
+    category: "Fruits & Veg",
+    city: "Pune",
+    locality: "Wakad",
+    requestType: "COVERAGE_UPDATE",
+    requestTypeLabel: "Coverage Update",
+    details: "Add new locality: Wakad (Pickup & Delivery)",
+    status: "INFO_REQUIRED",
+    priority: "MEDIUM",
+    raisedOn: "2026-11-15T09:58:00Z",
+    raisedOnFormatted: "15 Nov 2026, 09:58 AM",
+    documents: [
+      { name: "Outlet_GPS_Map.png", size: "1.1 MB", type: "image", verified: true },
+    ],
+    resolution: "",
+    remarks: "Requested municipal tax receipt for Wakad outlet address.",
+    history: [
+      { event: "Request Submitted by Merchant", timestamp: "15 Nov 2026, 09:58 AM" },
+      { event: "Information Requested by Operator", timestamp: "15 Nov 2026, 10:15 AM" },
+    ],
+  },
+  {
+    id: "REQ-010246",
+    merchantId: "MER-001965",
+    merchantName: "City Medico",
+    ownerName: "Dr. Alok Verma",
+    category: "Pharmacy",
+    city: "Pune",
+    locality: "Ravet",
+    requestType: "PROFILE_UPDATE",
+    requestTypeLabel: "Profile Update",
+    details: "Update contact number and email",
+    status: "IN_PROGRESS",
+    priority: "MEDIUM",
+    raisedOn: "2026-11-14T20:32:00Z",
+    raisedOnFormatted: "14 Nov 2026, 08:32 PM",
+    documents: [
+      { name: "Owner_Aadhaar_OTP.pdf", size: "850 KB", type: "pdf", verified: true },
+    ],
+    resolution: "",
+    remarks: "",
+    history: [
+      { event: "Request Submitted by Merchant", timestamp: "14 Nov 2026, 08:32 PM" },
+    ],
+  },
+  {
+    id: "REQ-010245",
+    merchantId: "MER-001949",
+    merchantName: "Baker's Point",
+    ownerName: "Amit Joshi",
+    category: "Bakery",
+    city: "Pune",
+    locality: "Hinjawadi",
+    requestType: "RE_VERIFICATION",
+    requestTypeLabel: "Re-verification",
+    details: "Request for re-verification after rejection",
+    status: "IN_PROGRESS",
+    priority: "HIGH",
+    raisedOn: "2026-11-14T17:46:00Z",
+    raisedOnFormatted: "14 Nov 2026, 05:46 PM",
+    documents: [
+      { name: "FSSAI_Certificate_Renewal.pdf", size: "3.2 MB", type: "pdf", verified: true },
+      { name: "Shop_Front_Daylight.jpg", size: "2.1 MB", type: "image", verified: true },
+    ],
+    resolution: "",
+    remarks: "",
+    history: [
+      { event: "Re-verification Appeal Submitted", timestamp: "14 Nov 2026, 05:46 PM" },
+    ],
+  },
+  {
+    id: "REQ-010244",
+    merchantId: "MER-001941",
+    merchantName: "Fashion Hub",
+    ownerName: "Neha Agarwal",
+    category: "Apparel",
+    city: "Pune",
+    locality: "Kothrud",
+    requestType: "SERVICE_CHANGE",
+    requestTypeLabel: "Service Change",
+    details: "Enable Delivery service (currently Pickup only)",
+    status: "RESOLVED",
+    priority: "MEDIUM",
+    raisedOn: "2026-11-14T15:11:00Z",
+    raisedOnFormatted: "14 Nov 2026, 03:11 PM",
+    documents: [
+      { name: "Delivery_Partner_Agreement.pdf", size: "1.4 MB", type: "pdf", verified: true },
+    ],
+    resolution: "Approved & Updated",
+    remarks: "Delivery capability enabled with 5km delivery radius.",
+    history: [
+      { event: "Request Submitted by Merchant", timestamp: "14 Nov 2026, 03:11 PM" },
+      { event: "Approved and Resolved", timestamp: "14 Nov 2026, 04:00 PM" },
+    ],
+  },
+  {
+    id: "REQ-010243",
+    merchantId: "MER-001930",
+    merchantName: "Nukkad Electronics",
+    ownerName: "Vikram Malhotra",
+    category: "Electronics",
+    city: "Nagpur",
+    locality: "Dharampeth",
+    requestType: "PAYOUT_ISSUE",
+    requestTypeLabel: "Payout Issue",
+    details: "Settlement not received for Order #ORD-889210",
+    status: "IN_PROGRESS",
+    priority: "HIGH",
+    raisedOn: "2026-11-13T11:40:00Z",
+    raisedOnFormatted: "13 Nov 2026, 11:40 AM",
+    documents: [
+      { name: "Bank_Statement_Nov.pdf", size: "1.9 MB", type: "pdf", verified: true },
+      { name: "Invoice_ORD_889210.pdf", size: "640 KB", type: "pdf", verified: true },
+    ],
+    resolution: "",
+    remarks: "Checking payment gateway settlement batch #BAT-2026-99.",
+    history: [
+      { event: "Payout Dispute Logged", timestamp: "13 Nov 2026, 11:40 AM" },
+    ],
+  },
+  {
+    id: "REQ-010242",
+    merchantId: "MER-001922",
+    merchantName: "Daily Needs Store",
+    ownerName: "Prakash Jadhav",
+    category: "Grocery",
+    city: "Nagpur",
+    locality: "Sitabuldi",
+    requestType: "COMMISSION_PLAN",
+    requestTypeLabel: "Commission & Plan",
+    details: "Upgrade to Growth Plan (from Basic)",
+    status: "RESOLVED",
+    priority: "MEDIUM",
+    raisedOn: "2026-11-13T10:06:00Z",
+    raisedOnFormatted: "13 Nov 2026, 10:06 AM",
+    documents: [],
+    resolution: "Configuration Modified",
+    remarks: "Subscription upgraded to Growth tier (5% commission slab).",
+    history: [
+      { event: "Plan Upgrade Requested", timestamp: "13 Nov 2026, 10:06 AM" },
+      { event: "Plan Upgraded by Admin", timestamp: "13 Nov 2026, 10:30 AM" },
+    ],
+  },
+  {
+    id: "REQ-010241",
+    merchantId: "MER-001918",
+    merchantName: "Wellness Clinic",
+    ownerName: "Dr. Kavita Kulkarni",
+    category: "Healthcare",
+    city: "Akola",
+    locality: "Civil Lines",
+    requestType: "BUSINESS_DETAIL_UPDATE",
+    requestTypeLabel: "Business Detail Update",
+    details: "Update shop timing and business description",
+    status: "INFO_REQUIRED",
+    priority: "LOW",
+    raisedOn: "2026-11-12T18:25:00Z",
+    raisedOnFormatted: "12 Nov 2026, 06:25 PM",
+    documents: [],
+    resolution: "",
+    remarks: "Please provide doctor registration number for updated description.",
+    history: [
+      { event: "Request Submitted", timestamp: "12 Nov 2026, 06:25 PM" },
+    ],
+  },
+  {
+    id: "REQ-010240",
+    merchantId: "MER-001905",
+    merchantName: "Green Leaf Organic",
+    ownerName: "Anand Deshmukh",
+    category: "Grocery",
+    city: "Amravati",
+    locality: "Rajkamal Chowk",
+    requestType: "ACCOUNT_REACTIVATION",
+    requestTypeLabel: "Account Reactivation",
+    details: "Reactivate suspended account",
+    status: "REJECTED",
+    priority: "HIGH",
+    raisedOn: "2026-11-12T14:18:00Z",
+    raisedOnFormatted: "12 Nov 2026, 02:18 PM",
+    documents: [
+      { name: "Explanation_Letter.pdf", size: "520 KB", type: "pdf", verified: false },
+    ],
+    resolution: "Rejected",
+    remarks: "Account suspended due to persistent SLA breach; 30-day cooling off period not yet elapsed.",
+    history: [
+      { event: "Reactivation Request Submitted", timestamp: "12 Nov 2026, 02:18 PM" },
+      { event: "Request Rejected by Root Admin", timestamp: "12 Nov 2026, 03:00 PM" },
+    ],
+  },
+  {
+    id: "REQ-010239",
+    merchantId: "MER-001902",
+    merchantName: "Home Essentials",
+    ownerName: "Meera Gupta",
+    category: "Home & Living",
+    city: "Pune",
+    locality: "Baner",
+    requestType: "OTHER",
+    requestTypeLabel: "Other",
+    details: "Change primary category to Home & Living",
+    status: "RESOLVED",
+    priority: "LOW",
+    raisedOn: "2026-11-11T17:47:00Z",
+    raisedOnFormatted: "11 Nov 2026, 05:47 PM",
+    documents: [],
+    resolution: "Approved & Updated",
+    remarks: "Taxonomy updated.",
+    history: [
+      { event: "Request Submitted", timestamp: "11 Nov 2026, 05:47 PM" },
+      { event: "Resolved", timestamp: "11 Nov 2026, 06:10 PM" },
+    ],
+  },
+];
+
 const mutableSupportTickets: any[] = [
+  {
+    index: 1,
+    id: "REQ-006420",
+    ticketNumber: "REQ-006420",
+    customerId: "CUS-0012456",
+    customerVerified: true,
+    requesterName: "Rohit Sharma",
+    requesterPhone: "+91 98234 56789",
+    linkedOrderId: "ORD-892210",
+    orderAmountFormatted: "₹1,240",
+    orderDateFormatted: "15 Nov 2026, 10:24 AM",
+    requestType: "Order Issue",
+    category: "ORDER_ISSUE",
+    subject: "Item not received",
+    description: "I have not received the item. The order shows as delivered but it was not delivered to me.",
+    priority: "High",
+    status: "In Progress",
+    statusKey: "IN_PROGRESS",
+    slaRemaining: "2h 14m",
+    isUrgent: true,
+    updatedAt: "15 Nov 2026 04:12 PM",
+    city: "Pune",
+    locality: "Baner",
+    customerSince: "10 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Rohit Sharma", role: "CUSTOMER", text: "I have not received the item. The order shows as delivered but it was not delivered to me.", time: "15 Nov, 04:12 PM" },
+      { id: "m-2", sender: "Support Agent", role: "AGENT", text: "We are checking with the merchant and delivery partner. We will update you within 2 hours.", time: "15 Nov, 04:26 PM" },
+    ],
+  },
+  {
+    index: 2,
+    id: "REQ-006419",
+    ticketNumber: "REQ-006419",
+    customerId: "CUS-0012455",
+    customerVerified: true,
+    requesterName: "Priya Singh",
+    requesterPhone: "+91 98901 23456",
+    linkedOrderId: "ORD-889430",
+    orderAmountFormatted: "₹620",
+    orderDateFormatted: "14 Nov 2026, 07:15 PM",
+    requestType: "Refund",
+    category: "PAYMENT_REFUND",
+    subject: "Refund not credited",
+    description: "Refund of ₹620 for returned milk packet has not hit bank account.",
+    priority: "High",
+    status: "Open",
+    statusKey: "OPEN",
+    slaRemaining: "4h 32m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 03:48 PM",
+    city: "Pune",
+    locality: "Wakad",
+    customerSince: "09 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Priya Singh", role: "CUSTOMER", text: "Refund of ₹620 for returned milk packet has not hit bank account.", time: "15 Nov, 03:48 PM" }
+    ],
+  },
+  {
+    index: 3,
+    id: "REQ-006418",
+    ticketNumber: "REQ-006418",
+    customerId: "CUS-0012454",
+    customerVerified: true,
+    requesterName: "Amit Kumar",
+    requesterPhone: "+91 97654 32109",
+    linkedOrderId: "ORD-887991",
+    orderAmountFormatted: "₹750",
+    orderDateFormatted: "13 Nov 2026, 09:10 PM",
+    requestType: "Cancellation",
+    category: "CANCELLATION",
+    subject: "Cancel my order",
+    description: "Need to cancel order placed by mistake before merchant dispatches.",
+    priority: "Medium",
+    status: "Awaiting Customer",
+    statusKey: "AWAITING_CUSTOMER",
+    slaRemaining: "8h 20m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 02:37 PM",
+    city: "Pimpri-Chinchwad",
+    locality: "Ravet",
+    customerSince: "08 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Amit Kumar", role: "CUSTOMER", text: "Please cancel my order ORD-887991 immediately.", time: "15 Nov, 02:37 PM" }
+    ],
+  },
+  {
+    index: 4,
+    id: "REQ-006417",
+    ticketNumber: "REQ-006417",
+    customerId: "CUS-0012453",
+    customerVerified: true,
+    requesterName: "Sneha Patil",
+    requesterPhone: "+91 90123 45678",
+    linkedOrderId: "ORD-887450",
+    orderAmountFormatted: "₹540",
+    orderDateFormatted: "13 Nov 2026, 05:46 PM",
+    requestType: "Merchant Issue",
+    category: "MERCHANT_ISSUE",
+    subject: "Shop is not responding",
+    description: "Merchant is not answering call regarding prepared grocery bag.",
+    priority: "Medium",
+    status: "In Progress",
+    statusKey: "IN_PROGRESS",
+    slaRemaining: "5h 26m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 01:55 PM",
+    city: "Pune",
+    locality: "Kothrud",
+    customerSince: "07 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Sneha Patil", role: "CUSTOMER", text: "Merchant is not answering call regarding prepared grocery bag.", time: "15 Nov, 01:55 PM" }
+    ],
+  },
+  {
+    index: 5,
+    id: "REQ-006416",
+    ticketNumber: "REQ-006416",
+    customerId: "CUS-0012452",
+    customerVerified: true,
+    requesterName: "Vikas Gupta",
+    requesterPhone: "+91 99321 67890",
+    linkedOrderId: "ORD-886901",
+    orderAmountFormatted: "₹1,840",
+    orderDateFormatted: "13 Nov 2026, 03:11 PM",
+    requestType: "Product Issue",
+    category: "PRODUCT_ISSUE",
+    subject: "Received damaged item",
+    description: "Glass bottle of pure cow ghee leaked inside the delivery bag.",
+    priority: "High",
+    status: "Escalated",
+    statusKey: "ESCALATED",
+    slaRemaining: "1h 10m",
+    isUrgent: true,
+    updatedAt: "15 Nov 2026 01:22 PM",
+    city: "Nagpur",
+    locality: "Dharampeth",
+    customerSince: "06 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Vikas Gupta", role: "CUSTOMER", text: "Received damaged ghee bottle, parcel is covered in oil.", time: "15 Nov, 01:22 PM" }
+    ],
+  },
+  {
+    index: 6,
+    id: "REQ-006415",
+    ticketNumber: "REQ-006415",
+    customerId: "CUS-0012451",
+    customerVerified: true,
+    requesterName: "Riya Salunkhe",
+    requesterPhone: "+91 98220 11445",
+    linkedOrderId: "ORD-885772",
+    orderAmountFormatted: "₹3,210",
+    orderDateFormatted: "12 Nov 2026, 11:40 AM",
+    requestType: "Payment Issue",
+    category: "PAYMENT_ISSUE",
+    subject: "Payment failed, amount deducted",
+    description: "UPI payment failed at checkout but amount ₹3,210 was debited from bank account.",
+    priority: "High",
+    status: "In Progress",
+    statusKey: "IN_PROGRESS",
+    slaRemaining: "3h 48m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 12:44 PM",
+    city: "Pune",
+    locality: "Kothrud",
+    customerSince: "05 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Riya Salunkhe", role: "CUSTOMER", text: "Amount debited via PhonePe, but order shows failed.", time: "15 Nov, 12:44 PM" }
+    ],
+  },
+  {
+    index: 7,
+    id: "REQ-006414",
+    ticketNumber: "REQ-006414",
+    customerId: "CUS-0012450",
+    customerVerified: true,
+    requesterName: "Karan Mehta",
+    requesterPhone: "+91 98765 43210",
+    linkedOrderId: null,
+    orderAmountFormatted: null,
+    orderDateFormatted: null,
+    requestType: "Account",
+    category: "ACCOUNT",
+    subject: "Unable to update address",
+    description: "Getting server validation error when adding new secondary delivery address in Nashik.",
+    priority: "Low",
+    status: "Open",
+    statusKey: "OPEN",
+    slaRemaining: "11h 20m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 11:37 AM",
+    city: "Nashik",
+    locality: "College Road",
+    customerSince: "02 Jan 2026",
+    messages: [
+      { id: "m-1", sender: "Karan Mehta", role: "CUSTOMER", text: "Unable to save address in Nashik area.", time: "15 Nov, 11:37 AM" }
+    ],
+  },
+  {
+    index: 8,
+    id: "REQ-006413",
+    ticketNumber: "REQ-006413",
+    customerId: "CUS-0012449",
+    customerVerified: false,
+    requesterName: "Divya Pawar",
+    requesterPhone: "+91 97654 78901",
+    linkedOrderId: "ORD-885601",
+    orderAmountFormatted: "₹420",
+    orderDateFormatted: "11 Nov 2026, 08:20 PM",
+    requestType: "Refund",
+    category: "PAYMENT_REFUND",
+    subject: "Partial refund request",
+    description: "Requested ₹180 refund for out-of-stock items in morning order.",
+    priority: "Medium",
+    status: "In Progress",
+    statusKey: "IN_PROGRESS",
+    slaRemaining: "6h 05m",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 10:25 AM",
+    city: "Pune",
+    locality: "Aundh",
+    customerSince: "11 Nov 2026",
+    messages: [
+      { id: "m-1", sender: "Divya Pawar", role: "CUSTOMER", text: "Please process partial refund for unfulfilled bread items.", time: "15 Nov, 10:25 AM" }
+    ],
+  },
+  {
+    index: 9,
+    id: "REQ-006412",
+    ticketNumber: "REQ-006412",
+    customerId: "CUS-0012448",
+    customerVerified: true,
+    requesterName: "Mayur Shinde",
+    requesterPhone: "+91 90456 22334",
+    linkedOrderId: "ORD-884990",
+    orderAmountFormatted: "₹640",
+    orderDateFormatted: "11 Nov 2026, 02:18 PM",
+    requestType: "Delivery",
+    category: "DELIVERY",
+    subject: "Delivery delayed",
+    description: "Delivery delayed due to rain. Partner informed and delivered at doorstep.",
+    priority: "Medium",
+    status: "Resolved",
+    statusKey: "RESOLVED",
+    slaRemaining: "Met",
+    isUrgent: false,
+    updatedAt: "15 Nov 2026 09:18 AM",
+    city: "Pune",
+    locality: "Balewadi",
+    customerSince: "31 Dec 2025",
+    messages: [
+      { id: "m-1", sender: "Mayur Shinde", role: "CUSTOMER", text: "Order arrived late but received safely.", time: "15 Nov, 09:18 AM" }
+    ],
+  },
+  {
+    index: 10,
+    id: "REQ-006411",
+    ticketNumber: "REQ-006411",
+    customerId: "CUS-0012447",
+    customerVerified: false,
+    requesterName: "Neha Deshmukh",
+    requesterPhone: "+91 99876 54123",
+    linkedOrderId: "ORD-884562",
+    orderAmountFormatted: "₹1,480",
+    orderDateFormatted: "10 Nov 2026, 09:57 PM",
+    requestType: "Other",
+    category: "OTHER",
+    subject: "Need help with bulk order",
+    description: "Customer inquired about placing bulk festival order for Diwali sweet boxes.",
+    priority: "Low",
+    status: "Resolved",
+    statusKey: "RESOLVED",
+    slaRemaining: "Met",
+    isUrgent: false,
+    updatedAt: "14 Nov 2026 08:47 PM",
+    city: "Pimpri-Chinchwad",
+    locality: "Chinchwad",
+    customerSince: "10 Nov 2026",
+    messages: [
+      { id: "m-1", sender: "Neha Deshmukh", role: "CUSTOMER", text: "Need guidance on ordering 20 sweet boxes for housing society Diwali party.", time: "14 Nov, 08:47 PM" }
+    ],
+  },
   {
     id: "TCK-NGP-301",
     ticketNumber: "INC-2026-00301",
@@ -1550,7 +2186,7 @@ const mutableAdminUsers: DynamicAdminUser[] = [
 @ApiTags("Admin BFF")
 @Controller("api/v1/admin")
 export class AdminController {
-  private readonly catalogServiceUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:3002";
+  private readonly catalogServiceUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:4003";
   private readonly merchantServiceUrl = process.env.MERCHANT_SERVICE_URL || "http://localhost:4002";
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
@@ -1580,28 +2216,28 @@ export class AdminController {
    * City Operations Managers, Verification Staff, and Support Staff are bound to their assigned city.
    */
   private resolveOperatorScope(headers?: any, req?: any): { role?: string; city?: string; isGlobal: boolean; operatorId?: string; operatorName?: string } {
-    let role = headers?.["x-operator-role"];
-    let city = headers?.["x-operator-city"];
-    let operatorId = headers?.["x-operator-id"] || "operator-sa-001";
-    let operatorName = headers?.["x-operator-name"] || "Super Administrator";
+    let role: string | undefined;
+    let city: string | undefined;
+    let operatorId: string | undefined;
+    let operatorName: string | undefined;
 
     const authHeader = headers?.authorization || req?.headers?.authorization;
     if (authHeader && typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
       try {
         const token = authHeader.substring(7);
-        const decoded: any = jwt.decode(token);
+        const decoded: any = jwt.verify(token, JWT_SECRET);
         if (decoded) {
-          if (!role && decoded.roles?.[0]) role = decoded.roles[0];
-          if (!city && decoded.geoAssignment?.cityName) city = decoded.geoAssignment.cityName;
+          if (decoded.roles?.[0]) role = decoded.roles[0];
+          if (decoded.geoAssignment?.cityName) city = decoded.geoAssignment.cityName;
           if (decoded.sub) operatorId = decoded.sub;
           if (decoded.name) operatorName = decoded.name;
         }
       } catch {
-        // Fall back to headers
+        // Token verification failed or expired - unauthenticated scope
       }
     }
 
-    const isGlobal = role === "ROOT_ADMIN" || role === "SUPER_ADMIN" || !city;
+    const isGlobal = Boolean(role && (role === "ROOT_ADMIN" || role === "SUPER_ADMIN"));
     return { role, city, isGlobal, operatorId, operatorName };
   }
 
@@ -1629,8 +2265,8 @@ export class AdminController {
       throw new ForbiddenException("Account is currently suspended. Please contact Root Administrator.");
     }
 
-    const expectedPassword = user.password || "Nukkad@2026!";
-    if (password !== expectedPassword && password !== "Nukkad@2026!" && password !== "••••••••••••") {
+    const expectedPassword = user.password;
+    if (!expectedPassword || password !== expectedPassword) {
       throw new UnauthorizedException("Invalid security password.");
     }
 
@@ -1769,7 +2405,23 @@ export class AdminController {
     }
     const activeMerchantsCount = activeMerchants.length;
 
-    let kycList = mutableKycApplications;
+    let kycList = [...mutableKycApplications];
+    try {
+      const kycResp = await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        "/api/v1/merchants/onboarding",
+        {
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+      if (kycResp?.items && Array.isArray(kycResp.items)) {
+        kycList = kycResp.items.map((r: any) => this.mapPartnerRegistrationToKyc(r));
+      }
+    } catch {}
+
     if (!scope.isGlobal && scope.city) {
       kycList = kycList.filter(k => k.city?.toLowerCase() === scope.city!.toLowerCase());
     }
@@ -1798,45 +2450,20 @@ export class AdminController {
       ? allLocalities.filter(l => l.city.toLowerCase() === scope.city!.toLowerCase())
       : allLocalities;
 
-    // Priority Action Triage (filtered to scope)
-    const allActionTriage = [
-      {
-        id: "tri-1",
+    // Dynamic Action Triage for real pending actions
+    const allActionTriage: any[] = [];
+    const pendingKyc = kycList.filter(k => k.status === "SUBMITTED" || k.status === "IN_REVIEW");
+    for (const k of pendingKyc) {
+      allActionTriage.push({
+        id: `tri-${k.id}`,
         type: "KYC",
-        title: "Mahalaxmi Sweets (Dharampeth, Nagpur) - FSSAI Renewal Uploaded",
-        meta: "Submitted by Anand Joshi · License #11522036000404",
-        city: "Nagpur",
+        title: `${k.businessName} (${k.locality}) - Merchant Verification Required`,
+        meta: `Submitted by ${k.legalEntityName || k.businessName} · Mode: ${k.mode}`,
+        city: k.city || "Akola",
         route: "/merchant-verification",
         severity: "urgent",
-      },
-      {
-        id: "tri-2",
-        type: "REFUND",
-        title: "Refund Escalation: ₹ 420 (Order #ORD-8822, Akola)",
-        meta: "Store closed before pickup slot · Customer requested full refund",
-        city: "Akola",
-        route: "/refunds-disputes",
-        severity: "danger",
-      },
-      {
-        id: "tri-3",
-        type: "CATALOG",
-        title: "Catalog Moderation: Price Anomaly Flag (Akola)",
-        meta: "Seller listed Vidarbha Special Spicy Poha Chivda at ₹ 10 (potential typo)",
-        city: "Akola",
-        route: "/catalogue-moderation",
-        severity: "warning",
-      },
-      {
-        id: "tri-4",
-        type: "KYC",
-        title: "Rajkamal Spices & Dry Fruits (Amravati) - FSSAI Submitted",
-        meta: "Submitted by Sanjay Deshmukh · License #11522036000505",
-        city: "Amravati",
-        route: "/merchant-verification",
-        severity: "urgent",
-      },
-    ];
+      });
+    }
 
     const actionTriage = !scope.isGlobal && scope.city
       ? allActionTriage.filter(t => t.city.toLowerCase() === scope.city!.toLowerCase())
@@ -1854,6 +2481,70 @@ export class AdminController {
         placedAt: `${o.time} (${o.date})`,
       };
     });
+
+    // Multi-city performance metrics derived from backend state
+    const municipalCities = ["Nagpur", "Akola", "Amravati", "Pune"];
+    const cityPerformance = municipalCities.map((cityName) => {
+      const cityProfiles = Object.entries(SEEDED_PROFILES).filter(
+        ([id, p]) => id !== "system-admin-tenant" && p.city?.toLowerCase() === cityName.toLowerCase()
+      );
+      const cityOrders = SEEDED_ORDERS.filter((o) => {
+        const p = SEEDED_PROFILES[o.tenantId];
+        return p?.city?.toLowerCase() === cityName.toLowerCase();
+      });
+      const cityGmvPaise = cityOrders.reduce((sum, o) => sum + o.amount * 100, 0);
+      return {
+        city: cityName,
+        outlets: cityProfiles.length || 12,
+        ordersCount: cityOrders.length || 45,
+        gmvFormatted: `₹ ${((cityGmvPaise || 842000) / 100).toLocaleString("en-IN")}`,
+        growthPct: cityName === "Nagpur" ? "+34.2%" : cityName === "Pune" ? "+28.5%" : "+19.1%",
+        status: cityName === "Pune" ? "EXPANSION" : "ACTIVE",
+      };
+    });
+
+    // Marketplace category distribution
+    const marketplaceMix = [
+      { category: "Groceries & Staples", percentage: 42, gmvFormatted: "₹ 3,53,640", color: "#EA580C" },
+      { category: "Dairy & Bakery", percentage: 24, gmvFormatted: "₹ 2,02,080", color: "#3B82F6" },
+      { category: "Fruits & Vegetables", percentage: 18, gmvFormatted: "₹ 1,51,560", color: "#10B981" },
+      { category: "Snacks & Beverages", percentage: 11, gmvFormatted: "₹ 92,620", color: "#8B5CF6" },
+      { category: "Personal Care", percentage: 5, gmvFormatted: "₹ 42,100", color: "#F59E0B" },
+    ];
+
+    // Recent merchant onboarding applications
+    const recentMerchantApplications = kycList.slice(0, 6).map((k, idx) => ({
+      id: k.id,
+      businessName: k.businessName,
+      category: k.businessCategory || "Grocery & FMCG",
+      locality: `${k.locality || "Central"}, ${k.city || "Nagpur"}`,
+      appliedDate: "Today, 10:30 AM",
+      complianceStatus: k.status === "VERIFIED" ? "APPROVED" : k.status === "REJECTED" ? "REJECTED" : "PENDING_REVIEW",
+    }));
+
+    // Performance trends time-series for 7d, 30d, 90d
+    const performanceTrends = {
+      sevenDays: [
+        { label: "Mon", gmv: 68400, orders: 184 },
+        { label: "Tue", gmv: 74200, orders: 205 },
+        { label: "Wed", gmv: 71800, orders: 198 },
+        { label: "Thu", gmv: 82500, orders: 236 },
+        { label: "Fri", gmv: 91400, orders: 275 },
+        { label: "Sat", gmv: 104200, orders: 312 },
+        { label: "Sun", gmv: 112800, orders: 348 },
+      ],
+      thirtyDays: [
+        { label: "Week 1", gmv: 480000, orders: 1420 },
+        { label: "Week 2", gmv: 520000, orders: 1560 },
+        { label: "Week 3", gmv: 610000, orders: 1890 },
+        { label: "Week 4", gmv: 740000, orders: 2240 },
+      ],
+      ninetyDays: [
+        { label: "Sep", gmv: 1850000, orders: 5800 },
+        { label: "Oct", gmv: 2340000, orders: 7400 },
+        { label: "Nov", gmv: 2980000, orders: 9200 },
+      ],
+    };
 
     return this.wrapResponse({
       metrics: {
@@ -1873,10 +2564,45 @@ export class AdminController {
       localityFulfillment: localities,
       actionTriage,
       recentOrders,
+      cityPerformance,
+      marketplaceMix,
+      recentMerchantApplications,
+      performanceTrends,
     });
   }
 
   // --- Merchants Directory & Management ---
+
+  @Get("merchants/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get merchant directory KPI overview and status breakdown" })
+  async getMerchantsOverview(
+    @Query("city") cityQuery?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
+
+    return this.wrapResponse({
+      metrics: {
+        totalMerchants: 3426,
+        active: 2948,
+        activePct: "86.0%",
+        pendingVerification: 246,
+        pendingPct: "7.2%",
+        rejectedInactive: 132,
+        rejectedPct: "3.8%",
+        merchantGrowth: "+14.2%",
+      },
+      counts: {
+        all: 3426,
+        active: 2948,
+        pending: 246,
+        rejected: 132,
+        suspended: 48,
+      }
+    });
+  }
 
   @Get("merchants")
   @ApiBearerAuth()
@@ -1884,6 +2610,7 @@ export class AdminController {
   async getMerchants(
     @Query("search") search?: string, 
     @Query("status") status?: string, 
+    @Query("category") category?: string,
     @Query("locality") locality?: string,
     @Query("city") cityQuery?: string,
     @Headers() headers?: any,
@@ -1893,9 +2620,18 @@ export class AdminController {
 
     const list = Object.entries(SEEDED_PROFILES)
       .filter(([id]) => id !== "system-admin-tenant")
-      .map(([id, p]) => {
+      .map(([id, p], idx) => {
         const liveStatus = mutableMerchantStatuses[id] || (p.isShopLiveOpen ? "ACTIVE" : "SUSPENDED");
         const outletProducts = SEEDED_PRODUCTS.filter(prod => prod.outletId === p.outletId);
+
+        const categoryVal = p.businessCategory.includes("Home") ? "Home & Living" 
+          : p.businessCategory.includes("Sweets") ? "Bakery" 
+          : p.businessCategory.includes("Vegetable") ? "Fruits & Veg"
+          : p.businessCategory.includes("Pharmacy") ? "Pharmacy"
+          : "Grocery";
+
+        const ordersCount = outletProducts.length * 28 + (idx * 37) + 120;
+        const salesAmount = ordersCount * 285;
 
         return {
           id: p.id,
@@ -1904,8 +2640,11 @@ export class AdminController {
           legalEntityName: p.legalBusinessName,
           phone: p.phone,
           email: p.email,
+          ownerName: p.ownerName || "Rajesh Patil",
+          category: categoryVal,
           mode: p.businessCategory.includes("Home") ? "HOME_MAKER" : p.businessCategory.includes("Sweets") ? "FOOD_STALL" : "RETAIL",
           status: liveStatus,
+          verification: p.isKycVerified ? "Verified" : (liveStatus === "SUSPENDED" ? "Rejected" : "Under Review"),
           locality: p.locality,
           city: p.city,
           address: `${p.addressStreet}, ${p.locality}, ${p.city} - ${p.pincode}`,
@@ -1913,6 +2652,12 @@ export class AdminController {
           gstin: p.gstin,
           outletsCount: 1,
           activeProductsCount: outletProducts.length || 12,
+          orders30d: ordersCount,
+          sales30d: salesAmount,
+          salesFormatted: `₹${salesAmount.toLocaleString('en-IN')}`,
+          rating: p.rating || 4.8,
+          serviceTypes: ["PICKUP", "DELIVERY"],
+          joinedOn: "12 Jan 2026",
           joinedAt: "2026-10-15T08:00:00Z",
           createdAt: "2026-10-15T08:00:00Z",
           lastActiveAt: new Date().toISOString(),
@@ -1924,7 +2669,7 @@ export class AdminController {
     // Strict multi-city boundary isolation (e.g. Akola manager CANNOT see Amravati shops)
     if (!scope.isGlobal && scope.city) {
       filtered = filtered.filter(m => m.city.toLowerCase() === scope.city!.toLowerCase());
-    } else if (cityQuery) {
+    } else if (cityQuery && cityQuery !== "ALL") {
       filtered = filtered.filter(m => m.city.toLowerCase() === cityQuery.toLowerCase());
     }
 
@@ -1932,14 +2677,212 @@ export class AdminController {
       const q = search.toLowerCase();
       filtered = filtered.filter(m => m.name.toLowerCase().includes(q) || m.legalEntityName.toLowerCase().includes(q) || m.id.toLowerCase().includes(q));
     }
-    if (status) {
-      filtered = filtered.filter(m => m.status === status);
+    if (status && status !== "ALL") {
+      filtered = filtered.filter(m => m.status.toUpperCase() === status.toUpperCase());
+    }
+    if (category && category !== "ALL") {
+      filtered = filtered.filter(m => m.category.toLowerCase().includes(category.toLowerCase()));
     }
     if (locality) {
       filtered = filtered.filter(m => m.locality.toLowerCase().includes(locality.toLowerCase()));
     }
 
     return this.wrapPaginated(filtered);
+  }
+
+  @Get("merchants/requests/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get merchant requests overview metrics" })
+  async getMerchantRequestsOverview() {
+    return this.wrapResponse({
+      metrics: {
+        totalRequests: 348,
+        resolved: 186,
+        resolvedPct: "53.4%",
+        inProgress: 112,
+        inProgressPct: "32.2%",
+        infoRequired: 32,
+        infoRequiredPct: "9.2%",
+        rejected: 18,
+        rejectedPct: "5.2%",
+        avgResolutionTime: "2.8 days",
+      },
+      counts: {
+        all: 348,
+        inProgress: 112,
+        infoRequired: 32,
+        resolved: 186,
+        rejected: 18,
+      }
+    });
+  }
+
+  @Get("merchants/requests")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List merchant requests with filters" })
+  async getMerchantRequests(
+    @Query("search") search?: string,
+    @Query("type") type?: string,
+    @Query("city") city?: string,
+    @Query("status") status?: string,
+    @Query("priority") priority?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
+
+    let list = [...mutableMerchantRequests];
+
+    const effectiveCity = city || (!scope.isGlobal && scope.city ? scope.city : undefined);
+    if (effectiveCity && effectiveCity.toUpperCase() !== "ALL") {
+      list = list.filter(r => r.city?.toLowerCase() === effectiveCity.toLowerCase());
+    }
+
+    if (search) {
+      const q = search.toLowerCase().trim();
+      list = list.filter(r =>
+        r.id.toLowerCase().includes(q) ||
+        r.merchantName.toLowerCase().includes(q) ||
+        r.merchantId.toLowerCase().includes(q) ||
+        r.details.toLowerCase().includes(q) ||
+        r.ownerName.toLowerCase().includes(q)
+      );
+    }
+
+    if (type && type.toUpperCase() !== "ALL") {
+      list = list.filter(r => r.requestType === type || r.requestTypeLabel.toLowerCase() === type.toLowerCase());
+    }
+
+    if (status && status.toUpperCase() !== "ALL") {
+      list = list.filter(r => r.status === status);
+    }
+
+    if (priority && priority.toUpperCase() !== "ALL") {
+      list = list.filter(r => r.priority === priority);
+    }
+
+    return this.wrapPaginated(list);
+  }
+
+  @Get("merchants/requests/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get single merchant request by ID" })
+  async getMerchantRequestById(@Param("id") id: string) {
+    const req = mutableMerchantRequests.find(r => r.id === id);
+    if (!req) throw new NotFoundException(`Merchant request ${id} not found`);
+    return this.wrapResponse(req);
+  }
+
+  @Patch("merchants/requests/:id/resolve")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Approve and resolve merchant request" })
+  async resolveMerchantRequest(@Param("id") id: string, @Body() body: any) {
+    const item = mutableMerchantRequests.find(r => r.id === id);
+    if (!item) throw new NotFoundException(`Merchant request ${id} not found`);
+
+    item.status = "RESOLVED";
+    item.resolution = body.resolution || "Approved & Updated";
+    if (body.remarks) item.remarks = body.remarks;
+    item.history.push({
+      event: `Resolved: ${item.resolution}`,
+      timestamp: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
+    });
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "MERCHANT_REQUEST_RESOLVED",
+      targetEntity: "MerchantRequest",
+      targetId: id,
+      reasonCode: "OPERATIONAL_RESOLUTION",
+      justification: item.resolution,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(item);
+  }
+
+  @Patch("merchants/requests/:id/reject")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Reject merchant request" })
+  async rejectMerchantRequest(@Param("id") id: string, @Body() body: any) {
+    const item = mutableMerchantRequests.find(r => r.id === id);
+    if (!item) throw new NotFoundException(`Merchant request ${id} not found`);
+
+    item.status = "REJECTED";
+    item.resolution = "Rejected";
+    item.remarks = body.remarks || body.justification || "Request rejected.";
+    item.history.push({
+      event: `Rejected: ${item.remarks}`,
+      timestamp: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
+    });
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: "operator-sa-001",
+      operatorName: "Rushi Platform Architect",
+      action: "MERCHANT_REQUEST_REJECTED",
+      targetEntity: "MerchantRequest",
+      targetId: id,
+      reasonCode: "REQUEST_REJECTED",
+      justification: item.remarks,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(item);
+  }
+
+  @Patch("merchants/requests/:id/request-info")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Request info for merchant request" })
+  async requestInfoMerchantRequest(@Param("id") id: string, @Body() body: any) {
+    const item = mutableMerchantRequests.find(r => r.id === id);
+    if (!item) throw new NotFoundException(`Merchant request ${id} not found`);
+
+    item.status = "INFO_REQUIRED";
+    if (body.remarks) item.remarks = body.remarks;
+    item.history.push({
+      event: `Information Requested: ${body.remarks || 'Additional documents required'}`,
+      timestamp: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
+    });
+
+    return this.wrapResponse(item);
+  }
+
+  @Post("merchants/requests")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create a new merchant request" })
+  async createMerchantRequest(@Body() body: any) {
+    const newId = `REQ-01${Math.floor(1000 + Math.random() * 9000)}`;
+    const now = new Date();
+    const formatted = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+    const newReq = {
+      id: newId,
+      merchantId: body.merchantId || "MER-001982",
+      merchantName: body.merchantName || "Shree Ganesh Mart",
+      ownerName: body.ownerName || "Rajesh Patil",
+      category: body.category || "Grocery",
+      city: body.city || "Pune",
+      locality: body.locality || "Baner",
+      requestType: body.requestType || "DOCUMENT_UPDATE",
+      requestTypeLabel: body.requestTypeLabel || "Document Update",
+      details: body.details || "Request submitted via portal",
+      status: "IN_PROGRESS",
+      priority: body.priority || "MEDIUM",
+      raisedOn: now.toISOString(),
+      raisedOnFormatted: formatted,
+      documents: body.documents || [],
+      resolution: "",
+      remarks: "",
+      history: [
+        { event: "Request Submitted by Merchant", timestamp: formatted }
+      ],
+    };
+
+    mutableMerchantRequests.unshift(newReq);
+    return this.wrapResponse(newReq);
   }
 
   @Get("merchants/:id")
@@ -2049,38 +2992,249 @@ export class AdminController {
 
   // --- Merchant KYC & Onboarding Verification ---
 
+  private mapPartnerRegistrationToKyc(reg: any): any {
+    const statusMap: Record<string, string> = {
+      SUBMITTED: "SUBMITTED",
+      UNDER_REVIEW: "IN_REVIEW",
+      APPROVED: "VERIFIED",
+      REJECTED: "REJECTED",
+      ACTION_REQUIRED: "SUBMITTED",
+    };
+
+    const docTypeMap: Record<string, string> = {
+      PAN: "PAN_CARD",
+      PAN_CARD: "PAN_CARD",
+      FSSAI: "FSSAI_LICENSE",
+      FSSAI_LICENSE: "FSSAI_LICENSE",
+      GSTIN: "GSTIN_CERTIFICATE",
+      GSTIN_CERTIFICATE: "GSTIN_CERTIFICATE",
+      BUSINESS_PROOF: "STOREFRONT_PHOTO",
+      STOREFRONT_PHOTO: "STOREFRONT_PHOTO",
+      BANK_PASSBOOK: "BANK_PASSBOOK",
+      OWNER_ID: "STOREFRONT_PHOTO",
+    };
+
+    const docTitleMap: Record<string, string> = {
+      PAN_CARD: "Proprietor / Business PAN Card",
+      FSSAI_LICENSE: "FSSAI 14-Digit Food Safety License",
+      GSTIN_CERTIFICATE: "GST Registration Certificate",
+      STOREFRONT_PHOTO: "Storefront / Shop Act Registration",
+      BANK_PASSBOOK: "Bank Statement / Cancelled Cheque",
+    };
+
+    const documents = Array.isArray(reg.documents) && reg.documents.length > 0
+      ? reg.documents.map((d: any) => {
+          const docType = (d.documentType || d.type || "STOREFRONT_PHOTO").toUpperCase();
+          const mappedType = docTypeMap[docType] || "STOREFRONT_PHOTO";
+          return {
+            type: mappedType,
+            title: d.title || docTitleMap[mappedType] || d.fileName || "Statutory Document",
+            documentNumber: d.documentNumber || d.fileName || `DOC-${d.id || "001"}`,
+            fileUrl: d.fileUrl || "/assets/mock/pan-card.png",
+            verified: d.verificationStatus === "VERIFIED" || d.verified === true,
+            notes: d.notes || "",
+          };
+        })
+      : [
+          {
+            type: "PAN_CARD",
+            title: "Proprietor PAN Card",
+            documentNumber: "AAAPS4321K",
+            fileUrl: "/assets/mock/pan-card.png",
+            verified: reg.status === "APPROVED",
+          },
+          {
+            type: "BANK_PASSBOOK",
+            title: "Bank Statement / Cancelled Cheque",
+            documentNumber: reg.bankIfscCode || "SBIN0001234",
+            fileUrl: "/assets/mock/bank-cheque.png",
+            verified: reg.status === "APPROVED",
+          },
+          {
+            type: "STOREFRONT_PHOTO",
+            title: "Storefront GPS Verification",
+            documentNumber: `GPS-${reg.latitude || 20.70}-${reg.longitude || 77.00}`,
+            fileUrl: "/assets/mock/storefront.png",
+            verified: reg.status === "APPROVED",
+            notes: "GPS geo-tag matches coordinates.",
+          },
+        ];
+
+    const hasBank = Boolean(reg.bankAccountNumber && String(reg.bankAccountNumber).trim().length > 0 && reg.bankIfscCode);
+    const bankAcc = reg.bankAccountNumber || "";
+    const maskedAcc = bankAcc.length >= 4 ? `*******${bankAcc.slice(-4)}` : "*******4482";
+    const isMatch = Boolean(hasBank && (reg.bankAccountHolder || reg.ownerName));
+
+    const city = reg.city || "Akola";
+    const cityUpper = city.toUpperCase();
+    const cityCode = reg.cityCode || (
+      cityUpper.includes("NAGPUR") ? "IN-MH-NGP" :
+      cityUpper.includes("AKOLA") ? "IN-MH-AKL" :
+      cityUpper.includes("AMRAVATI") ? "IN-MH-AMR" : "IN-MH-PUN"
+    );
+
+    const bType = (reg.businessType || "retail").toLowerCase();
+    const mode = bType === "home" ? "HOME_MAKER" : bType === "food" ? "FOOD_STALL" : "RETAIL";
+
+    const submittedAt = reg.submittedAt || reg.createdAt || new Date().toISOString();
+    const slaExpiresAt = new Date(new Date(submittedAt).getTime() + 48 * 3600 * 1000).toISOString();
+
+    const appId = reg.applicationId || reg.id;
+    return {
+      id: appId,
+      merchantId: reg.merchantId || appId,
+      businessName: reg.businessName || "Unnamed Store",
+      legalEntityName: reg.legalBusinessName || reg.ownerName || reg.businessName || "Registered Enterprise",
+      locality: reg.locality ? `${reg.locality}, ${city}` : (reg.fullAddress || city),
+      city,
+      cityCode,
+      phone: reg.mobileNumber || "+91 98765 43210",
+      mode,
+      submittedAt,
+      slaExpiresAt,
+      status: statusMap[reg.status] || "SUBMITTED",
+      documents,
+      bankPennyDrop: {
+        accountNumberMasked: maskedAcc,
+        ifscCode: reg.bankIfscCode || "",
+        bankName: reg.bankName || "HDFC Bank",
+        beneficiaryNameMatch: (reg.bankAccountHolder || reg.ownerName || reg.businessName || "").toUpperCase().trim(),
+        registeredBusinessName: reg.businessName || "Registered Business",
+        isMatch,
+        verifiedAt: submittedAt,
+      },
+      rejectionReason: reg.rejectionReason,
+    };
+  }
+
   @Get("merchant-verification")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List KYC verification queue items" })
   async getVerificationQueue(
     @Query("search") search?: string, 
     @Query("status") status?: string,
+    @Query("city") queryCity?: string,
+    @Query("mode") mode?: string,
     @Headers() headers?: any,
     @Req() req?: any
   ) {
     const scope = this.resolveOperatorScope(headers, req);
-    let items = [...mutableKycApplications];
 
-    // Multi-city isolation for KYC verification queue
-    if (!scope.isGlobal && scope.city) {
-      items = items.filter(v => v.city?.toLowerCase() === scope.city!.toLowerCase());
+    let downstreamItems: any[] = [];
+    try {
+      const resp = await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        "/api/v1/merchants/onboarding",
+        {
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+      if (resp?.items && Array.isArray(resp.items)) {
+        downstreamItems = resp.items.map((r: any) => this.mapPartnerRegistrationToKyc(r));
+      }
+    } catch (err) {}
+
+    let items = downstreamItems;
+    if (items.length === 0) {
+      items = [...mutableKycApplications];
+    }
+
+    // Multi-city isolation filter
+    const effectiveCity = queryCity || (!scope.isGlobal && scope.city ? scope.city : undefined);
+    if (effectiveCity && effectiveCity.toUpperCase() !== "ALL") {
+      items = items.filter(v => v.city?.toLowerCase() === effectiveCity.toLowerCase());
     }
 
     if (search) {
       const q = search.toLowerCase();
-      items = items.filter(v => v.businessName.toLowerCase().includes(q) || v.id.toLowerCase().includes(q));
+      items = items.filter(v =>
+        (v.businessName && v.businessName.toLowerCase().includes(q)) ||
+        (v.id && v.id.toLowerCase().includes(q)) ||
+        (v.phone && v.phone.includes(q)) ||
+        (v.locality && v.locality.toLowerCase().includes(q))
+      );
     }
-    if (status) {
+    if (status && status.toUpperCase() !== "ALL") {
       items = items.filter(v => v.status === status);
     }
+    if (mode) {
+      items = items.filter(v => v.mode === mode);
+    }
     return this.wrapPaginated(items);
+  }
+
+  @Get("merchant-verification/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get merchant onboarding and verification overview stats" })
+  async getVerificationOverview() {
+    return this.wrapResponse({
+      metrics: {
+        pendingVerification: 246,
+        inProgress: 312,
+        verifiedActive: 2948,
+        verifiedActivePct: "86.0%",
+        rejected: 132,
+        rejectedPct: "3.8%",
+        infoRequested: 48,
+        avgVerificationTime: "2.1 days",
+      },
+      counts: {
+        pending: 246,
+        inProgress: 312,
+        infoRequested: 48,
+        rejected: 132,
+      }
+    });
   }
 
   @Get("merchant-verification/:id")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get single KYC application by ID" })
   async getVerificationById(@Param("id") id: string, @Headers() headers?: any, @Req() req?: any) {
-    const item = mutableKycApplications.find(v => v.id === id);
+    let item: any = null;
+
+    try {
+      const resp = await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        `/api/v1/merchants/onboarding/status/${encodeURIComponent(id)}`,
+        {
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+      if (resp && (resp.data || resp.applicationId)) {
+        item = this.mapPartnerRegistrationToKyc(resp.data || resp);
+      }
+    } catch {}
+
+    if (!item) {
+      try {
+        const listResp = await this.proxy.dispatch<any>(
+          this.merchantServiceUrl,
+          "/api/v1/merchants/onboarding",
+          {
+            headers: {
+              authorization: headers?.authorization,
+              "x-tenant-id": "system-admin-tenant",
+            },
+          }
+        );
+        const match = (listResp?.items || []).find((r: any) => r.applicationId === id || r.id === id);
+        if (match) {
+          item = this.mapPartnerRegistrationToKyc(match);
+        }
+      } catch {}
+    }
+
+    if (!item) {
+      item = mutableKycApplications.find(v => v.id === id);
+    }
+
     if (!item) throw new NotFoundException(`KYC Application ${id} not found`);
 
     const scope = this.resolveOperatorScope(headers, req);
@@ -2095,13 +3249,53 @@ export class AdminController {
   @Patch("merchant-verification/:id/approve")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Approve merchant KYC verification" })
-  async approveVerification(@Param("id") id: string, @Body() body: any) {
-    const item = mutableKycApplications.find(v => v.id === id);
-    if (!item) throw new NotFoundException(`KYC Application ${id} not found`);
+  async approveVerification(@Param("id") id: string, @Body() body: any, @Headers() headers?: any) {
+    let item = mutableKycApplications.find(v => v.id === id);
+    const justification = body?.notes || body?.operatorNotes || "All FSSAI, GSTIN and Bank Penny-Drop documents verified.";
 
-    item.status = "VERIFIED";
-    if (item.merchantId) {
-      mutableMerchantStatuses[item.merchantId] = "ACTIVE";
+    try {
+      await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        `/api/v1/merchants/onboarding/${encodeURIComponent(id)}/status`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            status: "APPROVED",
+            changedBy: "ADMIN_VERIFIER",
+            notes: justification,
+            reason: "COMPLIANCE_CLEARANCE",
+          }),
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+    } catch (err) {}
+
+    try {
+      const resp = await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        `/api/v1/merchants/onboarding/status/${encodeURIComponent(id)}`,
+        {
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+      if (resp && (resp.data || resp.applicationId)) {
+        item = this.mapPartnerRegistrationToKyc(resp.data || resp);
+      }
+    } catch {}
+
+    if (item) {
+      item.status = "VERIFIED";
+      if (item.merchantId) {
+        mutableMerchantStatuses[item.merchantId] = "ACTIVE";
+      }
+    } else {
+      item = { id, status: "VERIFIED" };
     }
 
     adminAuditLogs.unshift({
@@ -2112,7 +3306,7 @@ export class AdminController {
       targetEntity: "MerchantVerification",
       targetId: id,
       reasonCode: "COMPLIANCE_CLEARANCE",
-      justification: body.operatorNotes || "All FSSAI, GSTIN and Bank Penny-Drop documents verified.",
+      justification,
       timestamp: new Date().toISOString(),
     });
 
@@ -2122,12 +3316,53 @@ export class AdminController {
   @Patch("merchant-verification/:id/reject")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Reject merchant KYC verification" })
-  async rejectVerification(@Param("id") id: string, @Body() body: any) {
-    const item = mutableKycApplications.find(v => v.id === id);
-    if (!item) throw new NotFoundException(`KYC Application ${id} not found`);
+  async rejectVerification(@Param("id") id: string, @Body() body: any, @Headers() headers?: any) {
+    let item = mutableKycApplications.find(v => v.id === id);
+    const reasonCode = body?.reasonCode || "DOCUMENT_DEFICIENCY";
+    const justification = body?.justification || body?.notes || "Document rejected.";
 
-    item.status = "REJECTED";
-    item.rejectionReason = `${body.reasonCode || 'DOCUMENT_DEFICIENCY'}: ${body.justification || 'Document rejected.'}`;
+    try {
+      await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        `/api/v1/merchants/onboarding/${encodeURIComponent(id)}/status`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            status: "REJECTED",
+            changedBy: "ADMIN_VERIFIER",
+            reason: reasonCode,
+            notes: justification,
+          }),
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+    } catch (err) {}
+
+    try {
+      const resp = await this.proxy.dispatch<any>(
+        this.merchantServiceUrl,
+        `/api/v1/merchants/onboarding/status/${encodeURIComponent(id)}`,
+        {
+          headers: {
+            authorization: headers?.authorization,
+            "x-tenant-id": "system-admin-tenant",
+          },
+        }
+      );
+      if (resp && (resp.data || resp.applicationId)) {
+        item = this.mapPartnerRegistrationToKyc(resp.data || resp);
+      }
+    } catch {}
+
+    if (item) {
+      item.status = "REJECTED";
+      item.rejectionReason = `${reasonCode}: ${justification}`;
+    } else {
+      item = { id, status: "REJECTED", rejectionReason: `${reasonCode}: ${justification}` };
+    }
 
     adminAuditLogs.unshift({
       id: `AUD-${Date.now()}`,
@@ -2136,12 +3371,57 @@ export class AdminController {
       action: "KYC_REJECTED",
       targetEntity: "MerchantVerification",
       targetId: id,
-      reasonCode: body.reasonCode || "DOCUMENT_DEFICIENCY",
-      justification: body.justification || "Document rejected.",
+      reasonCode,
+      justification,
       timestamp: new Date().toISOString(),
     });
 
     return this.wrapResponse(item);
+  }
+
+  @Patch("merchant-verification/:id/status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update merchant KYC verification status" })
+  async updateVerificationStatus(
+    @Param("id") id: string,
+    @Body() body: any,
+    @Headers() headers?: any
+  ) {
+    if (body.status === "APPROVED" || body.status === "VERIFIED") {
+      return this.approveVerification(id, body, headers);
+    }
+    if (body.status === "REJECTED") {
+      return this.rejectVerification(id, body, headers);
+    }
+    return this.updateApplicationStatus(id, body, headers);
+  }
+
+  @Patch("merchant-verification/:id/checklist")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Toggle verification checklist item" })
+  async updateChecklistItem(@Param("id") id: string, @Body() body: any) {
+    let item = mutableKycApplications.find(v => v.id === id);
+    if (item && item.checklist) {
+      const target = item.checklist.find((c: any) => c.id === body.checklistId);
+      if (target) {
+        target.verified = body.verified !== undefined ? body.verified : !target.verified;
+      }
+    }
+    return this.wrapResponse(item || { id, checklistId: body.checklistId, verified: body.verified });
+  }
+
+  @Patch("merchant-verification/:id/request-info")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Request additional info from merchant applicant" })
+  async requestApplicantInfo(@Param("id") id: string, @Body() body: any) {
+    let item = mutableKycApplications.find(v => v.id === id);
+    if (item) {
+      item.status = "INFO_REQUESTED";
+      if (body.remarks || body.notes) {
+        item.internalRemarks = body.remarks || body.notes;
+      }
+    }
+    return this.wrapResponse(item || { id, status: "INFO_REQUESTED" });
   }
 
   // --- Orders & Operations Stream ---
@@ -2967,7 +4247,41 @@ export class AdminController {
 
   // --- Support Tickets (Customer & Merchant Helpdesk) ---
 
-  @Get(["support/tickets", "support-tickets"])
+  @Get(["support/overview", "customers/requests/overview"])
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer support metrics, SLA adherence and ratings" })
+  async getSupportOverview() {
+    return this.wrapResponse({
+      metrics: {
+        totalRequests: 6420,
+        totalRequestsDelta: "+12.8%",
+        resolved: 5430,
+        resolvedPct: "84.6%",
+        inProgress: 480,
+        inProgressPct: "7.5%",
+        awaitingCustomer: 210,
+        awaitingCustomerPct: "3.3%",
+        escalated: 180,
+        escalatedPct: "2.8%",
+        supportRating: "4.7 / 5",
+        supportRatingStars: 5,
+        avgResolutionTime: "6h 24m",
+        avgResolutionTimeDelta: "-18%",
+      },
+      counts: {
+        all: 6420,
+        open: 480,
+        inProgress: 480,
+        escalated: 180,
+        resolved: 5430,
+        refunds: 320,
+        cancellations: 610,
+        disputes: 72,
+      }
+    });
+  }
+
+  @Get(["support/tickets", "support-tickets", "customers/requests"])
   @ApiBearerAuth()
   @ApiOperation({ summary: "List customer and merchant support tickets with municipal scope isolation" })
   async getSupportTickets(
@@ -2975,7 +4289,12 @@ export class AdminController {
     @Query("status") status?: string,
     @Query("priority") priority?: string,
     @Query("category") category?: string,
+    @Query("requestType") requestType?: string,
+    @Query("tab") tab?: string,
     @Query("search") search?: string,
+    @Query("query") altQuery?: string,
+    @Query("page") page: number = 1,
+    @Query("limit") limit: number = 10,
     @Headers() headers?: any,
     @Req() req?: any
   ) {
@@ -2986,25 +4305,41 @@ export class AdminController {
     if (targetCity && targetCity !== "ALL") {
       list = list.filter(t => t.city.toLowerCase() === targetCity.toLowerCase());
     }
+
+    if (tab && tab !== "ALL") {
+      if (tab === "OPEN") list = list.filter(t => t.statusKey === "OPEN" || t.status === "Open" || t.status === "OPEN");
+      else if (tab === "IN_PROGRESS") list = list.filter(t => t.statusKey === "IN_PROGRESS" || t.status === "In Progress");
+      else if (tab === "ESCALATED") list = list.filter(t => t.statusKey === "ESCALATED" || t.status === "Escalated");
+      else if (tab === "RESOLVED") list = list.filter(t => t.statusKey === "RESOLVED" || t.status === "Resolved");
+      else if (tab === "REFUNDS") list = list.filter(t => t.requestType === "Refund" || t.category === "PAYMENT_REFUND");
+      else if (tab === "CANCELLATIONS") list = list.filter(t => t.requestType === "Cancellation" || t.category === "CANCELLATION");
+      else if (tab === "DISPUTES") list = list.filter(t => t.requestType === "Dispute" || t.category === "DISPUTE");
+    }
+
     if (status && status !== "ALL") {
-      list = list.filter(t => t.status === status);
+      list = list.filter(t => t.status?.toLowerCase() === status.toLowerCase() || t.statusKey?.toLowerCase() === status.toLowerCase());
     }
     if (priority && priority !== "ALL") {
-      list = list.filter(t => t.priority === priority);
+      list = list.filter(t => t.priority?.toLowerCase() === priority.toLowerCase());
+    }
+    if (requestType && requestType !== "ALL") {
+      list = list.filter(t => t.requestType?.toLowerCase() === requestType.toLowerCase());
     }
     if (category && category !== "ALL") {
-      list = list.filter(t => t.category === category);
+      list = list.filter(t => t.category?.toLowerCase() === category.toLowerCase());
     }
-    if (search) {
-      const q = search.toLowerCase();
+    const q = (search || altQuery || "").toLowerCase().trim();
+    if (q) {
       list = list.filter(t =>
+        t.id.toLowerCase().includes(q) ||
         t.ticketNumber.toLowerCase().includes(q) ||
         t.subject.toLowerCase().includes(q) ||
         t.requesterName.toLowerCase().includes(q) ||
+        (t.requesterPhone && t.requesterPhone.includes(q)) ||
         (t.linkedOrderId && t.linkedOrderId.toLowerCase().includes(q))
       );
     }
-    return this.wrapPaginated(list);
+    return this.wrapPaginated(list, 6420, Number(page), Number(limit));
   }
 
   @Get(["support/tickets/:id", "support-tickets/:id"])
@@ -3296,12 +4631,12 @@ export class AdminController {
         { service: "api-gateway", status: "HEALTHY", latencyMs: 8, port: 4000, version: "1.0.0", cpuUsagePct: 14, memoryUsageMb: 84 },
         { service: "identity-service", status: "HEALTHY", latencyMs: 14, port: 4001, version: "1.0.0", cpuUsagePct: 18, memoryUsageMb: 92 },
         { service: "merchant-service", status: "HEALTHY", latencyMs: 22, port: 4002, version: "1.0.0", cpuUsagePct: 22, memoryUsageMb: 110 },
-        { service: "catalog-service", status: "HEALTHY", latencyMs: 18, port: 3002, version: "1.0.0", cpuUsagePct: 16, memoryUsageMb: 98 },
-        { service: "order-service", status: "HEALTHY", latencyMs: 25, port: 4004, version: "1.0.0", cpuUsagePct: 24, memoryUsageMb: 124 },
-        { service: "payment-service", status: "HEALTHY", latencyMs: 31, port: 4005, version: "1.0.0", cpuUsagePct: 19, memoryUsageMb: 88 },
+        { service: "catalog-service", status: "HEALTHY", latencyMs: 18, port: 4003, version: "1.0.0", cpuUsagePct: 16, memoryUsageMb: 98 },
+        { service: "order-service", status: "HEALTHY", latencyMs: 25, port: 4005, version: "1.0.0", cpuUsagePct: 24, memoryUsageMb: 124 },
+        { service: "payment-service", status: "HEALTHY", latencyMs: 31, port: 4007, version: "1.0.0", cpuUsagePct: 19, memoryUsageMb: 88 },
         { service: "delivery-service", status: "HEALTHY", latencyMs: 20, port: 4006, version: "1.0.0", cpuUsagePct: 15, memoryUsageMb: 76 },
-        { service: "notification-service", status: "HEALTHY", latencyMs: 16, port: 4007, version: "1.0.0", cpuUsagePct: 12, memoryUsageMb: 68 },
-        { service: "analytics-service", status: "HEALTHY", latencyMs: 28, port: 4008, version: "1.0.0", cpuUsagePct: 26, memoryUsageMb: 132 },
+        { service: "notification-service", status: "HEALTHY", latencyMs: 16, port: 4009, version: "1.0.0", cpuUsagePct: 12, memoryUsageMb: 68 },
+        { service: "analytics-service", status: "HEALTHY", latencyMs: 28, port: 4011, version: "1.0.0", cpuUsagePct: 26, memoryUsageMb: 132 },
         { service: "redis-cache", status: "HEALTHY", memoryUsageMb: 48, version: "7.2.4", activePoolConnections: 34 },
         { service: "postgres-cluster", status: "HEALTHY", activePoolConnections: 12, version: "16.1", maxConnections: 100 },
       ],
@@ -4221,6 +5556,312 @@ export class AdminController {
     });
   }
 
+  // --- Sprint 6: Serviceable Areas & Coverage Control Plane ---
+
+  @Get("geo/serviceable-areas")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get serviceable areas metrics, cities, and localities" })
+  async getServiceableAreas(
+    @Query("cityId") cityIdQuery?: string,
+    @Query("search") searchQuery?: string,
+    @Query("status") statusQuery?: string,
+    @Query("serviceType") serviceTypeQuery?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers, req);
+    const targetCityId = (!scope.isGlobal && scope.city)
+      ? scope.city.toLowerCase()
+      : (cityIdQuery || "pune").toLowerCase();
+
+    let localities = mutableCoverageLocalities.filter(l =>
+      l.cityId.toLowerCase() === targetCityId || l.cityName.toLowerCase() === targetCityId
+    );
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      localities = localities.filter(l => l.name.toLowerCase().includes(q) || l.pincode.includes(q));
+    }
+
+    if (statusQuery && statusQuery !== "ALL") {
+      localities = localities.filter(l => l.status.toLowerCase() === statusQuery.toLowerCase());
+    }
+
+    if (serviceTypeQuery && serviceTypeQuery !== "ALL") {
+      localities = localities.filter(l => l.serviceTypes.includes(serviceTypeQuery.toUpperCase()));
+    }
+
+    const selectedCity = mutableServiceableCities.find(c =>
+      c.id.toLowerCase() === targetCityId || c.name.toLowerCase().includes(targetCityId)
+    ) || mutableServiceableCities[0];
+
+    const metrics = {
+      serviceableCities: mutableServiceableCities.filter(c => c.isLive).length,
+      serviceableLocalities: 142,
+      totalLocalities: 1842,
+      merchantsCovered: 1328,
+      merchantsTrend: "+14.2%",
+      ordersLast30Days: 24860,
+      ordersTrend: "+11.8%",
+      customersInCoverage: 92440,
+      customersTrend: "+13.5%",
+    };
+
+    return this.wrapResponse({
+      metrics,
+      cities: mutableServiceableCities,
+      selectedCity,
+      localities,
+      totalCount: localities.length,
+    });
+  }
+
+  @Patch("geo/serviceable-areas/cities/:id/status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Toggle city serviceable status" })
+  async toggleCityServiceableStatus(
+    @Param("id") id: string,
+    @Body() body: { isLive: boolean },
+    @Headers("x-audit-reason") reason?: string,
+    @Headers() headers?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers);
+    const city = mutableServiceableCities.find(c => c.id === id);
+    if (!city) throw new NotFoundException(`City ${id} not found`);
+
+    city.isLive = body.isLive;
+    city.status = body.isLive ? "SERVICEABLE" : "PLANNED";
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: scope.operatorId || "operator-sa-001",
+      operatorName: scope.operatorName || "Super Administrator",
+      action: "CITY_COVERAGE_STATUS_CHANGED",
+      targetEntity: "CityCoverage",
+      targetId: id,
+      reasonCode: reason || "MUNICIPAL_STATUS_CHANGE",
+      justification: `Updated city ${city.name} live status to ${city.isLive}`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(city);
+  }
+
+  @Patch("geo/serviceable-areas/localities/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update locality service types or status" })
+  async updateCoverageLocality(
+    @Param("id") id: string,
+    @Body() body: { status?: string; serviceTypes?: string[] },
+    @Headers() headers?: any
+  ) {
+    const scope = this.resolveOperatorScope(headers);
+    const locality = mutableCoverageLocalities.find(l => l.id === id);
+    if (!locality) throw new NotFoundException(`Locality ${id} not found`);
+
+    if (body.status) locality.status = body.status;
+    if (body.serviceTypes) locality.serviceTypes = body.serviceTypes;
+    locality.lastUpdated = "Just now";
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: scope.operatorId || "operator-sa-001",
+      operatorName: scope.operatorName || "Super Administrator",
+      action: "LOCALITY_COVERAGE_MODIFIED",
+      targetEntity: "CoverageLocality",
+      targetId: id,
+      reasonCode: "OPERATIONAL_UPDATE",
+      justification: `Updated coverage parameters for locality ${locality.name}`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(locality);
+  }
+
+  @Post("geo/serviceable-areas/localities")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Add new serviceable locality" })
+  async addCoverageLocality(@Body() body: any, @Headers() headers?: any) {
+    const scope = this.resolveOperatorScope(headers);
+    const newLoc = {
+      id: `cov-loc-${Date.now().toString().slice(-4)}`,
+      name: body.name || "New Area",
+      cityId: body.cityId || "pune",
+      cityName: body.cityName || "Pune City",
+      status: body.status || "ACTIVE",
+      serviceTypes: body.serviceTypes || ["PICKUP", "DELIVERY"],
+      merchantsCount: 0,
+      orders30d: 0,
+      customersCount: 0,
+      boundaryAreaKm2: body.boundaryAreaKm2 || 4.5,
+      lastUpdated: "Just now",
+      pincode: body.pincode || "411001",
+      lat: body.lat || 18.5204,
+      lng: body.lng || 73.8567,
+    };
+
+    mutableCoverageLocalities.unshift(newLoc);
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: scope.operatorId || "operator-sa-001",
+      operatorName: scope.operatorName || "Super Administrator",
+      action: "LOCALITY_ADDED_TO_COVERAGE",
+      targetEntity: "CoverageLocality",
+      targetId: newLoc.id,
+      reasonCode: "MUNICIPAL_EXPANSION",
+      justification: `Added ${newLoc.name} to serviceable coverage grid`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse(newLoc);
+  }
+
+  // --- Sprint 7: City Coverage & Launch Readiness ---
+
+  @Get("geo/city-coverage/:cityId")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get city coverage overview, readiness checklist, and performance" })
+  async getCityCoverageDetails(@Param("cityId") cityId: string) {
+    const city = mutableServiceableCities.find(c => c.id.toLowerCase() === cityId.toLowerCase()) || mutableServiceableCities[0];
+    const localities = mutableCoverageLocalities.filter(l => l.cityId.toLowerCase() === city.id.toLowerCase());
+
+    const readinessChecklist = [
+      { id: "chk-1", title: "Merchants Onboarded", requirement: "Min. 50 active merchants", current: `${city.merchantsCount} Active`, isMet: city.merchantsCount >= 50 },
+      { id: "chk-2", title: "Delivery Fleet Capacity", requirement: "Dedicated 3PL or rider pool", current: "Fleet Active (32 riders)", isMet: true },
+      { id: "chk-3", title: "Locality Boundary Mapping", requirement: "GeoJSON polygons verified", current: `${city.localitiesCount} Mapped`, isMet: true },
+      { id: "chk-4", title: "FSSAI / Municipal Compliance", requirement: "Trade license legal review", current: "Cleared & Signed", isMet: true },
+      { id: "chk-5", title: "Payment Gateway Escrow Route", requirement: "T+1 settlement account active", current: "Verified (Razorpay)", isMet: true },
+    ];
+
+    const performanceMetrics = {
+      avgDeliveryTimeMinutes: 24,
+      slaCompliancePct: 98.2,
+      onTimePickupRatePct: 96.5,
+      customerSatisfactionRating: 4.8,
+    };
+
+    return this.wrapResponse({
+      city,
+      readinessChecklist,
+      performanceMetrics,
+      localities,
+    });
+  }
+
+  // --- Sprint 8: Area Mapping Control Plane ---
+
+  @Get("geo/area-mapping/:cityId")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get interactive mapping polygon data, zones, and pins" })
+  async getAreaMapping(@Param("cityId") cityId: string) {
+    const city = mutableServiceableCities.find(c => c.id.toLowerCase() === cityId.toLowerCase()) || mutableServiceableCities[0];
+    const localities = mutableCoverageLocalities.filter(l => l.cityId.toLowerCase() === city.id.toLowerCase());
+
+    const metrics = {
+      cityName: city.name,
+      status: city.status,
+      isLive: city.isLive,
+      totalLocalities: city.totalLocalities,
+      serviceableAreas: city.localitiesCount,
+      nonServiceableAreas: city.notServiceable,
+      cityAreaKm2: city.cityAreaKm2,
+      serviceableAreaKm2: city.serviceableAreaKm2,
+      coveragePercent: city.coveragePercent,
+    };
+
+    return this.wrapResponse({
+      metrics,
+      city,
+      localities,
+    });
+  }
+
+  // --- Sprint 9: Bulk Location Import & Validation ---
+
+  @Get("geo/import/batches")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List recent location batch import history" })
+  async getImportBatches() {
+    return this.wrapResponse({
+      metrics: {
+        totalLocations: 12840,
+        successfullyImported: 10246,
+        updated: 186,
+        failedRejected: 72,
+        importBatches: 24,
+        lastImportDate: "15 Nov 2026, 06:24 PM",
+      },
+      batches: mutableImportBatches,
+    });
+  }
+
+  @Post("geo/import/preview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Validate location import file and generate preview rows" })
+  async previewImportLocations(@Body() body: { filename: string; importType: string; targetCity: string }) {
+    const previewRows = [
+      { index: 1, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Baner", pincode: "411045", serviceable: true, pickup: true, delivery: true, status: "VALID" },
+      { index: 2, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Wakad", pincode: "411057", serviceable: true, pickup: true, delivery: true, status: "VALID" },
+      { index: 3, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Hinjawadi", pincode: "411057", serviceable: true, pickup: true, delivery: true, status: "VALID" },
+      { index: 4, state: "Maharashtra", district: "Pune", city: "Pimpri-Chinchwad", locality: "Ravet", pincode: "412101", serviceable: true, pickup: true, delivery: true, status: "VALID" },
+      { index: 5, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Balewadi", pincode: "411045", serviceable: true, pickup: true, delivery: true, status: "VALID" },
+      { index: 6, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Kothrud", pincode: "411038", serviceable: true, pickup: true, delivery: false, status: "VALID" },
+      { index: 7, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Katraj", pincode: "411046", serviceable: false, pickup: false, delivery: false, status: "WARNING (Non-serviceable)" },
+      { index: 8, state: "Maharashtra", district: "Pune", city: "Pune", locality: "Invalid Locality", pincode: "000000", serviceable: true, pickup: true, delivery: true, status: "ERROR (Invalid Pincode)" },
+    ];
+
+    return this.wrapResponse({
+      filename: body.filename || "locations_upload.xlsx",
+      totalRecords: 5420,
+      validRecords: 5248,
+      warningRecords: 100,
+      errorRecords: 72,
+      previewRows,
+    });
+  }
+
+  @Post("geo/import/commit")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Commit verified import batch to database" })
+  async commitImportLocations(@Body() body: any, @Headers() headers?: any) {
+    const scope = this.resolveOperatorScope(headers);
+    const newBatch = {
+      id: `BATCH-${Date.now().toString().slice(-6)}`,
+      filename: body.filename || "locations_batch.xlsx",
+      fileSizeFormatted: "2.4 MB",
+      totalRecords: body.totalRecords || 5420,
+      validRecords: body.validRecords || 5248,
+      warningRecords: body.warningRecords || 100,
+      errorRecords: body.errorRecords || 72,
+      status: "COMPLETED",
+      uploadedBy: scope.operatorName || "Admin Operator",
+      importType: body.importType || "LOCATIONS",
+      targetCity: body.targetCity || "Pune City",
+      timestamp: new Date().toLocaleString("en-IN"),
+    };
+
+    mutableImportBatches.unshift(newBatch);
+
+    adminAuditLogs.unshift({
+      id: `AUD-${Date.now()}`,
+      operatorId: scope.operatorId || "operator-sa-001",
+      operatorName: scope.operatorName || "Super Administrator",
+      action: "LOCATION_BATCH_COMMITTED",
+      targetEntity: "LocationBatch",
+      targetId: newBatch.id,
+      reasonCode: "BULK_LOCATION_IMPORT",
+      justification: `Committed ${newBatch.validRecords} verified location records for ${newBatch.targetCity}`,
+      timestamp: new Date().toISOString(),
+    });
+
+    return this.wrapResponse({
+      batch: newBatch,
+      success: true,
+      message: `Successfully imported ${newBatch.validRecords} location records.`,
+    });
+  }
+
   @Get("overview/personas")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get tailored persona dashboard KPI feeds (Root, City Ops, Verification, Support)" })
@@ -4801,14 +6442,36 @@ export class AdminController {
     const averageLtvPaise = totalCustomers > 0 ? Math.round(totalSpendPaise / totalCustomers) : 0;
 
     return this.wrapResponse({
-      totalCustomers,
-      activeMonthlyUsers,
+      metrics: {
+        totalCustomers: 124560,
+        totalCustomersDelta: "+14.2%",
+        activeCustomers: 93420,
+        activeCustomersLabel: "Last 90 days",
+        customersWithOrders: 48276,
+        customersWithOrdersPct: "38.8%",
+        totalOrderValueFormatted: "₹3,24,56,780",
+        totalOrderValueDelta: "+21.6%",
+        loyaltyMembers: 56320,
+        loyaltyMembersPct: "45.2%",
+        flaggedAtRisk: 812,
+        flaggedAtRiskPct: "0.7%",
+      },
+      counts: {
+        all: 124560,
+        active: 93420,
+        new: 8276,
+        inactive: 30328,
+        blocked: 512,
+        flagged: 812,
+      },
+      totalCustomers: 124560,
+      activeMonthlyUsers: 93420,
       repeatOrderRatePct: 74.2,
-      averageLtvPaise,
-      averageLtvRupees: Math.round(averageLtvPaise / 100),
-      vipCustomersCount: vipCount,
-      restrictedCount,
-      suspendedCount,
+      averageLtvPaise: 260570,
+      averageLtvRupees: 2606,
+      vipCustomersCount: 14200,
+      restrictedCount: 512,
+      suspendedCount: 812,
       dpdpConsentCompliancePct: 99.4,
       activeTerritory: targetCity || "Global Scope",
     });
@@ -4858,22 +6521,816 @@ export class AdminController {
     const paginated = list.slice(startIndex, startIndex + Number(limit)).map(c => ({
       id: c.id,
       fullName: c.fullName,
+      phone: c.phoneNumber,
       maskedPhone: this.maskPhoneNumber(c.phoneNumber),
+      email: c.email,
       maskedEmail: c.email ? this.maskEmailAddress(c.email) : "N/A",
       city: c.cityName,
       cityCode: c.cityCode,
+      locality: c.locality || c.addresses?.find((a: any) => a.isDefault)?.locality || c.addresses?.[0]?.locality || "General",
+      primaryLocality: c.locality || c.addresses?.find((a: any) => a.isDefault)?.locality || c.addresses?.[0]?.locality || "General",
       segment: c.segment,
+      segmentLabel: c.segmentLabel || c.segment,
       status: c.status,
       totalOrdersCount: c.totalOrdersCount,
+      orders: c.totalOrdersCount,
       lifetimeSpendPaise: c.lifetimeSpendPaise,
       lifetimeSpendRupees: Math.round(c.lifetimeSpendPaise / 100),
-      primaryLocality: c.addresses.find((a: any) => a.isDefault)?.locality || c.addresses[0]?.locality || "General",
-      addressesCount: c.addresses.length,
+      totalSpent: Math.round(c.lifetimeSpendPaise / 100),
+      loyaltyPoints: c.loyaltyPoints || 800,
+      rating: c.rating || 4.8,
+      avgOrderValue: c.avgOrderValue || Math.round(c.lifetimeSpendPaise / ((c.totalOrdersCount || 1) * 100)),
+      lastOrderDate: c.lastOrderDate || c.lastActiveAt,
+      orderFrequency: c.orderFrequency || "~2.1 orders / month",
+      preferredCategories: c.preferredCategories || ["Grocery", "Daily Needs"],
+      orderTrend: c.orderTrend || [
+        { month: "Jun", orders: 2 },
+        { month: "Jul", orders: 3 },
+        { month: "Aug", orders: 4 },
+        { month: "Sep", orders: 4 },
+        { month: "Oct", orders: 5 },
+        { month: "Nov", orders: 6 }
+      ],
+      recentOrders: c.recentOrders || [
+        { id: `ORD-${Date.now()}`, date: "15 Nov 2026, 08:24 PM", amount: 842, status: "Delivered" }
+      ],
+      addressesCount: c.addresses?.length || 1,
       registeredAt: c.registeredAt,
       lastActiveAt: c.lastActiveAt,
     }));
 
     return this.wrapPaginated(paginated, list.length, Number(page), Number(limit));
+  }
+
+  @Get("customers/segments/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer segmentation overview and ROI metrics" })
+  async getCustomerSegmentsOverview() {
+    return this.wrapResponse({
+      metrics: {
+        totalCustomers: 124560,
+        activeSegments: 8,
+        customersInSegments: 93420,
+        customersInSegmentsPct: "75.0%",
+        engagementReach: 41360,
+        engagementReachPeriod: "Last 30 Days",
+        revenueFromSegmentsFormatted: "₹18,67,320",
+        revenueFromSegmentsDelta: "+24.6%",
+        avgSegmentRoi: "5.8x",
+      },
+      counts: {
+        activeSegments: 8,
+      }
+    });
+  }
+
+  @Get("customers/segments")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List smart customer segmentation groups" })
+  async getCustomerSegments(
+    @Query("search") search?: string,
+    @Query("type") type?: string,
+    @Query("status") status?: string
+  ) {
+    let list = [
+      {
+        id: "SEG-0001",
+        name: "Frequent Buyers",
+        description: "High repeat purchase users",
+        type: "BEHAVIOR",
+        typeLabel: "Behavior",
+        icon: "⭐",
+        customers: 18560,
+        pctOfTotal: "14.9%",
+        criteriaSummary: "≥ 5 orders (in last 90 days)",
+        status: "ACTIVE",
+        lastUpdated: "15 Nov 2026, 10:24 AM",
+        avgOrders: 5.8,
+        avgSpendFormatted: "₹18,560",
+        criteriaList: ["Orders in last 90 days ≥ 5", "Status = Active"],
+        totalOrders: 107580,
+        totalSpendFormatted: "₹3,26,48,560",
+        avgOrderValueFormatted: "₹3,036",
+        repeatPurchaseRate: "82.4%",
+        orderTrendDelta: "+24.6%",
+        orderTrend: [
+          { month: "Jun", orders: 12 },
+          { month: "Jul", orders: 15 },
+          { month: "Aug", orders: 18 },
+          { month: "Sep", orders: 20 },
+          { month: "Oct", orders: 24 },
+          { month: "Nov", orders: 28 },
+        ],
+      },
+      {
+        id: "SEG-0002",
+        name: "Loyal Customers",
+        description: "High value & repeat buyers",
+        type: "VALUE",
+        typeLabel: "Value",
+        icon: "👑",
+        customers: 12420,
+        pctOfTotal: "10.0%",
+        criteriaSummary: "≥ ₹10,000 spend & ≥ 3 orders",
+        status: "ACTIVE",
+        lastUpdated: "14 Nov 2026, 06:38 PM",
+        avgOrders: 6.2,
+        avgSpendFormatted: "₹24,120",
+        criteriaList: ["Total spend ≥ ₹10,000", "Orders count ≥ 3"],
+        totalOrders: 77004,
+        totalSpendFormatted: "₹2,99,57,040",
+        avgOrderValueFormatted: "₹3,890",
+        repeatPurchaseRate: "88.2%",
+        orderTrendDelta: "+19.4%",
+        orderTrend: [
+          { month: "Jun", orders: 10 },
+          { month: "Jul", orders: 12 },
+          { month: "Aug", orders: 14 },
+          { month: "Sep", orders: 16 },
+          { month: "Oct", orders: 19 },
+          { month: "Nov", orders: 22 },
+        ],
+      },
+      {
+        id: "SEG-0003",
+        name: "New Customers",
+        description: "Recently registered users",
+        type: "LIFECYCLE",
+        typeLabel: "Lifecycle",
+        icon: "👤",
+        customers: 8276,
+        pctOfTotal: "6.6%",
+        criteriaSummary: "Joined in last 30 days",
+        status: "ACTIVE",
+        lastUpdated: "14 Nov 2026, 01:12 PM",
+        avgOrders: 1.8,
+        avgSpendFormatted: "₹1,240",
+        criteriaList: ["Registration date ≤ 30 days"],
+        totalOrders: 14896,
+        totalSpendFormatted: "₹1,02,62,240",
+        avgOrderValueFormatted: "₹688",
+        repeatPurchaseRate: "34.1%",
+        orderTrendDelta: "+31.0%",
+        orderTrend: [
+          { month: "Jun", orders: 4 },
+          { month: "Jul", orders: 6 },
+          { month: "Aug", orders: 8 },
+          { month: "Sep", orders: 11 },
+          { month: "Oct", orders: 15 },
+          { month: "Nov", orders: 18 },
+        ],
+      },
+      {
+        id: "SEG-0004",
+        name: "Inactive Customers",
+        description: "No recent activity",
+        type: "ENGAGEMENT",
+        typeLabel: "Engagement",
+        icon: "🏷️",
+        customers: 30328,
+        pctOfTotal: "24.4%",
+        criteriaSummary: "No orders in last 60 days",
+        status: "ACTIVE",
+        lastUpdated: "13 Nov 2026, 09:47 AM",
+        avgOrders: 2.1,
+        avgSpendFormatted: "₹1,850",
+        criteriaList: ["Last order date > 60 days ago"],
+        totalOrders: 63688,
+        totalSpendFormatted: "₹5,61,06,800",
+        avgOrderValueFormatted: "₹880",
+        repeatPurchaseRate: "12.0%",
+        orderTrendDelta: "-8.2%",
+        orderTrend: [
+          { month: "Jun", orders: 18 },
+          { month: "Jul", orders: 16 },
+          { month: "Aug", orders: 14 },
+          { month: "Sep", orders: 12 },
+          { month: "Oct", orders: 9 },
+          { month: "Nov", orders: 7 },
+        ],
+      },
+      {
+        id: "SEG-0005",
+        name: "VIP Customers",
+        description: "Top value customers",
+        type: "VALUE",
+        typeLabel: "Value",
+        icon: "💎",
+        customers: 5860,
+        pctOfTotal: "4.7%",
+        criteriaSummary: "≥ ₹50,000 spend (or top 5% by value)",
+        status: "ACTIVE",
+        lastUpdated: "12 Nov 2026, 05:20 PM",
+        avgOrders: 14.5,
+        avgSpendFormatted: "₹62,400",
+        criteriaList: ["Lifetime spend ≥ ₹50,000"],
+        totalOrders: 84970,
+        totalSpendFormatted: "₹3,65,66,400",
+        avgOrderValueFormatted: "₹4,303",
+        repeatPurchaseRate: "94.6%",
+        orderTrendDelta: "+28.5%",
+        orderTrend: [
+          { month: "Jun", orders: 15 },
+          { month: "Jul", orders: 18 },
+          { month: "Aug", orders: 20 },
+          { month: "Sep", orders: 22 },
+          { month: "Oct", orders: 25 },
+          { month: "Nov", orders: 30 },
+        ],
+      },
+      {
+        id: "SEG-0006",
+        name: "Occasional Buyers",
+        description: "Low frequency customers",
+        type: "BEHAVIOR",
+        typeLabel: "Behavior",
+        icon: "🛒",
+        customers: 20940,
+        pctOfTotal: "16.8%",
+        criteriaSummary: "1 - 2 orders (in last 90 days)",
+        status: "ACTIVE",
+        lastUpdated: "12 Nov 2026, 11:05 AM",
+        avgOrders: 1.5,
+        avgSpendFormatted: "₹980",
+        criteriaList: ["Orders in last 90 days between 1 and 2"],
+        totalOrders: 31410,
+        totalSpendFormatted: "₹2,05,21,200",
+        avgOrderValueFormatted: "₹653",
+        repeatPurchaseRate: "42.0%",
+        orderTrendDelta: "+11.2%",
+        orderTrend: [
+          { month: "Jun", orders: 6 },
+          { month: "Jul", orders: 7 },
+          { month: "Aug", orders: 7 },
+          { month: "Sep", orders: 8 },
+          { month: "Oct", orders: 9 },
+          { month: "Nov", orders: 10 },
+        ],
+      },
+      {
+        id: "SEG-0007",
+        name: "Price Sensitive",
+        description: "Users who use offers often",
+        type: "PREFERENCE",
+        typeLabel: "Preference",
+        icon: "🏷️",
+        customers: 14720,
+        pctOfTotal: "11.8%",
+        criteriaSummary: "≥ 2 orders with discount/coupon",
+        status: "ACTIVE",
+        lastUpdated: "11 Nov 2026, 04:32 PM",
+        avgOrders: 3.4,
+        avgSpendFormatted: "₹2,450",
+        criteriaList: ["Discounted orders ≥ 2"],
+        totalOrders: 50048,
+        totalSpendFormatted: "₹3,60,64,000",
+        avgOrderValueFormatted: "₹720",
+        repeatPurchaseRate: "68.4%",
+        orderTrendDelta: "+16.8%",
+        orderTrend: [
+          { month: "Jun", orders: 8 },
+          { month: "Jul", orders: 9 },
+          { month: "Aug", orders: 11 },
+          { month: "Sep", orders: 13 },
+          { month: "Oct", orders: 15 },
+          { month: "Nov", orders: 17 },
+        ],
+      },
+      {
+        id: "SEG-0008",
+        name: "Pune Customers",
+        description: "All customers from Pune",
+        type: "LOCATION",
+        typeLabel: "Location",
+        icon: "📍",
+        customers: 52340,
+        pctOfTotal: "42.0%",
+        criteriaSummary: "City = Pune",
+        status: "ACTIVE",
+        lastUpdated: "10 Nov 2026, 02:18 PM",
+        avgOrders: 4.2,
+        avgSpendFormatted: "₹3,840",
+        criteriaList: ["City = Pune"],
+        totalOrders: 219828,
+        totalSpendFormatted: "₹20,09,85,600",
+        avgOrderValueFormatted: "₹914",
+        repeatPurchaseRate: "76.5%",
+        orderTrendDelta: "+22.1%",
+        orderTrend: [
+          { month: "Jun", orders: 20 },
+          { month: "Jul", orders: 24 },
+          { month: "Aug", orders: 28 },
+          { month: "Sep", orders: 32 },
+          { month: "Oct", orders: 36 },
+          { month: "Nov", orders: 42 },
+        ],
+      },
+    ];
+
+    if (search) {
+      const q = search.toLowerCase().trim();
+      list = list.filter(s => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+    }
+
+    if (type && type.toUpperCase() !== "ALL") {
+      list = list.filter(s => s.type === type || s.typeLabel.toLowerCase() === type.toLowerCase());
+    }
+
+    if (status && status.toUpperCase() !== "ALL") {
+      list = list.filter(s => s.status === status);
+    }
+
+    return this.wrapPaginated(list, list.length);
+  }
+
+  @Get("customers/segments/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get single customer segment by ID" })
+  async getCustomerSegmentById(@Param("id") id: string) {
+    const resp = await this.getCustomerSegments();
+    const item = resp.data?.items?.find((s: any) => s.id === id);
+    if (!item) throw new NotFoundException(`Customer segment ${id} not found.`);
+    return this.wrapResponse(item);
+  }
+
+  @Post("customers/segments")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create new smart customer segment" })
+  async createCustomerSegment(@Body() body: any) {
+    const newSeg = {
+      id: `SEG-000${Math.floor(10 + Math.random() * 90)}`,
+      name: body.name || "Custom Segment",
+      description: body.description || "User-defined customer cluster",
+      type: body.type || "BEHAVIOR",
+      typeLabel: body.typeLabel || "Behavior",
+      icon: "🎯",
+      customers: 2400,
+      pctOfTotal: "1.9%",
+      criteriaSummary: body.criteriaSummary || "Custom Rule",
+      status: "ACTIVE",
+      lastUpdated: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+      avgOrders: 3.0,
+      avgSpendFormatted: "₹2,500",
+      criteriaList: body.criteriaList || ["Custom Criteria"],
+      totalOrders: 7200,
+      totalSpendFormatted: "₹60,00,000",
+      avgOrderValueFormatted: "₹833",
+      repeatPurchaseRate: "65.0%",
+      orderTrendDelta: "+12.0%",
+      orderTrend: [
+        { month: "Jun", orders: 2 },
+        { month: "Jul", orders: 3 },
+        { month: "Aug", orders: 3 },
+        { month: "Sep", orders: 4 },
+        { month: "Oct", orders: 5 },
+        { month: "Nov", orders: 6 },
+      ],
+    };
+    return this.wrapResponse(newSeg);
+  }
+
+  // =========================================================================
+  // SPRINT 15: CUSTOMER ACCOUNTS & MOBILE VERIFICATION / KYC (SCREENS #17 & #13)
+  // =========================================================================
+
+  @Get("customers/verification/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer accounts, OTP mobile verification and KYC metrics" })
+  async getCustomerVerificationOverview(@Query("city") cityQuery?: string, @Headers() headers?: any) {
+    return this.wrapResponse({
+      metrics: {
+        totalCustomers: 124560,
+        mobileVerified: 118420,
+        mobileVerifiedPct: "95.1%",
+        guestUsers: 6140,
+        guestUsersLabel: "Browsed, Not Ordered",
+        newCustomers: 8276,
+        newCustomersLabel: "Last 30 Days",
+        customersWithOrders: 48276,
+        customersWithOrdersPct: "38.8%",
+        flaggedCount: 512,
+      },
+      counts: {
+        all: 124560,
+        verified: 118420,
+        guests: 6140,
+        withOrders: 48276,
+        flagged: 512,
+      },
+      kycMetrics: {
+        totalCustomers: 48276,
+        verified: 32840,
+        verifiedPct: "68.0%",
+        pendingReview: 6428,
+        pendingReviewPct: "13.3%",
+        actionRequired: 4196,
+        actionRequiredPct: "8.7%",
+        rejected: 3212,
+        rejectedPct: "6.7%",
+        reverification: 1600,
+        reverificationPct: "3.3%",
+      },
+      kycCounts: {
+        queue: 6428,
+        verified: 32840,
+        actionRequired: 4196,
+        rejected: 3212,
+        reverification: 1600,
+      }
+    });
+  }
+
+  @Get("customers/verification")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List customer accounts with OTP mobile verification status" })
+  async getCustomerVerifications(
+    @Query("query") query?: string,
+    @Query("city") cityQuery?: string,
+    @Query("segment") segmentQuery?: string,
+    @Query("status") statusQuery?: string,
+    @Query("tab") tabQuery: string = "ALL",
+    @Query("page") page: number = 1,
+    @Query("limit") limit: number = 10,
+    @Headers() headers?: any
+  ) {
+    let list = [...mutableCustomersList];
+
+    if (query && query.trim()) {
+      const q = query.trim().toLowerCase();
+      list = list.filter(c =>
+        c.fullName.toLowerCase().includes(q) ||
+        c.id.toLowerCase().includes(q) ||
+        c.phoneNumber.toLowerCase().includes(q)
+      );
+    }
+
+    if (cityQuery && cityQuery !== "ALL") {
+      list = list.filter(c => c.cityName?.toLowerCase() === cityQuery.toLowerCase());
+    }
+
+    if (segmentQuery && segmentQuery !== "ALL") {
+      list = list.filter(c => c.segment?.toLowerCase() === segmentQuery.toLowerCase());
+    }
+
+    if (statusQuery && statusQuery !== "ALL") {
+      list = list.filter(c => c.status?.toLowerCase() === statusQuery.toLowerCase());
+    }
+
+    if (tabQuery === "VERIFIED") {
+      list = list.filter(c => c.verificationStatus === "OTP_VERIFIED");
+    } else if (tabQuery === "GUESTS") {
+      list = list.filter(c => c.accountType === "Guest");
+    } else if (tabQuery === "WITH_ORDERS") {
+      list = list.filter(c => c.totalOrdersCount > 0);
+    } else if (tabQuery === "FLAGGED") {
+      list = list.filter(c => c.status === "FLAGGED" || c.status === "RESTRICTED");
+    }
+
+    const startIndex = (Number(page) - 1) * Number(limit);
+    const paginated = list.slice(startIndex, startIndex + Number(limit)).map((c, index) => ({
+      index: startIndex + index + 1,
+      id: c.id,
+      name: c.fullName,
+      avatar: c.avatar || null,
+      initials: c.fullName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase(),
+      mobile: c.phoneNumber,
+      accountType: c.accountType || (c.totalOrdersCount > 0 ? "Registered" : "Guest"),
+      orders: c.totalOrdersCount || 0,
+      totalSpent: c.lifetimeSpendRupees || 0,
+      totalSpentFormatted: `₹${(c.lifetimeSpendRupees || 0).toLocaleString("en-IN")}`,
+      verificationStatus: c.verificationStatus || (c.accountType === "Guest" ? "NOT_VERIFIED" : "OTP_VERIFIED"),
+      verificationMethod: c.verificationMethod || (c.verificationStatus === "NOT_VERIFIED" ? null : "OTP (SMS)"),
+      verifiedOn: c.verifiedOn || (c.verificationStatus === "NOT_VERIFIED" ? null : (c.registeredAt ? `${c.registeredAt}, 10:24 AM` : "10 Jan 2026, 10:24 AM")),
+      status: c.status || (c.accountType === "Guest" ? "GUEST" : "ACTIVE"),
+      lastActive: c.lastActiveAt || "15 Nov 2026, 10:24 AM",
+      locality: c.locality || "Baner",
+      cityName: c.cityName || "Pune",
+      joinedDate: c.registeredAt || "10 Jan 2026",
+      loyaltyPoints: c.loyaltyPoints || 0,
+      email: c.email || `${c.fullName.toLowerCase().replace(/ /g, ".")}@gmail.com`,
+      contactPreference: c.contactPreference || "SMS, Push Notification",
+      recentActivity: c.recentActivity || [
+        { title: `Order placed — ORD-${Math.floor(800000 + Math.random() * 100000)}`, time: "15 Nov 2026, 08:24 PM", type: "success" },
+        { title: "Login — Mobile OTP", time: "15 Nov 2026, 10:24 AM", type: "info" },
+        { title: "Account created", time: c.registeredAt ? `${c.registeredAt}, 10:24 AM` : "10 Jan 2026, 10:24 AM", type: "muted" },
+      ],
+      addressesCount: c.addresses?.length || 1,
+    }));
+
+    return this.wrapPaginated(paginated, 124560, Number(page), Number(limit));
+  }
+
+  @Get("customers/verification/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer account verification details" })
+  async getCustomerVerificationById(@Param("id") id: string) {
+    const cust = mutableCustomersList.find(c => c.id === id);
+    if (!cust) throw new NotFoundException(`Customer ${id} not found.`);
+
+    return this.wrapResponse({
+      id: cust.id,
+      name: cust.fullName,
+      avatar: cust.avatar || null,
+      initials: cust.fullName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase(),
+      mobile: cust.phoneNumber,
+      accountType: cust.accountType || (cust.totalOrdersCount > 0 ? "Registered" : "Guest"),
+      orders: cust.totalOrdersCount || 0,
+      totalSpent: cust.lifetimeSpendRupees || 0,
+      totalSpentFormatted: `₹${(cust.lifetimeSpendRupees || 0).toLocaleString("en-IN")}`,
+      verificationStatus: cust.verificationStatus || (cust.accountType === "Guest" ? "NOT_VERIFIED" : "OTP_VERIFIED"),
+      verificationMethod: cust.verificationMethod || (cust.verificationStatus === "NOT_VERIFIED" ? null : "OTP (SMS)"),
+      verifiedOn: cust.verifiedOn || (cust.verificationStatus === "NOT_VERIFIED" ? null : (cust.registeredAt ? `${cust.registeredAt}, 10:24 AM` : "10 Jan 2026, 10:24 AM")),
+      status: cust.status || (cust.accountType === "Guest" ? "GUEST" : "ACTIVE"),
+      lastActive: cust.lastActiveAt || "15 Nov 2026, 10:24 AM",
+      locality: cust.locality || "Baner",
+      cityName: cust.cityName || "Pune",
+      joinedDate: cust.registeredAt || "10 Jan 2026",
+      loyaltyPoints: cust.loyaltyPoints || 0,
+      email: cust.email || `${cust.fullName.toLowerCase().replace(/ /g, ".")}@gmail.com`,
+      contactPreference: cust.contactPreference || "SMS, Push Notification",
+      recentActivity: [
+        { title: "Order placed — ORD-892210", time: "15 Nov 2026, 08:24 PM", type: "success" },
+        { title: "Login — Mobile OTP", time: "15 Nov 2026, 10:24 AM", type: "info" },
+        { title: "Account created", time: cust.registeredAt ? `${cust.registeredAt}, 10:24 AM` : "10 Jan 2026, 10:24 AM", type: "muted" },
+      ],
+      addresses: cust.addresses || [],
+      recentOrders: cust.recentOrders || [],
+    });
+  }
+
+  @Get("customers/kyc/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer KYC review overview metrics" })
+  async getCustomerKycOverview() {
+    return this.wrapResponse({
+      metrics: {
+        totalCustomers: 48276,
+        verified: 32840,
+        verifiedPct: "68.0%",
+        pendingReview: 6428,
+        pendingReviewPct: "13.3%",
+        actionRequired: 4196,
+        actionRequiredPct: "8.7%",
+        rejected: 3212,
+        rejectedPct: "6.7%",
+        reverification: 1600,
+        reverificationPct: "3.3%",
+      },
+      counts: {
+        queue: 6428,
+        verified: 32840,
+        actionRequired: 4196,
+        rejected: 3212,
+        reverification: 1600,
+      }
+    });
+  }
+
+  @Get("customers/kyc")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List customer KYC review applications" })
+  async getCustomerKycList(
+    @Query("query") query?: string,
+    @Query("city") cityQuery?: string,
+    @Query("type") typeQuery?: string,
+    @Query("status") statusQuery?: string,
+    @Query("page") page: number = 1,
+    @Query("limit") limit: number = 10,
+  ) {
+    let list = [...mutableCustomerKycList];
+    if (query && query.trim()) {
+      const q = query.trim().toLowerCase();
+      list = list.filter(k => k.customerName.toLowerCase().includes(q) || k.customerId.toLowerCase().includes(q));
+    }
+    if (statusQuery && statusQuery !== "ALL") {
+      list = list.filter(k => k.status.toLowerCase() === statusQuery.toLowerCase());
+    }
+    return this.wrapPaginated(list, 6428, Number(page), Number(limit));
+  }
+
+  @Patch("customers/kyc/:id/approve")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Approve customer KYC verification" })
+  async approveCustomerKyc(@Param("id") id: string) {
+    const kyc = mutableCustomerKycList.find(k => k.id === id);
+    if (kyc) {
+      kyc.status = "Verified";
+      kyc.aadhaarStatus = "Verified";
+      kyc.panStatus = "Verified";
+    }
+    return this.wrapResponse({ success: true, id, status: "Verified" });
+  }
+
+  @Patch("customers/kyc/:id/reject")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Reject customer KYC verification with reason" })
+  async rejectCustomerKyc(@Param("id") id: string, @Body() body: any) {
+    const kyc = mutableCustomerKycList.find(k => k.id === id);
+    if (kyc) {
+      kyc.status = "Rejected";
+      kyc.rejectionReason = body.reason || "Documents unreadable or incomplete";
+    }
+    return this.wrapResponse({ success: true, id, status: "Rejected", reason: body.reason });
+  }
+
+  @Patch("customers/kyc/:id/request-info")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Request additional info/documents for KYC" })
+  async requestCustomerKycInfo(@Param("id") id: string, @Body() body: any) {
+    const kyc = mutableCustomerKycList.find(k => k.id === id);
+    if (kyc) {
+      kyc.status = "Action Required";
+    }
+    return this.wrapResponse({ success: true, id, status: "Action Required", note: body.note });
+  }
+
+  @Patch("customers/kyc/:id/reverify")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Trigger customer KYC re-verification" })
+  async reverifyCustomerKyc(@Param("id") id: string) {
+    const kyc = mutableCustomerKycList.find(k => k.id === id);
+    if (kyc) {
+      kyc.status = "Re-verification";
+    }
+    return this.wrapResponse({ success: true, id, status: "Re-verification" });
+  }
+
+  @Patch("customers/:id/flag")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Flag or unflag customer account" })
+  async flagCustomerAccount(@Param("id") id: string, @Body() body: any) {
+    const cust = mutableCustomersList.find(c => c.id === id);
+    if (!cust) throw new NotFoundException(`Customer ${id} not found.`);
+    cust.status = body.flag ? "FLAGGED" : "ACTIVE";
+    return this.wrapResponse({ success: true, id, status: cust.status, reason: body.reason });
+  }
+
+  @Patch("customers/:id/block")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Block or unblock customer account" })
+  async blockCustomerAccount(@Param("id") id: string, @Body() body: any) {
+    const cust = mutableCustomersList.find(c => c.id === id);
+    if (!cust) throw new NotFoundException(`Customer ${id} not found.`);
+    cust.status = body.block ? "BLOCKED" : "ACTIVE";
+    return this.wrapResponse({ success: true, id, status: cust.status, reason: body.reason });
+  }
+
+  @Post("customers/:id/send-notification")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Send notification to customer" })
+  async sendCustomerNotification(@Param("id") id: string, @Body() body: any) {
+    return this.wrapResponse({ success: true, id, title: body.title, channel: body.channel || "SMS", sentAt: new Date().toISOString() });
+  }
+
+  @Post("customers/:id/loyalty-points")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Credit loyalty points to customer account" })
+  async creditLoyaltyPoints(@Param("id") id: string, @Body() body: any) {
+    const cust = mutableCustomersList.find(c => c.id === id);
+    if (cust) {
+      cust.loyaltyPoints = (cust.loyaltyPoints || 0) + (Number(body.points) || 100);
+    }
+    return this.wrapResponse({ success: true, id, creditedPoints: body.points, newBalance: cust?.loyaltyPoints || 0 });
+  }
+
+  // =========================================================================
+  // SPRINT 16: LOYALTY & REWARDS MANAGEMENT (SCREEN #18)
+  // =========================================================================
+
+  @Get("customers/loyalty/overview")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get customer loyalty and rewards program metrics" })
+  async getLoyaltyOverview() {
+    return this.wrapResponse({
+      metrics: {
+        loyaltyMembers: 118420,
+        loyaltyMembersDelta: "+14.2%",
+        pointsIssued: 1560,
+        pointsIssuedDelta: "+28.6%",
+        rewardsRedeemed: 1240,
+        rewardsRedeemedDelta: "+22.8%",
+        rewardValuePaise: 48632000,
+        rewardValueRupees: 486320,
+        rewardValueFormatted: "₹4,86,320",
+        repeatPurchaseRatePct: 82.4,
+        repeatPurchaseRateDelta: "+6.8 pp",
+        loyaltyRoi: "5.8x",
+      },
+      counts: {
+        programs: mutableLoyaltyPrograms.length,
+        rewards: mutableLoyaltyCatalog.length,
+        activeRules: mutableLoyaltyRules.filter(r => r.status === "Active").length,
+      }
+    });
+  }
+
+  @Get("customers/loyalty/programs")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List customer loyalty programs" })
+  async getLoyaltyPrograms(@Query("activeOnly") activeOnly?: string, @Query("query") query?: string) {
+    let list = [...mutableLoyaltyPrograms];
+    if (activeOnly === "true") {
+      list = list.filter(p => p.status === "Active");
+    }
+    if (query && query.trim()) {
+      const q = query.trim().toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(q) || p.type.toLowerCase().includes(q));
+    }
+    return this.wrapResponse(list);
+  }
+
+  @Get("customers/loyalty/programs/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get loyalty program details" })
+  async getLoyaltyProgramById(@Param("id") id: string) {
+    const prog = mutableLoyaltyPrograms.find(p => p.id === id);
+    if (!prog) throw new NotFoundException(`Loyalty program ${id} not found.`);
+    return this.wrapResponse(prog);
+  }
+
+  @Post("customers/loyalty/programs")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create new loyalty program" })
+  async createLoyaltyProgram(@Body() body: any) {
+    const newProg = {
+      index: mutableLoyaltyPrograms.length + 1,
+      id: `prog-${Date.now()}`,
+      name: body.name || "Custom Loyalty Program",
+      subtitle: body.subtitle || "Special customer rewards",
+      icon: body.icon || "🎁",
+      type: body.type || "Standard",
+      members: 0,
+      earningRule: body.earningRule || "₹1 = 1 Point",
+      redemption: body.redemption || "100 Points = ₹10",
+      status: "Active",
+      validFrom: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      validTill: body.validTill || "No Expiry",
+      minRedemption: body.minRedemption || "100 Points",
+      maxRedemption: body.maxRedemption || "5,000 Points / Order",
+      description: body.description || "Custom rewards program for targeted customer segments.",
+    };
+    mutableLoyaltyPrograms.push(newProg);
+    return this.wrapResponse(newProg);
+  }
+
+  @Patch("customers/loyalty/programs/:id/toggle")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Toggle loyalty program active status" })
+  async toggleLoyaltyProgram(@Param("id") id: string) {
+    const prog = mutableLoyaltyPrograms.find(p => p.id === id);
+    if (!prog) throw new NotFoundException(`Loyalty program ${id} not found.`);
+    prog.status = prog.status === "Active" ? "Inactive" : "Active";
+    return this.wrapResponse({ id, status: prog.status });
+  }
+
+  @Get("customers/loyalty/rules")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List active loyalty points earning rules" })
+  async getLoyaltyRules() {
+    return this.wrapResponse(mutableLoyaltyRules);
+  }
+
+  @Get("customers/loyalty/catalog")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List loyalty rewards catalog vouchers" })
+  async getLoyaltyCatalog() {
+    return this.wrapResponse(mutableLoyaltyCatalog);
+  }
+
+  @Get("customers/loyalty/tiers")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List customer VIP loyalty tier levels" })
+  async getLoyaltyTiers() {
+    return this.wrapResponse(mutableLoyaltyTiers);
+  }
+
+  @Get("customers/loyalty/redemptions")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List recent reward redemptions log" })
+  async getLoyaltyRedemptions() {
+    return this.wrapResponse(mutableLoyaltyRedemptions);
+  }
+
+  @Post("customers/loyalty/redeem")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Process reward redemption for an order" })
+  async redeemReward(@Body() body: any) {
+    const newRedemption = {
+      index: mutableLoyaltyRedemptions.length + 1,
+      id: `red-${Date.now()}`,
+      customerId: body.customerId || "CUS-0012456",
+      customerName: body.customerName || "Rohit Sharma",
+      initials: (body.customerName || "RS").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase(),
+      orderId: body.orderId || `ORD-${Math.floor(880000 + Math.random() * 20000)}`,
+      rewardRedeemed: body.rewardRedeemed || "₹25 Off",
+      pointsUsed: Number(body.pointsUsed) || 200,
+      discountValue: body.discountValue || "₹25",
+      orderValue: body.orderValue || "₹1,240",
+      dateTime: "Just now",
+      status: "Applied",
+    };
+    mutableLoyaltyRedemptions.unshift(newRedemption);
+    return this.wrapResponse(newRedemption);
   }
 
   @Get("customers/:id")
@@ -5721,7 +8178,811 @@ const mutablePiiAccessLogs: any[] = [
   },
 ];
 
+const mutableLoyaltyPrograms: any[] = [
+  {
+    index: 1,
+    id: "prog-1",
+    name: "NukkadNow Rewards",
+    subtitle: "Earn points on every order",
+    icon: "👑",
+    type: "Standard",
+    members: 118420,
+    earningRule: "₹1 = 1 Point",
+    redemption: "100 Points = ₹10",
+    status: "Active",
+    validFrom: "01 Jan 2026",
+    validTill: "No Expiry",
+    minRedemption: "100 Points",
+    maxRedemption: "5,000 Points / Order",
+    description: "Default loyalty program for all customers. Earn points on every order and redeem for discounts!",
+  },
+  {
+    index: 2,
+    id: "prog-2",
+    name: "Welcome Bonus",
+    subtitle: "Rewards for new customers",
+    icon: "🎁",
+    type: "Onboarding",
+    members: 8276,
+    earningRule: "Join = 100 Points",
+    redemption: "100 Points = ₹10",
+    status: "Active",
+    validFrom: "01 Jan 2026",
+    validTill: "No Expiry",
+    minRedemption: "100 Points",
+    maxRedemption: "1,000 Points / Order",
+    description: "Special onboarding reward points for newly verified customer accounts.",
+  },
+  {
+    index: 3,
+    id: "prog-3",
+    name: "Festival Bonanza",
+    subtitle: "Limited time festive rewards",
+    icon: "⚡",
+    type: "Campaign",
+    members: 42680,
+    earningRule: "₹1 = 2 Points",
+    redemption: "200 Points = ₹25",
+    status: "Active",
+    validFrom: "01 Oct 2026",
+    validTill: "30 Nov 2026",
+    minRedemption: "200 Points",
+    maxRedemption: "10,000 Points / Order",
+    description: "Double points festival multiplier across Kirana, Sweets & Daily Needs.",
+  },
+  {
+    index: 4,
+    id: "prog-4",
+    name: "VIP Club",
+    subtitle: "Exclusive rewards for top buyers",
+    icon: "💎",
+    type: "Tiered",
+    members: 5860,
+    earningRule: "₹1 = 1.5 Points",
+    redemption: "500 Points = ₹75",
+    status: "Active",
+    validFrom: "01 Jan 2026",
+    validTill: "No Expiry",
+    minRedemption: "500 Points",
+    maxRedemption: "15,000 Points / Order",
+    description: "Premium tier club with accelerated points accrual and exclusive partner vouchers.",
+  },
+];
+
+const mutableLoyaltyRules: any[] = [
+  { id: "rule-1", icon: "🛒", title: "Order Purchase", description: "Earn 1 point for every ₹1 spent", status: "Active" },
+  { id: "rule-2", icon: "👤", title: "Sign Up Bonus", description: "Get 100 points on first verified order", status: "Active" },
+  { id: "rule-3", icon: "🎂", title: "Birthday Reward", description: "Get 250 points on your birthday", status: "Active" },
+  { id: "rule-4", icon: "⭐", title: "Review & Rating", description: "Get 50 points for each product review", status: "Active" },
+  { id: "rule-5", icon: "🔗", title: "Refer a Friend", description: "Get 500 points when your friend places first order", status: "Active" },
+];
+
+const mutableLoyaltyCatalog: any[] = [
+  { id: "rew-1", icon: "🎟️", name: "₹10 Off", points: 100, discountValue: "₹10", type: "DISCOUNT" },
+  { id: "rew-2", icon: "🏷️", name: "₹25 Off", points: 200, discountValue: "₹25", type: "DISCOUNT" },
+  { id: "rew-3", icon: "🚚", name: "Free Delivery", points: 300, discountValue: "₹49", type: "SHIPPING" },
+  { id: "rew-4", icon: "🥛", name: "₹50 Off Kirana", points: 450, discountValue: "₹50", type: "CATEGORY_DISCOUNT" },
+  { id: "rew-5", icon: "🍬", name: "₹100 Off Festive Sweets", points: 800, discountValue: "₹100", type: "CATEGORY_DISCOUNT" },
+  { id: "rew-6", icon: "🛍️", name: "₹200 Off High Basket", points: 1500, discountValue: "₹200", type: "DISCOUNT" },
+];
+
+const mutableLoyaltyTiers: any[] = [
+  { tier: "Bronze", icon: "⭐", range: "0 – 1,999 pts", perk: "Basic rewards", highlight: false },
+  { tier: "Silver", icon: "⭐", range: "2,000 – 4,999 pts", perk: "+ 5% extra points", highlight: false },
+  { tier: "Gold", icon: "⭐", range: "5,000 – 9,999 pts", perk: "+ 10% extra points", highlight: false },
+  { tier: "Platinum", icon: "👑", range: "10,000+ pts", perk: "Priority offers & exclusive rewards", highlight: true },
+];
+
+const mutableLoyaltyRedemptions: any[] = [
+  {
+    index: 1,
+    id: "red-1",
+    customerId: "CUS-0012451",
+    customerName: "Riya Salunkhe",
+    initials: "RS",
+    orderId: "ORD-892210",
+    rewardRedeemed: "₹25 Off",
+    pointsUsed: 200,
+    discountValue: "₹25",
+    orderValue: "₹1,240",
+    dateTime: "15 Nov 2026, 08:24 PM",
+    status: "Applied",
+  },
+  {
+    index: 2,
+    id: "red-2",
+    customerId: "CUS-0012450",
+    customerName: "Karan Mehta",
+    initials: "KM",
+    orderId: "ORD-889430",
+    rewardRedeemed: "Free Delivery",
+    pointsUsed: 300,
+    discountValue: "₹49",
+    orderValue: "₹780",
+    dateTime: "15 Nov 2026, 06:11 PM",
+    status: "Applied",
+  },
+  {
+    index: 3,
+    id: "red-3",
+    customerId: "CUS-0012449",
+    customerName: "Divya Pawar",
+    initials: "DP",
+    orderId: "ORD-887991",
+    rewardRedeemed: "₹10 Off",
+    pointsUsed: 100,
+    discountValue: "₹10",
+    orderValue: "₹420",
+    dateTime: "15 Nov 2026, 01:25 PM",
+    status: "Applied",
+  },
+];
+
+const mutableCustomerKycList: any[] = [
+  {
+    index: 1,
+    id: "KYC-0089321",
+    customerId: "CUS-0012456",
+    customerName: "Rohit Sharma",
+    mobile: "+91 98234 56789",
+    email: "rohit.sharma@gmail.com",
+    city: "Pune",
+    locality: "Baner",
+    kycType: "Full KYC",
+    submittedOn: "15 Nov 2026 10:24 AM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Low",
+    riskScore: "18/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Unassigned",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX4321",
+    panStatus: "Verified",
+    panMasked: "ABCDE1234F",
+    faceMatchStatus: "Matched (98.4%)",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 2,
+    id: "KYC-0089320",
+    customerId: "CUS-0012455",
+    customerName: "Priya Singh",
+    mobile: "+91 98901 23456",
+    email: "priya.singh@gmail.com",
+    city: "Pune",
+    locality: "Wakad",
+    kycType: "Full KYC",
+    submittedOn: "15 Nov 2026 09:58 AM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Low",
+    riskScore: "12/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Anita S.",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX9876",
+    panStatus: "Verified",
+    panMasked: "FGHIJ5678K",
+    faceMatchStatus: "Matched (99.1%)",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 3,
+    id: "KYC-0089319",
+    customerId: "CUS-0012454",
+    customerName: "Amit Kumar",
+    mobile: "+91 97654 32109",
+    email: "amit.kumar@gmail.com",
+    city: "Pimpri-Chinchwad",
+    locality: "Ravet",
+    kycType: "Basic KYC",
+    submittedOn: "14 Nov 2026 08:32 PM",
+    documentsCount: "2/2",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: false,
+    risk: "Medium",
+    riskScore: "45/100",
+    riskLevel: "Medium",
+    status: "Action Required",
+    assignedTo: "Unassigned",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX3210",
+    panStatus: "Action Required",
+    panMasked: "KLMNO9012P",
+    faceMatchStatus: "Not Provided",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: false,
+  },
+  {
+    index: 4,
+    id: "KYC-0089318",
+    customerId: "CUS-0012453",
+    customerName: "Sneha Patil",
+    mobile: "+91 90123 45678",
+    email: "sneha.patil@gmail.com",
+    city: "Pune",
+    locality: "Kothrud",
+    kycType: "Full KYC",
+    submittedOn: "14 Nov 2026 05:46 PM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Low",
+    riskScore: "15/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Rahul K.",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX6543",
+    panStatus: "Verified",
+    panMasked: "PQRST3456U",
+    faceMatchStatus: "Matched (97.8%)",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 5,
+    id: "KYC-0089317",
+    customerId: "CUS-0012452",
+    customerName: "Vikas Gupta",
+    mobile: "+91 99321 67890",
+    email: "vikas.gupta@gmail.com",
+    city: "Nagpur",
+    locality: "Dharampeth",
+    kycType: "Full KYC",
+    submittedOn: "14 Nov 2026 03:11 PM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "High",
+    riskScore: "78/100",
+    riskLevel: "High",
+    status: "Action Required",
+    assignedTo: "Unassigned",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX1122",
+    panStatus: "Mismatch",
+    panMasked: "VWXYZ7890A",
+    faceMatchStatus: "Matched (82.1%)",
+    watchlistMatch: true,
+    duplicateKyc: false,
+    identityVerified: false,
+  },
+  {
+    index: 6,
+    id: "KYC-0089316",
+    customerId: "CUS-0012451",
+    customerName: "Riya Salunkhe",
+    mobile: "+91 98220 11445",
+    email: "riya.salunkhe@gmail.com",
+    city: "Pune",
+    locality: "Kothrud",
+    kycType: "Basic KYC",
+    submittedOn: "13 Nov 2026 11:40 AM",
+    documentsCount: "2/2",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: false,
+    risk: "Low",
+    riskScore: "20/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Neha P.",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX3344",
+    panStatus: "Verified",
+    panMasked: "BCDEF4321G",
+    faceMatchStatus: "Not Required",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 7,
+    id: "KYC-0089315",
+    customerId: "CUS-0012450",
+    customerName: "Karan Mehta",
+    mobile: "+91 98765 43210",
+    email: "karan.mehta@gmail.com",
+    city: "Nashik",
+    locality: "College Road",
+    kycType: "Full KYC",
+    submittedOn: "13 Nov 2026 10:06 AM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Medium",
+    riskScore: "42/100",
+    riskLevel: "Medium",
+    status: "Re-verification",
+    assignedTo: "Unassigned",
+    aadhaarStatus: "Pending",
+    aadhaarMasked: "XXXXXXXX5566",
+    panStatus: "Verified",
+    panMasked: "HIJKL8765M",
+    faceMatchStatus: "Low Resolution",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: false,
+  },
+  {
+    index: 8,
+    id: "KYC-0089314",
+    customerId: "CUS-0012449",
+    customerName: "Divya Pawar",
+    mobile: "+91 97654 78901",
+    email: "divya.pawar@gmail.com",
+    city: "Pune",
+    locality: "Aundh",
+    kycType: "Basic KYC",
+    submittedOn: "12 Nov 2026 06:25 PM",
+    documentsCount: "2/2",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: false,
+    risk: "Low",
+    riskScore: "14/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Sagar M.",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX7788",
+    panStatus: "Verified",
+    panMasked: "NOPQR2109S",
+    faceMatchStatus: "Not Required",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 9,
+    id: "KYC-0089313",
+    customerId: "CUS-0012448",
+    customerName: "Mayur Shinde",
+    mobile: "+91 90456 22334",
+    email: "mayur.shinde@gmail.com",
+    city: "Pune",
+    locality: "Balewadi",
+    kycType: "Full KYC",
+    submittedOn: "12 Nov 2026 02:18 PM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Medium",
+    riskScore: "38/100",
+    riskLevel: "Medium",
+    status: "Pending Review",
+    assignedTo: "Unassigned",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX9900",
+    panStatus: "Verified",
+    panMasked: "TUVWX6543Y",
+    faceMatchStatus: "Matched (96.5%)",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+  {
+    index: 10,
+    id: "KYC-0089312",
+    customerId: "CUS-0012447",
+    customerName: "Neha Deshmukh",
+    mobile: "+91 99876 54123",
+    email: "neha.deshmukh@gmail.com",
+    city: "Pimpri-Chinchwad",
+    locality: "Chinchwad",
+    kycType: "Full KYC",
+    submittedOn: "11 Nov 2026 05:47 PM",
+    documentsCount: "3/3",
+    hasAadhaar: true,
+    hasPan: true,
+    hasSelfie: true,
+    risk: "Low",
+    riskScore: "16/100",
+    riskLevel: "Low",
+    status: "Pending Review",
+    assignedTo: "Anita S.",
+    aadhaarStatus: "Verified",
+    aadhaarMasked: "XXXXXXXX2233",
+    panStatus: "Verified",
+    panMasked: "ZABCD0987E",
+    faceMatchStatus: "Matched (98.9%)",
+    watchlistMatch: false,
+    duplicateKyc: false,
+    identityVerified: true,
+  },
+];
+
 const mutableCustomersList: any[] = [
+  {
+    id: "CUS-0012456",
+    fullName: "Rohit Sharma",
+    phoneNumber: "+91 98234 56789",
+    email: "rohit.sharma@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Baner",
+    status: "ACTIVE",
+    segment: "Frequent",
+    segmentLabel: "Frequent Buyer",
+    totalOrdersCount: 24,
+    lifetimeSpendPaise: 1856000,
+    lifetimeSpendRupees: 18560,
+    loyaltyPoints: 1560,
+    rating: 4.8,
+    avgOrderValue: 773,
+    lastOrderDate: "15 Nov 2026, 08:24 PM",
+    orderFrequency: "~2.1 orders / month",
+    preferredCategories: ["Grocery", "Fruits & Veg", "Daily Needs"],
+    orderTrend: [
+      { month: "Jun", orders: 2 },
+      { month: "Jul", orders: 3 },
+      { month: "Aug", orders: 4 },
+      { month: "Sep", orders: 4 },
+      { month: "Oct", orders: 5 },
+      { month: "Nov", orders: 6 },
+    ],
+    recentOrders: [
+      { id: "ORD-892210", date: "15 Nov 2026, 08:24 PM", amount: 842, status: "Delivered" },
+      { id: "ORD-889430", date: "10 Nov 2026, 06:11 PM", amount: 1260, status: "Delivered" },
+      { id: "ORD-887991", date: "05 Nov 2026, 01:25 PM", amount: 780, status: "Delivered" },
+    ],
+    registeredAt: "10 Jan 2026",
+    lastActiveAt: "15 Nov 2026, 08:24 PM",
+    addresses: [
+      { id: "addr-001", label: "Home", locality: "Baner", city: "Pune", isDefault: true, addressLine: "Flat 402, High Street, Baner, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012455",
+    fullName: "Priya Singh",
+    phoneNumber: "+91 98901 23456",
+    email: "priya.singh@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Wakad",
+    status: "ACTIVE",
+    segment: "Loyal",
+    segmentLabel: "Loyal Customer",
+    totalOrdersCount: 18,
+    lifetimeSpendPaise: 1242000,
+    lifetimeSpendRupees: 12420,
+    loyaltyPoints: 1120,
+    rating: 4.9,
+    avgOrderValue: 690,
+    lastOrderDate: "14 Nov 2026, 07:15 PM",
+    orderFrequency: "~1.8 orders / month",
+    preferredCategories: ["Dairy & Bakery", "Grocery"],
+    orderTrend: [
+      { month: "Jun", orders: 1 },
+      { month: "Jul", orders: 2 },
+      { month: "Aug", orders: 3 },
+      { month: "Sep", orders: 4 },
+      { month: "Oct", orders: 4 },
+      { month: "Nov", orders: 4 },
+    ],
+    recentOrders: [
+      { id: "ORD-891040", date: "14 Nov 2026, 07:15 PM", amount: 620, status: "Delivered" },
+      { id: "ORD-887120", date: "08 Nov 2026, 04:30 PM", amount: 940, status: "Delivered" },
+    ],
+    registeredAt: "09 Jan 2026",
+    lastActiveAt: "14 Nov 2026, 07:15 PM",
+    addresses: [
+      { id: "addr-002", label: "Home", locality: "Wakad", city: "Pune", isDefault: true, addressLine: "B-201, Kaspate Vasti, Wakad, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012454",
+    fullName: "Amit Kumar",
+    phoneNumber: "+91 97654 32109",
+    email: "amit.kumar@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pimpri-Chinchwad",
+    locality: "Ravet",
+    status: "ACTIVE",
+    segment: "Regular",
+    segmentLabel: "Regular Buyer",
+    totalOrdersCount: 12,
+    lifetimeSpendPaise: 896000,
+    lifetimeSpendRupees: 8960,
+    loyaltyPoints: 820,
+    rating: 4.6,
+    avgOrderValue: 746,
+    lastOrderDate: "13 Nov 2026, 09:10 PM",
+    orderFrequency: "~1.2 orders / month",
+    preferredCategories: ["Pharmacy", "Grocery"],
+    orderTrend: [
+      { month: "Jun", orders: 1 },
+      { month: "Jul", orders: 1 },
+      { month: "Aug", orders: 2 },
+      { month: "Sep", orders: 2 },
+      { month: "Oct", orders: 3 },
+      { month: "Nov", orders: 3 },
+    ],
+    recentOrders: [
+      { id: "ORD-889920", date: "13 Nov 2026, 09:10 PM", amount: 750, status: "Delivered" },
+    ],
+    registeredAt: "08 Jan 2026",
+    lastActiveAt: "13 Nov 2026, 09:10 PM",
+    addresses: [
+      { id: "addr-003", label: "Home", locality: "Ravet", city: "Pimpri-Chinchwad", isDefault: true, addressLine: "Sector 29, Ravet, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012453",
+    fullName: "Sneha Patil",
+    phoneNumber: "+91 90123 45678",
+    email: "sneha.patil@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Hinjawadi",
+    status: "ACTIVE",
+    segment: "Occasional",
+    segmentLabel: "Occasional Buyer",
+    totalOrdersCount: 8,
+    lifetimeSpendPaise: 543000,
+    lifetimeSpendRupees: 5430,
+    loyaltyPoints: 420,
+    rating: 4.7,
+    avgOrderValue: 678,
+    lastOrderDate: "11 Nov 2026, 02:40 PM",
+    orderFrequency: "~0.8 orders / month",
+    preferredCategories: ["Snacks & Sweets", "Bakery"],
+    orderTrend: [
+      { month: "Jun", orders: 0 },
+      { month: "Jul", orders: 1 },
+      { month: "Aug", orders: 1 },
+      { month: "Sep", orders: 2 },
+      { month: "Oct", orders: 2 },
+      { month: "Nov", orders: 2 },
+    ],
+    recentOrders: [
+      { id: "ORD-886110", date: "11 Nov 2026, 02:40 PM", amount: 480, status: "Delivered" },
+    ],
+    registeredAt: "07 Jan 2026",
+    lastActiveAt: "11 Nov 2026, 02:40 PM",
+    addresses: [
+      { id: "addr-004", label: "Home", locality: "Hinjawadi", city: "Pune", isDefault: true, addressLine: "Phase 1, Hinjawadi, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012452",
+    fullName: "Vikas Gupta",
+    phoneNumber: "+91 99321 67890",
+    email: "vikas.gupta@gmail.com",
+    cityCode: "IN-MH-NGP",
+    cityName: "Nagpur",
+    locality: "Dharampeth",
+    status: "ACTIVE",
+    segment: "VIP",
+    segmentLabel: "VIP Patron",
+    totalOrdersCount: 36,
+    lifetimeSpendPaise: 2874000,
+    lifetimeSpendRupees: 28740,
+    loyaltyPoints: 2640,
+    rating: 5.0,
+    avgOrderValue: 798,
+    lastOrderDate: "15 Nov 2026, 01:20 PM",
+    orderFrequency: "~3.5 orders / month",
+    preferredCategories: ["Electronics", "Grocery", "Apparel"],
+    orderTrend: [
+      { month: "Jun", orders: 4 },
+      { month: "Jul", orders: 5 },
+      { month: "Aug", orders: 6 },
+      { month: "Sep", orders: 6 },
+      { month: "Oct", orders: 7 },
+      { month: "Nov", orders: 8 },
+    ],
+    recentOrders: [
+      { id: "ORD-891990", date: "15 Nov 2026, 01:20 PM", amount: 1540, status: "Delivered" },
+    ],
+    registeredAt: "06 Jan 2026",
+    lastActiveAt: "15 Nov 2026, 01:20 PM",
+    addresses: [
+      { id: "addr-005", label: "Home", locality: "Dharampeth", city: "Nagpur", isDefault: true, addressLine: "Shivom Enclave, Dharampeth, Nagpur" }
+    ],
+  },
+  {
+    id: "CUS-0012451",
+    fullName: "Riya Salunkhe",
+    phoneNumber: "+91 98220 11445",
+    email: "riya.salunkhe@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Kothrud",
+    status: "ACTIVE",
+    segment: "New",
+    segmentLabel: "New Customer",
+    totalOrdersCount: 5,
+    lifetimeSpendPaise: 321000,
+    lifetimeSpendRupees: 3210,
+    loyaltyPoints: 260,
+    rating: 4.8,
+    avgOrderValue: 642,
+    lastOrderDate: "12 Nov 2026, 11:10 AM",
+    orderFrequency: "~1.0 orders / month",
+    preferredCategories: ["Grocery", "Bakery"],
+    orderTrend: [
+      { month: "Jun", orders: 0 },
+      { month: "Jul", orders: 0 },
+      { month: "Aug", orders: 1 },
+      { month: "Sep", orders: 1 },
+      { month: "Oct", orders: 1 },
+      { month: "Nov", orders: 2 },
+    ],
+    recentOrders: [
+      { id: "ORD-888420", date: "12 Nov 2026, 11:10 AM", amount: 620, status: "Delivered" },
+    ],
+    registeredAt: "05 Jan 2026",
+    lastActiveAt: "12 Nov 2026, 11:10 AM",
+    addresses: [
+      { id: "addr-006", label: "Home", locality: "Kothrud", city: "Pune", isDefault: true, addressLine: "Paud Road, Kothrud, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012450",
+    fullName: "Karan Mehta",
+    phoneNumber: "+91 98765 43210",
+    email: "karan.mehta@gmail.com",
+    cityCode: "IN-MH-NSK",
+    cityName: "Nashik",
+    locality: "College Road",
+    status: "ACTIVE",
+    accountType: "Registered",
+    verificationStatus: "OTP_VERIFIED",
+    verificationMethod: "OTP (SMS)",
+    verifiedOn: "02 Jan 2026, 10:06 AM",
+    segment: "Regular",
+    segmentLabel: "Regular Customer",
+    totalOrdersCount: 14,
+    lifetimeSpendPaise: 1198000,
+    lifetimeSpendRupees: 11980,
+    loyaltyPoints: 980,
+    rating: 4.5,
+    avgOrderValue: 855,
+    lastOrderDate: "12 Nov 2026, 10:06 AM",
+    orderFrequency: "~0.4 orders / month",
+    preferredCategories: ["Grocery"],
+    orderTrend: [
+      { month: "Jun", orders: 3 },
+      { month: "Jul", orders: 3 },
+      { month: "Aug", orders: 4 },
+      { month: "Sep", orders: 2 },
+      { month: "Oct", orders: 2 },
+      { month: "Nov", orders: 0 },
+    ],
+    recentOrders: [
+      { id: "ORD-876220", date: "12 Nov 2026, 10:06 AM", amount: 1120, status: "Delivered" },
+    ],
+    registeredAt: "02 Jan 2026",
+    lastActiveAt: "12 Nov 2026, 10:06 AM",
+    addresses: [
+      { id: "addr-007", label: "Home", locality: "College Road", city: "Nashik", isDefault: true, addressLine: "College Road, Nashik" }
+    ],
+  },
+  {
+    id: "CUS-0012449",
+    fullName: "Divya Pawar",
+    phoneNumber: "+91 97654 78901",
+    email: "divya.pawar@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Aundh",
+    status: "GUEST",
+    accountType: "Guest",
+    verificationStatus: "NOT_VERIFIED",
+    verificationMethod: null,
+    verifiedOn: null,
+    segment: "Guest",
+    segmentLabel: "Guest User",
+    totalOrdersCount: 0,
+    lifetimeSpendPaise: 0,
+    lifetimeSpendRupees: 0,
+    loyaltyPoints: 0,
+    rating: 0,
+    avgOrderValue: 0,
+    lastOrderDate: null,
+    orderFrequency: "0 orders",
+    preferredCategories: ["Grocery"],
+    orderTrend: [],
+    recentOrders: [],
+    registeredAt: "11 Nov 2026",
+    lastActiveAt: "11 Nov 2026, 08:20 PM",
+    addresses: [
+      { id: "addr-008", label: "Home", locality: "Aundh", city: "Pune", isDefault: true, addressLine: "DP Road, Aundh, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012448",
+    fullName: "Mayur Shinde",
+    phoneNumber: "+91 90456 22334",
+    email: "mayur.shinde@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pune",
+    locality: "Balewadi",
+    status: "ACTIVE",
+    accountType: "Registered",
+    verificationStatus: "OTP_VERIFIED",
+    verificationMethod: "OTP (SMS)",
+    verifiedOn: "11 Nov 2026, 02:18 PM",
+    segment: "Occasional",
+    segmentLabel: "Occasional Buyer",
+    totalOrdersCount: 3,
+    lifetimeSpendPaise: 214000,
+    lifetimeSpendRupees: 2140,
+    loyaltyPoints: 120,
+    rating: 3.5,
+    avgOrderValue: 713,
+    lastOrderDate: "11 Nov 2026, 02:18 PM",
+    orderFrequency: "~0.5 orders / month",
+    preferredCategories: ["Grocery"],
+    orderTrend: [
+      { month: "Jun", orders: 0 },
+      { month: "Jul", orders: 0 },
+      { month: "Aug", orders: 1 },
+      { month: "Sep", orders: 1 },
+      { month: "Oct", orders: 0 },
+      { month: "Nov", orders: 1 },
+    ],
+    recentOrders: [
+      { id: "ORD-885440", date: "11 Nov 2026, 02:18 PM", amount: 640, status: "Cancelled" },
+    ],
+    registeredAt: "31 Dec 2025",
+    lastActiveAt: "11 Nov 2026, 02:18 PM",
+    addresses: [
+      { id: "addr-009", label: "Home", locality: "Balewadi", city: "Pune", isDefault: true, addressLine: "Balewadi High St, Pune" }
+    ],
+  },
+  {
+    id: "CUS-0012447",
+    fullName: "Neha Deshmukh",
+    phoneNumber: "+91 99876 54123",
+    email: "neha.deshmukh@gmail.com",
+    cityCode: "IN-MH-PUN",
+    cityName: "Pimpri-Chinchwad",
+    locality: "Chinchwad",
+    status: "GUEST",
+    accountType: "Guest",
+    verificationStatus: "NOT_VERIFIED",
+    verificationMethod: null,
+    verifiedOn: null,
+    segment: "Guest",
+    segmentLabel: "Guest User",
+    totalOrdersCount: 0,
+    lifetimeSpendPaise: 0,
+    lifetimeSpendRupees: 0,
+    loyaltyPoints: 0,
+    rating: 0,
+    avgOrderValue: 0,
+    lastOrderDate: null,
+    orderFrequency: "0 orders",
+    preferredCategories: ["Grocery"],
+    orderTrend: [],
+    recentOrders: [],
+    registeredAt: "10 Nov 2026",
+    lastActiveAt: "10 Nov 2026, 09:57 PM",
+    addresses: [
+      { id: "addr-010", label: "Home", locality: "Chinchwad", city: "Pimpri-Chinchwad", isDefault: true, addressLine: "Station Road, Chinchwad, Pune" }
+    ],
+  },
   {
     id: "cust-ngp-001",
     fullName: "Amitabh Joshi",

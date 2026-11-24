@@ -1,6 +1,6 @@
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
-export type ApplicationStatusCode = 'SUBMITTED' | 'UNDER_REVIEW' | 'APPROVED' | 'ACTION_REQUIRED' | 'REJECTED';
+export type ApplicationStatusCode = 'DRAFT' | 'SUBMITTED' | 'UNDER_REVIEW' | 'APPROVED' | 'ACTION_REQUIRED' | 'REJECTED';
 export type BusinessTypeEnum = 'retail' | 'home' | 'manufacturer' | 'seasonal' | 'event';
 
 export interface DayScheduleDto {

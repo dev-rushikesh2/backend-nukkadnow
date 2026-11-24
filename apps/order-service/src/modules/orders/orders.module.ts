@@ -2,23 +2,26 @@ import { Module } from "@nestjs/common";
 import { OrdersController } from "./presentation/http/controllers/orders.controller";
 import { OrderService } from "./application/services/order.service";
 import { OrderRepositoryPort, CartRepositoryPort } from "./domain/repositories/order.repository.port";
-import { InMemoryOrderRepository, InMemoryCartRepository } from "./infrastructure/persistence/repositories/in-memory-order.repository";
+import { PrismaOrderRepository } from "./infrastructure/persistence/repositories/prisma-order.repository";
+import { PrismaCartRepository } from "./infrastructure/persistence/repositories/prisma-cart.repository";
+import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
 import { CatalogClient } from "./infrastructure/external-clients/catalog.client";
 
 @Module({
   controllers: [OrdersController],
   providers: [
+    PrismaService,
     OrderService,
     CatalogClient,
     {
       provide: OrderRepositoryPort,
-      useClass: InMemoryOrderRepository,
+      useClass: PrismaOrderRepository,
     },
     {
       provide: CartRepositoryPort,
-      useClass: InMemoryCartRepository,
+      useClass: PrismaCartRepository,
     },
   ],
-  exports: [OrderService],
+  exports: [OrderService, PrismaService],
 })
 export class OrdersModule {}

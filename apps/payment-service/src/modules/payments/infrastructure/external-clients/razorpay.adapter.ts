@@ -6,16 +6,24 @@ import * as crypto from "crypto";
 @Injectable()
 export class RazorpayAdapter implements PspClientPort {
   private readonly logger = new StructuredLogger("razorpay-adapter");
-  private readonly keyId = process.env.PAYMENT_KEY_ID || "";
-  private readonly keySecret = process.env.PAYMENT_KEY_SECRET || "";
-  private readonly webhookSecret = process.env.PAYMENT_WEBHOOK_SECRET || "webhook_signing_secret_xyz";
+  private readonly keyId: string;
+  private readonly keySecret: string;
+  private readonly webhookSecret: string;
 
-  async createOrder(orderId: string, amountPaise: number, currency: string): Promise<PspOrderResult> {
-    if (!this.keyId || !this.keySecret) {
-      this.logger.warn("Razorpay credentials missing. Simulating order response.");
-      return { pspOrderId: `rzp_sim_${Date.now()}`, status: "created" };
+  constructor() {
+    if (!process.env.PAYMENT_KEY_ID || !process.env.PAYMENT_KEY_SECRET) {
+      throw new Error("PAYMENT_KEY_ID and PAYMENT_KEY_SECRET are required");
+    }
+    if (!process.env.PAYMENT_WEBHOOK_SECRET) {
+      throw new Error("PAYMENT_WEBHOOK_SECRET is required");
     }
 
+    this.keyId = process.env.PAYMENT_KEY_ID;
+    this.keySecret = process.env.PAYMENT_KEY_SECRET;
+    this.webhookSecret = process.env.PAYMENT_WEBHOOK_SECRET;
+  }
+
+  async createOrder(orderId: string, amountPaise: number, currency: string): Promise<PspOrderResult> {
     try {
       const auth = Buffer.from(`${this.keyId}:${this.keySecret}`).toString("base64");
       const response = await fetch("https://api.razorpay.com/v1/orders", {
@@ -51,10 +59,6 @@ export class RazorpayAdapter implements PspClientPort {
   }
 
   async createRefund(pspPaymentId: string, amountPaise: number, reason: string): Promise<PspRefundResult> {
-    if (!this.keyId || !this.keySecret) {
-      return { pspRefundId: `rzp_rfnd_sim_${Date.now()}`, status: "processed" };
-    }
-
     const auth = Buffer.from(`${this.keyId}:${this.keySecret}`).toString("base64");
     const response = await fetch(`https://api.razorpay.com/v1/payments/${pspPaymentId}/refund`, {
       method: "POST",

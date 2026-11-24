@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class SubscribePlanDto {
@@ -6,4 +6,9 @@ export class SubscribePlanDto {
   @IsString()
   @IsNotEmpty()
   planCode!: "STARTER" | "GROWTH" | "ENTERPRISE";
+
+  @ApiProperty({ example: "pay_1234567890", required: false, description: "PSP Payment ID for paid tier activation" })
+  @IsString()
+  @IsOptional()
+  paymentId?: string;
 }

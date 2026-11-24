@@ -2,7 +2,8 @@ import { Module } from "@nestjs/common";
 import { NotificationsController } from "./presentation/http/controllers/notifications.controller";
 import { NotificationService } from "./application/services/notification.service";
 import { NotificationRepositoryPort } from "./domain/entities/notification-template.entity";
-import { InMemoryNotificationRepository } from "./infrastructure/persistence/repositories/in-memory-notification.repository";
+import { PrismaNotificationRepository } from "./infrastructure/persistence/repositories/prisma-notification.repository";
+import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
 import { MockChannelAdapter } from "./infrastructure/external-clients/mock-channel.adapter";
 import { Msg91SmsAdapter } from "./infrastructure/external-clients/msg91-sms.adapter";
 import { WhatsAppCloudAdapter } from "./infrastructure/external-clients/whatsapp-cloud.adapter";
@@ -13,6 +14,7 @@ import { NotificationChannelFactory } from "./infrastructure/external-clients/ch
 @Module({
   controllers: [NotificationsController],
   providers: [
+    PrismaService,
     NotificationService,
     MockChannelAdapter,
     Msg91SmsAdapter,
@@ -22,9 +24,9 @@ import { NotificationChannelFactory } from "./infrastructure/external-clients/ch
     NotificationChannelFactory,
     {
       provide: NotificationRepositoryPort,
-      useClass: InMemoryNotificationRepository,
+      useClass: PrismaNotificationRepository,
     },
   ],
-  exports: [NotificationService, SmtpEmailAdapter, FcmPushAdapter],
+  exports: [NotificationService, SmtpEmailAdapter, FcmPushAdapter, PrismaService],
 })
 export class NotificationsModule {}

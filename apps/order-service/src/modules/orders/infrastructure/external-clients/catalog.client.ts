@@ -4,7 +4,7 @@ import { StructuredLogger } from "@nukkadnow/observability";
 @Injectable()
 export class CatalogClient {
   private readonly logger = new StructuredLogger("catalog-client");
-  private readonly baseUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:3002";
+  private readonly baseUrl = process.env.CATALOG_SERVICE_URL || "http://localhost:4003";
 
   async reserveStock(variantId: string, quantity: number, orderId: string): Promise<boolean> {
     try {
@@ -21,8 +21,11 @@ export class CatalogClient {
       }
       return true;
     } catch (err) {
-      this.logger.warn(`Catalog service unavailable for reservation: ${(err as any).message}. Proceeding under graceful degradation.`);
-      return true; // Fallback for local decoupled tests
+      this.logger.error(`Catalog service unavailable for reservation: ${(err as any).message}`);
+      if (process.env.NODE_ENV === "production") {
+        return false; // Fail-closed in production to prevent overselling
+      }
+      return true; // Local decoupled test fallback
     }
   }
 

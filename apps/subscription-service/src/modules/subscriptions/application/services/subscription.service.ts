@@ -1,13 +1,11 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { SubscriptionRepositoryPort, SubscriptionPlan, MerchantSubscription } from "../../domain/entities/subscription-plan.entity";
 import { SubscribePlanDto } from "../dto/subscription.dto";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
 @Injectable()
 export class SubscriptionService {
-  constructor(private readonly subRepo: SubscriptionRepositoryPort) {
-    this.seedDefaultPlans();
-  }
+  constructor(private readonly subRepo: SubscriptionRepositoryPort) {}
 
   async listPlans() {
     const plans = await this.subRepo.findAllPlans();
@@ -25,6 +23,10 @@ export class SubscriptionService {
     const plan = await this.subRepo.findPlanByCode(dto.planCode);
     if (!plan) throw new NotFoundException(`Plan '${dto.planCode}' not found.`);
 
+    if (plan.pricePaise > 0 && process.env.NODE_ENV === "production" && !dto.paymentId) {
+      throw new BadRequestException(`Payment verification required for paid subscription plan '${dto.planCode}'.`);
+    }
+
     const now = new Date();
     const periodEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
@@ -32,6 +34,7 @@ export class SubscriptionService {
       id: UniqueIdentifier.generateV7(),
       merchantId,
       planCode: plan.code,
+      planId: plan.id,
       status: "ACTIVE",
       currentPeriodStart: now,
       currentPeriodEnd: periodEnd,
@@ -60,38 +63,5 @@ export class SubscriptionService {
       return { feature, maxLimit: plan?.maxProducts ?? 25 };
     }
     return { feature, enabled: false };
-  }
-
-  private async seedDefaultPlans() {
-    await this.subRepo.savePlan(
-      new SubscriptionPlan({
-        id: "plan_starter",
-        name: "Starter Merchant",
-        code: "STARTER",
-        pricePaise: 0, // Free
-        maxProducts: 25,
-        qrOrderingEnabled: false,
-      })
-    );
-    await this.subRepo.savePlan(
-      new SubscriptionPlan({
-        id: "plan_growth",
-        name: "Growth Merchant",
-        code: "GROWTH",
-        pricePaise: 99900, // Rs. 999/month
-        maxProducts: 250,
-        qrOrderingEnabled: true,
-      })
-    );
-    await this.subRepo.savePlan(
-      new SubscriptionPlan({
-        id: "plan_enterprise",
-        name: "Enterprise Multi-Outlet",
-        code: "ENTERPRISE",
-        pricePaise: 299900, // Rs. 2999/month
-        maxProducts: 5000,
-        qrOrderingEnabled: true,
-      })
-    );
   }
 }

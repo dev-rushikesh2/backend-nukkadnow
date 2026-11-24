@@ -49,6 +49,6 @@ export class FulfillmentController {
   @Get("qr/:token")
   @ApiOperation({ summary: "Resolve table / at-shop QR token" })
   async resolveQr(@Param("token") token: string) {
-    return this.fulfillmentService.resolveQrToken(token);
+    return this.fulfillmentService.resolveQrCode(token);
   }
 }

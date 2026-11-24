@@ -9,9 +9,7 @@ export class NotificationService {
   constructor(
     private readonly notifRepo: NotificationRepositoryPort,
     private readonly channelFactory: NotificationChannelFactory
-  ) {
-    this.seedDefaultTemplates();
-  }
+  ) {}
 
   async createTemplate(dto: CreateTemplateDto): Promise<NotificationTemplate> {
     const tpl = new NotificationTemplate({
@@ -41,6 +39,7 @@ export class NotificationService {
       renderedMessage,
       status: dispatchResult.success ? "SENT" : "FAILED",
       sentAt: new Date(),
+      templateId: tpl.id,
     });
 
     await this.notifRepo.saveJob(job);
@@ -55,33 +54,5 @@ export class NotificationService {
       recipient: job.recipient,
       preview: renderedMessage,
     };
-  }
-
-  private seedDefaultTemplates() {
-    this.createTemplate({
-      code: "ORDER_CONFIRMED",
-      channel: "WHATSAPP",
-      templateBody: "Namaste! Your order {orderNumber} has been confirmed. Preparing now at {storeName}.",
-    });
-    this.createTemplate({
-      code: "ORDER_READY_PICKUP",
-      channel: "WHATSAPP",
-      templateBody: "Your order {orderNumber} is READY for pickup! Show Token: {tokenNumber} at counter.",
-    });
-    this.createTemplate({
-      code: "EMAIL_OTP",
-      channel: "EMAIL",
-      templateBody: "Your NukkadNow Merchant verification code is {otp}. Valid for 10 minutes. Do not share this code with anyone.",
-    });
-    this.createTemplate({
-      code: "MERCHANT_NEW_ORDER_PUSH",
-      channel: "PUSH",
-      templateBody: "New order {orderNumber} received for ₹{amount}! Customer: {customerName}",
-    });
-    this.createTemplate({
-      code: "CUSTOMER_ORDER_READY_PUSH",
-      channel: "PUSH",
-      templateBody: "Order {orderNumber} is ready for pickup! Token: {tokenNumber}",
-    });
   }
 }

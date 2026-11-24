@@ -8,7 +8,7 @@
     "dev": "nest start --watch",
     "start": "nest start",
     "start:prod": "node dist/main",
-    "prisma:generate": "prisma generate",
+    "prisma:generate": "node ../../node_modules/.pnpm/prisma@5.22.0/node_modules/prisma/build/index.js generate",
     "prisma:migrate": "prisma migrate dev",
     "test:unit": "jest --testPathPattern=test/unit",
     "test:integration": "jest --testPathPattern=test/integration"

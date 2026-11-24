@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ForbiddenException, BadRequestException } from "@nestjs/common";
 import { PaymentRepositoryPort } from "../../domain/repositories/payment.repository.port";
 import { PaymentIntent, Payment } from "../../domain/entities/payment-intent.entity";
 import { CreatePaymentIntentDto, ProcessRefundDto } from "../dto/payment.dto";
@@ -38,7 +38,7 @@ export class PaymentService {
       currency: intent.currency,
       provider: intent.provider,
       pspOrderId: pspOrder.pspOrderId,
-      clientSecret: `psp_token_${intent.id}`,
+      clientSecret: pspOrder.clientSecret || pspOrder.pspOrderId,
     };
   }
 
@@ -48,11 +48,19 @@ export class PaymentService {
   async handlePspWebhook(provider: string, payload: any, signature?: string) {
     const pspClient = this.pspFactory.getClient(provider);
 
-    if (provider !== "MOCK") {
+    if (provider.toUpperCase() === "MOCK") {
+      if (process.env.NODE_ENV === "production") {
+        throw new ForbiddenException("MOCK payment webhook provider is strictly disabled in production.");
+      }
+    } else {
       const isValid = pspClient.verifyWebhookSignature(payload, signature || "");
       if (!isValid) {
         throw new InvalidWebhookSignatureError();
       }
+    }
+
+    if (!payload.paymentId) {
+      throw new BadRequestException("paymentId missing in webhook payload");
     }
 
     const eventId = payload.eventId || payload.id;
@@ -62,7 +70,7 @@ export class PaymentService {
     }
 
     const orderId = payload.orderId;
-    const pspPaymentId = payload.paymentId || `psp_pay_${Date.now()}`;
+    const pspPaymentId = payload.paymentId;
     const intent = await this.paymentRepo.findIntentByOrderId(orderId);
     if (!intent) {
       throw new PaymentIntentNotFoundError(orderId);
@@ -83,7 +91,7 @@ export class PaymentService {
     });
 
     await this.paymentRepo.savePayment(payment);
-    await this.paymentRepo.markWebhookProcessed(eventId);
+    await this.paymentRepo.markWebhookProcessed(eventId, provider, payload);
 
     return {
       status: "confirmed",
@@ -98,6 +106,11 @@ export class PaymentService {
     const payment = await this.paymentRepo.findPaymentById(dto.paymentId);
     if (!payment) throw new PaymentNotFoundError(dto.paymentId);
 
+    const maxRefundable = payment.amountPaise - (payment.refundedAmountPaise || 0);
+    if (dto.amountPaise > maxRefundable) {
+      throw new BadRequestException(`Requested refund amount (${dto.amountPaise}) exceeds refundable balance (${maxRefundable}).`);
+    }
+
     const intent = await this.paymentRepo.findIntentById(payment.intentId);
     const pspClient = this.pspFactory.getClient(intent?.provider);
 
@@ -107,8 +120,21 @@ export class PaymentService {
     payment.addRefund(dto.amountPaise);
     await this.paymentRepo.savePayment(payment);
 
+    const refundId = UniqueIdentifier.generateV7();
+    if (this.paymentRepo.saveRefund) {
+      await this.paymentRepo.saveRefund({
+        id: refundId,
+        paymentId: payment.id,
+        orderId: payment.orderId,
+        amountPaise: dto.amountPaise,
+        reason: dto.reason,
+        status: "COMPLETED",
+        pspRefundId: pspRefund.pspRefundId,
+      });
+    }
+
     return {
-      refundId: UniqueIdentifier.generateV7(),
+      refundId,
       paymentId: payment.id,
       pspRefundId: pspRefund.pspRefundId,
       orderId: payment.orderId,

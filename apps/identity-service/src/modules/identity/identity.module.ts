@@ -5,22 +5,25 @@ import { AuthService } from "./application/services/auth.service";
 import { OtpManagerService } from "./infrastructure/otp/otp-manager.service";
 import { UserRepositoryPort } from "./domain/repositories/user.repository.port";
 import { SessionRepositoryPort } from "./domain/repositories/session.repository.port";
-import { InMemoryUserRepository, InMemorySessionRepository } from "./infrastructure/persistence/repositories/in-memory-identity.repository";
+import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
+import { PrismaUserRepository } from "./infrastructure/persistence/repositories/prisma-user.repository";
+import { PrismaSessionRepository } from "./infrastructure/persistence/repositories/prisma-session.repository";
 
 @Module({
   controllers: [AuthController, identityController],
   providers: [
+    PrismaService,
     AuthService,
     OtpManagerService,
     {
       provide: UserRepositoryPort,
-      useClass: InMemoryUserRepository,
+      useClass: PrismaUserRepository,
     },
     {
       provide: SessionRepositoryPort,
-      useClass: InMemorySessionRepository,
+      useClass: PrismaSessionRepository,
     },
   ],
-  exports: [AuthService],
+  exports: [AuthService, PrismaService],
 })
 export class IdentityModule {}

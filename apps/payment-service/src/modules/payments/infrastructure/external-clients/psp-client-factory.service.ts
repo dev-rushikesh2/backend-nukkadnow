@@ -15,6 +15,9 @@ export class PspClientFactory {
     if (selected === "RAZORPAY") {
       return this.rzpAdapter;
     }
+    if ((selected === "MOCK" || selected === "MOCK_PSP") && process.env.NODE_ENV === "production") {
+      throw new Error("MOCK payment provider is forbidden in production");
+    }
     return this.mockAdapter;
   }
 }

@@ -34,36 +34,38 @@ export class FcmPushAdapter implements ChannelDispatchPort {
     }
 
     const configuredPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
-    const candidates = [
-      configuredPath,
-      path.resolve(process.cwd(), "secrets/firebase-service-account.json"),
-      path.resolve(__dirname, "../../../../../secrets/firebase-service-account.json"),
-      path.resolve(process.cwd(), "apps/notification-service/secrets/firebase-service-account.json"),
-      "C:/Nukkadnow/nukkadnow-backend/apps/notification-service/secrets/firebase-service-account.json",
-    ].filter(Boolean) as string[];
+    const jsonEnv = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 
-    let serviceAccountPath: string | null = null;
-    for (const cand of candidates) {
-      if (fs.existsSync(cand)) {
-        serviceAccountPath = cand;
-        break;
-      }
-    }
-
-    if (serviceAccountPath) {
+    if (jsonEnv) {
       try {
-        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf-8"));
+        const serviceAccount = JSON.parse(jsonEnv);
         const app = admin.initializeApp({
           credential: admin.cert(serviceAccount),
         });
         this.messaging = getMessaging(app);
         this.initialized = true;
-        this.logger.info(`Firebase Admin SDK initialized successfully with project: ${serviceAccount.project_id}`);
+        this.logger.info(`Firebase Admin SDK initialized successfully via FIREBASE_SERVICE_ACCOUNT_JSON`);
+        return;
+      } catch (err: any) {
+        this.logger.error(`Failed to initialize Firebase Admin SDK from FIREBASE_SERVICE_ACCOUNT_JSON: ${err?.message}`, err);
+      }
+    }
+
+    if (configuredPath && fs.existsSync(configuredPath)) {
+      try {
+        const serviceAccount = JSON.parse(fs.readFileSync(configuredPath, "utf-8"));
+        const app = admin.initializeApp({
+          credential: admin.cert(serviceAccount),
+        });
+        this.messaging = getMessaging(app);
+        this.initialized = true;
+        this.logger.info(`Firebase Admin SDK initialized successfully from ${configuredPath}`);
+        return;
       } catch (err: any) {
         this.logger.error(`Failed to initialize Firebase Admin SDK: ${err?.message}`, err);
       }
     } else {
-      this.logger.warn("Firebase service account credentials not found. Push adapter operating in simulated mode.");
+      this.logger.warn("Firebase service account credentials not found. Push adapter operating in simulated mode for dev.");
     }
   }
 
@@ -93,6 +95,14 @@ export class FcmPushAdapter implements ChannelDispatchPort {
     }
 
     if (!this.initialized) {
+      if (process.env.NODE_ENV === "production") {
+        return {
+          success: false,
+          provider: "FIREBASE_FCM",
+          error: "Firebase Admin SDK is not configured in production environment.",
+        };
+      }
+
       console.log("\n" + "=".repeat(70));
       console.log(" 📲 [FCM PUSH DISPATCH - SIMULATED MODE]");
       console.log(` Target:  ${options.token ? `Device Token [${options.token.slice(0, 15)}...]` : `Topic [${options.topic}]`}`);

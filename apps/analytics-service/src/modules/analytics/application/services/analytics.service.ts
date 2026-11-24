@@ -56,7 +56,7 @@ export class AnalyticsService {
       totalGmvPaise: totals.totalGmvPaise,
       totalGmvFormatted: (totals.totalGmvPaise / 100).toLocaleString("en-IN", { style: "currency", currency: "INR" }),
       totalOrdersFulfilled: totals.totalOrders,
-      activeMarket: "Nagpur, India",
+      activeMarket: process.env.ACTIVE_MARKET || "All Municipal Markets",
     };
   }
 }

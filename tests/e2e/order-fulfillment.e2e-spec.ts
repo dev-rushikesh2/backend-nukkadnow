@@ -7,7 +7,7 @@ import { InMemoryMerchantRepository, InMemoryOutletRepository } from "../../apps
 import { SellerMode } from "../../apps/merchant-service/src/modules/merchant/domain/value-objects/seller-mode.vo";
 
 import { CatalogService } from "../../apps/catalog-service/src/modules/catalog/application/services/catalog.service";
-import { InMemoryProductRepository, InMemoryStockRepository } from "../../apps/catalog-service/src/modules/catalog/infrastructure/persistence/repositories/in-memory-catalog.repository";
+import { InMemoryProductRepository, InMemoryStockRepository, InMemoryPriceCapRepository } from "../../apps/catalog-service/src/modules/catalog/infrastructure/persistence/repositories/in-memory-catalog.repository";
 
 import { DiscoveryService } from "../../apps/discovery-service/src/modules/discovery/application/services/discovery.service";
 import { InMemoryDiscoveryRepository } from "../../apps/discovery-service/src/modules/discovery/infrastructure/persistence/repositories/in-memory-discovery.repository";
@@ -71,7 +71,8 @@ describe("NukkadNow E2E Architecture Flow (Sprint 0 to 15 Verification)", () => 
     // 3. Catalogue & Inventory Management (Sprint 4 & 5)
     const catalogService = new CatalogService(
       new InMemoryProductRepository(),
-      new InMemoryStockRepository()
+      new InMemoryStockRepository(),
+      new InMemoryPriceCapRepository()
     );
     const product = await catalogService.createProduct({
       tenantId: merchant.id,
@@ -114,9 +115,23 @@ describe("NukkadNow E2E Architecture Flow (Sprint 0 to 15 Verification)", () => 
     expect(nearbyOutlets.outlets[0].outletId).toBe(outlet.id);
 
     // 5. Cart & Order Checkout Saga (Sprint 7 & 8)
+    const catalogClientAdapter: any = {
+      reserveStock: async (variantId: string, quantity: number, orderId: string) => {
+        const res = await catalogService.reserveStock({ variantId, quantity, orderId });
+        return res.remainingAvailable >= 0;
+      },
+      releaseStock: async (variantId: string, quantity: number, orderId: string) => {
+        await catalogService.releaseStock({ variantId, quantity, orderId });
+      },
+      commitStock: async (variantId: string, quantity: number, orderId: string) => {
+        await catalogService.commitStock({ variantId, quantity, orderId });
+      },
+    };
+
     const orderService = new OrderService(
       new InMemoryOrderRepository(),
-      new InMemoryCartRepository()
+      new InMemoryCartRepository(),
+      catalogClientAdapter
     );
     await orderService.addToCart(customerAuth.user.id, {
       outletId: outlet.id,
@@ -142,7 +157,7 @@ describe("NukkadNow E2E Architecture Flow (Sprint 0 to 15 Verification)", () => 
       quantity: 2,
       orderId: order.orderId,
     });
-    expect(reserved.remainingAvailable).toBe(18);
+    expect(reserved.remainingAvailable).toBe(16);
 
     // 7. Capacity Slot Reservation (Sprint 10)
     const fulfillmentService = new FulfillmentService(new InMemoryFulfillmentRepository());

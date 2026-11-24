@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { FulfillmentRepositoryPort } from "../../domain/repositories/fulfillment.repository.port";
 import { CapacitySlot, PickupToken } from "../../domain/entities/capacity-slot.entity";
 import { CreateSlotDto, ReserveSlotDto, GenerateTokenDto } from "../dto/fulfillment.dto";
 import { SlotNotFoundError, SlotCapacityExceededError, TokenNotFoundError } from "../../domain/errors/fulfillment-errors";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
+import * as crypto from "crypto";
 
 @Injectable()
 export class FulfillmentService {
@@ -39,6 +40,17 @@ export class FulfillmentService {
   }
 
   async reserveSlot(dto: ReserveSlotDto) {
+    if ("reserveSlot" in this.fulfillmentRepo && typeof (this.fulfillmentRepo as any).reserveSlot === "function") {
+      await (this.fulfillmentRepo as any).reserveSlot(dto.slotId);
+      const slot = await this.fulfillmentRepo.findSlotById(dto.slotId);
+      return {
+        success: true,
+        slotId: dto.slotId,
+        orderId: dto.orderId,
+        remainingSlotCapacity: slot ? slot.availableCapacity : 0,
+      };
+    }
+
     const slot = await this.fulfillmentRepo.findSlotById(dto.slotId);
     if (!slot) throw new SlotNotFoundError(dto.slotId);
 
@@ -97,16 +109,51 @@ export class FulfillmentService {
   }
 
   /**
-   * Sprint 11: Dine-in / At-Shop QR ordering resolution
+   * Resolves signed Dine-in / At-Shop QR ordering token
+   * Format: base64url(payload).base64url(hmacSha256Signature)
+   * Payload: { outletId: string, issuedAt: number, tableNumber?: string }
    */
-  resolveQrToken(qrToken: string) {
-    // Encodes: e.g. "qr_out_123_table_04"
+  resolveQrCode(signedToken: string) {
+    if (!process.env.QR_SIGNING_SECRET) {
+      throw new Error("QR_SIGNING_SECRET is required");
+    }
+
+    const parts = signedToken.split(".");
+    if (parts.length !== 2) {
+      throw new BadRequestException("Invalid QR token format");
+    }
+
+    const [payloadB64, signatureB64] = parts;
+    const expectedSig = crypto
+      .createHmac("sha256", process.env.QR_SIGNING_SECRET)
+      .update(payloadB64)
+      .digest("base64url");
+
+    if (
+      signatureB64.length !== expectedSig.length ||
+      !crypto.timingSafeEqual(Buffer.from(signatureB64), Buffer.from(expectedSig))
+    ) {
+      throw new UnauthorizedException("Invalid QR token signature");
+    }
+
+    let payload: { outletId: string; issuedAt: number; tableNumber?: string };
+    try {
+      payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf8"));
+    } catch {
+      throw new BadRequestException("Malformed QR token payload");
+    }
+
+    const maxAgeMs = 24 * 60 * 60 * 1000; // 24 hours
+    if (!payload.issuedAt || Date.now() - payload.issuedAt > maxAgeMs) {
+      throw new UnauthorizedException("QR token has expired");
+    }
+
     return {
       valid: true,
-      outletId: "outlet_sitabuldi",
-      merchantName: "Sitabuldi Kirana & Cafe",
-      tableNumber: "T-04",
+      outletId: payload.outletId,
+      tableNumber: payload.tableNumber || "COUNTER",
       orderMode: "AT_SHOP_DINE_IN",
+      issuedAt: payload.issuedAt,
     };
   }
 }

@@ -5,28 +5,27 @@ import { MerchantService } from "./application/services/merchant.service";
 import { PartnerRegistrationService } from "./application/services/partner-registration.service";
 import { MerchantRepositoryPort, OutletRepositoryPort } from "./domain/repositories/merchant.repository.port";
 import { PartnerRegistrationRepositoryPort } from "./domain/repositories/partner-registration.repository.port";
-import { InMemoryMerchantRepository, InMemoryOutletRepository } from "./infrastructure/persistence/repositories/in-memory-merchant.repository";
-import { InMemoryPartnerRegistrationRepository } from "./infrastructure/persistence/repositories/in-memory-partner-registration.repository";
+import { PrismaMerchantRepository } from "./infrastructure/persistence/repositories/prisma-merchant.repository";
+import { PrismaOutletRepository } from "./infrastructure/persistence/repositories/prisma-outlet.repository";
 import { PrismaPartnerRegistrationRepository } from "./infrastructure/persistence/repositories/prisma-partner-registration.repository";
 import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
 
 @Module({
   controllers: [
-    MerchantController,
     PartnerRegistrationController,
+    MerchantController,
   ],
   providers: [
+    PrismaService,
     MerchantService,
     PartnerRegistrationService,
-    PrismaService,
-    InMemoryPartnerRegistrationRepository,
     {
       provide: MerchantRepositoryPort,
-      useClass: InMemoryMerchantRepository,
+      useClass: PrismaMerchantRepository,
     },
     {
       provide: OutletRepositoryPort,
-      useClass: InMemoryOutletRepository,
+      useClass: PrismaOutletRepository,
     },
     {
       provide: PartnerRegistrationRepositoryPort,
