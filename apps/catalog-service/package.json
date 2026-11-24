@@ -18,7 +18,7 @@
     "@nestjs/core": "^10.4.7",
     "@nestjs/platform-express": "^10.4.7",
     "@nestjs/schedule": "12.0.4",
-    "@nestjs/swagger": "^7.4.2",
+    "@nestjs/swagger": "^12.1.2",
     "@nukkadnow/config": "workspace:*",
     "@nukkadnow/contracts": "workspace:*",
     "@nukkadnow/messaging": "workspace:*",
