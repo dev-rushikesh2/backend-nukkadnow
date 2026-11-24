@@ -49,7 +49,7 @@ model Refund {
   cityCode    String   @default("IN-MH-NGP")
   amountPaise Int
   reason      String
-  status      String   @default("COMPLETED")
+  status      String   @default("PENDING")  // PENDING, PROCESSING, COMPLETED, FAILED
   pspRefundId String?
   createdAt   DateTime @default(now())
   payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)

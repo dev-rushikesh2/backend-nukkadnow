@@ -49,7 +49,7 @@ model ProductVariant {
 model StockBalance {
   id               String         @id @default(uuid())
   variantId        String         @unique
-  tenantId         String         @default("merchant-main") // Strict multi-tenant boundary key
+  tenantId         String         // Strict multi-tenant boundary key — no default; must be set explicitly
   outletId         String
   onHandQuantity   Int            @default(0) // Protected by non-negative constraint
   reservedQuantity Int            @default(0)
@@ -66,7 +66,7 @@ model StockBalance {
 model StockMovement {
   id             String          @id @default(uuid())
   variantId      String
-  tenantId       String          @default("merchant-main") // Multi-tenant boundary
+  tenantId       String          // Multi-tenant boundary — no default; must be set explicitly
   outletId       String
   quantityChange Int             // Negative for deductions, positive for additions
   balanceAfter   Int             @default(0)
@@ -86,7 +86,7 @@ model StockMovement {
 model StockReservation {
   id        String         @id @default(uuid())
   variantId String
-  tenantId  String         @default("merchant-main") // Multi-tenant boundary
+  tenantId  String         // Multi-tenant boundary — no default; must be set explicitly
   outletId  String
   quantity  Int
   orderId   String

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Req } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Req, UnauthorizedException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { SubscriptionService } from "../../../application/services/subscription.service";
 import { SubscribePlanDto } from "../../../application/dto/subscription.dto";
@@ -19,8 +19,8 @@ export class SubscriptionsController {
   @ApiOperation({ summary: "Subscribe merchant to SaaS tier" })
   @ApiResponse({ status: 201, description: "Subscribed" })
   async subscribe(@Body() dto: SubscribePlanDto, @Req() req: any) {
-    const merchantId = req.user?.tenantId || "merchant_tenant_1";
-    return this.subService.subscribe(merchantId, dto);
+    if (!req.user?.tenantId) throw new UnauthorizedException("Merchant authentication required");
+    return this.subService.subscribe(req.user.tenantId, dto);
   }
 
   @Get("entitlements/:merchantId/:feature")

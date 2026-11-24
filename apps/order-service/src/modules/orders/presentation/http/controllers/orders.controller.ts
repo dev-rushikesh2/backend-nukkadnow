@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, Headers, Req } from "@nestjs/common";
+import { Controller, Post, Get, Body, Param, Headers, Req, UnauthorizedException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { OrderService } from "../../../application/services/order.service";
 import { AddToCartDto, CheckoutDto, AcceptOrderDto } from "../../../application/dto/order.dto";
@@ -12,16 +12,16 @@ export class OrdersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get customer active cart" })
   async getCart(@Req() req: any) {
-    const customerId = req.user?.sub || "sample_customer_1";
-    return this.orderService.getCart(customerId);
+    if (!req.user?.sub) throw new UnauthorizedException("Authentication required");
+    return this.orderService.getCart(req.user.sub);
   }
 
   @Post("cart/items")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Add or update item in cart (enforces single-seller rule)" })
   async addToCart(@Body() dto: AddToCartDto, @Req() req: any) {
-    const customerId = req.user?.sub || "sample_customer_1";
-    return this.orderService.addToCart(customerId, dto);
+    if (!req.user?.sub) throw new UnauthorizedException("Authentication required");
+    return this.orderService.addToCart(req.user.sub, dto);
   }
 
   @Post("checkout")
@@ -33,8 +33,8 @@ export class OrdersController {
     @Headers("idempotency-key") idempotencyKey?: string,
     @Req() req?: any
   ) {
-    const customerId = req?.user?.sub || "sample_customer_1";
-    return this.orderService.checkout(customerId, dto, idempotencyKey || dto.idempotencyKey);
+    if (!req?.user?.sub) throw new UnauthorizedException("Authentication required");
+    return this.orderService.checkout(req.user.sub, dto, idempotencyKey || dto.idempotencyKey);
   }
 
   @Get(":id")

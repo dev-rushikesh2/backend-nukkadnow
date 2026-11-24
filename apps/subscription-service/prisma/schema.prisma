@@ -53,7 +53,7 @@ model Invoice {
   merchantId     String
   cityCode       String               @default("IN-MH-NGP")
   amountPaise    Int
-  status         String               @default("PAID")
+  status         String               @default("UNPAID") // UNPAID, PAID, OVERDUE, VOID
   dueDate        DateTime
   paidAt         DateTime?
   createdAt      DateTime             @default(now())

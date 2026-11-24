@@ -86,6 +86,7 @@ model CartItem {
   unitPricePaise Int
   cart           Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
+  @@unique([cartId, variantId])
   @@map("cart_items")
 }
 

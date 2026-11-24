@@ -5,6 +5,41 @@ import { HttpExceptionFilter } from "./common/error-mapping/http-exception.filte
 import { ValidationPipe } from "@nestjs/common";
 import { StructuredLogger } from "@nukkadnow/observability";
 
+// ---------------------------------------------------------------------------
+// Startup guard — fail fast before any service wires up
+// ---------------------------------------------------------------------------
+const REQUIRED_ENV_VARS = [
+  "JWT_SECRET",
+  "JWT_ISSUER",
+  "JWT_AUDIENCE",
+  "INTERNAL_SERVICE_SECRET",
+  "IDENTITY_SERVICE_URL",
+  "MERCHANT_SERVICE_URL",
+  "CATALOG_SERVICE_URL",
+  "DISCOVERY_SERVICE_URL",
+  "ORDER_SERVICE_URL",
+  "FULFILLMENT_SERVICE_URL",
+  "PAYMENT_SERVICE_URL",
+  "SUBSCRIPTION_SERVICE_URL",
+  "NOTIFICATION_SERVICE_URL",
+  "REVIEW_SUPPORT_SERVICE_URL",
+  "ANALYTICS_SERVICE_URL",
+];
+
+for (const key of REQUIRED_ENV_VARS) {
+  if (!process.env[key]) {
+    // eslint-disable-next-line no-console
+    console.error(`[FATAL] Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+}
+
+if ((process.env.JWT_SECRET?.length ?? 0) < 32) {
+  // eslint-disable-next-line no-console
+  console.error("[FATAL] JWT_SECRET must be at least 32 characters");
+  process.exit(1);
+}
+
 async function bootstrap() {
   const logger = new StructuredLogger("api-gateway");
   const app = await NestFactory.create(AppModule);
@@ -49,7 +84,7 @@ async function bootstrap() {
 
   const port = process.env.GATEWAY_PORT || 4000;
   await app.listen(port);
-  logger.info(`api-gateway microservice running on port ${port}`);
+  logger.info(`api-gateway running on port ${port}`);
 }
 
 bootstrap();
