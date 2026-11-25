@@ -256,3 +256,56 @@ model ServiceableLocality {
   @@index([cityCode, status])
   @@map("serviceable_localities")
 }
+
+model ShopAuditLog {
+  id           String   @id @default(uuid())
+  tenantId     String
+  outletId     String?
+  actorStaffId String
+  actorName    String
+  actorRole    String // OWNER, MANAGER, INVENTORY, CASHIER, CHEF
+  authMode     String   @default("OWNER_OTP") // OWNER_OTP, PIN_SHIFT, STAFF_OTP
+  module       String // CATALOG, INVENTORY, ORDERS, DELIVERY, CAPACITY, PROFILE, STAFF
+  action       String // e.g. STOCK_ADJUSTED, PRICE_UPDATED, PERMISSIONS_UPDATED
+  targetType   String?
+  targetId     String?
+  targetLabel  String?
+  beforeState  Json?
+  afterState   Json?
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId, createdAt])
+  @@index([tenantId, module])
+  @@index([tenantId, actorStaffId])
+  @@map("shop_audit_logs")
+}
+
+model MarketingBanner {
+  id              String    @id @default(uuid())
+  title           String
+  highlightText   String?
+  subtitle        String
+  badgeText       String?
+  ctaLabel        String    @default("Explore Shops")
+  actionType      String    @default("DISCOVERY") // DISCOVERY, CATEGORY, MERCHANT, PRODUCT, URL
+  actionTarget    String?
+  visualIcons     String    @default("🧺 🍅 🥬 🥖 🥛")
+  imageUrl        String?
+  bgGradient      String    @default("linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)")
+  textColor       String    @default("#ffffff")
+  highlightColor  String    @default("#fbbf24")
+  cityCode        String    @default("ALL")
+  displayOrder    Int       @default(0)
+  isActive        Boolean   @default(true)
+  startsAt        DateTime?
+  endsAt          DateTime?
+  clickCount      Int       @default(0)
+  impressionCount Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([isActive, displayOrder])
+  @@index([cityCode, isActive])
+  @@map("marketing_banners")
+}

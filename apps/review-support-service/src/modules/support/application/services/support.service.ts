@@ -10,41 +10,108 @@ import * as crypto from "crypto";
 export class SupportService {
   constructor(private readonly repo: ReviewSupportRepositoryPort) {}
 
-  async createReview(dto: CreateReviewDto): Promise<Review> {
-    const existing = await this.repo.findReviewByOrderId(dto.orderId);
+  async createReview(dto: CreateReviewDto) {
+    const scopeKey = dto.productId
+      ? `PRODUCT:${dto.orderId}:${dto.productId}`
+      : `ORDER:${dto.orderId}`;
+
+    const existing = await this.repo.findReviewByScopeKey(scopeKey);
     if (existing) {
-      throw new ConflictException(`Review already submitted for order '${dto.orderId}'.`);
+      throw new ConflictException(
+        dto.productId
+          ? `Review already submitted for this product in order '${dto.orderId}'.`
+          : `Review already submitted for order '${dto.orderId}'.`
+      );
     }
 
     const review = new Review({
       id: UniqueIdentifier.generateV7(),
       orderId: dto.orderId,
+      reviewScopeKey: scopeKey,
       customerId: dto.customerId,
+      customerName: dto.customerName,
       outletId: dto.outletId,
+      productId: dto.productId,
+      productName: dto.productName,
       rating: dto.rating,
       comment: dto.comment,
     });
 
     await this.repo.saveReview(review);
-    return review;
+    return {
+      id: review.id,
+      orderId: review.orderId,
+      customerId: review.customerId,
+      customerName: review.customerName || "Verified Buyer",
+      outletId: review.outletId,
+      productId: review.productId || null,
+      productName: review.productName || null,
+      rating: review.rating,
+      comment: review.comment || "",
+      createdAt: review.createdAt,
+    };
+  }
+
+  private buildBreakdown(reviews: Review[]): Record<number, number> {
+    const counts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    for (const r of reviews) {
+      if (counts[r.rating] !== undefined) counts[r.rating]++;
+    }
+    return counts;
+  }
+
+  private mapReviewSummary(r: Review) {
+    return {
+      id: r.id,
+      orderId: r.orderId,
+      outletId: r.outletId,
+      productId: r.productId || null,
+      productName: r.productName || null,
+      customerName: r.customerName || "Verified Buyer",
+      rating: r.rating,
+      comment: r.comment || "",
+      verifiedBuyer: true,
+      createdAt: r.createdAt,
+    };
   }
 
   async getOutletReviews(outletId: string) {
-    const reviews = await this.repo.findReviewsByOutletId(outletId);
-    const summary = await this.repo.getOutletRatingSummary(outletId);
+    const [reviews, summary] = await Promise.all([
+      this.repo.findReviewsByOutletId(outletId),
+      this.repo.getOutletRatingSummary(outletId),
+    ]);
 
     return {
       outletId,
       averageRating: summary.averageRating,
       totalReviews: summary.totalReviews,
-      reviews: reviews.map((r) => ({
-        id: r.id,
-        orderId: r.orderId,
-        rating: r.rating,
-        comment: r.comment,
-        createdAt: r.createdAt,
-      })),
+      ratingBreakdown: this.buildBreakdown(reviews),
+      reviews: reviews.map((r) => this.mapReviewSummary(r)),
     };
+  }
+
+  async getProductReviews(productId: string) {
+    const [reviews, summary] = await Promise.all([
+      this.repo.findReviewsByProductId(productId),
+      this.repo.getProductRatingSummary(productId),
+    ]);
+
+    return {
+      productId,
+      averageRating: summary.averageRating,
+      totalReviews: summary.totalReviews,
+      ratingBreakdown: this.buildBreakdown(reviews),
+      reviews: reviews.map((r) => this.mapReviewSummary(r)),
+    };
+  }
+
+  async getCustomerReviews(customerId: string) {
+    const reviews = await this.repo.findReviewsByCustomerId(customerId);
+    return reviews.map((r) => this.mapReviewSummary(r));
+  }
+
+  async getAllRatingSummaries() {
+    return this.repo.getAllRatingSummaries();
   }
 
   async createTicket(dto: CreateTicketDto): Promise<SupportTicket> {

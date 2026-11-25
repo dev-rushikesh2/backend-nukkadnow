@@ -63,6 +63,16 @@ export type PlatformCity = $Result.DefaultSelection<Prisma.$PlatformCityPayload>
  * 
  */
 export type ServiceableLocality = $Result.DefaultSelection<Prisma.$ServiceableLocalityPayload>
+/**
+ * Model ShopAuditLog
+ * 
+ */
+export type ShopAuditLog = $Result.DefaultSelection<Prisma.$ShopAuditLogPayload>
+/**
+ * Model MarketingBanner
+ * 
+ */
+export type MarketingBanner = $Result.DefaultSelection<Prisma.$MarketingBannerPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -286,6 +296,26 @@ export class PrismaClient<
     * ```
     */
   get serviceableLocality(): Prisma.ServiceableLocalityDelegate<ExtArgs>;
+
+  /**
+   * `prisma.shopAuditLog`: Exposes CRUD operations for the **ShopAuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ShopAuditLogs
+    * const shopAuditLogs = await prisma.shopAuditLog.findMany()
+    * ```
+    */
+  get shopAuditLog(): Prisma.ShopAuditLogDelegate<ExtArgs>;
+
+  /**
+   * `prisma.marketingBanner`: Exposes CRUD operations for the **MarketingBanner** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingBanners
+    * const marketingBanners = await prisma.marketingBanner.findMany()
+    * ```
+    */
+  get marketingBanner(): Prisma.MarketingBannerDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -736,7 +766,9 @@ export namespace Prisma {
     RegistrationDocument: 'RegistrationDocument',
     RegistrationStatusHistory: 'RegistrationStatusHistory',
     PlatformCity: 'PlatformCity',
-    ServiceableLocality: 'ServiceableLocality'
+    ServiceableLocality: 'ServiceableLocality',
+    ShopAuditLog: 'ShopAuditLog',
+    MarketingBanner: 'MarketingBanner'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -752,7 +784,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "merchant" | "outlet" | "outletHours" | "serviceArea" | "verificationRecord" | "partnerRegistration" | "registrationDocument" | "registrationStatusHistory" | "platformCity" | "serviceableLocality"
+      modelProps: "merchant" | "outlet" | "outletHours" | "serviceArea" | "verificationRecord" | "partnerRegistration" | "registrationDocument" | "registrationStatusHistory" | "platformCity" | "serviceableLocality" | "shopAuditLog" | "marketingBanner"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1453,6 +1485,146 @@ export namespace Prisma {
           count: {
             args: Prisma.ServiceableLocalityCountArgs<ExtArgs>
             result: $Utils.Optional<ServiceableLocalityCountAggregateOutputType> | number
+          }
+        }
+      }
+      ShopAuditLog: {
+        payload: Prisma.$ShopAuditLogPayload<ExtArgs>
+        fields: Prisma.ShopAuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShopAuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShopAuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.ShopAuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShopAuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.ShopAuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.ShopAuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.ShopAuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShopAuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.ShopAuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          update: {
+            args: Prisma.ShopAuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.ShopAuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShopAuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ShopAuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ShopAuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.ShopAuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShopAuditLog>
+          }
+          groupBy: {
+            args: Prisma.ShopAuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShopAuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShopAuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<ShopAuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      MarketingBanner: {
+        payload: Prisma.$MarketingBannerPayload<ExtArgs>
+        fields: Prisma.MarketingBannerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingBannerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingBannerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingBannerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingBannerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingBannerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingBannerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingBannerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingBannerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingBannerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          update: {
+            args: Prisma.MarketingBannerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingBannerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingBannerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MarketingBannerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingBannerPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingBannerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingBanner>
+          }
+          groupBy: {
+            args: Prisma.MarketingBannerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingBannerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingBannerCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingBannerCountAggregateOutputType> | number
           }
         }
       }
@@ -12691,6 +12863,2132 @@ export namespace Prisma {
 
 
   /**
+   * Model ShopAuditLog
+   */
+
+  export type AggregateShopAuditLog = {
+    _count: ShopAuditLogCountAggregateOutputType | null
+    _min: ShopAuditLogMinAggregateOutputType | null
+    _max: ShopAuditLogMaxAggregateOutputType | null
+  }
+
+  export type ShopAuditLogMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    outletId: string | null
+    actorStaffId: string | null
+    actorName: string | null
+    actorRole: string | null
+    authMode: string | null
+    module: string | null
+    action: string | null
+    targetType: string | null
+    targetId: string | null
+    targetLabel: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type ShopAuditLogMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    outletId: string | null
+    actorStaffId: string | null
+    actorName: string | null
+    actorRole: string | null
+    authMode: string | null
+    module: string | null
+    action: string | null
+    targetType: string | null
+    targetId: string | null
+    targetLabel: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type ShopAuditLogCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    outletId: number
+    actorStaffId: number
+    actorName: number
+    actorRole: number
+    authMode: number
+    module: number
+    action: number
+    targetType: number
+    targetId: number
+    targetLabel: number
+    beforeState: number
+    afterState: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ShopAuditLogMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outletId?: true
+    actorStaffId?: true
+    actorName?: true
+    actorRole?: true
+    authMode?: true
+    module?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    targetLabel?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type ShopAuditLogMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outletId?: true
+    actorStaffId?: true
+    actorName?: true
+    actorRole?: true
+    authMode?: true
+    module?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    targetLabel?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type ShopAuditLogCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outletId?: true
+    actorStaffId?: true
+    actorName?: true
+    actorRole?: true
+    authMode?: true
+    module?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    targetLabel?: true
+    beforeState?: true
+    afterState?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ShopAuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShopAuditLog to aggregate.
+     */
+    where?: ShopAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShopAuditLogs to fetch.
+     */
+    orderBy?: ShopAuditLogOrderByWithRelationInput | ShopAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShopAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShopAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShopAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ShopAuditLogs
+    **/
+    _count?: true | ShopAuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShopAuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShopAuditLogMaxAggregateInputType
+  }
+
+  export type GetShopAuditLogAggregateType<T extends ShopAuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateShopAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShopAuditLog[P]>
+      : GetScalarType<T[P], AggregateShopAuditLog[P]>
+  }
+
+
+
+
+  export type ShopAuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShopAuditLogWhereInput
+    orderBy?: ShopAuditLogOrderByWithAggregationInput | ShopAuditLogOrderByWithAggregationInput[]
+    by: ShopAuditLogScalarFieldEnum[] | ShopAuditLogScalarFieldEnum
+    having?: ShopAuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShopAuditLogCountAggregateInputType | true
+    _min?: ShopAuditLogMinAggregateInputType
+    _max?: ShopAuditLogMaxAggregateInputType
+  }
+
+  export type ShopAuditLogGroupByOutputType = {
+    id: string
+    tenantId: string
+    outletId: string | null
+    actorStaffId: string
+    actorName: string
+    actorRole: string
+    authMode: string
+    module: string
+    action: string
+    targetType: string | null
+    targetId: string | null
+    targetLabel: string | null
+    beforeState: JsonValue | null
+    afterState: JsonValue | null
+    notes: string | null
+    createdAt: Date
+    _count: ShopAuditLogCountAggregateOutputType | null
+    _min: ShopAuditLogMinAggregateOutputType | null
+    _max: ShopAuditLogMaxAggregateOutputType | null
+  }
+
+  type GetShopAuditLogGroupByPayload<T extends ShopAuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShopAuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShopAuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShopAuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], ShopAuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShopAuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    outletId?: boolean
+    actorStaffId?: boolean
+    actorName?: boolean
+    actorRole?: boolean
+    authMode?: boolean
+    module?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    targetLabel?: boolean
+    beforeState?: boolean
+    afterState?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["shopAuditLog"]>
+
+  export type ShopAuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    outletId?: boolean
+    actorStaffId?: boolean
+    actorName?: boolean
+    actorRole?: boolean
+    authMode?: boolean
+    module?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    targetLabel?: boolean
+    beforeState?: boolean
+    afterState?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["shopAuditLog"]>
+
+  export type ShopAuditLogSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    outletId?: boolean
+    actorStaffId?: boolean
+    actorName?: boolean
+    actorRole?: boolean
+    authMode?: boolean
+    module?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    targetLabel?: boolean
+    beforeState?: boolean
+    afterState?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $ShopAuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ShopAuditLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      outletId: string | null
+      actorStaffId: string
+      actorName: string
+      actorRole: string
+      authMode: string
+      module: string
+      action: string
+      targetType: string | null
+      targetId: string | null
+      targetLabel: string | null
+      beforeState: Prisma.JsonValue | null
+      afterState: Prisma.JsonValue | null
+      notes: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["shopAuditLog"]>
+    composites: {}
+  }
+
+  type ShopAuditLogGetPayload<S extends boolean | null | undefined | ShopAuditLogDefaultArgs> = $Result.GetResult<Prisma.$ShopAuditLogPayload, S>
+
+  type ShopAuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ShopAuditLogFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ShopAuditLogCountAggregateInputType | true
+    }
+
+  export interface ShopAuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ShopAuditLog'], meta: { name: 'ShopAuditLog' } }
+    /**
+     * Find zero or one ShopAuditLog that matches the filter.
+     * @param {ShopAuditLogFindUniqueArgs} args - Arguments to find a ShopAuditLog
+     * @example
+     * // Get one ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShopAuditLogFindUniqueArgs>(args: SelectSubset<T, ShopAuditLogFindUniqueArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ShopAuditLog that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ShopAuditLogFindUniqueOrThrowArgs} args - Arguments to find a ShopAuditLog
+     * @example
+     * // Get one ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShopAuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, ShopAuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ShopAuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogFindFirstArgs} args - Arguments to find a ShopAuditLog
+     * @example
+     * // Get one ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShopAuditLogFindFirstArgs>(args?: SelectSubset<T, ShopAuditLogFindFirstArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ShopAuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogFindFirstOrThrowArgs} args - Arguments to find a ShopAuditLog
+     * @example
+     * // Get one ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShopAuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, ShopAuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ShopAuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ShopAuditLogs
+     * const shopAuditLogs = await prisma.shopAuditLog.findMany()
+     * 
+     * // Get first 10 ShopAuditLogs
+     * const shopAuditLogs = await prisma.shopAuditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shopAuditLogWithIdOnly = await prisma.shopAuditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShopAuditLogFindManyArgs>(args?: SelectSubset<T, ShopAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ShopAuditLog.
+     * @param {ShopAuditLogCreateArgs} args - Arguments to create a ShopAuditLog.
+     * @example
+     * // Create one ShopAuditLog
+     * const ShopAuditLog = await prisma.shopAuditLog.create({
+     *   data: {
+     *     // ... data to create a ShopAuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShopAuditLogCreateArgs>(args: SelectSubset<T, ShopAuditLogCreateArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ShopAuditLogs.
+     * @param {ShopAuditLogCreateManyArgs} args - Arguments to create many ShopAuditLogs.
+     * @example
+     * // Create many ShopAuditLogs
+     * const shopAuditLog = await prisma.shopAuditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShopAuditLogCreateManyArgs>(args?: SelectSubset<T, ShopAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ShopAuditLogs and returns the data saved in the database.
+     * @param {ShopAuditLogCreateManyAndReturnArgs} args - Arguments to create many ShopAuditLogs.
+     * @example
+     * // Create many ShopAuditLogs
+     * const shopAuditLog = await prisma.shopAuditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ShopAuditLogs and only return the `id`
+     * const shopAuditLogWithIdOnly = await prisma.shopAuditLog.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShopAuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, ShopAuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ShopAuditLog.
+     * @param {ShopAuditLogDeleteArgs} args - Arguments to delete one ShopAuditLog.
+     * @example
+     * // Delete one ShopAuditLog
+     * const ShopAuditLog = await prisma.shopAuditLog.delete({
+     *   where: {
+     *     // ... filter to delete one ShopAuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShopAuditLogDeleteArgs>(args: SelectSubset<T, ShopAuditLogDeleteArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ShopAuditLog.
+     * @param {ShopAuditLogUpdateArgs} args - Arguments to update one ShopAuditLog.
+     * @example
+     * // Update one ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShopAuditLogUpdateArgs>(args: SelectSubset<T, ShopAuditLogUpdateArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ShopAuditLogs.
+     * @param {ShopAuditLogDeleteManyArgs} args - Arguments to filter ShopAuditLogs to delete.
+     * @example
+     * // Delete a few ShopAuditLogs
+     * const { count } = await prisma.shopAuditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShopAuditLogDeleteManyArgs>(args?: SelectSubset<T, ShopAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ShopAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ShopAuditLogs
+     * const shopAuditLog = await prisma.shopAuditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShopAuditLogUpdateManyArgs>(args: SelectSubset<T, ShopAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ShopAuditLog.
+     * @param {ShopAuditLogUpsertArgs} args - Arguments to update or create a ShopAuditLog.
+     * @example
+     * // Update or create a ShopAuditLog
+     * const shopAuditLog = await prisma.shopAuditLog.upsert({
+     *   create: {
+     *     // ... data to create a ShopAuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ShopAuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShopAuditLogUpsertArgs>(args: SelectSubset<T, ShopAuditLogUpsertArgs<ExtArgs>>): Prisma__ShopAuditLogClient<$Result.GetResult<Prisma.$ShopAuditLogPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ShopAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogCountArgs} args - Arguments to filter ShopAuditLogs to count.
+     * @example
+     * // Count the number of ShopAuditLogs
+     * const count = await prisma.shopAuditLog.count({
+     *   where: {
+     *     // ... the filter for the ShopAuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShopAuditLogCountArgs>(
+      args?: Subset<T, ShopAuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShopAuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ShopAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShopAuditLogAggregateArgs>(args: Subset<T, ShopAuditLogAggregateArgs>): Prisma.PrismaPromise<GetShopAuditLogAggregateType<T>>
+
+    /**
+     * Group by ShopAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShopAuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShopAuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShopAuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: ShopAuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShopAuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShopAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ShopAuditLog model
+   */
+  readonly fields: ShopAuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ShopAuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShopAuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ShopAuditLog model
+   */ 
+  interface ShopAuditLogFieldRefs {
+    readonly id: FieldRef<"ShopAuditLog", 'String'>
+    readonly tenantId: FieldRef<"ShopAuditLog", 'String'>
+    readonly outletId: FieldRef<"ShopAuditLog", 'String'>
+    readonly actorStaffId: FieldRef<"ShopAuditLog", 'String'>
+    readonly actorName: FieldRef<"ShopAuditLog", 'String'>
+    readonly actorRole: FieldRef<"ShopAuditLog", 'String'>
+    readonly authMode: FieldRef<"ShopAuditLog", 'String'>
+    readonly module: FieldRef<"ShopAuditLog", 'String'>
+    readonly action: FieldRef<"ShopAuditLog", 'String'>
+    readonly targetType: FieldRef<"ShopAuditLog", 'String'>
+    readonly targetId: FieldRef<"ShopAuditLog", 'String'>
+    readonly targetLabel: FieldRef<"ShopAuditLog", 'String'>
+    readonly beforeState: FieldRef<"ShopAuditLog", 'Json'>
+    readonly afterState: FieldRef<"ShopAuditLog", 'Json'>
+    readonly notes: FieldRef<"ShopAuditLog", 'String'>
+    readonly createdAt: FieldRef<"ShopAuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ShopAuditLog findUnique
+   */
+  export type ShopAuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter, which ShopAuditLog to fetch.
+     */
+    where: ShopAuditLogWhereUniqueInput
+  }
+
+  /**
+   * ShopAuditLog findUniqueOrThrow
+   */
+  export type ShopAuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter, which ShopAuditLog to fetch.
+     */
+    where: ShopAuditLogWhereUniqueInput
+  }
+
+  /**
+   * ShopAuditLog findFirst
+   */
+  export type ShopAuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter, which ShopAuditLog to fetch.
+     */
+    where?: ShopAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShopAuditLogs to fetch.
+     */
+    orderBy?: ShopAuditLogOrderByWithRelationInput | ShopAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShopAuditLogs.
+     */
+    cursor?: ShopAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShopAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShopAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShopAuditLogs.
+     */
+    distinct?: ShopAuditLogScalarFieldEnum | ShopAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * ShopAuditLog findFirstOrThrow
+   */
+  export type ShopAuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter, which ShopAuditLog to fetch.
+     */
+    where?: ShopAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShopAuditLogs to fetch.
+     */
+    orderBy?: ShopAuditLogOrderByWithRelationInput | ShopAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ShopAuditLogs.
+     */
+    cursor?: ShopAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShopAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShopAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ShopAuditLogs.
+     */
+    distinct?: ShopAuditLogScalarFieldEnum | ShopAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * ShopAuditLog findMany
+   */
+  export type ShopAuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter, which ShopAuditLogs to fetch.
+     */
+    where?: ShopAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ShopAuditLogs to fetch.
+     */
+    orderBy?: ShopAuditLogOrderByWithRelationInput | ShopAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ShopAuditLogs.
+     */
+    cursor?: ShopAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ShopAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ShopAuditLogs.
+     */
+    skip?: number
+    distinct?: ShopAuditLogScalarFieldEnum | ShopAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * ShopAuditLog create
+   */
+  export type ShopAuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * The data needed to create a ShopAuditLog.
+     */
+    data: XOR<ShopAuditLogCreateInput, ShopAuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * ShopAuditLog createMany
+   */
+  export type ShopAuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ShopAuditLogs.
+     */
+    data: ShopAuditLogCreateManyInput | ShopAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ShopAuditLog createManyAndReturn
+   */
+  export type ShopAuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ShopAuditLogs.
+     */
+    data: ShopAuditLogCreateManyInput | ShopAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ShopAuditLog update
+   */
+  export type ShopAuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * The data needed to update a ShopAuditLog.
+     */
+    data: XOR<ShopAuditLogUpdateInput, ShopAuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which ShopAuditLog to update.
+     */
+    where: ShopAuditLogWhereUniqueInput
+  }
+
+  /**
+   * ShopAuditLog updateMany
+   */
+  export type ShopAuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ShopAuditLogs.
+     */
+    data: XOR<ShopAuditLogUpdateManyMutationInput, ShopAuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ShopAuditLogs to update
+     */
+    where?: ShopAuditLogWhereInput
+  }
+
+  /**
+   * ShopAuditLog upsert
+   */
+  export type ShopAuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * The filter to search for the ShopAuditLog to update in case it exists.
+     */
+    where: ShopAuditLogWhereUniqueInput
+    /**
+     * In case the ShopAuditLog found by the `where` argument doesn't exist, create a new ShopAuditLog with this data.
+     */
+    create: XOR<ShopAuditLogCreateInput, ShopAuditLogUncheckedCreateInput>
+    /**
+     * In case the ShopAuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShopAuditLogUpdateInput, ShopAuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * ShopAuditLog delete
+   */
+  export type ShopAuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+    /**
+     * Filter which ShopAuditLog to delete.
+     */
+    where: ShopAuditLogWhereUniqueInput
+  }
+
+  /**
+   * ShopAuditLog deleteMany
+   */
+  export type ShopAuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShopAuditLogs to delete
+     */
+    where?: ShopAuditLogWhereInput
+  }
+
+  /**
+   * ShopAuditLog without action
+   */
+  export type ShopAuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShopAuditLog
+     */
+    select?: ShopAuditLogSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketingBanner
+   */
+
+  export type AggregateMarketingBanner = {
+    _count: MarketingBannerCountAggregateOutputType | null
+    _avg: MarketingBannerAvgAggregateOutputType | null
+    _sum: MarketingBannerSumAggregateOutputType | null
+    _min: MarketingBannerMinAggregateOutputType | null
+    _max: MarketingBannerMaxAggregateOutputType | null
+  }
+
+  export type MarketingBannerAvgAggregateOutputType = {
+    displayOrder: number | null
+    clickCount: number | null
+    impressionCount: number | null
+  }
+
+  export type MarketingBannerSumAggregateOutputType = {
+    displayOrder: number | null
+    clickCount: number | null
+    impressionCount: number | null
+  }
+
+  export type MarketingBannerMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    highlightText: string | null
+    subtitle: string | null
+    badgeText: string | null
+    ctaLabel: string | null
+    actionType: string | null
+    actionTarget: string | null
+    visualIcons: string | null
+    imageUrl: string | null
+    bgGradient: string | null
+    textColor: string | null
+    highlightColor: string | null
+    cityCode: string | null
+    displayOrder: number | null
+    isActive: boolean | null
+    startsAt: Date | null
+    endsAt: Date | null
+    clickCount: number | null
+    impressionCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingBannerMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    highlightText: string | null
+    subtitle: string | null
+    badgeText: string | null
+    ctaLabel: string | null
+    actionType: string | null
+    actionTarget: string | null
+    visualIcons: string | null
+    imageUrl: string | null
+    bgGradient: string | null
+    textColor: string | null
+    highlightColor: string | null
+    cityCode: string | null
+    displayOrder: number | null
+    isActive: boolean | null
+    startsAt: Date | null
+    endsAt: Date | null
+    clickCount: number | null
+    impressionCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingBannerCountAggregateOutputType = {
+    id: number
+    title: number
+    highlightText: number
+    subtitle: number
+    badgeText: number
+    ctaLabel: number
+    actionType: number
+    actionTarget: number
+    visualIcons: number
+    imageUrl: number
+    bgGradient: number
+    textColor: number
+    highlightColor: number
+    cityCode: number
+    displayOrder: number
+    isActive: number
+    startsAt: number
+    endsAt: number
+    clickCount: number
+    impressionCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingBannerAvgAggregateInputType = {
+    displayOrder?: true
+    clickCount?: true
+    impressionCount?: true
+  }
+
+  export type MarketingBannerSumAggregateInputType = {
+    displayOrder?: true
+    clickCount?: true
+    impressionCount?: true
+  }
+
+  export type MarketingBannerMinAggregateInputType = {
+    id?: true
+    title?: true
+    highlightText?: true
+    subtitle?: true
+    badgeText?: true
+    ctaLabel?: true
+    actionType?: true
+    actionTarget?: true
+    visualIcons?: true
+    imageUrl?: true
+    bgGradient?: true
+    textColor?: true
+    highlightColor?: true
+    cityCode?: true
+    displayOrder?: true
+    isActive?: true
+    startsAt?: true
+    endsAt?: true
+    clickCount?: true
+    impressionCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingBannerMaxAggregateInputType = {
+    id?: true
+    title?: true
+    highlightText?: true
+    subtitle?: true
+    badgeText?: true
+    ctaLabel?: true
+    actionType?: true
+    actionTarget?: true
+    visualIcons?: true
+    imageUrl?: true
+    bgGradient?: true
+    textColor?: true
+    highlightColor?: true
+    cityCode?: true
+    displayOrder?: true
+    isActive?: true
+    startsAt?: true
+    endsAt?: true
+    clickCount?: true
+    impressionCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingBannerCountAggregateInputType = {
+    id?: true
+    title?: true
+    highlightText?: true
+    subtitle?: true
+    badgeText?: true
+    ctaLabel?: true
+    actionType?: true
+    actionTarget?: true
+    visualIcons?: true
+    imageUrl?: true
+    bgGradient?: true
+    textColor?: true
+    highlightColor?: true
+    cityCode?: true
+    displayOrder?: true
+    isActive?: true
+    startsAt?: true
+    endsAt?: true
+    clickCount?: true
+    impressionCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingBannerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingBanner to aggregate.
+     */
+    where?: MarketingBannerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingBanners to fetch.
+     */
+    orderBy?: MarketingBannerOrderByWithRelationInput | MarketingBannerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingBannerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingBanners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingBanners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingBanners
+    **/
+    _count?: true | MarketingBannerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MarketingBannerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MarketingBannerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingBannerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingBannerMaxAggregateInputType
+  }
+
+  export type GetMarketingBannerAggregateType<T extends MarketingBannerAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingBanner]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingBanner[P]>
+      : GetScalarType<T[P], AggregateMarketingBanner[P]>
+  }
+
+
+
+
+  export type MarketingBannerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingBannerWhereInput
+    orderBy?: MarketingBannerOrderByWithAggregationInput | MarketingBannerOrderByWithAggregationInput[]
+    by: MarketingBannerScalarFieldEnum[] | MarketingBannerScalarFieldEnum
+    having?: MarketingBannerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingBannerCountAggregateInputType | true
+    _avg?: MarketingBannerAvgAggregateInputType
+    _sum?: MarketingBannerSumAggregateInputType
+    _min?: MarketingBannerMinAggregateInputType
+    _max?: MarketingBannerMaxAggregateInputType
+  }
+
+  export type MarketingBannerGroupByOutputType = {
+    id: string
+    title: string
+    highlightText: string | null
+    subtitle: string
+    badgeText: string | null
+    ctaLabel: string
+    actionType: string
+    actionTarget: string | null
+    visualIcons: string
+    imageUrl: string | null
+    bgGradient: string
+    textColor: string
+    highlightColor: string
+    cityCode: string
+    displayOrder: number
+    isActive: boolean
+    startsAt: Date | null
+    endsAt: Date | null
+    clickCount: number
+    impressionCount: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingBannerCountAggregateOutputType | null
+    _avg: MarketingBannerAvgAggregateOutputType | null
+    _sum: MarketingBannerSumAggregateOutputType | null
+    _min: MarketingBannerMinAggregateOutputType | null
+    _max: MarketingBannerMaxAggregateOutputType | null
+  }
+
+  type GetMarketingBannerGroupByPayload<T extends MarketingBannerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingBannerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingBannerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingBannerGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingBannerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingBannerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    highlightText?: boolean
+    subtitle?: boolean
+    badgeText?: boolean
+    ctaLabel?: boolean
+    actionType?: boolean
+    actionTarget?: boolean
+    visualIcons?: boolean
+    imageUrl?: boolean
+    bgGradient?: boolean
+    textColor?: boolean
+    highlightColor?: boolean
+    cityCode?: boolean
+    displayOrder?: boolean
+    isActive?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    clickCount?: boolean
+    impressionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingBanner"]>
+
+  export type MarketingBannerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    highlightText?: boolean
+    subtitle?: boolean
+    badgeText?: boolean
+    ctaLabel?: boolean
+    actionType?: boolean
+    actionTarget?: boolean
+    visualIcons?: boolean
+    imageUrl?: boolean
+    bgGradient?: boolean
+    textColor?: boolean
+    highlightColor?: boolean
+    cityCode?: boolean
+    displayOrder?: boolean
+    isActive?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    clickCount?: boolean
+    impressionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingBanner"]>
+
+  export type MarketingBannerSelectScalar = {
+    id?: boolean
+    title?: boolean
+    highlightText?: boolean
+    subtitle?: boolean
+    badgeText?: boolean
+    ctaLabel?: boolean
+    actionType?: boolean
+    actionTarget?: boolean
+    visualIcons?: boolean
+    imageUrl?: boolean
+    bgGradient?: boolean
+    textColor?: boolean
+    highlightColor?: boolean
+    cityCode?: boolean
+    displayOrder?: boolean
+    isActive?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    clickCount?: boolean
+    impressionCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $MarketingBannerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingBanner"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      highlightText: string | null
+      subtitle: string
+      badgeText: string | null
+      ctaLabel: string
+      actionType: string
+      actionTarget: string | null
+      visualIcons: string
+      imageUrl: string | null
+      bgGradient: string
+      textColor: string
+      highlightColor: string
+      cityCode: string
+      displayOrder: number
+      isActive: boolean
+      startsAt: Date | null
+      endsAt: Date | null
+      clickCount: number
+      impressionCount: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingBanner"]>
+    composites: {}
+  }
+
+  type MarketingBannerGetPayload<S extends boolean | null | undefined | MarketingBannerDefaultArgs> = $Result.GetResult<Prisma.$MarketingBannerPayload, S>
+
+  type MarketingBannerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MarketingBannerFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MarketingBannerCountAggregateInputType | true
+    }
+
+  export interface MarketingBannerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingBanner'], meta: { name: 'MarketingBanner' } }
+    /**
+     * Find zero or one MarketingBanner that matches the filter.
+     * @param {MarketingBannerFindUniqueArgs} args - Arguments to find a MarketingBanner
+     * @example
+     * // Get one MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingBannerFindUniqueArgs>(args: SelectSubset<T, MarketingBannerFindUniqueArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one MarketingBanner that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MarketingBannerFindUniqueOrThrowArgs} args - Arguments to find a MarketingBanner
+     * @example
+     * // Get one MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingBannerFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingBannerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first MarketingBanner that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerFindFirstArgs} args - Arguments to find a MarketingBanner
+     * @example
+     * // Get one MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingBannerFindFirstArgs>(args?: SelectSubset<T, MarketingBannerFindFirstArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first MarketingBanner that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerFindFirstOrThrowArgs} args - Arguments to find a MarketingBanner
+     * @example
+     * // Get one MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingBannerFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingBannerFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more MarketingBanners that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingBanners
+     * const marketingBanners = await prisma.marketingBanner.findMany()
+     * 
+     * // Get first 10 MarketingBanners
+     * const marketingBanners = await prisma.marketingBanner.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingBannerWithIdOnly = await prisma.marketingBanner.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingBannerFindManyArgs>(args?: SelectSubset<T, MarketingBannerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a MarketingBanner.
+     * @param {MarketingBannerCreateArgs} args - Arguments to create a MarketingBanner.
+     * @example
+     * // Create one MarketingBanner
+     * const MarketingBanner = await prisma.marketingBanner.create({
+     *   data: {
+     *     // ... data to create a MarketingBanner
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingBannerCreateArgs>(args: SelectSubset<T, MarketingBannerCreateArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many MarketingBanners.
+     * @param {MarketingBannerCreateManyArgs} args - Arguments to create many MarketingBanners.
+     * @example
+     * // Create many MarketingBanners
+     * const marketingBanner = await prisma.marketingBanner.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingBannerCreateManyArgs>(args?: SelectSubset<T, MarketingBannerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingBanners and returns the data saved in the database.
+     * @param {MarketingBannerCreateManyAndReturnArgs} args - Arguments to create many MarketingBanners.
+     * @example
+     * // Create many MarketingBanners
+     * const marketingBanner = await prisma.marketingBanner.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingBanners and only return the `id`
+     * const marketingBannerWithIdOnly = await prisma.marketingBanner.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingBannerCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingBannerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a MarketingBanner.
+     * @param {MarketingBannerDeleteArgs} args - Arguments to delete one MarketingBanner.
+     * @example
+     * // Delete one MarketingBanner
+     * const MarketingBanner = await prisma.marketingBanner.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingBanner
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingBannerDeleteArgs>(args: SelectSubset<T, MarketingBannerDeleteArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one MarketingBanner.
+     * @param {MarketingBannerUpdateArgs} args - Arguments to update one MarketingBanner.
+     * @example
+     * // Update one MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingBannerUpdateArgs>(args: SelectSubset<T, MarketingBannerUpdateArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more MarketingBanners.
+     * @param {MarketingBannerDeleteManyArgs} args - Arguments to filter MarketingBanners to delete.
+     * @example
+     * // Delete a few MarketingBanners
+     * const { count } = await prisma.marketingBanner.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingBannerDeleteManyArgs>(args?: SelectSubset<T, MarketingBannerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingBanners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingBanners
+     * const marketingBanner = await prisma.marketingBanner.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingBannerUpdateManyArgs>(args: SelectSubset<T, MarketingBannerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MarketingBanner.
+     * @param {MarketingBannerUpsertArgs} args - Arguments to update or create a MarketingBanner.
+     * @example
+     * // Update or create a MarketingBanner
+     * const marketingBanner = await prisma.marketingBanner.upsert({
+     *   create: {
+     *     // ... data to create a MarketingBanner
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingBanner we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingBannerUpsertArgs>(args: SelectSubset<T, MarketingBannerUpsertArgs<ExtArgs>>): Prisma__MarketingBannerClient<$Result.GetResult<Prisma.$MarketingBannerPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of MarketingBanners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerCountArgs} args - Arguments to filter MarketingBanners to count.
+     * @example
+     * // Count the number of MarketingBanners
+     * const count = await prisma.marketingBanner.count({
+     *   where: {
+     *     // ... the filter for the MarketingBanners we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingBannerCountArgs>(
+      args?: Subset<T, MarketingBannerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingBannerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingBanner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingBannerAggregateArgs>(args: Subset<T, MarketingBannerAggregateArgs>): Prisma.PrismaPromise<GetMarketingBannerAggregateType<T>>
+
+    /**
+     * Group by MarketingBanner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingBannerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingBannerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingBannerGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingBannerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingBannerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingBannerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingBanner model
+   */
+  readonly fields: MarketingBannerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingBanner.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingBannerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingBanner model
+   */ 
+  interface MarketingBannerFieldRefs {
+    readonly id: FieldRef<"MarketingBanner", 'String'>
+    readonly title: FieldRef<"MarketingBanner", 'String'>
+    readonly highlightText: FieldRef<"MarketingBanner", 'String'>
+    readonly subtitle: FieldRef<"MarketingBanner", 'String'>
+    readonly badgeText: FieldRef<"MarketingBanner", 'String'>
+    readonly ctaLabel: FieldRef<"MarketingBanner", 'String'>
+    readonly actionType: FieldRef<"MarketingBanner", 'String'>
+    readonly actionTarget: FieldRef<"MarketingBanner", 'String'>
+    readonly visualIcons: FieldRef<"MarketingBanner", 'String'>
+    readonly imageUrl: FieldRef<"MarketingBanner", 'String'>
+    readonly bgGradient: FieldRef<"MarketingBanner", 'String'>
+    readonly textColor: FieldRef<"MarketingBanner", 'String'>
+    readonly highlightColor: FieldRef<"MarketingBanner", 'String'>
+    readonly cityCode: FieldRef<"MarketingBanner", 'String'>
+    readonly displayOrder: FieldRef<"MarketingBanner", 'Int'>
+    readonly isActive: FieldRef<"MarketingBanner", 'Boolean'>
+    readonly startsAt: FieldRef<"MarketingBanner", 'DateTime'>
+    readonly endsAt: FieldRef<"MarketingBanner", 'DateTime'>
+    readonly clickCount: FieldRef<"MarketingBanner", 'Int'>
+    readonly impressionCount: FieldRef<"MarketingBanner", 'Int'>
+    readonly createdAt: FieldRef<"MarketingBanner", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingBanner", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingBanner findUnique
+   */
+  export type MarketingBannerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter, which MarketingBanner to fetch.
+     */
+    where: MarketingBannerWhereUniqueInput
+  }
+
+  /**
+   * MarketingBanner findUniqueOrThrow
+   */
+  export type MarketingBannerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter, which MarketingBanner to fetch.
+     */
+    where: MarketingBannerWhereUniqueInput
+  }
+
+  /**
+   * MarketingBanner findFirst
+   */
+  export type MarketingBannerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter, which MarketingBanner to fetch.
+     */
+    where?: MarketingBannerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingBanners to fetch.
+     */
+    orderBy?: MarketingBannerOrderByWithRelationInput | MarketingBannerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingBanners.
+     */
+    cursor?: MarketingBannerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingBanners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingBanners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingBanners.
+     */
+    distinct?: MarketingBannerScalarFieldEnum | MarketingBannerScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingBanner findFirstOrThrow
+   */
+  export type MarketingBannerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter, which MarketingBanner to fetch.
+     */
+    where?: MarketingBannerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingBanners to fetch.
+     */
+    orderBy?: MarketingBannerOrderByWithRelationInput | MarketingBannerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingBanners.
+     */
+    cursor?: MarketingBannerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingBanners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingBanners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingBanners.
+     */
+    distinct?: MarketingBannerScalarFieldEnum | MarketingBannerScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingBanner findMany
+   */
+  export type MarketingBannerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter, which MarketingBanners to fetch.
+     */
+    where?: MarketingBannerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingBanners to fetch.
+     */
+    orderBy?: MarketingBannerOrderByWithRelationInput | MarketingBannerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingBanners.
+     */
+    cursor?: MarketingBannerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingBanners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingBanners.
+     */
+    skip?: number
+    distinct?: MarketingBannerScalarFieldEnum | MarketingBannerScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingBanner create
+   */
+  export type MarketingBannerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingBanner.
+     */
+    data: XOR<MarketingBannerCreateInput, MarketingBannerUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingBanner createMany
+   */
+  export type MarketingBannerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingBanners.
+     */
+    data: MarketingBannerCreateManyInput | MarketingBannerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingBanner createManyAndReturn
+   */
+  export type MarketingBannerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many MarketingBanners.
+     */
+    data: MarketingBannerCreateManyInput | MarketingBannerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingBanner update
+   */
+  export type MarketingBannerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingBanner.
+     */
+    data: XOR<MarketingBannerUpdateInput, MarketingBannerUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingBanner to update.
+     */
+    where: MarketingBannerWhereUniqueInput
+  }
+
+  /**
+   * MarketingBanner updateMany
+   */
+  export type MarketingBannerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingBanners.
+     */
+    data: XOR<MarketingBannerUpdateManyMutationInput, MarketingBannerUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingBanners to update
+     */
+    where?: MarketingBannerWhereInput
+  }
+
+  /**
+   * MarketingBanner upsert
+   */
+  export type MarketingBannerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingBanner to update in case it exists.
+     */
+    where: MarketingBannerWhereUniqueInput
+    /**
+     * In case the MarketingBanner found by the `where` argument doesn't exist, create a new MarketingBanner with this data.
+     */
+    create: XOR<MarketingBannerCreateInput, MarketingBannerUncheckedCreateInput>
+    /**
+     * In case the MarketingBanner was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingBannerUpdateInput, MarketingBannerUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingBanner delete
+   */
+  export type MarketingBannerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+    /**
+     * Filter which MarketingBanner to delete.
+     */
+    where: MarketingBannerWhereUniqueInput
+  }
+
+  /**
+   * MarketingBanner deleteMany
+   */
+  export type MarketingBannerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingBanners to delete
+     */
+    where?: MarketingBannerWhereInput
+  }
+
+  /**
+   * MarketingBanner without action
+   */
+  export type MarketingBannerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingBanner
+     */
+    select?: MarketingBannerSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12912,6 +15210,56 @@ export namespace Prisma {
   };
 
   export type ServiceableLocalityScalarFieldEnum = (typeof ServiceableLocalityScalarFieldEnum)[keyof typeof ServiceableLocalityScalarFieldEnum]
+
+
+  export const ShopAuditLogScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    outletId: 'outletId',
+    actorStaffId: 'actorStaffId',
+    actorName: 'actorName',
+    actorRole: 'actorRole',
+    authMode: 'authMode',
+    module: 'module',
+    action: 'action',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    targetLabel: 'targetLabel',
+    beforeState: 'beforeState',
+    afterState: 'afterState',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type ShopAuditLogScalarFieldEnum = (typeof ShopAuditLogScalarFieldEnum)[keyof typeof ShopAuditLogScalarFieldEnum]
+
+
+  export const MarketingBannerScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    highlightText: 'highlightText',
+    subtitle: 'subtitle',
+    badgeText: 'badgeText',
+    ctaLabel: 'ctaLabel',
+    actionType: 'actionType',
+    actionTarget: 'actionTarget',
+    visualIcons: 'visualIcons',
+    imageUrl: 'imageUrl',
+    bgGradient: 'bgGradient',
+    textColor: 'textColor',
+    highlightColor: 'highlightColor',
+    cityCode: 'cityCode',
+    displayOrder: 'displayOrder',
+    isActive: 'isActive',
+    startsAt: 'startsAt',
+    endsAt: 'endsAt',
+    clickCount: 'clickCount',
+    impressionCount: 'impressionCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingBannerScalarFieldEnum = (typeof MarketingBannerScalarFieldEnum)[keyof typeof MarketingBannerScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -14118,6 +16466,252 @@ export namespace Prisma {
     geoJson?: JsonNullableWithAggregatesFilter<"ServiceableLocality">
     createdAt?: DateTimeWithAggregatesFilter<"ServiceableLocality"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ServiceableLocality"> | Date | string
+  }
+
+  export type ShopAuditLogWhereInput = {
+    AND?: ShopAuditLogWhereInput | ShopAuditLogWhereInput[]
+    OR?: ShopAuditLogWhereInput[]
+    NOT?: ShopAuditLogWhereInput | ShopAuditLogWhereInput[]
+    id?: StringFilter<"ShopAuditLog"> | string
+    tenantId?: StringFilter<"ShopAuditLog"> | string
+    outletId?: StringNullableFilter<"ShopAuditLog"> | string | null
+    actorStaffId?: StringFilter<"ShopAuditLog"> | string
+    actorName?: StringFilter<"ShopAuditLog"> | string
+    actorRole?: StringFilter<"ShopAuditLog"> | string
+    authMode?: StringFilter<"ShopAuditLog"> | string
+    module?: StringFilter<"ShopAuditLog"> | string
+    action?: StringFilter<"ShopAuditLog"> | string
+    targetType?: StringNullableFilter<"ShopAuditLog"> | string | null
+    targetId?: StringNullableFilter<"ShopAuditLog"> | string | null
+    targetLabel?: StringNullableFilter<"ShopAuditLog"> | string | null
+    beforeState?: JsonNullableFilter<"ShopAuditLog">
+    afterState?: JsonNullableFilter<"ShopAuditLog">
+    notes?: StringNullableFilter<"ShopAuditLog"> | string | null
+    createdAt?: DateTimeFilter<"ShopAuditLog"> | Date | string
+  }
+
+  export type ShopAuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrderInput | SortOrder
+    actorStaffId?: SortOrder
+    actorName?: SortOrder
+    actorRole?: SortOrder
+    authMode?: SortOrder
+    module?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrderInput | SortOrder
+    targetId?: SortOrderInput | SortOrder
+    targetLabel?: SortOrderInput | SortOrder
+    beforeState?: SortOrderInput | SortOrder
+    afterState?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ShopAuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ShopAuditLogWhereInput | ShopAuditLogWhereInput[]
+    OR?: ShopAuditLogWhereInput[]
+    NOT?: ShopAuditLogWhereInput | ShopAuditLogWhereInput[]
+    tenantId?: StringFilter<"ShopAuditLog"> | string
+    outletId?: StringNullableFilter<"ShopAuditLog"> | string | null
+    actorStaffId?: StringFilter<"ShopAuditLog"> | string
+    actorName?: StringFilter<"ShopAuditLog"> | string
+    actorRole?: StringFilter<"ShopAuditLog"> | string
+    authMode?: StringFilter<"ShopAuditLog"> | string
+    module?: StringFilter<"ShopAuditLog"> | string
+    action?: StringFilter<"ShopAuditLog"> | string
+    targetType?: StringNullableFilter<"ShopAuditLog"> | string | null
+    targetId?: StringNullableFilter<"ShopAuditLog"> | string | null
+    targetLabel?: StringNullableFilter<"ShopAuditLog"> | string | null
+    beforeState?: JsonNullableFilter<"ShopAuditLog">
+    afterState?: JsonNullableFilter<"ShopAuditLog">
+    notes?: StringNullableFilter<"ShopAuditLog"> | string | null
+    createdAt?: DateTimeFilter<"ShopAuditLog"> | Date | string
+  }, "id">
+
+  export type ShopAuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrderInput | SortOrder
+    actorStaffId?: SortOrder
+    actorName?: SortOrder
+    actorRole?: SortOrder
+    authMode?: SortOrder
+    module?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrderInput | SortOrder
+    targetId?: SortOrderInput | SortOrder
+    targetLabel?: SortOrderInput | SortOrder
+    beforeState?: SortOrderInput | SortOrder
+    afterState?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ShopAuditLogCountOrderByAggregateInput
+    _max?: ShopAuditLogMaxOrderByAggregateInput
+    _min?: ShopAuditLogMinOrderByAggregateInput
+  }
+
+  export type ShopAuditLogScalarWhereWithAggregatesInput = {
+    AND?: ShopAuditLogScalarWhereWithAggregatesInput | ShopAuditLogScalarWhereWithAggregatesInput[]
+    OR?: ShopAuditLogScalarWhereWithAggregatesInput[]
+    NOT?: ShopAuditLogScalarWhereWithAggregatesInput | ShopAuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    tenantId?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    outletId?: StringNullableWithAggregatesFilter<"ShopAuditLog"> | string | null
+    actorStaffId?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    actorName?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    actorRole?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    authMode?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    module?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    action?: StringWithAggregatesFilter<"ShopAuditLog"> | string
+    targetType?: StringNullableWithAggregatesFilter<"ShopAuditLog"> | string | null
+    targetId?: StringNullableWithAggregatesFilter<"ShopAuditLog"> | string | null
+    targetLabel?: StringNullableWithAggregatesFilter<"ShopAuditLog"> | string | null
+    beforeState?: JsonNullableWithAggregatesFilter<"ShopAuditLog">
+    afterState?: JsonNullableWithAggregatesFilter<"ShopAuditLog">
+    notes?: StringNullableWithAggregatesFilter<"ShopAuditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ShopAuditLog"> | Date | string
+  }
+
+  export type MarketingBannerWhereInput = {
+    AND?: MarketingBannerWhereInput | MarketingBannerWhereInput[]
+    OR?: MarketingBannerWhereInput[]
+    NOT?: MarketingBannerWhereInput | MarketingBannerWhereInput[]
+    id?: StringFilter<"MarketingBanner"> | string
+    title?: StringFilter<"MarketingBanner"> | string
+    highlightText?: StringNullableFilter<"MarketingBanner"> | string | null
+    subtitle?: StringFilter<"MarketingBanner"> | string
+    badgeText?: StringNullableFilter<"MarketingBanner"> | string | null
+    ctaLabel?: StringFilter<"MarketingBanner"> | string
+    actionType?: StringFilter<"MarketingBanner"> | string
+    actionTarget?: StringNullableFilter<"MarketingBanner"> | string | null
+    visualIcons?: StringFilter<"MarketingBanner"> | string
+    imageUrl?: StringNullableFilter<"MarketingBanner"> | string | null
+    bgGradient?: StringFilter<"MarketingBanner"> | string
+    textColor?: StringFilter<"MarketingBanner"> | string
+    highlightColor?: StringFilter<"MarketingBanner"> | string
+    cityCode?: StringFilter<"MarketingBanner"> | string
+    displayOrder?: IntFilter<"MarketingBanner"> | number
+    isActive?: BoolFilter<"MarketingBanner"> | boolean
+    startsAt?: DateTimeNullableFilter<"MarketingBanner"> | Date | string | null
+    endsAt?: DateTimeNullableFilter<"MarketingBanner"> | Date | string | null
+    clickCount?: IntFilter<"MarketingBanner"> | number
+    impressionCount?: IntFilter<"MarketingBanner"> | number
+    createdAt?: DateTimeFilter<"MarketingBanner"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingBanner"> | Date | string
+  }
+
+  export type MarketingBannerOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    highlightText?: SortOrderInput | SortOrder
+    subtitle?: SortOrder
+    badgeText?: SortOrderInput | SortOrder
+    ctaLabel?: SortOrder
+    actionType?: SortOrder
+    actionTarget?: SortOrderInput | SortOrder
+    visualIcons?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    bgGradient?: SortOrder
+    textColor?: SortOrder
+    highlightColor?: SortOrder
+    cityCode?: SortOrder
+    displayOrder?: SortOrder
+    isActive?: SortOrder
+    startsAt?: SortOrderInput | SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingBannerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingBannerWhereInput | MarketingBannerWhereInput[]
+    OR?: MarketingBannerWhereInput[]
+    NOT?: MarketingBannerWhereInput | MarketingBannerWhereInput[]
+    title?: StringFilter<"MarketingBanner"> | string
+    highlightText?: StringNullableFilter<"MarketingBanner"> | string | null
+    subtitle?: StringFilter<"MarketingBanner"> | string
+    badgeText?: StringNullableFilter<"MarketingBanner"> | string | null
+    ctaLabel?: StringFilter<"MarketingBanner"> | string
+    actionType?: StringFilter<"MarketingBanner"> | string
+    actionTarget?: StringNullableFilter<"MarketingBanner"> | string | null
+    visualIcons?: StringFilter<"MarketingBanner"> | string
+    imageUrl?: StringNullableFilter<"MarketingBanner"> | string | null
+    bgGradient?: StringFilter<"MarketingBanner"> | string
+    textColor?: StringFilter<"MarketingBanner"> | string
+    highlightColor?: StringFilter<"MarketingBanner"> | string
+    cityCode?: StringFilter<"MarketingBanner"> | string
+    displayOrder?: IntFilter<"MarketingBanner"> | number
+    isActive?: BoolFilter<"MarketingBanner"> | boolean
+    startsAt?: DateTimeNullableFilter<"MarketingBanner"> | Date | string | null
+    endsAt?: DateTimeNullableFilter<"MarketingBanner"> | Date | string | null
+    clickCount?: IntFilter<"MarketingBanner"> | number
+    impressionCount?: IntFilter<"MarketingBanner"> | number
+    createdAt?: DateTimeFilter<"MarketingBanner"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingBanner"> | Date | string
+  }, "id">
+
+  export type MarketingBannerOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    highlightText?: SortOrderInput | SortOrder
+    subtitle?: SortOrder
+    badgeText?: SortOrderInput | SortOrder
+    ctaLabel?: SortOrder
+    actionType?: SortOrder
+    actionTarget?: SortOrderInput | SortOrder
+    visualIcons?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    bgGradient?: SortOrder
+    textColor?: SortOrder
+    highlightColor?: SortOrder
+    cityCode?: SortOrder
+    displayOrder?: SortOrder
+    isActive?: SortOrder
+    startsAt?: SortOrderInput | SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingBannerCountOrderByAggregateInput
+    _avg?: MarketingBannerAvgOrderByAggregateInput
+    _max?: MarketingBannerMaxOrderByAggregateInput
+    _min?: MarketingBannerMinOrderByAggregateInput
+    _sum?: MarketingBannerSumOrderByAggregateInput
+  }
+
+  export type MarketingBannerScalarWhereWithAggregatesInput = {
+    AND?: MarketingBannerScalarWhereWithAggregatesInput | MarketingBannerScalarWhereWithAggregatesInput[]
+    OR?: MarketingBannerScalarWhereWithAggregatesInput[]
+    NOT?: MarketingBannerScalarWhereWithAggregatesInput | MarketingBannerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    title?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    highlightText?: StringNullableWithAggregatesFilter<"MarketingBanner"> | string | null
+    subtitle?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    badgeText?: StringNullableWithAggregatesFilter<"MarketingBanner"> | string | null
+    ctaLabel?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    actionType?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    actionTarget?: StringNullableWithAggregatesFilter<"MarketingBanner"> | string | null
+    visualIcons?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"MarketingBanner"> | string | null
+    bgGradient?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    textColor?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    highlightColor?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    cityCode?: StringWithAggregatesFilter<"MarketingBanner"> | string
+    displayOrder?: IntWithAggregatesFilter<"MarketingBanner"> | number
+    isActive?: BoolWithAggregatesFilter<"MarketingBanner"> | boolean
+    startsAt?: DateTimeNullableWithAggregatesFilter<"MarketingBanner"> | Date | string | null
+    endsAt?: DateTimeNullableWithAggregatesFilter<"MarketingBanner"> | Date | string | null
+    clickCount?: IntWithAggregatesFilter<"MarketingBanner"> | number
+    impressionCount?: IntWithAggregatesFilter<"MarketingBanner"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingBanner"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingBanner"> | Date | string
   }
 
   export type MerchantCreateInput = {
@@ -15404,6 +17998,314 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ShopAuditLogCreateInput = {
+    id?: string
+    tenantId: string
+    outletId?: string | null
+    actorStaffId: string
+    actorName: string
+    actorRole: string
+    authMode?: string
+    module: string
+    action: string
+    targetType?: string | null
+    targetId?: string | null
+    targetLabel?: string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ShopAuditLogUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    outletId?: string | null
+    actorStaffId: string
+    actorName: string
+    actorRole: string
+    authMode?: string
+    module: string
+    action: string
+    targetType?: string | null
+    targetId?: string | null
+    targetLabel?: string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ShopAuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorStaffId?: StringFieldUpdateOperationsInput | string
+    actorName?: StringFieldUpdateOperationsInput | string
+    actorRole?: StringFieldUpdateOperationsInput | string
+    authMode?: StringFieldUpdateOperationsInput | string
+    module?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShopAuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorStaffId?: StringFieldUpdateOperationsInput | string
+    actorName?: StringFieldUpdateOperationsInput | string
+    actorRole?: StringFieldUpdateOperationsInput | string
+    authMode?: StringFieldUpdateOperationsInput | string
+    module?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShopAuditLogCreateManyInput = {
+    id?: string
+    tenantId: string
+    outletId?: string | null
+    actorStaffId: string
+    actorName: string
+    actorRole: string
+    authMode?: string
+    module: string
+    action: string
+    targetType?: string | null
+    targetId?: string | null
+    targetLabel?: string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ShopAuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorStaffId?: StringFieldUpdateOperationsInput | string
+    actorName?: StringFieldUpdateOperationsInput | string
+    actorRole?: StringFieldUpdateOperationsInput | string
+    authMode?: StringFieldUpdateOperationsInput | string
+    module?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShopAuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorStaffId?: StringFieldUpdateOperationsInput | string
+    actorName?: StringFieldUpdateOperationsInput | string
+    actorRole?: StringFieldUpdateOperationsInput | string
+    authMode?: StringFieldUpdateOperationsInput | string
+    module?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    beforeState?: NullableJsonNullValueInput | InputJsonValue
+    afterState?: NullableJsonNullValueInput | InputJsonValue
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingBannerCreateInput = {
+    id?: string
+    title: string
+    highlightText?: string | null
+    subtitle: string
+    badgeText?: string | null
+    ctaLabel?: string
+    actionType?: string
+    actionTarget?: string | null
+    visualIcons?: string
+    imageUrl?: string | null
+    bgGradient?: string
+    textColor?: string
+    highlightColor?: string
+    cityCode?: string
+    displayOrder?: number
+    isActive?: boolean
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    clickCount?: number
+    impressionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingBannerUncheckedCreateInput = {
+    id?: string
+    title: string
+    highlightText?: string | null
+    subtitle: string
+    badgeText?: string | null
+    ctaLabel?: string
+    actionType?: string
+    actionTarget?: string | null
+    visualIcons?: string
+    imageUrl?: string | null
+    bgGradient?: string
+    textColor?: string
+    highlightColor?: string
+    cityCode?: string
+    displayOrder?: number
+    isActive?: boolean
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    clickCount?: number
+    impressionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingBannerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    highlightText?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    ctaLabel?: StringFieldUpdateOperationsInput | string
+    actionType?: StringFieldUpdateOperationsInput | string
+    actionTarget?: NullableStringFieldUpdateOperationsInput | string | null
+    visualIcons?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bgGradient?: StringFieldUpdateOperationsInput | string
+    textColor?: StringFieldUpdateOperationsInput | string
+    highlightColor?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    impressionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingBannerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    highlightText?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    ctaLabel?: StringFieldUpdateOperationsInput | string
+    actionType?: StringFieldUpdateOperationsInput | string
+    actionTarget?: NullableStringFieldUpdateOperationsInput | string | null
+    visualIcons?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bgGradient?: StringFieldUpdateOperationsInput | string
+    textColor?: StringFieldUpdateOperationsInput | string
+    highlightColor?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    impressionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingBannerCreateManyInput = {
+    id?: string
+    title: string
+    highlightText?: string | null
+    subtitle: string
+    badgeText?: string | null
+    ctaLabel?: string
+    actionType?: string
+    actionTarget?: string | null
+    visualIcons?: string
+    imageUrl?: string | null
+    bgGradient?: string
+    textColor?: string
+    highlightColor?: string
+    cityCode?: string
+    displayOrder?: number
+    isActive?: boolean
+    startsAt?: Date | string | null
+    endsAt?: Date | string | null
+    clickCount?: number
+    impressionCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingBannerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    highlightText?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    ctaLabel?: StringFieldUpdateOperationsInput | string
+    actionType?: StringFieldUpdateOperationsInput | string
+    actionTarget?: NullableStringFieldUpdateOperationsInput | string | null
+    visualIcons?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bgGradient?: StringFieldUpdateOperationsInput | string
+    textColor?: StringFieldUpdateOperationsInput | string
+    highlightColor?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    impressionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingBannerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    highlightText?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    ctaLabel?: StringFieldUpdateOperationsInput | string
+    actionType?: StringFieldUpdateOperationsInput | string
+    actionTarget?: NullableStringFieldUpdateOperationsInput | string | null
+    visualIcons?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bgGradient?: StringFieldUpdateOperationsInput | string
+    textColor?: StringFieldUpdateOperationsInput | string
+    highlightColor?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    displayOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    impressionCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -16384,6 +19286,146 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     radiusMeters?: SortOrder
+  }
+
+  export type ShopAuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
+    actorStaffId?: SortOrder
+    actorName?: SortOrder
+    actorRole?: SortOrder
+    authMode?: SortOrder
+    module?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetLabel?: SortOrder
+    beforeState?: SortOrder
+    afterState?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ShopAuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
+    actorStaffId?: SortOrder
+    actorName?: SortOrder
+    actorRole?: SortOrder
+    authMode?: SortOrder
+    module?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetLabel?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ShopAuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
+    actorStaffId?: SortOrder
+    actorName?: SortOrder
+    actorRole?: SortOrder
+    authMode?: SortOrder
+    module?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetLabel?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MarketingBannerCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    highlightText?: SortOrder
+    subtitle?: SortOrder
+    badgeText?: SortOrder
+    ctaLabel?: SortOrder
+    actionType?: SortOrder
+    actionTarget?: SortOrder
+    visualIcons?: SortOrder
+    imageUrl?: SortOrder
+    bgGradient?: SortOrder
+    textColor?: SortOrder
+    highlightColor?: SortOrder
+    cityCode?: SortOrder
+    displayOrder?: SortOrder
+    isActive?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingBannerAvgOrderByAggregateInput = {
+    displayOrder?: SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+  }
+
+  export type MarketingBannerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    highlightText?: SortOrder
+    subtitle?: SortOrder
+    badgeText?: SortOrder
+    ctaLabel?: SortOrder
+    actionType?: SortOrder
+    actionTarget?: SortOrder
+    visualIcons?: SortOrder
+    imageUrl?: SortOrder
+    bgGradient?: SortOrder
+    textColor?: SortOrder
+    highlightColor?: SortOrder
+    cityCode?: SortOrder
+    displayOrder?: SortOrder
+    isActive?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingBannerMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    highlightText?: SortOrder
+    subtitle?: SortOrder
+    badgeText?: SortOrder
+    ctaLabel?: SortOrder
+    actionType?: SortOrder
+    actionTarget?: SortOrder
+    visualIcons?: SortOrder
+    imageUrl?: SortOrder
+    bgGradient?: SortOrder
+    textColor?: SortOrder
+    highlightColor?: SortOrder
+    cityCode?: SortOrder
+    displayOrder?: SortOrder
+    isActive?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingBannerSumOrderByAggregateInput = {
+    displayOrder?: SortOrder
+    clickCount?: SortOrder
+    impressionCount?: SortOrder
   }
 
   export type OutletCreateNestedManyWithoutMerchantInput = {
@@ -19297,6 +22339,14 @@ export namespace Prisma {
      * @deprecated Use ServiceableLocalityDefaultArgs instead
      */
     export type ServiceableLocalityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ServiceableLocalityDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ShopAuditLogDefaultArgs instead
+     */
+    export type ShopAuditLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ShopAuditLogDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MarketingBannerDefaultArgs instead
+     */
+    export type MarketingBannerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MarketingBannerDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

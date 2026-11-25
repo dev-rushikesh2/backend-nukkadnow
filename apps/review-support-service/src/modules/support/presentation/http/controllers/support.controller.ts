@@ -143,16 +143,34 @@ export class supportController {
   }
 
   @Post("reviews")
-  @ApiOperation({ summary: "Submit a customer review for an order" })
+  @ApiOperation({ summary: "Submit a customer review for an order or purchased product" })
   @ApiResponse({ status: 201, description: "Review submitted" })
   async createReview(@Body() dto: CreateReviewDto) {
     return this.supportService.createReview(dto);
+  }
+
+  @Get("reviews/summaries")
+  @ApiOperation({ summary: "Get aggregated ratings for all reviewed outlets and products" })
+  async getRatingSummaries() {
+    return this.supportService.getAllRatingSummaries();
   }
 
   @Get("reviews/outlet/:outletId")
   @ApiOperation({ summary: "Get aggregated rating and review list for an outlet" })
   async getOutletReviews(@Param("outletId") outletId: string) {
     return this.supportService.getOutletReviews(outletId);
+  }
+
+  @Get("reviews/product/:productId")
+  @ApiOperation({ summary: "Get aggregated rating and review list for a product" })
+  async getProductReviews(@Param("productId") productId: string) {
+    return this.supportService.getProductReviews(productId);
+  }
+
+  @Get("reviews/customer/:customerId")
+  @ApiOperation({ summary: "List all reviews submitted by a customer" })
+  async getCustomerReviews(@Param("customerId") customerId: string) {
+    return this.supportService.getCustomerReviews(customerId);
   }
 
   @Post("tickets")

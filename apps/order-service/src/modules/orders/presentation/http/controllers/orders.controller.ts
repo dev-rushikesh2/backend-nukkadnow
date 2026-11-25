@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, Query, Headers, Req, UnauthorizedException, NotFoundException } from "@nestjs/common";
+import { Controller, Post, Get, Patch, Body, Param, Query, Headers, Req, UnauthorizedException, NotFoundException, ForbiddenException, BadRequestException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { OrderService } from "../../../application/services/order.service";
 import { AddToCartDto, CheckoutDto, AcceptOrderDto } from "../../../application/dto/order.dto";
@@ -11,6 +11,112 @@ export class OrdersController {
     private readonly orderService: OrderService,
     private readonly prisma: PrismaService
   ) {}
+
+  private resolveCustomerId(req: any, headers: Record<string, any>): string {
+    const id = req?.user?.sub || headers?.["x-customer-id"];
+    if (!id) throw new UnauthorizedException("Authentication required");
+    return String(id);
+  }
+
+  @Get()
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List tenant-scoped orders for an authenticated merchant" })
+  async listMerchantOrders(
+    @Query("tenantId") queryTenantId?: string,
+    @Query("outletId") outletId?: string,
+    @Query("status") status?: string,
+    @Query("q") q?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const tenantId = headerTenantId || req?.user?.tenantId || queryTenantId;
+    if (!tenantId) {
+      throw new UnauthorizedException("Merchant tenant scope is required");
+    }
+
+    const where: any = { tenantId };
+    if (outletId) where.outletId = outletId;
+    if (status && status !== "ALL") where.status = status.toUpperCase();
+    if (q) {
+      where.OR = [
+        { orderNumber: { contains: q, mode: "insensitive" } },
+        { id: { contains: q, mode: "insensitive" } },
+      ];
+    }
+
+    const pageNum = Math.max(1, Number(page) || 1);
+    const take = Math.min(100, Math.max(1, Number(limit) || 50));
+    const items = await this.prisma.order.findMany({
+      where,
+      include: { items: true, events: true },
+      orderBy: { createdAt: "desc" },
+      skip: (pageNum - 1) * take,
+      take,
+    });
+
+    const liveStatuses = new Set(["PENDING_PAYMENT", "CONFIRMED", "NEW", "PREPARING", "READY"]);
+    const liveOrders = items.filter((o) => liveStatuses.has(o.status));
+    const pastOrders = items.filter((o) => !liveStatuses.has(o.status));
+
+    return {
+      success: true,
+      data: items,
+      liveOrders,
+      pastOrders,
+      summary: {
+        total: items.length,
+        new: items.filter((o) => o.status === "CONFIRMED" || o.status === "NEW" || o.status === "PENDING_PAYMENT").length,
+        preparing: items.filter((o) => o.status === "PREPARING").length,
+        ready: items.filter((o) => o.status === "READY").length,
+        completed: items.filter((o) => o.status === "COMPLETED").length,
+      },
+    };
+  }
+
+  @Post("walkin")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create a counter walk-in POS order for a merchant outlet" })
+  async createWalkinOrder(@Body() body: any, @Headers("x-tenant-id") headerTenantId?: string, @Req() req?: any) {
+    const tenantId = headerTenantId || req?.user?.tenantId || body?.tenantId;
+    const outletId = body?.outletId || req?.user?.outletId;
+    if (!tenantId || !outletId) {
+      throw new UnauthorizedException("Merchant tenant and outlet context required");
+    }
+
+    const itemsInput: any[] = Array.isArray(body?.items) ? body.items : [];
+    const totalPaise =
+      body?.totalAmountPaise ??
+      itemsInput.reduce((sum, it) => sum + Number(it.unitPricePaise || it.pricePaise || 0) * Number(it.quantity || 1), 0);
+
+    const orderNumber = `WLK-${Date.now().toString().slice(-6)}`;
+    const created = await this.prisma.order.create({
+      data: {
+        orderNumber,
+        customerId: body?.customerId || "WALKIN-COUNTER",
+        tenantId,
+        outletId,
+        status: "CONFIRMED",
+        totalAmountPaise: Math.max(0, Number(totalPaise) || 0),
+        paymentStatus: body?.paymentStatus || "PAID",
+        fulfillmentType: "WALK_IN",
+        items: {
+          create: itemsInput.map((it) => ({
+            productId: it.productId || it.id || "pos-item",
+            variantId: it.variantId || it.id || "pos-var",
+            title: it.title || it.name || "Counter Item",
+            quantity: Math.max(1, Number(it.quantity) || 1),
+            unitPricePaise: Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0),
+            totalPricePaise:
+              Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0) * Math.max(1, Number(it.quantity) || 1),
+          })),
+        },
+      },
+      include: { items: true },
+    });
+    return { success: true, data: created };
+  }
 
   @Get("admin")
   @ApiBearerAuth()
@@ -92,17 +198,17 @@ export class OrdersController {
   @Get("cart")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get customer active cart" })
-  async getCart(@Req() req: any) {
-    if (!req.user?.sub) throw new UnauthorizedException("Authentication required");
-    return this.orderService.getCart(req.user.sub);
+  async getCart(@Headers() headers: any, @Req() req: any) {
+    const customerId = this.resolveCustomerId(req, headers);
+    return this.orderService.getCart(customerId);
   }
 
   @Post("cart/items")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Add or update item in cart (enforces single-seller rule)" })
-  async addToCart(@Body() dto: AddToCartDto, @Req() req: any) {
-    if (!req.user?.sub) throw new UnauthorizedException("Authentication required");
-    return this.orderService.addToCart(req.user.sub, dto);
+  async addToCart(@Body() dto: AddToCartDto, @Headers() headers: any, @Req() req: any) {
+    const customerId = this.resolveCustomerId(req, headers);
+    return this.orderService.addToCart(customerId, dto);
   }
 
   @Post("checkout")
@@ -111,17 +217,229 @@ export class OrdersController {
   @ApiResponse({ status: 201, description: "Order created successfully" })
   async checkout(
     @Body() dto: CheckoutDto,
-    @Headers("idempotency-key") idempotencyKey?: string,
+    @Headers() headers: any,
     @Req() req?: any
   ) {
-    if (!req?.user?.sub) throw new UnauthorizedException("Authentication required");
-    return this.orderService.checkout(req.user.sub, dto, idempotencyKey || dto.idempotencyKey);
+    const customerId = this.resolveCustomerId(req, headers);
+    return this.orderService.checkout(customerId, dto, headers?.["idempotency-key"] || dto.idempotencyKey);
+  }
+
+  @Get("my")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Customer: List authenticated customer's own orders" })
+  async getMyOrders(
+    @Query("status") status?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const customerId = this.resolveCustomerId(req, headers);
+    const where: any = { customerId };
+    if (status && status !== "ALL") where.status = status.toUpperCase();
+
+    const rows = await this.prisma.order.findMany({
+      where,
+      include: { items: true, events: { orderBy: { occurredAt: "asc" } } },
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    });
+
+    const data = rows.map((o) => {
+      const firstMeta: any = (o.events?.[0]?.metadata as any) || {};
+      const statusLower = o.status.toLowerCase();
+      const uiStatus =
+        o.status === "COMPLETED"
+          ? "delivered"
+          : o.status === "CANCELLED"
+            ? "cancelled"
+            : "out_for_delivery";
+      const labelMap: Record<string, string> = {
+        CONFIRMED: "Order Placed",
+        PENDING_PAYMENT: "Order Placed",
+        PREPARING: "Being Prepared",
+        READY: o.fulfillmentType === "STORE_PICKUP" ? "Ready for Pickup" : "Out for Delivery",
+        COMPLETED: "Delivered / Completed",
+        CANCELLED: "Cancelled",
+      };
+      return {
+        id: o.id,
+        orderNumber: o.orderNumber,
+        shopId: o.outletId,
+        shopName: firstMeta.shopName || "NukkadNow Store",
+        shopImage: firstMeta.shopImage || "",
+        verified: true,
+        dateStr: o.createdAt.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+        status: uiStatus,
+        rawStatus: o.status,
+        statusLabel: labelMap[o.status] || statusLower,
+        totalAmount: Math.round(o.totalAmountPaise / 100),
+        totalAmountPaise: o.totalAmountPaise,
+        fulfillmentType: o.fulfillmentType,
+        pickupToken: firstMeta.pickupToken,
+        deliveryAddress: firstMeta.deliveryAddress,
+        items: o.items.map((it) => ({
+          id: it.id,
+          productId: it.productId,
+          name: it.title,
+          qty: `${it.quantity} unit`,
+          quantity: it.quantity,
+          price: Math.round(it.unitPricePaise / 100),
+        })),
+        events: o.events,
+        createdAt: o.createdAt,
+      };
+    });
+
+    return { success: true, data };
+  }
+
+  @Post("customer-place")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Customer: Place a confirmed checkout order from cart items" })
+  async placeCustomerOrder(@Body() body: any, @Headers() headers: any, @Req() req: any) {
+    const customerId = this.resolveCustomerId(req, headers);
+    const itemsInput: any[] = Array.isArray(body?.items) ? body.items : [];
+    if (itemsInput.length === 0) {
+      throw new BadRequestException("Cannot place order with an empty cart");
+    }
+
+    const outletId = String(body?.outletId || body?.shopId || "").trim();
+    const tenantId = String(body?.tenantId || "").trim();
+    if (!outletId || !tenantId) {
+      throw new BadRequestException("Valid outletId and tenantId are required");
+    }
+
+    const fulfillmentType =
+      String(body?.fulfilmentType || "").toUpperCase() === "PICKUP" ? "STORE_PICKUP" : "MERCHANT_DELIVERY";
+    const totalPaise =
+      body?.totalAmountPaise !== undefined
+        ? Math.max(0, Number(body.totalAmountPaise))
+        : Math.max(
+            0,
+            Math.round(
+              Number(
+                body?.totalAmount ??
+                  itemsInput.reduce((s, it) => s + Number(it.price || 0) * Number(it.quantity || 1), 0)
+              ) * 100
+            )
+          );
+
+    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
+    const pickupToken = `T-${Math.floor(10 + Math.random() * 89)}`;
+
+    const created = await this.prisma.order.create({
+      data: {
+        orderNumber,
+        customerId,
+        tenantId,
+        outletId,
+        locality: body?.locality || null,
+        status: "CONFIRMED",
+        totalAmountPaise: totalPaise,
+        paymentStatus: String(body?.paymentMethod || "").toUpperCase() === "COD" ? "COD_PENDING" : "PAID",
+        fulfillmentType,
+        pickupSlotId: body?.slotId || null,
+        items: {
+          create: itemsInput.map((it) => {
+            const qty = Math.max(1, Number(it.quantity) || 1);
+            const unitPaise = Math.max(0, Number(it.unitPricePaise ?? Math.round(Number(it.price || 0) * 100)));
+            return {
+              productId: String(it.productId || it.id || "item"),
+              variantId: String(it.variantId || it.id || "var"),
+              title: String(it.title || it.name || "Product"),
+              quantity: qty,
+              unitPricePaise: unitPaise,
+              totalPricePaise: unitPaise * qty,
+            };
+          }),
+        },
+        events: {
+          create: {
+            eventType: "ORDER_PLACED",
+            fromStatus: null,
+            toStatus: "CONFIRMED",
+            metadata: {
+              shopName: body?.shopName || "NukkadNow Store",
+              shopImage: body?.shopImage || "",
+              shopPhone: body?.shopPhone || "",
+              categories: body?.categories || "Local Store",
+              deliveryAddress: body?.deliveryAddress || "",
+              itemTotal: Number(body?.itemTotal ?? Math.round(totalPaise / 100)),
+              discount: Number(body?.discount ?? 0),
+              deliveryFee: Number(body?.deliveryFee ?? 0),
+              paymentMethod: body?.paymentMethod || "UPI",
+              notes: body?.notes || "",
+              pickupToken,
+            },
+          },
+        },
+      },
+      include: { items: true, events: true },
+    });
+
+    const totalPaid = Math.round(created.totalAmountPaise / 100);
+    return {
+      success: true,
+      data: {
+        ...created,
+        totalAmount: totalPaid,
+        shopName: body?.shopName || "NukkadNow Store",
+        deliveryAddress: body?.deliveryAddress || "",
+        pricing: {
+          itemTotal: Number(body?.itemTotal ?? totalPaid),
+          discount: Number(body?.discount ?? 0),
+          deliveryFee: Number(body?.deliveryFee ?? 0),
+          totalPaid,
+        },
+        pickupToken,
+      },
+    };
   }
 
   @Get(":id")
   @ApiOperation({ summary: "Get authoritative order status" })
   async getOrder(@Param("id") id: string) {
-    return this.orderService.getOrder(id);
+    const order = await this.prisma.order.findFirst({
+      where: { OR: [{ id }, { orderNumber: id }] },
+      include: { items: true, events: { orderBy: { occurredAt: "asc" } } },
+    });
+    if (!order) throw new NotFoundException(`Order '${id}' not found`);
+    const firstMeta: any = (order.events?.[0]?.metadata as any) || {};
+    const totalAmount = Math.round(order.totalAmountPaise / 100);
+    const items = order.items.map((it) => ({
+      id: it.id,
+      productId: it.productId,
+      name: it.title,
+      title: it.title,
+      quantity: it.quantity,
+      unitWeight: `${it.quantity} unit`,
+      price: Math.round(it.unitPricePaise / 100),
+      unitPricePaise: it.unitPricePaise,
+      totalPricePaise: it.totalPricePaise,
+    }));
+    const computedItemTotal = items.reduce((s, it) => s + it.price * it.quantity, 0);
+
+    return {
+      success: true,
+      data: {
+        ...order,
+        items,
+        totalAmount,
+        shopName: firstMeta.shopName || "NukkadNow Store",
+        shopImage: firstMeta.shopImage || "",
+        shopPhone: firstMeta.shopPhone || "",
+        categories: firstMeta.categories || "Grocery & Daily Needs",
+        shopId: order.outletId,
+        pickupToken: firstMeta.pickupToken,
+        deliveryAddress: firstMeta.deliveryAddress || "",
+        paymentMethod: firstMeta.paymentMethod || "UPI",
+        pricing: {
+          itemTotal: firstMeta.itemTotal ?? computedItemTotal,
+          discount: firstMeta.discount ?? 0,
+          deliveryFee: firstMeta.deliveryFee ?? Math.max(0, totalAmount - computedItemTotal),
+          totalPaid: totalAmount,
+        },
+      },
+    };
   }
 
   @Post(":id/accept")
@@ -142,5 +460,46 @@ export class OrdersController {
   async markReady(@Param("id") id: string, @Req() req: any) {
     const callerTenantId = req.user?.tenantId;
     return this.orderService.markOrderReady(id, callerTenantId);
+  }
+
+  @Patch(":id/status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Merchant updates order status" })
+  async updateStatus(
+    @Param("id") id: string,
+    @Body() body: { status: string; prepMinutes?: number },
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const callerTenantId = headerTenantId || req?.user?.tenantId;
+    const order = await this.prisma.order.findFirst({ where: { OR: [{ id }, { orderNumber: id }] } });
+    if (!order) throw new NotFoundException(`Order '${id}' not found`);
+    if (callerTenantId && order.tenantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden");
+    }
+    const statusMap: Record<string, string> = {
+      NEW: "CONFIRMED",
+      PREPARING: "PREPARING",
+      READY: "READY",
+      COMPLETED: "COMPLETED",
+      CANCELLED: "CANCELLED",
+    };
+    const nextStatus = statusMap[(body?.status || "").toUpperCase()] || (body?.status || order.status).toUpperCase();
+    const updated = await this.prisma.order.update({
+      where: { id: order.id },
+      data: {
+        status: nextStatus,
+        events: {
+          create: {
+            eventType: "MERCHANT_STATUS_UPDATE",
+            fromStatus: order.status,
+            toStatus: nextStatus,
+            metadata: { prepMinutes: body?.prepMinutes },
+          },
+        },
+      },
+      include: { items: true, events: true },
+    });
+    return { success: true, data: updated };
   }
 }

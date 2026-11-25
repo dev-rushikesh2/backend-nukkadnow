@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { AnalyticsService } from "../../../application/services/analytics.service";
 
@@ -6,6 +6,23 @@ import { AnalyticsService } from "../../../application/services/analytics.servic
 @Controller("api/v1/analytics")
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
+
+  @Get("merchant/summary")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get live merchant daily summary by outletId query param" })
+  async getMerchantSummary(@Query("outletId") outletId?: string) {
+    if (!outletId) {
+      return {
+        outletId: "",
+        todayDate: new Date().toISOString().slice(0, 10),
+        todayOrdersCount: 0,
+        todayRevenuePaise: 0,
+        todayRevenueFormatted: "₹0.00",
+        avgPrepTimeMinutes: 0,
+      };
+    }
+    return this.analyticsService.getMerchantCockpit(outletId);
+  }
 
   @Get("merchant/:outletId/cockpit")
   @ApiBearerAuth()

@@ -4,13 +4,18 @@ import {
   Post,
   Put,
   Patch,
+  Delete,
   Body,
   Param,
   Query,
+  Req,
+  Headers,
+  UnauthorizedException,
   NotFoundException,
   ConflictException,
 } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import * as jwt from "jsonwebtoken";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
@@ -19,10 +24,155 @@ import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 export class identityController {
   constructor(private readonly prisma: PrismaService) {}
 
+  private resolveCustomerId(req: any, headers: Record<string, any>): string {
+    if (req?.user?.sub) return String(req.user.sub);
+    const authHeader = headers?.authorization ?? req?.headers?.authorization;
+    if (authHeader?.startsWith("Bearer ")) {
+      try {
+        const decoded: any = jwt.verify(authHeader.substring(7), process.env.JWT_SECRET as string, {
+          issuer: process.env.JWT_ISSUER,
+          audience: process.env.JWT_AUDIENCE,
+        });
+        if (decoded?.sub) return String(decoded.sub);
+      } catch {}
+    }
+    throw new UnauthorizedException("Customer authentication required");
+  }
+
   @Get("ping")
   @ApiOperation({ summary: "Domain probe" })
   ping() {
     return { message: "Hello from identity domain" };
+  }
+
+  // =========================================================================
+  // CUSTOMER SELF-SERVICE: PROFILE & ADDRESSES
+  // =========================================================================
+
+  @Get("me")
+  @ApiOperation({ summary: "Get authenticated customer profile" })
+  async getMyProfile(@Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException("Customer profile not found");
+    return {
+      success: true,
+      data: {
+        id: user.id,
+        name: user.fullName || "NukkadNow Customer",
+        phone: user.phoneNumber,
+        email: user.email || "",
+        verified: true,
+        isGuest: false,
+        totalOrders: 0,
+        favouritesCount: 0,
+        followedShopsCount: 0,
+        totalSavings: 0,
+      },
+    };
+  }
+
+  @Put("me")
+  @ApiOperation({ summary: "Update authenticated customer profile" })
+  async updateMyProfile(@Body() body: any, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const data: any = {};
+    if (typeof body?.name === "string" && body.name.trim()) data.fullName = body.name.trim();
+    if (typeof body?.fullName === "string" && body.fullName.trim()) data.fullName = body.fullName.trim();
+    if (typeof body?.email === "string") data.email = body.email.trim() || null;
+
+    const updated = await this.prisma.user.update({ where: { id: userId }, data });
+    return {
+      success: true,
+      data: {
+        id: updated.id,
+        name: updated.fullName || "NukkadNow Customer",
+        phone: updated.phoneNumber,
+        email: updated.email || "",
+        isGuest: false,
+      },
+    };
+  }
+
+  @Delete("me")
+  @ApiOperation({ summary: "Delete authenticated customer account" })
+  async deleteMyAccount(@Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    await this.prisma.user.delete({ where: { id: userId } });
+    return { success: true, data: { deleted: true } };
+  }
+
+  @Get("addresses")
+  @ApiOperation({ summary: "List customer saved delivery addresses" })
+  async listMyAddresses(@Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const list = await this.prisma.customerAddress.findMany({
+      where: { userId },
+      orderBy: [{ isDefault: "desc" }, { id: "desc" }],
+    });
+    return { success: true, data: list };
+  }
+
+  @Post("addresses")
+  @ApiOperation({ summary: "Create a customer delivery address" })
+  async createMyAddress(@Body() body: any, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const makeDefault = Boolean(body?.isDefault);
+    if (makeDefault) {
+      await this.prisma.customerAddress.updateMany({ where: { userId }, data: { isDefault: false } });
+    }
+    const existingCount = await this.prisma.customerAddress.count({ where: { userId } });
+    const created = await this.prisma.customerAddress.create({
+      data: {
+        userId,
+        type: String(body?.type || "Home"),
+        fullAddress: String(body?.fullAddress || "").trim(),
+        landmark: body?.landmark ? String(body.landmark).trim() : null,
+        city: String(body?.city || "Akola"),
+        pincode: String(body?.pincode || "444001"),
+        latitude: body?.latitude !== undefined ? Number(body.latitude) : null,
+        longitude: body?.longitude !== undefined ? Number(body.longitude) : null,
+        isDefault: makeDefault || existingCount === 0,
+      },
+    });
+    return { success: true, data: created };
+  }
+
+  @Put("addresses/:id")
+  @ApiOperation({ summary: "Update a customer delivery address" })
+  async updateMyAddress(@Param("id") id: string, @Body() body: any, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const addrId = Number(id);
+    const existing = await this.prisma.customerAddress.findFirst({ where: { id: addrId, userId } });
+    if (!existing) throw new NotFoundException(`Address '${id}' not found`);
+
+    if (body?.isDefault === true) {
+      await this.prisma.customerAddress.updateMany({ where: { userId }, data: { isDefault: false } });
+    }
+
+    const updated = await this.prisma.customerAddress.update({
+      where: { id: addrId },
+      data: {
+        ...(body?.type !== undefined ? { type: String(body.type) } : {}),
+        ...(body?.fullAddress !== undefined ? { fullAddress: String(body.fullAddress).trim() } : {}),
+        ...(body?.landmark !== undefined ? { landmark: body.landmark ? String(body.landmark).trim() : null } : {}),
+        ...(body?.city !== undefined ? { city: String(body.city) } : {}),
+        ...(body?.pincode !== undefined ? { pincode: String(body.pincode) } : {}),
+        ...(body?.isDefault !== undefined ? { isDefault: Boolean(body.isDefault) } : {}),
+      },
+    });
+    return { success: true, data: updated };
+  }
+
+  @Delete("addresses/:id")
+  @ApiOperation({ summary: "Delete a customer delivery address" })
+  async deleteMyAddress(@Param("id") id: string, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const addrId = Number(id);
+    const existing = await this.prisma.customerAddress.findFirst({ where: { id: addrId, userId } });
+    if (!existing) throw new NotFoundException(`Address '${id}' not found`);
+    await this.prisma.customerAddress.delete({ where: { id: addrId } });
+    return { success: true, data: { deleted: true } };
   }
 
   // =========================================================================

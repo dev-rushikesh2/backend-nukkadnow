@@ -18,18 +18,61 @@ export class CatalogController {
     private readonly prisma: PrismaService
   ) {}
 
+  @Get("categories")
+  @ApiOperation({ summary: "Customer: List active marketplace product categories with counts" })
+  async listCategories() {
+    const grouped = await this.prisma.product.groupBy({
+      by: ["category"],
+      where: { isAvailable: true },
+      _count: { _all: true },
+    });
+
+    const metaMap: Record<string, { icon: string; color: string }> = {
+      "Grocery & Kirana": { icon: "🛒", color: "#FEF3C7" },
+      "Grocery & Daily Needs": { icon: "🏪", color: "#EDE9FE" },
+      "Fruits & Vegetables": { icon: "🥬", color: "#DCFCE7" },
+      "Dairy & Bakery": { icon: "🥛", color: "#E0F2FE" },
+      "Snacks & Beverages": { icon: "🍪", color: "#FFEDD5" },
+      "Personal Care": { icon: "🧴", color: "#FCE7F3" },
+    };
+
+    const categories = grouped.map((g, i) => ({
+      id: g.category.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      name: g.category,
+      icon: metaMap[g.category]?.icon || "📦",
+      color: metaMap[g.category]?.color || (i % 2 === 0 ? "#F3E8FF" : "#FEF3C7"),
+      count: g._count._all,
+    }));
+
+    return { success: true, data: categories };
+  }
+
   @Get("products")
-  @ApiOperation({ summary: "Admin: List and moderate catalog products across merchants" })
+  @ApiOperation({ summary: "List catalog products across outlets/merchants with search and category filters" })
   async listProducts(
     @Query("merchantId") merchantId?: string,
+    @Query("outletId") outletId?: string,
     @Query("category") category?: string,
+    @Query("query") query?: string,
+    @Query("q") q?: string,
     @Query("flagged") flagged?: string,
     @Query("page") page?: string,
     @Query("limit") limit?: string
   ) {
     const where: any = {};
     if (merchantId) where.tenantId = merchantId;
-    if (category && category !== "ALL") where.category = category;
+    if (outletId && outletId !== "undefined") where.outletId = outletId;
+    if (category && category !== "ALL" && category !== "all") {
+      where.category = { contains: category, mode: "insensitive" };
+    }
+    const search = String(query || q || "").trim();
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { category: { contains: search, mode: "insensitive" } },
+      ];
+    }
     if (flagged === "true") where.isAvailable = false;
 
     const pageNum = Math.max(1, Number(page) || 1);

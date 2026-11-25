@@ -63,6 +63,7 @@ export class CatalogService {
     }
 
     const productId = UniqueIdentifier.generateV7();
+    const initialStockActions: Array<{ stock: StockBalance; movement?: StockMovement }> = [];
 
     const variants = dto.variants.map(v => {
       const variantId = UniqueIdentifier.generateV7();
@@ -78,7 +79,6 @@ export class CatalogService {
         leadTimeMinutes: v.leadTimeMinutes ?? 0,
       });
 
-      // Initialize stock balance
       const stock = new StockBalance({
         id: UniqueIdentifier.generateV7(),
         variantId,
@@ -88,26 +88,24 @@ export class CatalogService {
         version: 1,
         updatedAt: new Date(),
       });
-      this.stockRepo.save(stock);
 
-      // Record initial movement in ledger
-      if ((v.initialStock ?? 0) > 0) {
-        this.stockRepo.recordMovement(
-          new StockMovement({
-            id: UniqueIdentifier.generateV7(),
-            variantId,
-            outletId: dto.outletId,
-            quantityChange: v.initialStock ?? 0,
-            balanceAfter: v.initialStock ?? 0,
-            reason: "RESTOCK",
-            actorId: "MERCHANT_INITIAL_SETUP",
-            referenceId: productId,
-            notes: "Initial inventory batch on product creation",
-            createdAt: new Date(),
-          })
-        );
-      }
+      const movement =
+        (v.initialStock ?? 0) > 0
+          ? new StockMovement({
+              id: UniqueIdentifier.generateV7(),
+              variantId,
+              outletId: dto.outletId,
+              quantityChange: v.initialStock ?? 0,
+              balanceAfter: v.initialStock ?? 0,
+              reason: "RESTOCK",
+              actorId: "MERCHANT_INITIAL_SETUP",
+              referenceId: productId,
+              notes: "Initial inventory batch on product creation",
+              createdAt: new Date(),
+            })
+          : undefined;
 
+      initialStockActions.push({ stock, movement });
       return variant;
     });
 
@@ -126,12 +124,21 @@ export class CatalogService {
     });
 
     await this.productRepo.save(product);
+
+    // Persist stock balances and movements AFTER product + variants exist in PostgreSQL
+    for (const action of initialStockActions) {
+      await this.stockRepo.save(action.stock);
+      if (action.movement) {
+        await this.stockRepo.recordMovement(action.movement);
+      }
+    }
+
     return product;
   }
 
   async getProduct(id: string) {
     const product = await this.productRepo.findById(id);
-    if (!product) throw new ProductNotFoundError(id);
+    if (!product) throw new NotFoundException(`Product '${id}' not found`);
 
     const variantViews = await Promise.all(
       product.variants.map(async v => {

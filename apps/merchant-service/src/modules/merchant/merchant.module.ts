@@ -2,8 +2,10 @@ import { Module } from "@nestjs/common";
 import { MerchantController } from "./presentation/http/controllers/merchant.controller";
 import { PartnerRegistrationController } from "./presentation/http/controllers/partner-registration.controller";
 import { AdminMerchantController } from "./presentation/http/controllers/admin-merchant.controller";
+import { MarketingBannerController } from "./presentation/http/controllers/marketing-banner.controller";
 import { MerchantService } from "./application/services/merchant.service";
 import { PartnerRegistrationService } from "./application/services/partner-registration.service";
+import { AuditLogService } from "./application/services/audit-log.service";
 import { MerchantRepositoryPort, OutletRepositoryPort } from "./domain/repositories/merchant.repository.port";
 import { PartnerRegistrationRepositoryPort } from "./domain/repositories/partner-registration.repository.port";
 import { PrismaMerchantRepository } from "./infrastructure/persistence/repositories/prisma-merchant.repository";
@@ -14,6 +16,7 @@ import { PrismaService } from "./infrastructure/persistence/prisma/prisma.servic
 @Module({
   controllers: [
     AdminMerchantController,
+    MarketingBannerController,
     PartnerRegistrationController,
     MerchantController,
   ],
@@ -21,6 +24,7 @@ import { PrismaService } from "./infrastructure/persistence/prisma/prisma.servic
     PrismaService,
     MerchantService,
     PartnerRegistrationService,
+    AuditLogService,
     {
       provide: MerchantRepositoryPort,
       useClass: PrismaMerchantRepository,
@@ -34,6 +38,6 @@ import { PrismaService } from "./infrastructure/persistence/prisma/prisma.servic
       useClass: PrismaPartnerRegistrationRepository,
     },
   ],
-  exports: [MerchantService, PartnerRegistrationService, PrismaService],
+  exports: [MerchantService, PartnerRegistrationService, AuditLogService, PrismaService],
 })
 export class MerchantModule {}

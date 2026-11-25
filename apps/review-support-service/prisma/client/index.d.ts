@@ -1068,8 +1068,12 @@ export namespace Prisma {
   export type ReviewMinAggregateOutputType = {
     id: string | null
     orderId: string | null
+    reviewScopeKey: string | null
     customerId: string | null
+    customerName: string | null
     outletId: string | null
+    productId: string | null
+    productName: string | null
     cityCode: string | null
     rating: number | null
     comment: string | null
@@ -1080,8 +1084,12 @@ export namespace Prisma {
   export type ReviewMaxAggregateOutputType = {
     id: string | null
     orderId: string | null
+    reviewScopeKey: string | null
     customerId: string | null
+    customerName: string | null
     outletId: string | null
+    productId: string | null
+    productName: string | null
     cityCode: string | null
     rating: number | null
     comment: string | null
@@ -1092,8 +1100,12 @@ export namespace Prisma {
   export type ReviewCountAggregateOutputType = {
     id: number
     orderId: number
+    reviewScopeKey: number
     customerId: number
+    customerName: number
     outletId: number
+    productId: number
+    productName: number
     cityCode: number
     rating: number
     comment: number
@@ -1114,8 +1126,12 @@ export namespace Prisma {
   export type ReviewMinAggregateInputType = {
     id?: true
     orderId?: true
+    reviewScopeKey?: true
     customerId?: true
+    customerName?: true
     outletId?: true
+    productId?: true
+    productName?: true
     cityCode?: true
     rating?: true
     comment?: true
@@ -1126,8 +1142,12 @@ export namespace Prisma {
   export type ReviewMaxAggregateInputType = {
     id?: true
     orderId?: true
+    reviewScopeKey?: true
     customerId?: true
+    customerName?: true
     outletId?: true
+    productId?: true
+    productName?: true
     cityCode?: true
     rating?: true
     comment?: true
@@ -1138,8 +1158,12 @@ export namespace Prisma {
   export type ReviewCountAggregateInputType = {
     id?: true
     orderId?: true
+    reviewScopeKey?: true
     customerId?: true
+    customerName?: true
     outletId?: true
+    productId?: true
+    productName?: true
     cityCode?: true
     rating?: true
     comment?: true
@@ -1237,8 +1261,12 @@ export namespace Prisma {
   export type ReviewGroupByOutputType = {
     id: string
     orderId: string
+    reviewScopeKey: string | null
     customerId: string
+    customerName: string | null
     outletId: string
+    productId: string | null
+    productName: string | null
     cityCode: string
     rating: number
     comment: string | null
@@ -1268,8 +1296,12 @@ export namespace Prisma {
   export type ReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    reviewScopeKey?: boolean
     customerId?: boolean
+    customerName?: boolean
     outletId?: boolean
+    productId?: boolean
+    productName?: boolean
     cityCode?: boolean
     rating?: boolean
     comment?: boolean
@@ -1280,8 +1312,12 @@ export namespace Prisma {
   export type ReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    reviewScopeKey?: boolean
     customerId?: boolean
+    customerName?: boolean
     outletId?: boolean
+    productId?: boolean
+    productName?: boolean
     cityCode?: boolean
     rating?: boolean
     comment?: boolean
@@ -1292,8 +1328,12 @@ export namespace Prisma {
   export type ReviewSelectScalar = {
     id?: boolean
     orderId?: boolean
+    reviewScopeKey?: boolean
     customerId?: boolean
+    customerName?: boolean
     outletId?: boolean
+    productId?: boolean
+    productName?: boolean
     cityCode?: boolean
     rating?: boolean
     comment?: boolean
@@ -1308,8 +1348,12 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
+      reviewScopeKey: string | null
       customerId: string
+      customerName: string | null
       outletId: string
+      productId: string | null
+      productName: string | null
       cityCode: string
       rating: number
       comment: string | null
@@ -1710,8 +1754,12 @@ export namespace Prisma {
   interface ReviewFieldRefs {
     readonly id: FieldRef<"Review", 'String'>
     readonly orderId: FieldRef<"Review", 'String'>
+    readonly reviewScopeKey: FieldRef<"Review", 'String'>
     readonly customerId: FieldRef<"Review", 'String'>
+    readonly customerName: FieldRef<"Review", 'String'>
     readonly outletId: FieldRef<"Review", 'String'>
+    readonly productId: FieldRef<"Review", 'String'>
+    readonly productName: FieldRef<"Review", 'String'>
     readonly cityCode: FieldRef<"Review", 'String'>
     readonly rating: FieldRef<"Review", 'Int'>
     readonly comment: FieldRef<"Review", 'String'>
@@ -3975,8 +4023,12 @@ export namespace Prisma {
   export const ReviewScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
+    reviewScopeKey: 'reviewScopeKey',
     customerId: 'customerId',
+    customerName: 'customerName',
     outletId: 'outletId',
+    productId: 'productId',
+    productName: 'productName',
     cityCode: 'cityCode',
     rating: 'rating',
     comment: 'comment',
@@ -4116,8 +4168,12 @@ export namespace Prisma {
     NOT?: ReviewWhereInput | ReviewWhereInput[]
     id?: StringFilter<"Review"> | string
     orderId?: StringFilter<"Review"> | string
+    reviewScopeKey?: StringNullableFilter<"Review"> | string | null
     customerId?: StringFilter<"Review"> | string
+    customerName?: StringNullableFilter<"Review"> | string | null
     outletId?: StringFilter<"Review"> | string
+    productId?: StringNullableFilter<"Review"> | string | null
+    productName?: StringNullableFilter<"Review"> | string | null
     cityCode?: StringFilter<"Review"> | string
     rating?: IntFilter<"Review"> | number
     comment?: StringNullableFilter<"Review"> | string | null
@@ -4128,8 +4184,12 @@ export namespace Prisma {
   export type ReviewOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    reviewScopeKey?: SortOrderInput | SortOrder
     customerId?: SortOrder
+    customerName?: SortOrderInput | SortOrder
     outletId?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    productName?: SortOrderInput | SortOrder
     cityCode?: SortOrder
     rating?: SortOrder
     comment?: SortOrderInput | SortOrder
@@ -4139,24 +4199,32 @@ export namespace Prisma {
 
   export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    orderId?: string
+    reviewScopeKey?: string
     AND?: ReviewWhereInput | ReviewWhereInput[]
     OR?: ReviewWhereInput[]
     NOT?: ReviewWhereInput | ReviewWhereInput[]
+    orderId?: StringFilter<"Review"> | string
     customerId?: StringFilter<"Review"> | string
+    customerName?: StringNullableFilter<"Review"> | string | null
     outletId?: StringFilter<"Review"> | string
+    productId?: StringNullableFilter<"Review"> | string | null
+    productName?: StringNullableFilter<"Review"> | string | null
     cityCode?: StringFilter<"Review"> | string
     rating?: IntFilter<"Review"> | number
     comment?: StringNullableFilter<"Review"> | string | null
     isModerated?: BoolFilter<"Review"> | boolean
     createdAt?: DateTimeFilter<"Review"> | Date | string
-  }, "id" | "orderId">
+  }, "id" | "reviewScopeKey">
 
   export type ReviewOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    reviewScopeKey?: SortOrderInput | SortOrder
     customerId?: SortOrder
+    customerName?: SortOrderInput | SortOrder
     outletId?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    productName?: SortOrderInput | SortOrder
     cityCode?: SortOrder
     rating?: SortOrder
     comment?: SortOrderInput | SortOrder
@@ -4175,8 +4243,12 @@ export namespace Prisma {
     NOT?: ReviewScalarWhereWithAggregatesInput | ReviewScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Review"> | string
     orderId?: StringWithAggregatesFilter<"Review"> | string
+    reviewScopeKey?: StringNullableWithAggregatesFilter<"Review"> | string | null
     customerId?: StringWithAggregatesFilter<"Review"> | string
+    customerName?: StringNullableWithAggregatesFilter<"Review"> | string | null
     outletId?: StringWithAggregatesFilter<"Review"> | string
+    productId?: StringNullableWithAggregatesFilter<"Review"> | string | null
+    productName?: StringNullableWithAggregatesFilter<"Review"> | string | null
     cityCode?: StringWithAggregatesFilter<"Review"> | string
     rating?: IntWithAggregatesFilter<"Review"> | number
     comment?: StringNullableWithAggregatesFilter<"Review"> | string | null
@@ -4327,8 +4399,12 @@ export namespace Prisma {
   export type ReviewCreateInput = {
     id?: string
     orderId: string
+    reviewScopeKey?: string | null
     customerId: string
+    customerName?: string | null
     outletId: string
+    productId?: string | null
+    productName?: string | null
     cityCode?: string
     rating: number
     comment?: string | null
@@ -4339,8 +4415,12 @@ export namespace Prisma {
   export type ReviewUncheckedCreateInput = {
     id?: string
     orderId: string
+    reviewScopeKey?: string | null
     customerId: string
+    customerName?: string | null
     outletId: string
+    productId?: string | null
+    productName?: string | null
     cityCode?: string
     rating: number
     comment?: string | null
@@ -4351,8 +4431,12 @@ export namespace Prisma {
   export type ReviewUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    reviewScopeKey?: NullableStringFieldUpdateOperationsInput | string | null
     customerId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     cityCode?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4363,8 +4447,12 @@ export namespace Prisma {
   export type ReviewUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    reviewScopeKey?: NullableStringFieldUpdateOperationsInput | string | null
     customerId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     cityCode?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4375,8 +4463,12 @@ export namespace Prisma {
   export type ReviewCreateManyInput = {
     id?: string
     orderId: string
+    reviewScopeKey?: string | null
     customerId: string
+    customerName?: string | null
     outletId: string
+    productId?: string | null
+    productName?: string | null
     cityCode?: string
     rating: number
     comment?: string | null
@@ -4387,8 +4479,12 @@ export namespace Prisma {
   export type ReviewUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    reviewScopeKey?: NullableStringFieldUpdateOperationsInput | string | null
     customerId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     cityCode?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4399,8 +4495,12 @@ export namespace Prisma {
   export type ReviewUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    reviewScopeKey?: NullableStringFieldUpdateOperationsInput | string | null
     customerId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     cityCode?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4580,17 +4680,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -4604,6 +4693,17 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -4630,8 +4730,12 @@ export namespace Prisma {
   export type ReviewCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    reviewScopeKey?: SortOrder
     customerId?: SortOrder
+    customerName?: SortOrder
     outletId?: SortOrder
+    productId?: SortOrder
+    productName?: SortOrder
     cityCode?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
@@ -4646,8 +4750,12 @@ export namespace Prisma {
   export type ReviewMaxOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    reviewScopeKey?: SortOrder
     customerId?: SortOrder
+    customerName?: SortOrder
     outletId?: SortOrder
+    productId?: SortOrder
+    productName?: SortOrder
     cityCode?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
@@ -4658,8 +4766,12 @@ export namespace Prisma {
   export type ReviewMinOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    reviewScopeKey?: SortOrder
     customerId?: SortOrder
+    customerName?: SortOrder
     outletId?: SortOrder
+    productId?: SortOrder
+    productName?: SortOrder
     cityCode?: SortOrder
     rating?: SortOrder
     comment?: SortOrder
@@ -4689,22 +4801,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -4721,6 +4817,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -4830,16 +4942,16 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -4920,17 +5032,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -4943,6 +5044,17 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -4978,33 +5090,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -5031,6 +5116,33 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {

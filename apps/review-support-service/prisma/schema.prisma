@@ -9,17 +9,24 @@ generator client {
 }
 
 model Review {
-  id          String   @id @default(uuid())
-  orderId     String   @unique
-  customerId  String
-  outletId    String
-  cityCode    String   @default("IN-MH-NGP") // Municipal partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
-  rating      Int      // 1 to 5
-  comment     String?
-  isModerated Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id             String   @id @default(uuid())
+  orderId        String
+  reviewScopeKey String?  @unique // ORDER:<orderId> or PRODUCT:<orderId>:<productId>
+  customerId     String
+  customerName   String?
+  outletId       String
+  productId      String?
+  productName    String?
+  cityCode       String   @default("IN-MH-NGP") // Municipal partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
+  rating         Int      // 1 to 5
+  comment        String?
+  isModerated    Boolean  @default(false)
+  createdAt      DateTime @default(now())
 
+  @@index([orderId])
   @@index([outletId])
+  @@index([productId])
+  @@index([customerId])
   @@index([cityCode, isModerated])
   @@map("reviews")
 }

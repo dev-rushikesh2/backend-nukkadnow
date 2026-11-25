@@ -125,8 +125,12 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
+  reviewScopeKey: 'reviewScopeKey',
   customerId: 'customerId',
+  customerName: 'customerName',
   outletId: 'outletId',
+  productId: 'productId',
+  productName: 'productName',
   cityCode: 'cityCode',
   rating: 'rating',
   comment: 'comment',

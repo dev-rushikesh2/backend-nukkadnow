@@ -9,17 +9,37 @@ generator client {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  phoneNumber String       @unique
-  email       String?      @unique
+  id          String            @id @default(uuid())
+  phoneNumber String            @unique
+  email       String?           @unique
   fullName    String?
-  status      String       @default("ACTIVE")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  status      String            @default("ACTIVE")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
   sessions    Session[]
   memberships Membership[]
+  addresses   CustomerAddress[]
 
   @@map("users")
+}
+
+model CustomerAddress {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  type        String   @default("Home")
+  fullAddress String
+  landmark    String?
+  city        String   @default("Akola")
+  pincode     String   @default("444001")
+  latitude    Float?
+  longitude   Float?
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("customer_addresses")
 }
 
 model Session {

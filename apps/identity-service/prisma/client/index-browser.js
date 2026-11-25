@@ -132,6 +132,21 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CustomerAddressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  fullAddress: 'fullAddress',
+  landmark: 'landmark',
+  city: 'city',
+  pincode: 'pincode',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -288,6 +303,7 @@ exports.Prisma.JsonNullValueFilter = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  CustomerAddress: 'CustomerAddress',
   Session: 'Session',
   Membership: 'Membership',
   AuditEvent: 'AuditEvent',

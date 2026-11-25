@@ -10,12 +10,16 @@ export class PrismaReviewSupportRepository implements ReviewSupportRepositoryPor
 
   async saveReview(review: Review): Promise<void> {
     await this.prisma.review.upsert({
-      where: { orderId: review.orderId },
+      where: { reviewScopeKey: review.reviewScopeKey },
       create: {
         id: review.id,
         orderId: review.orderId,
+        reviewScopeKey: review.reviewScopeKey,
         customerId: review.customerId,
+        customerName: review.customerName ?? null,
         outletId: review.outletId,
+        productId: review.productId ?? null,
+        productName: review.productName ?? null,
         cityCode: review.cityCode,
         rating: review.rating,
         comment: review.comment ?? null,
@@ -24,21 +28,45 @@ export class PrismaReviewSupportRepository implements ReviewSupportRepositoryPor
       update: {
         rating: review.rating,
         comment: review.comment ?? null,
+        customerName: review.customerName ?? null,
         isModerated: review.isModerated,
       },
     });
   }
 
   async findReviewByOrderId(orderId: string): Promise<Review | null> {
+    const record = await this.prisma.review.findFirst({
+      where: { orderId, productId: null },
+    });
+    return record ? this.toReviewDomain(record) : null;
+  }
+
+  async findReviewByScopeKey(reviewScopeKey: string): Promise<Review | null> {
     const record = await this.prisma.review.findUnique({
-      where: { orderId },
+      where: { reviewScopeKey },
     });
     return record ? this.toReviewDomain(record) : null;
   }
 
   async findReviewsByOutletId(outletId: string): Promise<Review[]> {
     const records = await this.prisma.review.findMany({
-      where: { outletId },
+      where: { outletId, isModerated: false },
+      orderBy: { createdAt: "desc" },
+    });
+    return records.map((r: any) => this.toReviewDomain(r));
+  }
+
+  async findReviewsByProductId(productId: string): Promise<Review[]> {
+    const records = await this.prisma.review.findMany({
+      where: { productId, isModerated: false },
+      orderBy: { createdAt: "desc" },
+    });
+    return records.map((r: any) => this.toReviewDomain(r));
+  }
+
+  async findReviewsByCustomerId(customerId: string): Promise<Review[]> {
+    const records = await this.prisma.review.findMany({
+      where: { customerId },
       orderBy: { createdAt: "desc" },
     });
     return records.map((r: any) => this.toReviewDomain(r));
@@ -46,7 +74,7 @@ export class PrismaReviewSupportRepository implements ReviewSupportRepositoryPor
 
   async getOutletRatingSummary(outletId: string): Promise<{ averageRating: number; totalReviews: number }> {
     const agg = await this.prisma.review.aggregate({
-      where: { outletId },
+      where: { outletId, isModerated: false },
       _avg: { rating: true },
       _count: { rating: true },
     });
@@ -55,6 +83,59 @@ export class PrismaReviewSupportRepository implements ReviewSupportRepositoryPor
     const totalReviews = agg._count.rating ?? 0;
 
     return { averageRating, totalReviews };
+  }
+
+  async getProductRatingSummary(productId: string): Promise<{ averageRating: number; totalReviews: number }> {
+    const agg = await this.prisma.review.aggregate({
+      where: { productId, isModerated: false },
+      _avg: { rating: true },
+      _count: { rating: true },
+    });
+
+    const averageRating = Math.round((agg._avg.rating ?? 0) * 10) / 10;
+    const totalReviews = agg._count.rating ?? 0;
+
+    return { averageRating, totalReviews };
+  }
+
+  async getAllRatingSummaries(): Promise<{
+    outlets: Record<string, { averageRating: number; totalReviews: number }>;
+    products: Record<string, { averageRating: number; totalReviews: number }>;
+  }> {
+    const [outletGroups, productGroups] = await Promise.all([
+      this.prisma.review.groupBy({
+        by: ["outletId"],
+        where: { isModerated: false },
+        _avg: { rating: true },
+        _count: { rating: true },
+      }),
+      this.prisma.review.groupBy({
+        by: ["productId"],
+        where: { isModerated: false, productId: { not: null } },
+        _avg: { rating: true },
+        _count: { rating: true },
+      }),
+    ]);
+
+    const outlets: Record<string, { averageRating: number; totalReviews: number }> = {};
+    for (const g of outletGroups) {
+      outlets[g.outletId] = {
+        averageRating: Math.round((g._avg.rating ?? 0) * 10) / 10,
+        totalReviews: g._count.rating ?? 0,
+      };
+    }
+
+    const products: Record<string, { averageRating: number; totalReviews: number }> = {};
+    for (const g of productGroups) {
+      if (g.productId) {
+        products[g.productId] = {
+          averageRating: Math.round((g._avg.rating ?? 0) * 10) / 10,
+          totalReviews: g._count.rating ?? 0,
+        };
+      }
+    }
+
+    return { outlets, products };
   }
 
   async saveTicket(ticket: SupportTicket): Promise<void> {
@@ -121,8 +202,12 @@ export class PrismaReviewSupportRepository implements ReviewSupportRepositoryPor
     return new Review({
       id: record.id,
       orderId: record.orderId,
+      reviewScopeKey: record.reviewScopeKey ?? undefined,
       customerId: record.customerId,
+      customerName: record.customerName ?? undefined,
       outletId: record.outletId,
+      productId: record.productId ?? undefined,
+      productName: record.productName ?? undefined,
       cityCode: record.cityCode,
       rating: record.rating,
       comment: record.comment ?? undefined,

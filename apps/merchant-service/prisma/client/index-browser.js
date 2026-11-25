@@ -302,6 +302,50 @@ exports.Prisma.ServiceableLocalityScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ShopAuditLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  outletId: 'outletId',
+  actorStaffId: 'actorStaffId',
+  actorName: 'actorName',
+  actorRole: 'actorRole',
+  authMode: 'authMode',
+  module: 'module',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  targetLabel: 'targetLabel',
+  beforeState: 'beforeState',
+  afterState: 'afterState',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MarketingBannerScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  highlightText: 'highlightText',
+  subtitle: 'subtitle',
+  badgeText: 'badgeText',
+  ctaLabel: 'ctaLabel',
+  actionType: 'actionType',
+  actionTarget: 'actionTarget',
+  visualIcons: 'visualIcons',
+  imageUrl: 'imageUrl',
+  bgGradient: 'bgGradient',
+  textColor: 'textColor',
+  highlightColor: 'highlightColor',
+  cityCode: 'cityCode',
+  displayOrder: 'displayOrder',
+  isActive: 'isActive',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  clickCount: 'clickCount',
+  impressionCount: 'impressionCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -343,7 +387,9 @@ exports.Prisma.ModelName = {
   RegistrationDocument: 'RegistrationDocument',
   RegistrationStatusHistory: 'RegistrationStatusHistory',
   PlatformCity: 'PlatformCity',
-  ServiceableLocality: 'ServiceableLocality'
+  ServiceableLocality: 'ServiceableLocality',
+  ShopAuditLog: 'ShopAuditLog',
+  MarketingBanner: 'MarketingBanner'
 };
 
 /**

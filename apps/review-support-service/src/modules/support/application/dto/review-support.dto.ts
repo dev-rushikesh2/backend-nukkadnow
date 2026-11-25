@@ -17,6 +17,21 @@ export class CreateReviewDto {
   @IsNotEmpty()
   outletId!: string;
 
+  @ApiProperty({ example: "prod_123456", required: false })
+  @IsString()
+  @IsOptional()
+  productId?: string;
+
+  @ApiProperty({ example: "AK Fresh Basmati Rice 5kg", required: false })
+  @IsString()
+  @IsOptional()
+  productName?: string;
+
+  @ApiProperty({ example: "Rohan Sharma", required: false })
+  @IsString()
+  @IsOptional()
+  customerName?: string;
+
   @ApiProperty({ example: 5, minimum: 1, maximum: 5 })
   @IsInt()
   @Min(1)

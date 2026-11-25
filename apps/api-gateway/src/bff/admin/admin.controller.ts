@@ -1201,6 +1201,57 @@ export class AdminController {
   }
 
   // =========================================================================
+  // MARKETING BANNERS & CAMPAIGNS
+  // =========================================================================
+
+  @Get("marketing/banners")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "List all marketing banners for Admin management" })
+  async listMarketingBanners(@Query("cityCode") cityCode?: string, @Headers() headers?: any) {
+    requireAdmin(headers!);
+    const qs = cityCode ? `?cityCode=${encodeURIComponent(cityCode)}` : "";
+    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/marketing/banners${qs}`, {
+      method: "GET",
+      headers: { authorization: headers!.authorization },
+    });
+  }
+
+  @Post("marketing/banners")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Create a new marketing banner campaign" })
+  async createMarketingBanner(@Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.merchantServiceUrl, "/api/v1/marketing/banners", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Put("marketing/banners/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update or toggle a marketing banner campaign" })
+  async updateMarketingBanner(@Param("id") id: string, @Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/marketing/banners/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Delete("marketing/banners/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Delete a marketing banner campaign" })
+  async deleteMarketingBanner(@Param("id") id: string, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/marketing/banners/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { authorization: headers.authorization },
+    });
+  }
+
+  // =========================================================================
   // SYSTEM HEALTH
   // =========================================================================
 

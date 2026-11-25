@@ -13,6 +13,20 @@ export class SubscriptionsController {
     private readonly prisma: PrismaService
   ) {}
 
+  @Get("merchant/:tenantId")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get merchant SaaS subscription and available plans" })
+  async getMerchantSubscription(@Param("tenantId") tenantId: string) {
+    const [subscription, plans] = await Promise.all([
+      this.prisma.merchantSubscription.findUnique({
+        where: { merchantId: tenantId },
+        include: { plan: true, invoices: true },
+      }),
+      this.subService.listPlans(),
+    ]);
+    return { success: true, data: { subscription, plans } };
+  }
+
   @Get("admin")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Admin: List all merchant subscriptions" })
