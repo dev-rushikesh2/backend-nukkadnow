@@ -33,6 +33,7 @@
     "prisma:migrate": "turbo run prisma:migrate",
     "clean": "turbo run clean && rimraf node_modules",
     "seed:all": "node --experimental-strip-types prisma/seeders/seed-all.ts",
+    "seed:demo": "node --experimental-strip-types scripts/seed-e2e-demo.ts",
     "docker:up": "docker compose -f infrastructure/docker/compose.local.yml up -d",
     "docker:down": "docker compose -f infrastructure/docker/compose.local.yml down",
     "docker:obs:up": "docker compose -f infrastructure/docker/compose.observability.yml up -d",

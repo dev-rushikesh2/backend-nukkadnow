@@ -241,66 +241,73 @@ export const ADMIN_ROLES_SEED: AdminRoleSeed[] = [
       'admin:audit:unmask_pii',
     ],
   },
+  {
+    id: 'role-finance-auditor',
+    code: 'FINANCE_AUDITOR',
+    title: 'Finance & Payout Auditor',
+    subtitle: 'Escrow, Reconciliation & Payout Specialist',
+    hierarchyLevel: 4,
+    description: 'Finance specialist responsible for verifying merchant settlement batches, bank account reconciliation, escrow balances, and payout audits.',
+    requiresMfa: true,
+    isSystem: false,
+    permissionCodes: [
+      'admin:payments:read',
+      'admin:payments:reconcile',
+      'admin:refunds:read',
+      'admin:subscriptions:read',
+      'admin:audit_logs:read',
+    ],
+  },
 ];
 
 export const ADMIN_USERS_SEED: AdminUserSeed[] = [
-  // 1. Root Admin (Ultimate Platform Authority)
+  // 1. Root Admin — Founder (Level 1, Ultimate Platform Authority)
   {
     id: 'adm-root-001',
-    name: 'Rushi Deshmukh',
-    email: 'root.admin@nukkadnow.com',
+    name: 'Rajesh Nukkad (Founder)',
+    email: 'founder@nukkadnow.com',
     phone: '+919800000001',
     status: 'ACTIVE',
-    mfaEnabled: true,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: true,
     tokenVersion: 1,
     roleCode: 'ROOT_ADMIN',
   },
 
-  // 2. Super Admin (Global Platform Operations)
+  // 1b. Root Admin — System Architect
   {
-    id: 'adm-super-001',
-    name: 'Aditya Sharma',
-    email: 'super.admin@nukkadnow.com',
+    id: 'adm-root-002',
+    name: 'Rushi Platform Architect',
+    email: 'root.admin@nukkadnow.com',
     phone: '+919800000002',
     status: 'ACTIVE',
-    mfaEnabled: true,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: true,
+    tokenVersion: 1,
+    roleCode: 'ROOT_ADMIN',
+  },
+
+  // 2. Super Admin (Level 2, Global Central Operations)
+  {
+    id: 'adm-super-001',
+    name: 'Rushi Platform Architect',
+    email: 'admin@nukkadnow.com',
+    phone: '+919800000003',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'SUPER_ADMIN',
   },
 
-  // 3. City Operations Manager — Nagpur
+  // 3. City Operations Manager — Akola (Level 3)
   {
-    id: 'adm-city-ngp-001',
-    name: 'Vikram Wankhede',
-    email: 'citymgr.nagpur@nukkadnow.com',
-    phone: '+919823000011',
-    status: 'ACTIVE',
-    mfaEnabled: true,
-    isRootProtected: false,
-    tokenVersion: 1,
-    roleCode: 'CITY_OPERATIONS_MANAGER',
-    geoAssignment: {
-      state: 'Maharashtra',
-      stateCode: 'IN-MH',
-      district: 'Nagpur',
-      districtCode: 'NGP',
-      cityId: 'city-ngp',
-      cityCode: 'IN-MH-NGP',
-      cityName: 'Nagpur',
-      localities: ['Sitabuldi', 'Dharampeth', 'Dhantoli', 'Ramdaspeth', 'Sadar'],
-    },
-  },
-
-  // 4. City Operations Manager — Akola
-  {
-    id: 'adm-city-akl-002',
-    name: 'Pradeep Deshmukh',
-    email: 'citymgr.akola@nukkadnow.com',
+    id: 'adm-city-akl-001',
+    name: 'Rajesh Sharma (Akola Lead)',
+    email: 'akola.ops@nukkadnow.com',
     phone: '+919823000012',
     status: 'ACTIVE',
-    mfaEnabled: true,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'CITY_OPERATIONS_MANAGER',
@@ -316,14 +323,14 @@ export const ADMIN_USERS_SEED: AdminUserSeed[] = [
     },
   },
 
-  // 5. City Operations Manager — Amravati
+  // 4. City Operations Manager — Amravati (Level 3)
   {
-    id: 'adm-city-amr-003',
-    name: 'Gajanan Thakre',
-    email: 'citymgr.amravati@nukkadnow.com',
+    id: 'adm-city-amr-001',
+    name: 'Pooja Deshmukh (Amravati Lead)',
+    email: 'amravati.ops@nukkadnow.com',
     phone: '+919823000013',
     status: 'ACTIVE',
-    mfaEnabled: true,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'CITY_OPERATIONS_MANAGER',
@@ -339,14 +346,37 @@ export const ADMIN_USERS_SEED: AdminUserSeed[] = [
     },
   },
 
-  // 6. City Operations Manager — Pune
+  // 5. City Operations Manager — Nagpur (Level 3)
   {
-    id: 'adm-city-pun-004',
-    name: 'Sneha Kulkarni',
-    email: 'citymgr.pune@nukkadnow.com',
+    id: 'adm-city-ngp-001',
+    name: 'Amit Deshpande (Nagpur Lead)',
+    email: 'nagpur.ops@nukkadnow.com',
+    phone: '+919823000011',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'CITY_OPERATIONS_MANAGER',
+    geoAssignment: {
+      state: 'Maharashtra',
+      stateCode: 'IN-MH',
+      district: 'Nagpur',
+      districtCode: 'NGP',
+      cityId: 'city-ngp',
+      cityCode: 'IN-MH-NGP',
+      cityName: 'Nagpur',
+      localities: ['Sitabuldi', 'Dharampeth', 'Dhantoli', 'Ramdaspeth', 'Sadar'],
+    },
+  },
+
+  // 6. City Operations Manager — Pune (Level 3)
+  {
+    id: 'adm-city-pun-001',
+    name: 'Sneha Kulkarni (Pune Lead)',
+    email: 'pune.ops@nukkadnow.com',
     phone: '+919823000014',
     status: 'ACTIVE',
-    mfaEnabled: true,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'CITY_OPERATIONS_MANAGER',
@@ -362,27 +392,133 @@ export const ADMIN_USERS_SEED: AdminUserSeed[] = [
     },
   },
 
-  // 7. Verification Staff (Merchant KYC Specialist)
+  // 7. City Operations Manager — Nashik (Level 3)
+  {
+    id: 'adm-city-nsk-001',
+    name: 'Vikram Shinde (Nashik Lead)',
+    email: 'nashik.ops@nukkadnow.com',
+    phone: '+919823000015',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'CITY_OPERATIONS_MANAGER',
+    geoAssignment: {
+      state: 'Maharashtra',
+      stateCode: 'IN-MH',
+      district: 'Nashik',
+      districtCode: 'NSK',
+      cityId: 'city-nsk',
+      cityCode: 'IN-MH-NSK',
+      cityName: 'Nashik',
+      localities: ['College Road', 'Panchavati'],
+    },
+  },
+
+  // 8. City Operations Manager — Mumbai (Level 3)
+  {
+    id: 'adm-city-mum-001',
+    name: 'Rohit Sawant (Mumbai Lead)',
+    email: 'mumbai.ops@nukkadnow.com',
+    phone: '+919823000016',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'CITY_OPERATIONS_MANAGER',
+    geoAssignment: {
+      state: 'Maharashtra',
+      stateCode: 'IN-MH',
+      district: 'Mumbai',
+      districtCode: 'MUM',
+      cityId: 'city-mum',
+      cityCode: 'IN-MH-MUM',
+      cityName: 'Mumbai',
+      localities: ['Dadar', 'Bandra West'],
+    },
+  },
+
+  // 9. Verification Staff (Level 4, Merchant KYC Specialist)
   {
     id: 'adm-staff-kyc-001',
-    name: 'Pooja Raut',
-    email: 'kyc.staff@nukkadnow.com',
+    name: 'Sunita KYC Compliance',
+    email: 'sunita.kyc@nukkadnow.com',
     phone: '+919823000021',
     status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'VERIFICATION_STAFF',
+    geoAssignment: {
+      state: 'Maharashtra',
+      stateCode: 'IN-MH',
+      district: 'Nagpur',
+      districtCode: 'NGP',
+      cityId: 'city-ngp',
+      cityCode: 'IN-MH-NGP',
+      cityName: 'Nagpur',
+      localities: ['Sitabuldi', 'Dharampeth'],
+    },
+  },
+
+  // 10. Support Staff (Level 4, Customer & Merchant Helpdesk)
+  {
+    id: 'adm-staff-sup-001',
+    name: 'Ananya Support Desk',
+    email: 'ananya.support@nukkadnow.com',
+    phone: '+919823000022',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'SUPPORT_STAFF',
+  },
+
+  // 11. Finance & Settlement Auditor (Level 4)
+  {
+    id: 'adm-staff-fin-001',
+    name: 'Pradeep Joshi (Finance Auditor)',
+    email: 'finance.auditor@nukkadnow.com',
+    phone: '+919823000023',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'FINANCE_AUDITOR',
+  },
+
+  // 12. Suspended Operator (For Testing Suspension & 403 Forbidden Access)
+  {
+    id: 'adm-staff-susp-001',
+    name: 'Suspended Operator (Test Account)',
+    email: 'suspended.operator@nukkadnow.com',
+    phone: '+919823000099',
+    status: 'SUSPENDED',
     mfaEnabled: false,
+    isRootProtected: false,
+    tokenVersion: 1,
+    roleCode: 'SUPPORT_STAFF',
+  },
+
+  // Legacy/Compatibility Seed Records
+  {
+    id: 'adm-legacy-kyc-001',
+    name: 'Pooja Raut',
+    email: 'kyc.staff@nukkadnow.com',
+    phone: '+919823000024',
+    status: 'ACTIVE',
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'VERIFICATION_STAFF',
   },
-
-  // 8. Support Staff (Customer & Merchant Helpdesk Agent)
   {
-    id: 'adm-staff-sup-001',
+    id: 'adm-legacy-sup-001',
     name: 'Rahul Meshram',
     email: 'support.agent@nukkadnow.com',
-    phone: '+919823000022',
+    phone: '+919823000025',
     status: 'ACTIVE',
-    mfaEnabled: false,
+    mfaEnabled: false, // Disabled by default; operator activates Authenticator app in Profile
     isRootProtected: false,
     tokenVersion: 1,
     roleCode: 'SUPPORT_STAFF',

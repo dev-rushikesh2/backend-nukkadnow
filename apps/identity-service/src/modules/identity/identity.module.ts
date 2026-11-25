@@ -3,6 +3,7 @@ import { AuthController } from "./presentation/http/controllers/auth.controller"
 import { identityController } from "./presentation/http/controllers/identity.controller";
 import { AuthService } from "./application/services/auth.service";
 import { OtpManagerService } from "./infrastructure/otp/otp-manager.service";
+import { TotpService } from "./infrastructure/totp/totp.service";
 import { UserRepositoryPort } from "./domain/repositories/user.repository.port";
 import { SessionRepositoryPort } from "./domain/repositories/session.repository.port";
 import { PrismaService } from "./infrastructure/persistence/prisma/prisma.service";
@@ -15,6 +16,7 @@ import { PrismaSessionRepository } from "./infrastructure/persistence/repositori
     PrismaService,
     AuthService,
     OtpManagerService,
+    TotpService,
     {
       provide: UserRepositoryPort,
       useClass: PrismaUserRepository,
@@ -24,6 +26,6 @@ import { PrismaSessionRepository } from "./infrastructure/persistence/repositori
       useClass: PrismaSessionRepository,
     },
   ],
-  exports: [AuthService, PrismaService],
+  exports: [AuthService, TotpService, PrismaService],
 })
 export class IdentityModule {}

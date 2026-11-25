@@ -169,6 +169,74 @@ export const SUPPORT_TICKETS_SEED: SupportTicketSeed[] = [
       },
     ],
   },
+
+  // 3. Merchant KYC Clarification (Nashik - Shree Medicals)
+  {
+    id: 'tkt-nsk-003',
+    ticketNumber: 'TKT-20261118-03',
+    category: 'MERCHANT',
+    subject: 'Drug License 20B/21B endorsement upload clarification',
+    priority: 'HIGH',
+    status: 'IN_PROGRESS',
+    assignedAgentId: 'adm-staff-kyc-001',
+    assignedAgentName: 'Sunita KYC Compliance',
+    requesterName: 'Mahesh Kulkarni',
+    requesterPhone: '+919822455667',
+    cityCode: 'IN-MH-NSK',
+    cityName: 'Nashik',
+    relatedMerchantId: 'mer-nsk-medicals-009',
+    createdAt: '2026-11-18T14:00:00Z',
+    updatedAt: '2026-11-18T14:45:00Z',
+    slaDeadline: '2026-11-19T14:00:00Z',
+    messages: [
+      {
+        id: 'msg-006',
+        senderType: 'MERCHANT',
+        senderName: 'Mahesh Kulkarni',
+        messageText: 'We have renewed our FDA Maharashtra Form 20B license. Where do we upload the new copy?',
+        isInternalNote: false,
+        sentAt: '2026-11-18T14:00:00Z',
+      },
+      {
+        id: 'msg-007',
+        senderType: 'SUPPORT_AGENT',
+        senderName: 'Sunita KYC Compliance',
+        messageText: 'Unlocked document slot #3 in merchant portal. Please re-upload before 6 PM today.',
+        isInternalNote: false,
+        sentAt: '2026-11-18T14:45:00Z',
+      },
+    ],
+  },
+
+  // 4. Critical Payment Escalation (Mumbai - Aapla Machhi)
+  {
+    id: 'tkt-mum-004',
+    ticketNumber: 'TKT-20261118-04',
+    category: 'MERCHANT',
+    subject: 'Urgent: Daily settlement batch reconciliation query',
+    priority: 'URGENT',
+    status: 'OPEN',
+    assignedAgentId: 'adm-staff-fin-001',
+    assignedAgentName: 'Pradeep Joshi (Finance Auditor)',
+    requesterName: 'Sunil Tandel',
+    requesterPhone: '+919820011223',
+    cityCode: 'IN-MH-MUM',
+    cityName: 'Mumbai',
+    relatedMerchantId: 'mer-mum-poultry-010',
+    createdAt: '2026-11-18T17:00:00Z',
+    updatedAt: '2026-11-18T17:00:00Z',
+    slaDeadline: '2026-11-18T19:00:00Z',
+    messages: [
+      {
+        id: 'msg-008',
+        senderType: 'MERCHANT',
+        senderName: 'Sunil Tandel',
+        messageText: 'Daily NEFT credit of ₹60,750 was not reflected in our Kotak bank account.',
+        isInternalNote: false,
+        sentAt: '2026-11-18T17:00:00Z',
+      },
+    ],
+  },
 ];
 
 export const CUSTOMER_REVIEWS_SEED: CustomerReviewSeed[] = [

@@ -10,7 +10,10 @@ export class OtpManagerService {
   private readonly fallbackMap = new Map<string, { hash: string; attempts: number; expiresAt: number }>();
 
   constructor() {
-    if (!process.env.OTP_HMAC_SECRET || process.env.OTP_HMAC_SECRET.length < 16) {
+    const secretKey =
+      process.env.OTP_HMAC_SECRET ||
+      (process.env.NODE_ENV !== "production" ? "nukkadnow-dev-otp-hmac-secret-min-32-chars-long" : "");
+    if (!secretKey || secretKey.length < 16) {
       throw new Error("OTP_HMAC_SECRET is required");
     }
     const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
@@ -29,7 +32,9 @@ export class OtpManagerService {
   }
 
   private hashOtp(otp: string): string {
-    const secretKey = process.env.OTP_HMAC_SECRET;
+    const secretKey =
+      process.env.OTP_HMAC_SECRET ||
+      (process.env.NODE_ENV !== "production" ? "nukkadnow-dev-otp-hmac-secret-min-32-chars-long" : "");
     if (!secretKey) throw new Error("OTP_HMAC_SECRET is required");
     return crypto.createHmac("sha256", secretKey).update(otp).digest("hex");
   }

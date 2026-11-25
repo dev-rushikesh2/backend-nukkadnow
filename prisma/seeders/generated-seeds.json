@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-11-20T18:22:50.331Z",
+  "generatedAt": "2026-11-24T16:49:30.113Z",
   "engine": "NukkadNow Enterprise Seeder v3.0",
   "census": {
     "countries": 1,
     "states": 1,
-    "districts": 4,
-    "cities": 4,
-    "localities": 17,
+    "districts": 7,
+    "cities": 7,
+    "localities": 22,
     "adminPermissions": 55,
-    "adminRoles": 5,
-    "adminUsers": 8,
-    "merchants": 8,
-    "outlets": 8,
+    "adminRoles": 6,
+    "adminUsers": 15,
+    "merchants": 12,
+    "outlets": 12,
     "categories": 6,
-    "products": 9,
-    "variants": 13,
-    "customers": 8,
-    "customerAddresses": 10,
-    "orders": 6,
-    "orderItems": 9,
+    "products": 13,
+    "variants": 17,
+    "customers": 10,
+    "customerAddresses": 12,
+    "orders": 10,
+    "orderItems": 13,
     "paymentTransactions": 5,
     "settlementBatches": 2,
     "refundDisputes": 2,
     "subscriptionPlans": 3,
     "merchantSubscriptions": 4,
     "cannedReplies": 3,
-    "supportTickets": 2,
+    "supportTickets": 4,
     "customerReviews": 3,
     "platformSettings": 8,
     "auditLogs": 3,
@@ -67,6 +67,21 @@
         {
           "code": "PUN",
           "name": "Pune",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "NSK",
+          "name": "Nashik",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "MUM",
+          "name": "Mumbai",
+          "stateCode": "IN-MH"
+        },
+        {
+          "code": "AUR",
+          "name": "Aurangabad",
           "stateCode": "IN-MH"
         }
       ],
@@ -124,6 +139,48 @@
           "operatingHours": {
             "openTime": "06:00",
             "closeTime": "23:30",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-NSK",
+          "name": "Nashik",
+          "districtCode": "NSK",
+          "stateCode": "IN-MH",
+          "latitude": 19.9975,
+          "longitude": 73.7898,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "06:30",
+            "closeTime": "22:30",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-MUM",
+          "name": "Mumbai",
+          "districtCode": "MUM",
+          "stateCode": "IN-MH",
+          "latitude": 19.076,
+          "longitude": 72.8777,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "06:00",
+            "closeTime": "23:59",
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        {
+          "code": "IN-MH-AUR",
+          "name": "Aurangabad",
+          "districtCode": "AUR",
+          "stateCode": "IN-MH",
+          "latitude": 19.8762,
+          "longitude": 75.3433,
+          "isActive": true,
+          "operatingHours": {
+            "openTime": "07:00",
+            "closeTime": "22:00",
             "timezone": "Asia/Kolkata"
           }
         }
@@ -655,6 +712,161 @@
               73.891
             ]
           ]
+        },
+        {
+          "id": "loc-nsk-collegeroad",
+          "name": "College Road",
+          "cityCode": "IN-MH-NSK",
+          "cityName": "Nashik",
+          "districtCode": "NSK",
+          "stateCode": "IN-MH",
+          "pincode": "422005",
+          "isActive": true,
+          "latitude": 20.0055,
+          "longitude": 73.7628,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              20.009,
+              73.759
+            ],
+            [
+              20.01,
+              73.767
+            ],
+            [
+              20.001,
+              73.766
+            ],
+            [
+              20,
+              73.76
+            ]
+          ]
+        },
+        {
+          "id": "loc-nsk-panchavati",
+          "name": "Panchavati",
+          "cityCode": "IN-MH-NSK",
+          "cityName": "Nashik",
+          "districtCode": "NSK",
+          "stateCode": "IN-MH",
+          "pincode": "422003",
+          "isActive": true,
+          "latitude": 20.0118,
+          "longitude": 73.7915,
+          "radiusMeters": 4000,
+          "coordinates": [
+            [
+              20.015,
+              73.788
+            ],
+            [
+              20.016,
+              73.795
+            ],
+            [
+              20.007,
+              73.794
+            ],
+            [
+              20.006,
+              73.787
+            ]
+          ]
+        },
+        {
+          "id": "loc-mum-dadar",
+          "name": "Dadar",
+          "cityCode": "IN-MH-MUM",
+          "cityName": "Mumbai",
+          "districtCode": "MUM",
+          "stateCode": "IN-MH",
+          "pincode": "400028",
+          "isActive": true,
+          "latitude": 19.0178,
+          "longitude": 72.8478,
+          "radiusMeters": 3000,
+          "coordinates": [
+            [
+              19.022,
+              72.844
+            ],
+            [
+              19.023,
+              72.852
+            ],
+            [
+              19.013,
+              72.851
+            ],
+            [
+              19.012,
+              72.843
+            ]
+          ]
+        },
+        {
+          "id": "loc-mum-bandra",
+          "name": "Bandra West",
+          "cityCode": "IN-MH-MUM",
+          "cityName": "Mumbai",
+          "districtCode": "MUM",
+          "stateCode": "IN-MH",
+          "pincode": "400050",
+          "isActive": true,
+          "latitude": 19.0596,
+          "longitude": 72.8295,
+          "radiusMeters": 3500,
+          "coordinates": [
+            [
+              19.064,
+              72.825
+            ],
+            [
+              19.065,
+              72.834
+            ],
+            [
+              19.055,
+              72.833
+            ],
+            [
+              19.054,
+              72.826
+            ]
+          ]
+        },
+        {
+          "id": "loc-aur-cidco",
+          "name": "Cidco",
+          "cityCode": "IN-MH-AUR",
+          "cityName": "Aurangabad",
+          "districtCode": "AUR",
+          "stateCode": "IN-MH",
+          "pincode": "431003",
+          "isActive": true,
+          "latitude": 19.8735,
+          "longitude": 75.3685,
+          "radiusMeters": 4000,
+          "coordinates": [
+            [
+              19.878,
+              75.364
+            ],
+            [
+              19.879,
+              75.373
+            ],
+            [
+              19.869,
+              75.372
+            ],
+            [
+              19.868,
+              75.365
+            ]
+          ]
         }
       ]
     },
@@ -1154,38 +1366,118 @@
             "admin:audit_logs:read",
             "admin:audit:unmask_pii"
           ]
+        },
+        {
+          "id": "role-finance-auditor",
+          "code": "FINANCE_AUDITOR",
+          "title": "Finance & Payout Auditor",
+          "subtitle": "Escrow, Reconciliation & Payout Specialist",
+          "hierarchyLevel": 4,
+          "description": "Finance specialist responsible for verifying merchant settlement batches, bank account reconciliation, escrow balances, and payout audits.",
+          "requiresMfa": true,
+          "isSystem": false,
+          "permissionCodes": [
+            "admin:payments:read",
+            "admin:payments:reconcile",
+            "admin:refunds:read",
+            "admin:subscriptions:read",
+            "admin:audit_logs:read"
+          ]
         }
       ],
       "users": [
         {
           "id": "adm-root-001",
-          "name": "Rushi Deshmukh",
-          "email": "root.admin@nukkadnow.com",
+          "name": "Rajesh Nukkad (Founder)",
+          "email": "founder@nukkadnow.com",
           "phone": "+919800000001",
           "status": "ACTIVE",
-          "mfaEnabled": true,
+          "mfaEnabled": false,
+          "isRootProtected": true,
+          "tokenVersion": 1,
+          "roleCode": "ROOT_ADMIN"
+        },
+        {
+          "id": "adm-root-002",
+          "name": "Rushi Platform Architect",
+          "email": "root.admin@nukkadnow.com",
+          "phone": "+919800000002",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
           "isRootProtected": true,
           "tokenVersion": 1,
           "roleCode": "ROOT_ADMIN"
         },
         {
           "id": "adm-super-001",
-          "name": "Aditya Sharma",
-          "email": "super.admin@nukkadnow.com",
-          "phone": "+919800000002",
+          "name": "Rushi Platform Architect",
+          "email": "admin@nukkadnow.com",
+          "phone": "+919800000003",
           "status": "ACTIVE",
-          "mfaEnabled": true,
+          "mfaEnabled": false,
           "isRootProtected": false,
           "tokenVersion": 1,
           "roleCode": "SUPER_ADMIN"
         },
         {
+          "id": "adm-city-akl-001",
+          "name": "Rajesh Sharma (Akola Lead)",
+          "email": "akola.ops@nukkadnow.com",
+          "phone": "+919823000012",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Akola",
+            "districtCode": "AKL",
+            "cityId": "city-akl",
+            "cityCode": "IN-MH-AKL",
+            "cityName": "Akola",
+            "localities": [
+              "Civil Lines",
+              "Old City & Sarafa Bazaar",
+              "Toshniwal Layout",
+              "Gandhi Road"
+            ]
+          }
+        },
+        {
+          "id": "adm-city-amr-001",
+          "name": "Pooja Deshmukh (Amravati Lead)",
+          "email": "amravati.ops@nukkadnow.com",
+          "phone": "+919823000013",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Amravati",
+            "districtCode": "AMR",
+            "cityId": "city-amr",
+            "cityCode": "IN-MH-AMR",
+            "cityName": "Amravati",
+            "localities": [
+              "Rajapeth",
+              "Gadge Nagar",
+              "Camp Area",
+              "Badnera Road"
+            ]
+          }
+        },
+        {
           "id": "adm-city-ngp-001",
-          "name": "Vikram Wankhede",
-          "email": "citymgr.nagpur@nukkadnow.com",
+          "name": "Amit Deshpande (Nagpur Lead)",
+          "email": "nagpur.ops@nukkadnow.com",
           "phone": "+919823000011",
           "status": "ACTIVE",
-          "mfaEnabled": true,
+          "mfaEnabled": false,
           "isRootProtected": false,
           "tokenVersion": 1,
           "roleCode": "CITY_OPERATIONS_MANAGER",
@@ -1207,64 +1499,12 @@
           }
         },
         {
-          "id": "adm-city-akl-002",
-          "name": "Pradeep Deshmukh",
-          "email": "citymgr.akola@nukkadnow.com",
-          "phone": "+919823000012",
-          "status": "ACTIVE",
-          "mfaEnabled": true,
-          "isRootProtected": false,
-          "tokenVersion": 1,
-          "roleCode": "CITY_OPERATIONS_MANAGER",
-          "geoAssignment": {
-            "state": "Maharashtra",
-            "stateCode": "IN-MH",
-            "district": "Akola",
-            "districtCode": "AKL",
-            "cityId": "city-akl",
-            "cityCode": "IN-MH-AKL",
-            "cityName": "Akola",
-            "localities": [
-              "Civil Lines",
-              "Old City & Sarafa Bazaar",
-              "Toshniwal Layout",
-              "Gandhi Road"
-            ]
-          }
-        },
-        {
-          "id": "adm-city-amr-003",
-          "name": "Gajanan Thakre",
-          "email": "citymgr.amravati@nukkadnow.com",
-          "phone": "+919823000013",
-          "status": "ACTIVE",
-          "mfaEnabled": true,
-          "isRootProtected": false,
-          "tokenVersion": 1,
-          "roleCode": "CITY_OPERATIONS_MANAGER",
-          "geoAssignment": {
-            "state": "Maharashtra",
-            "stateCode": "IN-MH",
-            "district": "Amravati",
-            "districtCode": "AMR",
-            "cityId": "city-amr",
-            "cityCode": "IN-MH-AMR",
-            "cityName": "Amravati",
-            "localities": [
-              "Rajapeth",
-              "Gadge Nagar",
-              "Camp Area",
-              "Badnera Road"
-            ]
-          }
-        },
-        {
-          "id": "adm-city-pun-004",
-          "name": "Sneha Kulkarni",
-          "email": "citymgr.pune@nukkadnow.com",
+          "id": "adm-city-pun-001",
+          "name": "Sneha Kulkarni (Pune Lead)",
+          "email": "pune.ops@nukkadnow.com",
           "phone": "+919823000014",
           "status": "ACTIVE",
-          "mfaEnabled": true,
+          "mfaEnabled": false,
           "isRootProtected": false,
           "tokenVersion": 1,
           "roleCode": "CITY_OPERATIONS_MANAGER",
@@ -1285,10 +1525,115 @@
           }
         },
         {
+          "id": "adm-city-nsk-001",
+          "name": "Vikram Shinde (Nashik Lead)",
+          "email": "nashik.ops@nukkadnow.com",
+          "phone": "+919823000015",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Nashik",
+            "districtCode": "NSK",
+            "cityId": "city-nsk",
+            "cityCode": "IN-MH-NSK",
+            "cityName": "Nashik",
+            "localities": [
+              "College Road",
+              "Panchavati"
+            ]
+          }
+        },
+        {
+          "id": "adm-city-mum-001",
+          "name": "Rohit Sawant (Mumbai Lead)",
+          "email": "mumbai.ops@nukkadnow.com",
+          "phone": "+919823000016",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "CITY_OPERATIONS_MANAGER",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Mumbai",
+            "districtCode": "MUM",
+            "cityId": "city-mum",
+            "cityCode": "IN-MH-MUM",
+            "cityName": "Mumbai",
+            "localities": [
+              "Dadar",
+              "Bandra West"
+            ]
+          }
+        },
+        {
           "id": "adm-staff-kyc-001",
+          "name": "Sunita KYC Compliance",
+          "email": "sunita.kyc@nukkadnow.com",
+          "phone": "+919823000021",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "VERIFICATION_STAFF",
+          "geoAssignment": {
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "district": "Nagpur",
+            "districtCode": "NGP",
+            "cityId": "city-ngp",
+            "cityCode": "IN-MH-NGP",
+            "cityName": "Nagpur",
+            "localities": [
+              "Sitabuldi",
+              "Dharampeth"
+            ]
+          }
+        },
+        {
+          "id": "adm-staff-sup-001",
+          "name": "Ananya Support Desk",
+          "email": "ananya.support@nukkadnow.com",
+          "phone": "+919823000022",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "SUPPORT_STAFF"
+        },
+        {
+          "id": "adm-staff-fin-001",
+          "name": "Pradeep Joshi (Finance Auditor)",
+          "email": "finance.auditor@nukkadnow.com",
+          "phone": "+919823000023",
+          "status": "ACTIVE",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "FINANCE_AUDITOR"
+        },
+        {
+          "id": "adm-staff-susp-001",
+          "name": "Suspended Operator (Test Account)",
+          "email": "suspended.operator@nukkadnow.com",
+          "phone": "+919823000099",
+          "status": "SUSPENDED",
+          "mfaEnabled": false,
+          "isRootProtected": false,
+          "tokenVersion": 1,
+          "roleCode": "SUPPORT_STAFF"
+        },
+        {
+          "id": "adm-legacy-kyc-001",
           "name": "Pooja Raut",
           "email": "kyc.staff@nukkadnow.com",
-          "phone": "+919823000021",
+          "phone": "+919823000024",
           "status": "ACTIVE",
           "mfaEnabled": false,
           "isRootProtected": false,
@@ -1296,10 +1641,10 @@
           "roleCode": "VERIFICATION_STAFF"
         },
         {
-          "id": "adm-staff-sup-001",
+          "id": "adm-legacy-sup-001",
           "name": "Rahul Meshram",
           "email": "support.agent@nukkadnow.com",
-          "phone": "+919823000022",
+          "phone": "+919823000025",
           "status": "ACTIVE",
           "mfaEnabled": false,
           "isRootProtected": false,
@@ -2146,6 +2491,410 @@
             "verificationStatus": "PENDING"
           }
         ]
+      },
+      {
+        "id": "mer-nsk-medicals-009",
+        "organizationName": "Shree Medicals",
+        "legalBusinessName": "Shree Healthcare & Pharmacy Solutions LLP",
+        "contactName": "Mahesh Kulkarni",
+        "contactPhone": "+919822455667",
+        "email": "mahesh@shreemedicals.in",
+        "businessType": "retail",
+        "category": "Pharmacy & Health",
+        "description": "Statutory 24/7 chemist dispensing OTC, prescription medicines, baby care essentials, and first aid supplies.",
+        "verificationStatus": "PENDING",
+        "isSuspended": false,
+        "cityCode": "IN-MH-NSK",
+        "districtCode": "NSK",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "State Bank of India",
+          "accountNumberMasked": "**********5534",
+          "ifscCode": "SBIN0001243"
+        },
+        "outlets": [
+          {
+            "id": "out-nsk-medicals-009",
+            "name": "Shree Medicals (College Road)",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Plot 4, Near Circle, College Road",
+            "locality": "College Road",
+            "city": "Nashik",
+            "cityCode": "IN-MH-NSK",
+            "district": "Nashik",
+            "districtCode": "NSK",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "422005",
+            "latitude": 20.0055,
+            "longitude": 73.7628,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 6,
+            "minOrderValue": 100,
+            "prepTimeMinutes": 15,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AAMCS8899Q1ZX",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/shree_medicals_gst.pdf",
+            "verificationStatus": "PENDING",
+            "rejectionReason": "Drug License 20B/21B endorsement copy required."
+          }
+        ]
+      },
+      {
+        "id": "mer-mum-poultry-010",
+        "organizationName": "Aapla Machhi & Coastal Catch",
+        "legalBusinessName": "Mumbai Coastal Seafood & Poultry Enterprises",
+        "contactName": "Sunil Tandel",
+        "contactPhone": "+919820011223",
+        "email": "sunil@aaplamachhi.in",
+        "businessType": "retail",
+        "category": "Meat, Fish & Poultry",
+        "description": "Fresh Arabian Sea fish, Surmai, Pomfret, Prawns, and tender farm-fresh poultry cleaned and packed to order.",
+        "verificationStatus": "VERIFIED",
+        "isSuspended": false,
+        "cityCode": "IN-MH-MUM",
+        "districtCode": "MUM",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "Kotak Mahindra Bank",
+          "accountNumberMasked": "**********9912",
+          "ifscCode": "KKBK0000432"
+        },
+        "outlets": [
+          {
+            "id": "out-mum-poultry-010",
+            "name": "Aapla Machhi Dadar Market",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 12, Ranade Road, Dadar West",
+            "locality": "Dadar",
+            "city": "Mumbai",
+            "cityCode": "IN-MH-MUM",
+            "district": "Mumbai",
+            "districtCode": "MUM",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "400028",
+            "latitude": 19.0178,
+            "longitude": 72.8478,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 5,
+            "minOrderValue": 300,
+            "prepTimeMinutes": 20,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11521012000445",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/aapla_fssai.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-18T10:00:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          },
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AATCS9912M1Z2",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/aapla_gst.pdf",
+            "verificationStatus": "VERIFIED",
+            "verifiedAt": "2026-11-18T10:30:00Z",
+            "verifiedBy": "adm-staff-kyc-001"
+          }
+        ]
+      },
+      {
+        "id": "mer-pun-bakes-011",
+        "organizationName": "City Bakes & Cafe",
+        "legalBusinessName": "City Bakes & Confectioneries Pvt Ltd",
+        "contactName": "Nitin Gore",
+        "contactPhone": "+919822177889",
+        "email": "nitin@citybakes.com",
+        "businessType": "retail",
+        "category": "Bakery & Snacks",
+        "description": "Hot puffs, rolls, birthday celebration cakes, artisanal cookies, and premium hot beverages.",
+        "verificationStatus": "PENDING",
+        "isSuspended": false,
+        "cityCode": "IN-MH-PUN",
+        "districtCode": "PUN",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "Axis Bank",
+          "accountNumberMasked": "**********3341",
+          "ifscCode": "UTIB0000045"
+        },
+        "outlets": [
+          {
+            "id": "out-pun-bakes-011",
+            "name": "City Bakes Shivaji Nagar",
+            "sellerMode": "PERMANENT",
+            "addressLine": "Shop 2, FC Road, Shivaji Nagar",
+            "locality": "Baner",
+            "city": "Pune",
+            "cityCode": "IN-MH-PUN",
+            "district": "Pune",
+            "districtCode": "PUN",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "411005",
+            "latitude": 18.5204,
+            "longitude": 73.8567,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 8,
+            "minOrderValue": 150,
+            "prepTimeMinutes": 20,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "FSSAI",
+            "documentNumber": "11524021000981",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/city_bakes_fssai.pdf",
+            "verificationStatus": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": "mer-aur-home-012",
+        "organizationName": "Akola Home Essentials",
+        "legalBusinessName": "Vidarbha Kitchenware & Household Appliances",
+        "contactName": "Suresh Agrawal",
+        "contactPhone": "+919823199887",
+        "email": "suresh@akolahome.in",
+        "businessType": "retail",
+        "category": "Home & Household",
+        "description": "Stainless steel cookware, traditional brass items, everyday cleaning supplies, and electrical kitchen accessories.",
+        "verificationStatus": "PENDING",
+        "isSuspended": false,
+        "cityCode": "IN-MH-AUR",
+        "districtCode": "AUR",
+        "stateCode": "IN-MH",
+        "bankDetails": {
+          "bankName": "ICICI Bank",
+          "accountNumberMasked": "**********7721",
+          "ifscCode": "ICIC0000213"
+        },
+        "outlets": [
+          {
+            "id": "out-aur-home-012",
+            "name": "Akola Home Essentials (Cidco Store)",
+            "sellerMode": "PERMANENT",
+            "addressLine": "N-4, Near Jalna Road, Cidco",
+            "locality": "Cidco",
+            "city": "Aurangabad",
+            "cityCode": "IN-MH-AUR",
+            "district": "Aurangabad",
+            "districtCode": "AUR",
+            "state": "Maharashtra",
+            "stateCode": "IN-MH",
+            "pincode": "431003",
+            "latitude": 19.8735,
+            "longitude": 75.3685,
+            "isAddressPublic": true,
+            "storePickup": true,
+            "merchantDelivery": true,
+            "deliveryRadiusKm": 10,
+            "minOrderValue": 500,
+            "prepTimeMinutes": 45,
+            "isActive": true,
+            "hours": [
+              {
+                "dayOfWeek": 0,
+                "openTime": "08:00",
+                "closeTime": "21:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 1,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 2,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 3,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 4,
+                "openTime": "08:00",
+                "closeTime": "21:30",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 5,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              },
+              {
+                "dayOfWeek": 6,
+                "openTime": "08:00",
+                "closeTime": "22:00",
+                "isClosed": false
+              }
+            ]
+          }
+        ],
+        "verifications": [
+          {
+            "documentType": "GSTIN",
+            "documentNumber": "27AAGCA4455R1Z3",
+            "fileUrl": "https://cdn.nukkadnow.com/kyc/akola_home_gst.pdf",
+            "verificationStatus": "PENDING",
+            "rejectionReason": "Premises electricity bill verification pending."
+          }
+        ]
       }
     ],
     "catalog": {
@@ -2522,6 +3271,106 @@
               "safetyStock": 3
             }
           ]
+        },
+        {
+          "id": "prod-shree-001",
+          "tenantId": "mer-nsk-medicals-009",
+          "outletId": "out-nsk-medicals-009",
+          "name": "First Aid Emergency Care Kit (Comprehensive)",
+          "description": "Antiseptic wash, sterile gauze swabs, waterproof adhesive tape, bandage rolls, burn ointment, and digital thermometer.",
+          "category": "Grocery & Daily Needs",
+          "subCategory": "Pharmacy & Health",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-shree-firstaid-box",
+              "name": "Standard Home Kit (24 Items)",
+              "sku": "SHR-FAK-001",
+              "barcode": "890123400901",
+              "pricePaise": 49900,
+              "compareAtPricePaise": 55000,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 50,
+              "reservedStock": 2,
+              "safetyStock": 10
+            }
+          ]
+        },
+        {
+          "id": "prod-aapla-001",
+          "tenantId": "mer-mum-poultry-010",
+          "outletId": "out-mum-poultry-010",
+          "name": "Fresh Arabian Sea Surmai (King Fish Steaks)",
+          "description": "Direct day-catch coastal king fish, scaled, gutted, and cut into firm center steaks. Packed on food-grade ice.",
+          "category": "Grocery & Daily Needs",
+          "subCategory": "Meat & Seafood",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-aapla-surmai-500g",
+              "name": "500g Net Cleaned Steaks",
+              "sku": "AAP-SRM-500",
+              "barcode": "890123401001",
+              "pricePaise": 65000,
+              "compareAtPricePaise": 75000,
+              "isPreorder": false,
+              "leadTimeMinutes": 20,
+              "initialStock": 15,
+              "reservedStock": 1,
+              "safetyStock": 2
+            }
+          ]
+        },
+        {
+          "id": "prod-citybakes-001",
+          "tenantId": "mer-pun-bakes-011",
+          "outletId": "out-pun-bakes-011",
+          "name": "Dutch Chocolate Truffle Cake (1/2 kg)",
+          "description": "Rich dark Belgian cocoa sponge layered with silky ganache truffle and topped with dark chocolate shavings.",
+          "category": "Dairy, Sweets & Bakery",
+          "subCategory": "Bakery & Snacks",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-citybakes-cake-500g",
+              "name": "500g Fresh Cream Cake",
+              "sku": "CTY-TRF-500",
+              "barcode": "890123401101",
+              "pricePaise": 45000,
+              "compareAtPricePaise": 50000,
+              "isPreorder": true,
+              "leadTimeMinutes": 60,
+              "initialStock": 25,
+              "reservedStock": 0,
+              "safetyStock": 5
+            }
+          ]
+        },
+        {
+          "id": "prod-akolahome-001",
+          "tenantId": "mer-aur-home-012",
+          "outletId": "out-aur-home-012",
+          "name": "Tri-Ply Heavy Bottom Stainless Steel Kadhai (2.5L)",
+          "description": "Grade 304 food-grade stainless steel with pure aluminum core for fast, even heat distribution without hot spots.",
+          "category": "Grocery & Daily Needs",
+          "subCategory": "Home & Household",
+          "isAvailable": true,
+          "variants": [
+            {
+              "id": "var-akolahome-kadhai-24cm",
+              "name": "24cm Induction Base Kadhai with Lid",
+              "sku": "AKL-KDH-024",
+              "barcode": "890123401201",
+              "pricePaise": 129900,
+              "compareAtPricePaise": 169900,
+              "isPreorder": false,
+              "leadTimeMinutes": 0,
+              "initialStock": 40,
+              "reservedStock": 3,
+              "safetyStock": 8
+            }
+          ]
         }
       ]
     },
@@ -2768,6 +3617,62 @@
             "pincode": "440001",
             "latitude": 21.15,
             "longitude": 79.085,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-nsk-009",
+        "fullName": "Sunil Shinde",
+        "phoneNumber": "+919822011224",
+        "email": "sunil.shinde@nashik.in",
+        "cityCode": "IN-MH-NSK",
+        "cityName": "Nashik",
+        "status": "ACTIVE",
+        "segment": "ACTIVE",
+        "totalOrdersCount": 6,
+        "lifetimeSpendPaise": 950000,
+        "registeredAt": "2026-10-01T10:00:00Z",
+        "lastActiveAt": "2026-11-18T16:00:00Z",
+        "addresses": [
+          {
+            "id": "addr-nsk-009-1",
+            "label": "Home",
+            "addressLine": "Bunglow 4, D’Souza Colony, College Road",
+            "locality": "College Road",
+            "city": "Nashik",
+            "cityCode": "IN-MH-NSK",
+            "pincode": "422005",
+            "latitude": 20.006,
+            "longitude": 73.763,
+            "isDefault": true
+          }
+        ]
+      },
+      {
+        "id": "cust-mum-010",
+        "fullName": "Kavita Sawant",
+        "phoneNumber": "+919820033445",
+        "email": "kavita.sawant@mumbai.in",
+        "cityCode": "IN-MH-MUM",
+        "cityName": "Mumbai",
+        "status": "ACTIVE",
+        "segment": "VIP",
+        "totalOrdersCount": 19,
+        "lifetimeSpendPaise": 4200000,
+        "registeredAt": "2026-08-01T12:00:00Z",
+        "lastActiveAt": "2026-11-18T17:30:00Z",
+        "addresses": [
+          {
+            "id": "addr-mum-010-1",
+            "label": "Home",
+            "addressLine": "Flat 4B, Shivaji Park View, Dadar West",
+            "locality": "Dadar",
+            "city": "Mumbai",
+            "cityCode": "IN-MH-MUM",
+            "pincode": "400028",
+            "latitude": 19.02,
+            "longitude": 72.845,
             "isDefault": true
           }
         ]
@@ -3142,6 +4047,224 @@
             "note": "Customer collected boxes for wedding event"
           }
         ]
+      },
+      {
+        "id": "ord-nsk-med-007",
+        "orderNumber": "NN-20261118-701",
+        "customerId": "cust-nsk-009",
+        "customerName": "Sunil Shinde",
+        "customerPhone": "+919822011224",
+        "tenantId": "mer-nsk-medicals-009",
+        "merchantName": "Shree Medicals",
+        "outletId": "out-nsk-medicals-009",
+        "cityCode": "IN-MH-NSK",
+        "districtCode": "NSK",
+        "stateCode": "IN-MH",
+        "locality": "College Road",
+        "status": "COMPLETED",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "MERCHANT_DELIVERY",
+        "isPreorder": false,
+        "totalAmountPaise": 49900,
+        "taxAmountPaise": 5988,
+        "platformFeePaise": 1500,
+        "commissionPaise": 2495,
+        "merchantEarningsPaise": 45905,
+        "createdAt": "2026-11-18T14:30:00Z",
+        "items": [
+          {
+            "id": "item-701-1",
+            "productId": "prod-shree-001",
+            "variantId": "var-shree-firstaid-box",
+            "title": "First Aid Emergency Care Kit (Comprehensive)",
+            "quantity": 1,
+            "unitPricePaise": 49900,
+            "totalPricePaise": 49900
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T14:30:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T14:31:00Z"
+          },
+          {
+            "eventType": "DELIVERED",
+            "fromStatus": "PREPARING",
+            "toStatus": "COMPLETED",
+            "occurredAt": "2026-11-18T15:10:00Z",
+            "note": "Delivered by chemist runner with invoice copy"
+          }
+        ]
+      },
+      {
+        "id": "ord-mum-fish-008",
+        "orderNumber": "NN-20261118-802",
+        "customerId": "cust-mum-010",
+        "customerName": "Kavita Sawant",
+        "customerPhone": "+919820033445",
+        "tenantId": "mer-mum-poultry-010",
+        "merchantName": "Aapla Machhi & Coastal Catch",
+        "outletId": "out-mum-poultry-010",
+        "cityCode": "IN-MH-MUM",
+        "districtCode": "MUM",
+        "stateCode": "IN-MH",
+        "locality": "Dadar",
+        "status": "PREPARING",
+        "paymentStatus": "PAID",
+        "paymentMethod": "UPI",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupToken": "MUM-802",
+        "isPreorder": false,
+        "totalAmountPaise": 65000,
+        "taxAmountPaise": 0,
+        "platformFeePaise": 1000,
+        "commissionPaise": 3250,
+        "merchantEarningsPaise": 60750,
+        "createdAt": "2026-11-18T16:00:00Z",
+        "items": [
+          {
+            "id": "item-802-1",
+            "productId": "prod-aapla-001",
+            "variantId": "var-aapla-surmai-500g",
+            "title": "Fresh Arabian Sea Surmai (King Fish Steaks)",
+            "quantity": 1,
+            "unitPricePaise": 65000,
+            "totalPricePaise": 65000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T16:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T16:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "ord-pun-cake-009",
+        "orderNumber": "NN-20261118-903",
+        "customerId": "cust-pun-006",
+        "customerName": "Sameer Joshi",
+        "customerPhone": "+919823099886",
+        "tenantId": "mer-pun-bakes-011",
+        "merchantName": "City Bakes & Cafe",
+        "outletId": "out-pun-bakes-011",
+        "cityCode": "IN-MH-PUN",
+        "districtCode": "PUN",
+        "stateCode": "IN-MH",
+        "locality": "Baner",
+        "status": "READY_FOR_PICKUP",
+        "paymentStatus": "PAID",
+        "paymentMethod": "CARD",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupToken": "CAKE-903",
+        "isPreorder": true,
+        "totalAmountPaise": 45000,
+        "taxAmountPaise": 5400,
+        "platformFeePaise": 1000,
+        "commissionPaise": 2700,
+        "merchantEarningsPaise": 41300,
+        "createdAt": "2026-11-18T10:00:00Z",
+        "items": [
+          {
+            "id": "item-903-1",
+            "productId": "prod-citybakes-001",
+            "variantId": "var-citybakes-cake-500g",
+            "title": "Dutch Chocolate Truffle Cake (1/2 kg)",
+            "quantity": 1,
+            "unitPricePaise": 45000,
+            "totalPricePaise": 45000
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T10:00:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T10:05:00Z"
+          },
+          {
+            "eventType": "READY_FOR_PICKUP",
+            "fromStatus": "PREPARING",
+            "toStatus": "READY_FOR_PICKUP",
+            "occurredAt": "2026-11-18T12:00:00Z"
+          }
+        ]
+      },
+      {
+        "id": "ord-aur-home-010",
+        "orderNumber": "NN-20261118-104",
+        "customerId": "cust-akl-004",
+        "customerName": "Shrikant Patil",
+        "customerPhone": "+919823099884",
+        "tenantId": "mer-aur-home-012",
+        "merchantName": "Akola Home Essentials",
+        "outletId": "out-aur-home-012",
+        "cityCode": "IN-MH-AUR",
+        "districtCode": "AUR",
+        "stateCode": "IN-MH",
+        "locality": "Cidco",
+        "status": "READY_FOR_PICKUP",
+        "paymentStatus": "PAID",
+        "paymentMethod": "NETBANKING",
+        "fulfillmentType": "STORE_PICKUP",
+        "pickupToken": "HOME-104",
+        "isPreorder": false,
+        "totalAmountPaise": 129900,
+        "taxAmountPaise": 15588,
+        "platformFeePaise": 2500,
+        "commissionPaise": 6495,
+        "merchantEarningsPaise": 120905,
+        "createdAt": "2026-11-18T11:30:00Z",
+        "items": [
+          {
+            "id": "item-104-1",
+            "productId": "prod-akolahome-001",
+            "variantId": "var-akolahome-kadhai-24cm",
+            "title": "Tri-Ply Heavy Bottom Stainless Steel Kadhai (2.5L)",
+            "quantity": 1,
+            "unitPricePaise": 129900,
+            "totalPricePaise": 129900
+          }
+        ],
+        "events": [
+          {
+            "eventType": "ORDER_CREATED",
+            "toStatus": "PENDING_PAYMENT",
+            "occurredAt": "2026-11-18T11:30:00Z"
+          },
+          {
+            "eventType": "PAYMENT_CONFIRMED",
+            "fromStatus": "PENDING_PAYMENT",
+            "toStatus": "PREPARING",
+            "occurredAt": "2026-11-18T11:32:00Z"
+          },
+          {
+            "eventType": "READY_FOR_PICKUP",
+            "fromStatus": "PREPARING",
+            "toStatus": "READY_FOR_PICKUP",
+            "occurredAt": "2026-11-18T12:15:00Z"
+          }
+        ]
       }
     ],
     "finance": {
@@ -3493,6 +4616,70 @@
               "messageText": "Reviewing photo proof submitted by customer and delivery handover geostamp.",
               "isInternalNote": true,
               "sentAt": "2026-11-18T16:40:00Z"
+            }
+          ]
+        },
+        {
+          "id": "tkt-nsk-003",
+          "ticketNumber": "TKT-20261118-03",
+          "category": "MERCHANT",
+          "subject": "Drug License 20B/21B endorsement upload clarification",
+          "priority": "HIGH",
+          "status": "IN_PROGRESS",
+          "assignedAgentId": "adm-staff-kyc-001",
+          "assignedAgentName": "Sunita KYC Compliance",
+          "requesterName": "Mahesh Kulkarni",
+          "requesterPhone": "+919822455667",
+          "cityCode": "IN-MH-NSK",
+          "cityName": "Nashik",
+          "relatedMerchantId": "mer-nsk-medicals-009",
+          "createdAt": "2026-11-18T14:00:00Z",
+          "updatedAt": "2026-11-18T14:45:00Z",
+          "slaDeadline": "2026-11-19T14:00:00Z",
+          "messages": [
+            {
+              "id": "msg-006",
+              "senderType": "MERCHANT",
+              "senderName": "Mahesh Kulkarni",
+              "messageText": "We have renewed our FDA Maharashtra Form 20B license. Where do we upload the new copy?",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T14:00:00Z"
+            },
+            {
+              "id": "msg-007",
+              "senderType": "SUPPORT_AGENT",
+              "senderName": "Sunita KYC Compliance",
+              "messageText": "Unlocked document slot #3 in merchant portal. Please re-upload before 6 PM today.",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T14:45:00Z"
+            }
+          ]
+        },
+        {
+          "id": "tkt-mum-004",
+          "ticketNumber": "TKT-20261118-04",
+          "category": "MERCHANT",
+          "subject": "Urgent: Daily settlement batch reconciliation query",
+          "priority": "URGENT",
+          "status": "OPEN",
+          "assignedAgentId": "adm-staff-fin-001",
+          "assignedAgentName": "Pradeep Joshi (Finance Auditor)",
+          "requesterName": "Sunil Tandel",
+          "requesterPhone": "+919820011223",
+          "cityCode": "IN-MH-MUM",
+          "cityName": "Mumbai",
+          "relatedMerchantId": "mer-mum-poultry-010",
+          "createdAt": "2026-11-18T17:00:00Z",
+          "updatedAt": "2026-11-18T17:00:00Z",
+          "slaDeadline": "2026-11-18T19:00:00Z",
+          "messages": [
+            {
+              "id": "msg-008",
+              "senderType": "MERCHANT",
+              "senderName": "Sunil Tandel",
+              "messageText": "Daily NEFT credit of ₹60,750 was not reflected in our Kotak bank account.",
+              "isInternalNote": false,
+              "sentAt": "2026-11-18T17:00:00Z"
             }
           ]
         }

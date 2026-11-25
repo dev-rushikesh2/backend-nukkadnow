@@ -396,4 +396,112 @@ export const PRODUCTS_SEED: ProductSeed[] = [
       },
     ],
   },
+
+  // --- Shree Medicals (Nashik) Products ---
+  {
+    id: 'prod-shree-001',
+    tenantId: 'mer-nsk-medicals-009',
+    outletId: 'out-nsk-medicals-009',
+    name: 'First Aid Emergency Care Kit (Comprehensive)',
+    description: 'Antiseptic wash, sterile gauze swabs, waterproof adhesive tape, bandage rolls, burn ointment, and digital thermometer.',
+    category: 'Grocery & Daily Needs',
+    subCategory: 'Pharmacy & Health',
+    isAvailable: true,
+    variants: [
+      {
+        id: 'var-shree-firstaid-box',
+        name: 'Standard Home Kit (24 Items)',
+        sku: 'SHR-FAK-001',
+        barcode: '890123400901',
+        pricePaise: 49900, // ₹499.00
+        compareAtPricePaise: 55000,
+        isPreorder: false,
+        leadTimeMinutes: 0,
+        initialStock: 50,
+        reservedStock: 2,
+        safetyStock: 10,
+      },
+    ],
+  },
+
+  // --- Aapla Machhi (Mumbai) Products ---
+  {
+    id: 'prod-aapla-001',
+    tenantId: 'mer-mum-poultry-010',
+    outletId: 'out-mum-poultry-010',
+    name: 'Fresh Arabian Sea Surmai (King Fish Steaks)',
+    description: 'Direct day-catch coastal king fish, scaled, gutted, and cut into firm center steaks. Packed on food-grade ice.',
+    category: 'Grocery & Daily Needs',
+    subCategory: 'Meat & Seafood',
+    isAvailable: true,
+    variants: [
+      {
+        id: 'var-aapla-surmai-500g',
+        name: '500g Net Cleaned Steaks',
+        sku: 'AAP-SRM-500',
+        barcode: '890123401001',
+        pricePaise: 65000, // ₹650.00
+        compareAtPricePaise: 75000,
+        isPreorder: false,
+        leadTimeMinutes: 20,
+        initialStock: 15,
+        reservedStock: 1,
+        safetyStock: 2,
+      },
+    ],
+  },
+
+  // --- City Bakes & Cafe (Pune) Products ---
+  {
+    id: 'prod-citybakes-001',
+    tenantId: 'mer-pun-bakes-011',
+    outletId: 'out-pun-bakes-011',
+    name: 'Dutch Chocolate Truffle Cake (1/2 kg)',
+    description: 'Rich dark Belgian cocoa sponge layered with silky ganache truffle and topped with dark chocolate shavings.',
+    category: 'Dairy, Sweets & Bakery',
+    subCategory: 'Bakery & Snacks',
+    isAvailable: true,
+    variants: [
+      {
+        id: 'var-citybakes-cake-500g',
+        name: '500g Fresh Cream Cake',
+        sku: 'CTY-TRF-500',
+        barcode: '890123401101',
+        pricePaise: 45000, // ₹450.00
+        compareAtPricePaise: 50000,
+        isPreorder: true,
+        leadTimeMinutes: 60,
+        initialStock: 25,
+        reservedStock: 0,
+        safetyStock: 5,
+      },
+    ],
+  },
+
+  // --- Akola Home Essentials (Aurangabad) Products ---
+  {
+    id: 'prod-akolahome-001',
+    tenantId: 'mer-aur-home-012',
+    outletId: 'out-aur-home-012',
+    name: 'Tri-Ply Heavy Bottom Stainless Steel Kadhai (2.5L)',
+    description: 'Grade 304 food-grade stainless steel with pure aluminum core for fast, even heat distribution without hot spots.',
+    category: 'Grocery & Daily Needs',
+    subCategory: 'Home & Household',
+    isAvailable: true,
+    variants: [
+      {
+        id: 'var-akolahome-kadhai-24cm',
+        name: '24cm Induction Base Kadhai with Lid',
+        sku: 'AKL-KDH-024',
+        barcode: '890123401201',
+        pricePaise: 129900, // ₹1,299.00
+        compareAtPricePaise: 169900,
+        isPreorder: false,
+        leadTimeMinutes: 0,
+        initialStock: 40,
+        reservedStock: 3,
+        safetyStock: 8,
+      },
+    ],
+  },
 ];

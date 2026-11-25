@@ -51,19 +51,20 @@ export class PrismaUserRepository implements UserRepositoryPort {
       },
     });
 
-    if (user.tenantId && user.roles.length > 0) {
+    const tenantIdToUse = user.tenantId || "PLATFORM";
+    if (user.roles && user.roles.length > 0) {
       for (const role of user.roles) {
         await this.prisma.membership.upsert({
           where: {
             userId_tenantId_role: {
               userId: user.id,
-              tenantId: user.tenantId,
+              tenantId: tenantIdToUse,
               role,
             },
           },
           create: {
             userId: user.id,
-            tenantId: user.tenantId,
+            tenantId: tenantIdToUse,
             outletId: user.outletId ?? null,
             role,
           },

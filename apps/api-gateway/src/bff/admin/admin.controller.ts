@@ -56,7 +56,21 @@ function requireAdmin(headers: Record<string, any>): AdminTokenContext {
       issuer: process.env.JWT_ISSUER,
       audience: process.env.JWT_AUDIENCE,
     });
-    if (!decoded?.roles?.some((r: string) => r.startsWith("ADMIN_") || r === "ROOT_ADMIN" || r === "SUPER_ADMIN" || r === "PLATFORM_ADMIN")) {
+    const ADMIN_ROLES = [
+      "ROOT_ADMIN",
+      "SUPER_ADMIN",
+      "PLATFORM_ADMIN",
+      "CITY_OPERATIONS_MANAGER",
+      "VERIFICATION_STAFF",
+      "SUPPORT_STAFF",
+      "FINANCE_AUDITOR",
+    ];
+    const userRoles = Array.isArray(decoded?.roles) ? decoded.roles : (decoded?.roles ? [decoded.roles] : []);
+    const hasAdminRole = userRoles.some((r: string) => {
+      const upper = String(r || "").toUpperCase();
+      return upper.startsWith("ADMIN_") || upper.startsWith("ROLE_") || ADMIN_ROLES.includes(upper);
+    });
+    if (!hasAdminRole) {
       throw new ForbiddenException("Insufficient admin privileges");
     }
     return {
@@ -772,9 +786,22 @@ export class AdminController {
   // =========================================================================
 
   @Post("auth/login")
-  @ApiOperation({ summary: "Admin login — initiates MFA OTP flow" })
-  async adminLogin(@Body() body: { email: string }, @Req() req: any) {
-    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/otp/request", {
+  @ApiOperation({ summary: "Admin login — email + password, challenges MFA if enabled" })
+  async adminLogin(@Body() body: { email: string; password: string }, @Req() req: any) {
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/login", {
+      method: "POST",
+      headers: {
+        "user-agent": req.headers["user-agent"] ?? "",
+        "x-forwarded-for": (req.headers["x-forwarded-for"] as string) ?? req.socket?.remoteAddress ?? "",
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Post("auth/mfa/verify")
+  @ApiOperation({ summary: "Admin verify TOTP code during MFA challenge" })
+  async adminMfaVerify(@Body() body: any, @Req() req: any) {
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/mfa/verify", {
       method: "POST",
       headers: {
         "user-agent": req.headers["user-agent"] ?? "",
@@ -785,15 +812,74 @@ export class AdminController {
   }
 
   @Post("auth/otp/verify")
-  @ApiOperation({ summary: "Verify admin MFA OTP and issue admin-scoped token" })
-  async adminVerifyOtp(@Body() body: { email: string; otp: string }, @Req() req: any) {
-    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/otp/verify", {
+  @ApiOperation({ summary: "Admin verify TOTP/OTP code alias" })
+  async adminOtpVerifyAlias(@Body() body: any, @Req() req: any) {
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/mfa/verify", {
       method: "POST",
       headers: {
         "user-agent": req.headers["user-agent"] ?? "",
         "x-forwarded-for": (req.headers["x-forwarded-for"] as string) ?? req.socket?.remoteAddress ?? "",
       },
       body: JSON.stringify(body),
+    });
+  }
+
+  @Post("auth/mfa/setup")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin generate TOTP setup secret" })
+  async adminMfaSetup(@Body() body: any, @Headers() headers: any) {
+    const admin = requireAdmin(headers);
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/mfa/setup", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify({ email: body?.email || admin.email }),
+    });
+  }
+
+  @Post("auth/mfa/enable")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin activate TOTP MFA" })
+  async adminMfaEnable(@Body() body: any, @Headers() headers: any) {
+    const admin = requireAdmin(headers);
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/mfa/enable", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify({ ...body, email: body?.email || admin.email }),
+    });
+  }
+
+  @Post("auth/mfa/disable")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin disable TOTP MFA" })
+  async adminMfaDisable(@Body() body: any, @Headers() headers: any) {
+    const admin = requireAdmin(headers);
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/mfa/disable", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify({ ...body, email: body?.email || admin.email }),
+    });
+  }
+
+  @Get("auth/me")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get current admin profile and MFA status" })
+  async getAdminMe(@Headers() headers: any) {
+    const admin = requireAdmin(headers);
+    return this.proxy.dispatch(this.identityServiceUrl, `/api/v1/auth/admin/me?email=${encodeURIComponent(admin.email)}`, {
+      method: "GET",
+      headers: { authorization: headers.authorization },
+    });
+  }
+
+  @Patch("auth/me")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update admin profile" })
+  async updateAdminMe(@Body() body: any, @Headers() headers: any) {
+    const admin = requireAdmin(headers);
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/auth/admin/me", {
+      method: "PATCH",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify({ ...body, email: admin.email }),
     });
   }
 

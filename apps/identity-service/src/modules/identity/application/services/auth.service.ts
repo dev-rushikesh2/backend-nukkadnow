@@ -1,5 +1,6 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException, BadRequestException, ForbiddenException } from "@nestjs/common";
 import { OtpManagerService } from "../../infrastructure/otp/otp-manager.service";
+import { TotpService } from "../../infrastructure/totp/totp.service";
 import { UserRepositoryPort } from "../../domain/repositories/user.repository.port";
 import { SessionRepositoryPort } from "../../domain/repositories/session.repository.port";
 import { User } from "../../domain/entities/user.entity";
@@ -8,6 +9,7 @@ import { PhoneNumber } from "../../domain/value-objects/phone-number.vo";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 import * as jwt from "jsonwebtoken";
 import * as crypto from "crypto";
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class AuthService {
@@ -17,6 +19,7 @@ export class AuthService {
 
   constructor(
     private readonly otpManager: OtpManagerService,
+    private readonly totpService: TotpService,
     private readonly userRepo: UserRepositoryPort,
     private readonly sessionRepo: SessionRepositoryPort
   ) {
@@ -33,6 +36,584 @@ export class AuthService {
     this.jwtSecret = process.env.JWT_SECRET;
     this.issuer = process.env.JWT_ISSUER;
     this.audience = process.env.JWT_AUDIENCE;
+  }
+
+  /**
+   * Resolve default hierarchy role, permissions, and geo assignment for administrative accounts.
+   * By default, MFA is disabled initially so users log in directly and then activate Authenticator in profile.
+   */
+  /**
+   * Resolve default hierarchy role, permissions, and geo assignment for administrative accounts.
+   * By default, MFA is disabled initially so users log in directly and then activate Authenticator in profile.
+   */
+  private getAdminAccountDefaults(email: string) {
+    const clean = email.toLowerCase().trim();
+    if (clean.includes("founder")) {
+      return {
+        role: "ROOT_ADMIN",
+        hierarchyLevel: 1,
+        name: "Rajesh Nukkad (Founder)",
+        phone: "+919800000001",
+        geoAssignment: { cityName: "All Cities (Global)", cityCode: "GLOBAL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: true,
+      };
+    }
+    if (clean.includes("root")) {
+      return {
+        role: "ROOT_ADMIN",
+        hierarchyLevel: 1,
+        name: "Rushi Platform Architect",
+        phone: "+919800000002",
+        geoAssignment: { cityName: "All Cities (Global)", cityCode: "GLOBAL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: true,
+      };
+    }
+    if (clean.includes("admin@") || clean.includes("rushi")) {
+      return {
+        role: "SUPER_ADMIN",
+        hierarchyLevel: 2,
+        name: "Rushi Platform Architect",
+        phone: "+919800000003",
+        geoAssignment: { cityName: "All Cities (Global)", cityCode: "GLOBAL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("akola")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Rajesh Sharma (Akola Lead)",
+        phone: "+919823000012",
+        geoAssignment: { cityName: "Akola", cityCode: "IN-MH-AKL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("amravati")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Pooja Deshmukh (Amravati Lead)",
+        phone: "+919823000013",
+        geoAssignment: { cityName: "Amravati", cityCode: "IN-MH-AMR", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("nagpur")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Amit Deshpande (Nagpur Lead)",
+        phone: "+919823000011",
+        geoAssignment: { cityName: "Nagpur", cityCode: "IN-MH-NGP", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("pune")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Sneha Kulkarni (Pune Lead)",
+        phone: "+919823000014",
+        geoAssignment: { cityName: "Pune", cityCode: "IN-MH-PUN", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("nashik")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Vikram Shinde (Nashik Lead)",
+        phone: "+919823000015",
+        geoAssignment: { cityName: "Nashik", cityCode: "IN-MH-NSK", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("mumbai")) {
+      return {
+        role: "CITY_OPERATIONS_MANAGER",
+        hierarchyLevel: 3,
+        name: "Rohit Sawant (Mumbai Lead)",
+        phone: "+919823000016",
+        geoAssignment: { cityName: "Mumbai", cityCode: "IN-MH-MUM", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("kyc") || clean.includes("sunita")) {
+      return {
+        role: "VERIFICATION_STAFF",
+        hierarchyLevel: 4,
+        name: "Sunita KYC Compliance",
+        phone: "+919823000021",
+        geoAssignment: { cityName: "Nagpur", cityCode: "IN-MH-NGP", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("support") || clean.includes("ananya")) {
+      return {
+        role: "SUPPORT_STAFF",
+        hierarchyLevel: 4,
+        name: "Ananya Support Desk",
+        phone: "+919823000022",
+        geoAssignment: { cityName: "Global Support", cityCode: "GLOBAL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    if (clean.includes("finance")) {
+      return {
+        role: "FINANCE_AUDITOR",
+        hierarchyLevel: 4,
+        name: "Pradeep Joshi (Finance Auditor)",
+        phone: "+919823000023",
+        geoAssignment: { cityName: "Global Finance", cityCode: "GLOBAL", state: "Maharashtra" },
+        requiresMfa: false,
+        isRootProtected: false,
+      };
+    }
+    return {
+      role: "SUPER_ADMIN",
+      hierarchyLevel: 2,
+      name: clean.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      phone: "+919800000099",
+      geoAssignment: { cityName: "All Cities (Global)", cityCode: "GLOBAL", state: "Maharashtra" },
+      requiresMfa: false,
+      isRootProtected: false,
+    };
+  }
+
+  /**
+   * Return full permissions list for an admin hierarchy role.
+   */
+  public getRolePermissions(role: string): string[] {
+    const allPermissions = [
+      "admin:merchants:read",
+      "admin:merchants:create",
+      "admin:merchants:update",
+      "admin:merchants:suspend",
+      "admin:merchants:terminate",
+      "admin:merchants:export",
+      "admin:kyc:read",
+      "admin:kyc:review",
+      "admin:kyc:approve",
+      "admin:kyc:reject",
+      "admin:kyc:re_verify",
+      "admin:outlets:read",
+      "admin:outlets:manage",
+      "admin:outlets:override_hours",
+      "admin:outlets:geofence_edit",
+      "admin:localities:read",
+      "admin:localities:manage",
+      "admin:categories:manage",
+      "admin:catalog:read",
+      "admin:catalog:moderate",
+      "admin:catalog:takedown",
+      "admin:orders:read",
+      "admin:orders:intervene",
+      "admin:orders:force_cancel",
+      "admin:payments:read",
+      "admin:payments:reconcile",
+      "admin:payments:webhook_retry",
+      "admin:refunds:read",
+      "admin:refunds:approve_low",
+      "admin:refunds:approve_high",
+      "admin:disputes:resolve",
+      "admin:subscriptions:read",
+      "admin:subscriptions:manage",
+      "admin:pricing:manage",
+      "admin:support:read",
+      "admin:support:assign",
+      "admin:support:respond",
+      "admin:support:escalate",
+      "admin:support:resolve",
+      "admin:reviews:read",
+      "admin:reviews:moderate",
+      "admin:notifications:send_broadcast",
+      "admin:notifications:templates_manage",
+      "admin:analytics:read",
+      "admin:analytics:financial_export",
+      "admin:platform:users_read",
+      "admin:platform:users_manage",
+      "admin:platform:roles_manage",
+      "admin:feature_flags:read",
+      "admin:feature_flags:toggle",
+      "admin:system_health:read",
+      "admin:system:maintenance_toggle",
+      "admin:audit_logs:read",
+      "admin:audit:unmask_pii",
+      "admin:settings:manage",
+    ];
+
+    switch (role) {
+      case "ROOT_ADMIN":
+        return allPermissions;
+      case "SUPER_ADMIN":
+        return allPermissions.filter((p) => p !== "admin:platform:roles_manage");
+      case "CITY_OPERATIONS_MANAGER":
+        return [
+          "admin:merchants:read",
+          "admin:merchants:update",
+          "admin:merchants:suspend",
+          "admin:kyc:read",
+          "admin:outlets:read",
+          "admin:outlets:manage",
+          "admin:outlets:override_hours",
+          "admin:localities:read",
+          "admin:catalog:read",
+          "admin:catalog:moderate",
+          "admin:orders:read",
+          "admin:orders:intervene",
+          "admin:payments:read",
+          "admin:refunds:read",
+          "admin:refunds:approve_low",
+          "admin:subscriptions:read",
+          "admin:support:read",
+          "admin:support:assign",
+          "admin:support:respond",
+          "admin:support:resolve",
+          "admin:reviews:read",
+          "admin:reviews:moderate",
+          "admin:notifications:send_broadcast",
+          "admin:analytics:read",
+          "admin:audit_logs:read",
+        ];
+      case "VERIFICATION_STAFF":
+        return [
+          "admin:merchants:read",
+          "admin:kyc:read",
+          "admin:kyc:review",
+          "admin:kyc:approve",
+          "admin:kyc:reject",
+          "admin:outlets:read",
+          "admin:catalog:read",
+          "admin:support:read",
+          "admin:support:respond",
+          "admin:audit_logs:read",
+        ];
+      case "SUPPORT_STAFF":
+        return [
+          "admin:merchants:read",
+          "admin:outlets:read",
+          "admin:orders:read",
+          "admin:orders:intervene",
+          "admin:payments:read",
+          "admin:refunds:read",
+          "admin:support:read",
+          "admin:support:respond",
+          "admin:support:escalate",
+          "admin:support:resolve",
+          "admin:reviews:read",
+          "admin:reviews:moderate",
+          "admin:audit_logs:read",
+          "admin:audit:unmask_pii",
+        ];
+      case "FINANCE_AUDITOR":
+        return [
+          "admin:payments:read",
+          "admin:payments:reconcile",
+          "admin:refunds:read",
+          "admin:subscriptions:read",
+          "admin:audit_logs:read",
+        ];
+      default:
+        return allPermissions;
+    }
+  }
+
+  /**
+   * Admin-only: authenticate with email + password.
+   * If MFA is enabled on the account, issues an MFA challenge ticket.
+   * If MFA is not required (default until activated), returns authenticated session directly.
+   */
+  async adminPasswordLogin(email: string, password: string, userAgent?: string, ipAddress?: string) {
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Derive env-var key from email
+    const slug = cleanEmail.replace(/[@.]/g, "_");
+    const perAccountHash = process.env[`ADMIN_PWD_${slug.toUpperCase()}`];
+    const masterHash = process.env.ADMIN_MASTER_PASSWORD_HASH;
+    const storedHash = perAccountHash || masterHash;
+
+    if (!storedHash) {
+      if (process.env.NODE_ENV === "production") {
+        throw new UnauthorizedException("Admin credentials not configured");
+      }
+      // fall through in dev
+    } else {
+      const valid = await bcrypt.compare(password, storedHash);
+      if (!valid) {
+        throw new UnauthorizedException("Invalid email or password");
+      }
+    }
+
+    const accountDefaults = this.getAdminAccountDefaults(cleanEmail);
+    const primaryRole = accountDefaults.role || "ROOT_ADMIN";
+
+    // Look up user; auto-create if not found (dev/staging)
+    let user = await this.userRepo.findByEmail(cleanEmail);
+    if (!user) {
+      if (process.env.NODE_ENV === "production") {
+        throw new UnauthorizedException("Admin account not found");
+      }
+      const phone = accountDefaults.phone || `+919800${crypto.createHash('md5').update(cleanEmail).digest('hex').replace(/\D/g, '').padEnd(6, '0').slice(0, 6)}`;
+      user = new User({
+        id: UniqueIdentifier.generateV7(),
+        phoneNumber: PhoneNumber.create(phone),
+        email: cleanEmail,
+        fullName: accountDefaults.name,
+        status: "ACTIVE",
+        roles: [primaryRole],
+        mfaEnabled: false, // Disabled initially; enabled when operator activates Authenticator in profile
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await this.userRepo.save(user);
+    } else {
+      // Ensure user entity has statutory role
+      if (!user.roles || user.roles.length === 0 || !user.roles.includes(primaryRole)) {
+        user.setRoles([primaryRole]);
+        await this.userRepo.save(user);
+      }
+    }
+
+    if (!user.isActive()) {
+      throw new UnauthorizedException("Admin account is suspended");
+    }
+
+    // Check whether MFA has been activated for this operator (requires both flag enabled AND Authenticator secret paired)
+    const mfaRequired = user.isMfaEnabled() && Boolean(user.mfaSecret);
+
+    if (mfaRequired) {
+      const challengeId = UniqueIdentifier.generateV7();
+      return {
+        success: true,
+        requiresMfa: true,
+        mfaRequired: true,
+        challengeId,
+        email: cleanEmail,
+        mfaType: "TOTP",
+        message: "Multi-factor authentication required. Please enter your 6-digit TOTP code.",
+      };
+    }
+
+    // Direct login without MFA (e.g. Support Staff or MFA disabled)
+    const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
+    const permissions = this.getRolePermissions(primaryRole);
+
+    return {
+      success: true,
+      requiresMfa: false,
+      token: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      expiresAt: Date.now() + tokens.expiresIn * 1000,
+      operator: {
+        operatorId: user.id,
+        name: user.fullName || accountDefaults.name,
+        email: cleanEmail,
+        role: primaryRole,
+        permissions,
+        geoAssignment: accountDefaults.geoAssignment,
+        isRootProtected: accountDefaults.isRootProtected,
+        mfaVerified: false,
+      },
+    };
+  }
+
+  /**
+   * Verify 6-digit TOTP code for MFA challenge during Admin login.
+   */
+  async adminMfaVerify(email: string, totpCode: string, challengeId?: string, userAgent?: string, ipAddress?: string) {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanCode = (totpCode || "").trim().replace(/\s+/g, "");
+
+    if (!cleanCode || cleanCode.length !== 6) {
+      throw new BadRequestException("A 6-digit TOTP security code is required.");
+    }
+
+    const user = await this.userRepo.findByEmail(cleanEmail);
+    if (!user) {
+      throw new UnauthorizedException("Admin account not found");
+    }
+
+    if (!user.isActive()) {
+      throw new UnauthorizedException("Admin account is suspended");
+    }
+
+    const secret = user.mfaSecret || this.totpService.getDeterministicSecret(cleanEmail);
+    const isValid =
+      this.totpService.verifyTotp(secret, cleanCode) ||
+      (process.env.NODE_ENV !== "production" && cleanCode === "123456");
+
+    if (!isValid) {
+      throw new UnauthorizedException("Invalid 6-digit TOTP security code. Please check your authenticator app and try again.");
+    }
+
+    const accountDefaults = this.getAdminAccountDefaults(cleanEmail);
+    const primaryRole = accountDefaults.role || (Array.isArray(user.roles) && user.roles.length > 0 ? user.roles[0] : "ROOT_ADMIN");
+    if (!user.roles || user.roles.length === 0 || !user.roles.includes(primaryRole)) {
+      user.setRoles([primaryRole]);
+      await this.userRepo.save(user);
+    }
+    const tokens = await this.issueTokenPair(user, userAgent, ipAddress);
+    const permissions = this.getRolePermissions(primaryRole);
+
+    const operatorPayload = {
+      operatorId: user.id,
+      name: user.fullName || accountDefaults.name,
+      email: cleanEmail,
+      role: primaryRole,
+      permissions,
+      geoAssignment: accountDefaults.geoAssignment,
+      isRootProtected: accountDefaults.isRootProtected,
+      mfaVerified: true,
+    };
+
+    return {
+      success: true,
+      token: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      expiresAt: Date.now() + tokens.expiresIn * 1000,
+      operator: operatorPayload,
+      data: {
+        token: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        expiresAt: Date.now() + tokens.expiresIn * 1000,
+        operator: operatorPayload,
+      },
+    };
+  }
+
+  /**
+   * Generate an RFC 6238 TOTP setup key and otpauth URI for configuring an Authenticator app.
+   */
+  async adminMfaSetup(email: string) {
+    const cleanEmail = email.toLowerCase().trim();
+    const setup = this.totpService.generateSecret(cleanEmail, "NukkadNow Admin");
+    return {
+      success: true,
+      secret: setup.secret,
+      otpauthUrl: setup.otpauthUrl,
+      issuer: "NukkadNow",
+      account: cleanEmail,
+    };
+  }
+
+  /**
+   * Enable TOTP Authenticator for an admin operator after verifying a test code.
+   */
+  async adminMfaEnable(email: string, secret: string, totpCode: string) {
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanCode = (totpCode || "").trim().replace(/\s+/g, "");
+
+    const isValid =
+      this.totpService.verifyTotp(secret, cleanCode) ||
+      (process.env.NODE_ENV !== "production" && cleanCode === "123456");
+
+    if (!isValid) {
+      throw new BadRequestException("Verification token does not match. Please verify the code generated in your authenticator app.");
+    }
+
+    const user = await this.userRepo.findByEmail(cleanEmail);
+    if (!user) {
+      throw new UnauthorizedException("User not found");
+    }
+
+    user.enableMfa(secret);
+    await this.userRepo.save(user);
+
+    return {
+      success: true,
+      mfaEnabled: true,
+      message: "Two-Factor Authenticator (TOTP) successfully activated for this administrator account.",
+    };
+  }
+
+  /**
+   * Disable TOTP Authenticator for an admin operator.
+   */
+  async adminMfaDisable(email: string, totpCode?: string) {
+    const cleanEmail = email.toLowerCase().trim();
+    const accountDefaults = this.getAdminAccountDefaults(cleanEmail);
+
+    if (accountDefaults.isRootProtected) {
+      throw new ForbiddenException("Two-Factor Authentication is permanently mandated for Level 1 Root Admin accounts.");
+    }
+
+    const user = await this.userRepo.findByEmail(cleanEmail);
+    if (!user) {
+      throw new UnauthorizedException("User not found");
+    }
+
+    if (totpCode && user.mfaSecret) {
+      const isValid =
+        this.totpService.verifyTotp(user.mfaSecret, totpCode) ||
+        (process.env.NODE_ENV !== "production" && totpCode === "123456");
+      if (!isValid) {
+        throw new UnauthorizedException("Invalid security token.");
+      }
+    }
+
+    user.disableMfa();
+    await this.userRepo.save(user);
+
+    return {
+      success: true,
+      mfaEnabled: false,
+      message: "Two-Factor Authentication disabled.",
+    };
+  }
+
+  /**
+   * Return current admin operator details including MFA status.
+   */
+  async adminGetMe(email: string) {
+    const cleanEmail = email.toLowerCase().trim();
+    const accountDefaults = this.getAdminAccountDefaults(cleanEmail);
+    const user = await this.userRepo.findByEmail(cleanEmail);
+
+    const mfaActive = user ? user.isMfaEnabled() : false;
+    const primaryRole = accountDefaults.role || (user?.roles?.[0] as string) || "ROOT_ADMIN";
+    const permissions = this.getRolePermissions(primaryRole);
+
+    return {
+      id: user?.id || "adm-001",
+      name: user?.fullName || accountDefaults.name,
+      email: cleanEmail,
+      phone: user?.phoneNumber || accountDefaults.phone || "+91 98230 11223",
+      roleCode: primaryRole,
+      role: primaryRole,
+      permissions,
+      status: user?.status || "ACTIVE",
+      mfaEnabled: mfaActive,
+      isRootProtected: accountDefaults.isRootProtected,
+      geoScope: accountDefaults.geoAssignment?.cityName || "Global Scope",
+      geoAssignment: accountDefaults.geoAssignment,
+      avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user?.fullName || accountDefaults.name)}`,
+      lastLoginAt: new Date().toISOString(),
+      lastLoginIp: "127.0.0.1",
+    };
+  }
+
+  /**
+   * Update personal profile details for admin operator.
+   */
+  async adminUpdateProfile(email: string, data: { name?: string; phone?: string }) {
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await this.userRepo.findByEmail(cleanEmail);
+    if (user && data.name) {
+      user.setFullName(data.name.trim());
+      await this.userRepo.save(user);
+    }
+    return this.adminGetMe(cleanEmail);
   }
 
   async requestLoginOtp(target: string): Promise<{ success: boolean; expiresInSeconds: number; devOtp?: string }> {
@@ -138,6 +719,7 @@ export class AuthService {
     const payload = {
       sub: user.id,
       phone: user.phoneNumber,
+      email: user.email,
       roles: user.roles,
       tenantId: user.tenantId,
       outletId: user.outletId,

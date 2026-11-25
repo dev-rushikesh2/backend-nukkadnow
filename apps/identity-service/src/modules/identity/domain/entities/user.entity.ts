@@ -10,6 +10,8 @@ export interface UserProps {
   tenantId?: string; // Merchant organization ID
   outletId?: string; // Specific primary outlet ID
   merchantName?: string; // Cached organization display name
+  mfaEnabled?: boolean;
+  mfaSecret?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,9 +28,37 @@ export class User {
   get tenantId(): string | undefined { return this.props.tenantId; }
   get outletId(): string | undefined { return this.props.outletId; }
   get merchantName(): string | undefined { return this.props.merchantName; }
+  get mfaEnabled(): boolean { return this.props.mfaEnabled === true && Boolean(this.props.mfaSecret); }
+  get mfaSecret(): string | undefined { return this.props.mfaSecret; }
 
   isActive(): boolean {
     return this.props.status === "ACTIVE";
+  }
+
+  isMfaEnabled(): boolean {
+    return this.props.mfaEnabled === true && Boolean(this.props.mfaSecret);
+  }
+
+  enableMfa(secret: string): void {
+    this.props.mfaEnabled = true;
+    this.props.mfaSecret = secret;
+    this.props.updatedAt = new Date();
+  }
+
+  disableMfa(): void {
+    this.props.mfaEnabled = false;
+    this.props.mfaSecret = undefined;
+    this.props.updatedAt = new Date();
+  }
+
+  setFullName(name: string): void {
+    this.props.fullName = name;
+    this.props.updatedAt = new Date();
+  }
+
+  setRoles(roles: string[]): void {
+    this.props.roles = roles;
+    this.props.updatedAt = new Date();
   }
 
   suspend(): void {
@@ -54,6 +84,7 @@ export class User {
       tenantId: this.props.tenantId,
       outletId: this.props.outletId,
       merchantName: this.props.merchantName,
+      mfaEnabled: this.props.mfaEnabled,
       createdAt: this.props.createdAt,
       updatedAt: this.props.updatedAt,
     };
