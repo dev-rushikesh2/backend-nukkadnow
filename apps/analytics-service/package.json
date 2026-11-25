@@ -4,7 +4,7 @@
   "description": "Aggregated Dashboards, Daily Revenue Metrics & Reporting Facts",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && node -e \"const fs=require('fs');if(fs.existsSync('prisma/client'))fs.cpSync('prisma/client','dist/apps/analytics-service/prisma/client',{recursive:true});\"",
     "dev": "nest start --watch",
     "start": "nest start",
     "start:prod": "node dist/main",

@@ -621,6 +621,15 @@ export class AuthService {
     const cleanTarget = isEmail ? target.toLowerCase().trim() : PhoneNumber.create(target).getValue();
     const devOtp = await this.otpManager.requestOtp(cleanTarget);
 
+    if (isEmail && devOtp) {
+      const notifUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
+      fetch(`${notifUrl}/api/v1/notifications/send-email-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanTarget, otp: devOtp }),
+      }).catch(() => {});
+    }
+
     return {
       success: true,
       expiresInSeconds: 300,
@@ -634,21 +643,40 @@ export class AuthService {
 
     await this.otpManager.verifyOtp(cleanTarget, otp);
 
+    let merchantCtx: any = null;
+    try {
+      const merchantUrl = process.env.MERCHANT_SERVICE_URL || "http://localhost:4002";
+      const q = isEmail ? `email=${encodeURIComponent(cleanTarget)}` : `phone=${encodeURIComponent(cleanTarget)}`;
+      const res = await fetch(`${merchantUrl}/api/v1/merchants/internal/lookup?${q}`);
+      if (res.ok) merchantCtx = await res.json();
+    } catch {}
+
     let user: User | null = null;
     if (isEmail) {
       user = await this.userRepo.findByEmail(cleanTarget);
       if (!user) {
-        // Auto-register pending merchant on email verification
+        const uniquePhone =
+          merchantCtx?.phone ||
+          `+9197${crypto.createHash("md5").update(cleanTarget).digest("hex").replace(/\D/g, "").padEnd(8, "0").slice(0, 8)}`;
         user = new User({
           id: UniqueIdentifier.generateV7(),
-          phoneNumber: PhoneNumber.create("+919800000000"),
+          phoneNumber: PhoneNumber.create(uniquePhone),
           email: cleanTarget,
-          fullName: cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+          fullName: merchantCtx?.ownerName || cleanTarget.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
           status: "ACTIVE",
-          roles: ["PENDING_MERCHANT"],
+          roles: [merchantCtx?.approved ? "MERCHANT_OWNER" : "PENDING_MERCHANT"],
+          tenantId: merchantCtx?.tenantId,
+          outletId: merchantCtx?.outletId,
+          merchantName: merchantCtx?.merchantName,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
+        await this.userRepo.save(user);
+      } else if (merchantCtx?.approved && merchantCtx?.tenantId) {
+        user.setTenantContext(merchantCtx.tenantId, merchantCtx.outletId, merchantCtx.merchantName);
+        if (!user.roles.includes("MERCHANT_OWNER")) {
+          user.setRoles(["MERCHANT_OWNER"]);
+        }
         await this.userRepo.save(user);
       }
     } else {
@@ -659,7 +687,10 @@ export class AuthService {
           id: UniqueIdentifier.generateV7(),
           phoneNumber: PhoneNumber.create(target),
           status: "ACTIVE",
-          roles: ["CUSTOMER"],
+          roles: [merchantCtx?.approved ? "MERCHANT_OWNER" : "CUSTOMER"],
+          tenantId: merchantCtx?.tenantId,
+          outletId: merchantCtx?.outletId,
+          merchantName: merchantCtx?.merchantName,
           createdAt: new Date(),
           updatedAt: new Date(),
         });

@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { MerchantController } from "./presentation/http/controllers/merchant.controller";
 import { PartnerRegistrationController } from "./presentation/http/controllers/partner-registration.controller";
+import { AdminMerchantController } from "./presentation/http/controllers/admin-merchant.controller";
 import { MerchantService } from "./application/services/merchant.service";
 import { PartnerRegistrationService } from "./application/services/partner-registration.service";
 import { MerchantRepositoryPort, OutletRepositoryPort } from "./domain/repositories/merchant.repository.port";
@@ -12,6 +13,7 @@ import { PrismaService } from "./infrastructure/persistence/prisma/prisma.servic
 
 @Module({
   controllers: [
+    AdminMerchantController,
     PartnerRegistrationController,
     MerchantController,
   ],

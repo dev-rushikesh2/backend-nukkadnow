@@ -2,11 +2,37 @@ import { Controller, Post, Get, Body, Param, Query } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { FulfillmentService } from "../../../application/services/fulfillment.service";
 import { CreateSlotDto, ReserveSlotDto, GenerateTokenDto } from "../../../application/dto/fulfillment.dto";
+import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
+import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
 @ApiTags("Fulfillment, Slots & Queue")
 @Controller("api/v1/fulfillment")
 export class FulfillmentController {
-  constructor(private readonly fulfillmentService: FulfillmentService) {}
+  constructor(
+    private readonly fulfillmentService: FulfillmentService,
+    private readonly prisma: PrismaService
+  ) {}
+
+  @Post("outlets/:outletId/throttle")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Throttle or un-throttle outlet capacity" })
+  async throttleOutlet(@Param("outletId") outletId: string, @Body() body: { throttled?: boolean; maxCapacity?: number; waitMinutes?: number }) {
+    if (body?.maxCapacity !== undefined) {
+      await this.prisma.capacitySlot.updateMany({
+        where: { outletId },
+        data: { maxCapacity: Math.max(0, Number(body.maxCapacity)) },
+      });
+    }
+    const snapshot = await this.prisma.queueSnapshot.create({
+      data: {
+        id: UniqueIdentifier.generateV7(),
+        outletId,
+        activeOrdersCount: body?.throttled ? 999 : 0,
+        waitMinutes: Number(body?.waitMinutes ?? (body?.throttled ? 45 : 10)),
+      },
+    });
+    return { success: true, data: { outletId, throttled: body?.throttled ?? true, snapshot } };
+  }
 
   @Post("slots")
   @ApiBearerAuth()

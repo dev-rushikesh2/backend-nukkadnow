@@ -53,6 +53,16 @@ export type RegistrationDocument = $Result.DefaultSelection<Prisma.$Registration
  * 
  */
 export type RegistrationStatusHistory = $Result.DefaultSelection<Prisma.$RegistrationStatusHistoryPayload>
+/**
+ * Model PlatformCity
+ * 
+ */
+export type PlatformCity = $Result.DefaultSelection<Prisma.$PlatformCityPayload>
+/**
+ * Model ServiceableLocality
+ * 
+ */
+export type ServiceableLocality = $Result.DefaultSelection<Prisma.$ServiceableLocalityPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -256,6 +266,26 @@ export class PrismaClient<
     * ```
     */
   get registrationStatusHistory(): Prisma.RegistrationStatusHistoryDelegate<ExtArgs>;
+
+  /**
+   * `prisma.platformCity`: Exposes CRUD operations for the **PlatformCity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformCities
+    * const platformCities = await prisma.platformCity.findMany()
+    * ```
+    */
+  get platformCity(): Prisma.PlatformCityDelegate<ExtArgs>;
+
+  /**
+   * `prisma.serviceableLocality`: Exposes CRUD operations for the **ServiceableLocality** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServiceableLocalities
+    * const serviceableLocalities = await prisma.serviceableLocality.findMany()
+    * ```
+    */
+  get serviceableLocality(): Prisma.ServiceableLocalityDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -704,7 +734,9 @@ export namespace Prisma {
     VerificationRecord: 'VerificationRecord',
     PartnerRegistration: 'PartnerRegistration',
     RegistrationDocument: 'RegistrationDocument',
-    RegistrationStatusHistory: 'RegistrationStatusHistory'
+    RegistrationStatusHistory: 'RegistrationStatusHistory',
+    PlatformCity: 'PlatformCity',
+    ServiceableLocality: 'ServiceableLocality'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -720,7 +752,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "merchant" | "outlet" | "outletHours" | "serviceArea" | "verificationRecord" | "partnerRegistration" | "registrationDocument" | "registrationStatusHistory"
+      modelProps: "merchant" | "outlet" | "outletHours" | "serviceArea" | "verificationRecord" | "partnerRegistration" | "registrationDocument" | "registrationStatusHistory" | "platformCity" | "serviceableLocality"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1284,6 +1316,146 @@ export namespace Prisma {
           }
         }
       }
+      PlatformCity: {
+        payload: Prisma.$PlatformCityPayload<ExtArgs>
+        fields: Prisma.PlatformCityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformCityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformCityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformCityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformCityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformCityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformCityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformCityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformCityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformCityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          update: {
+            args: Prisma.PlatformCityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformCityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformCityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PlatformCityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformCityPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformCityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformCity>
+          }
+          groupBy: {
+            args: Prisma.PlatformCityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformCityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformCityCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformCityCountAggregateOutputType> | number
+          }
+        }
+      }
+      ServiceableLocality: {
+        payload: Prisma.$ServiceableLocalityPayload<ExtArgs>
+        fields: Prisma.ServiceableLocalityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ServiceableLocalityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ServiceableLocalityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          findFirst: {
+            args: Prisma.ServiceableLocalityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ServiceableLocalityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          findMany: {
+            args: Prisma.ServiceableLocalityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>[]
+          }
+          create: {
+            args: Prisma.ServiceableLocalityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          createMany: {
+            args: Prisma.ServiceableLocalityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ServiceableLocalityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>[]
+          }
+          delete: {
+            args: Prisma.ServiceableLocalityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          update: {
+            args: Prisma.ServiceableLocalityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          deleteMany: {
+            args: Prisma.ServiceableLocalityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ServiceableLocalityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ServiceableLocalityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceableLocalityPayload>
+          }
+          aggregate: {
+            args: Prisma.ServiceableLocalityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateServiceableLocality>
+          }
+          groupBy: {
+            args: Prisma.ServiceableLocalityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ServiceableLocalityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ServiceableLocalityCountArgs<ExtArgs>
+            result: $Utils.Optional<ServiceableLocalityCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1557,6 +1729,37 @@ export namespace Prisma {
    */
   export type PartnerRegistrationCountOutputTypeCountStatusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RegistrationStatusHistoryWhereInput
+  }
+
+
+  /**
+   * Count Type PlatformCityCountOutputType
+   */
+
+  export type PlatformCityCountOutputType = {
+    localities: number
+  }
+
+  export type PlatformCityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    localities?: boolean | PlatformCityCountOutputTypeCountLocalitiesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlatformCityCountOutputType without action
+   */
+  export type PlatformCityCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCityCountOutputType
+     */
+    select?: PlatformCityCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlatformCityCountOutputType without action
+   */
+  export type PlatformCityCountOutputTypeCountLocalitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServiceableLocalityWhereInput
   }
 
 
@@ -10362,6 +10565,2132 @@ export namespace Prisma {
 
 
   /**
+   * Model PlatformCity
+   */
+
+  export type AggregatePlatformCity = {
+    _count: PlatformCityCountAggregateOutputType | null
+    _min: PlatformCityMinAggregateOutputType | null
+    _max: PlatformCityMaxAggregateOutputType | null
+  }
+
+  export type PlatformCityMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    state: string | null
+    stateCode: string | null
+    district: string | null
+    districtCode: string | null
+    status: string | null
+    managerName: string | null
+    managerEmail: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformCityMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    state: string | null
+    stateCode: string | null
+    district: string | null
+    districtCode: string | null
+    status: string | null
+    managerName: string | null
+    managerEmail: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformCityCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    state: number
+    stateCode: number
+    district: number
+    districtCode: number
+    status: number
+    managerName: number
+    managerEmail: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlatformCityMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    state?: true
+    stateCode?: true
+    district?: true
+    districtCode?: true
+    status?: true
+    managerName?: true
+    managerEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformCityMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    state?: true
+    stateCode?: true
+    district?: true
+    districtCode?: true
+    status?: true
+    managerName?: true
+    managerEmail?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformCityCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    state?: true
+    stateCode?: true
+    district?: true
+    districtCode?: true
+    status?: true
+    managerName?: true
+    managerEmail?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlatformCityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformCity to aggregate.
+     */
+    where?: PlatformCityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformCities to fetch.
+     */
+    orderBy?: PlatformCityOrderByWithRelationInput | PlatformCityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformCityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformCities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformCities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformCities
+    **/
+    _count?: true | PlatformCityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformCityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformCityMaxAggregateInputType
+  }
+
+  export type GetPlatformCityAggregateType<T extends PlatformCityAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformCity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformCity[P]>
+      : GetScalarType<T[P], AggregatePlatformCity[P]>
+  }
+
+
+
+
+  export type PlatformCityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformCityWhereInput
+    orderBy?: PlatformCityOrderByWithAggregationInput | PlatformCityOrderByWithAggregationInput[]
+    by: PlatformCityScalarFieldEnum[] | PlatformCityScalarFieldEnum
+    having?: PlatformCityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformCityCountAggregateInputType | true
+    _min?: PlatformCityMinAggregateInputType
+    _max?: PlatformCityMaxAggregateInputType
+  }
+
+  export type PlatformCityGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    state: string
+    stateCode: string
+    district: string
+    districtCode: string
+    status: string
+    managerName: string | null
+    managerEmail: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PlatformCityCountAggregateOutputType | null
+    _min: PlatformCityMinAggregateOutputType | null
+    _max: PlatformCityMaxAggregateOutputType | null
+  }
+
+  type GetPlatformCityGroupByPayload<T extends PlatformCityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformCityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformCityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformCityGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformCityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformCitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    state?: boolean
+    stateCode?: boolean
+    district?: boolean
+    districtCode?: boolean
+    status?: boolean
+    managerName?: boolean
+    managerEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    localities?: boolean | PlatformCity$localitiesArgs<ExtArgs>
+    _count?: boolean | PlatformCityCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformCity"]>
+
+  export type PlatformCitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    state?: boolean
+    stateCode?: boolean
+    district?: boolean
+    districtCode?: boolean
+    status?: boolean
+    managerName?: boolean
+    managerEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformCity"]>
+
+  export type PlatformCitySelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    state?: boolean
+    stateCode?: boolean
+    district?: boolean
+    districtCode?: boolean
+    status?: boolean
+    managerName?: boolean
+    managerEmail?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlatformCityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    localities?: boolean | PlatformCity$localitiesArgs<ExtArgs>
+    _count?: boolean | PlatformCityCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlatformCityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $PlatformCityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformCity"
+    objects: {
+      localities: Prisma.$ServiceableLocalityPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      state: string
+      stateCode: string
+      district: string
+      districtCode: string
+      status: string
+      managerName: string | null
+      managerEmail: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["platformCity"]>
+    composites: {}
+  }
+
+  type PlatformCityGetPayload<S extends boolean | null | undefined | PlatformCityDefaultArgs> = $Result.GetResult<Prisma.$PlatformCityPayload, S>
+
+  type PlatformCityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PlatformCityFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PlatformCityCountAggregateInputType | true
+    }
+
+  export interface PlatformCityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformCity'], meta: { name: 'PlatformCity' } }
+    /**
+     * Find zero or one PlatformCity that matches the filter.
+     * @param {PlatformCityFindUniqueArgs} args - Arguments to find a PlatformCity
+     * @example
+     * // Get one PlatformCity
+     * const platformCity = await prisma.platformCity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformCityFindUniqueArgs>(args: SelectSubset<T, PlatformCityFindUniqueArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PlatformCity that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PlatformCityFindUniqueOrThrowArgs} args - Arguments to find a PlatformCity
+     * @example
+     * // Get one PlatformCity
+     * const platformCity = await prisma.platformCity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformCityFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformCityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PlatformCity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityFindFirstArgs} args - Arguments to find a PlatformCity
+     * @example
+     * // Get one PlatformCity
+     * const platformCity = await prisma.platformCity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformCityFindFirstArgs>(args?: SelectSubset<T, PlatformCityFindFirstArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PlatformCity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityFindFirstOrThrowArgs} args - Arguments to find a PlatformCity
+     * @example
+     * // Get one PlatformCity
+     * const platformCity = await prisma.platformCity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformCityFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformCityFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PlatformCities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformCities
+     * const platformCities = await prisma.platformCity.findMany()
+     * 
+     * // Get first 10 PlatformCities
+     * const platformCities = await prisma.platformCity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const platformCityWithIdOnly = await prisma.platformCity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PlatformCityFindManyArgs>(args?: SelectSubset<T, PlatformCityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PlatformCity.
+     * @param {PlatformCityCreateArgs} args - Arguments to create a PlatformCity.
+     * @example
+     * // Create one PlatformCity
+     * const PlatformCity = await prisma.platformCity.create({
+     *   data: {
+     *     // ... data to create a PlatformCity
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformCityCreateArgs>(args: SelectSubset<T, PlatformCityCreateArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PlatformCities.
+     * @param {PlatformCityCreateManyArgs} args - Arguments to create many PlatformCities.
+     * @example
+     * // Create many PlatformCities
+     * const platformCity = await prisma.platformCity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformCityCreateManyArgs>(args?: SelectSubset<T, PlatformCityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformCities and returns the data saved in the database.
+     * @param {PlatformCityCreateManyAndReturnArgs} args - Arguments to create many PlatformCities.
+     * @example
+     * // Create many PlatformCities
+     * const platformCity = await prisma.platformCity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformCities and only return the `id`
+     * const platformCityWithIdOnly = await prisma.platformCity.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformCityCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformCityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PlatformCity.
+     * @param {PlatformCityDeleteArgs} args - Arguments to delete one PlatformCity.
+     * @example
+     * // Delete one PlatformCity
+     * const PlatformCity = await prisma.platformCity.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformCity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformCityDeleteArgs>(args: SelectSubset<T, PlatformCityDeleteArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PlatformCity.
+     * @param {PlatformCityUpdateArgs} args - Arguments to update one PlatformCity.
+     * @example
+     * // Update one PlatformCity
+     * const platformCity = await prisma.platformCity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformCityUpdateArgs>(args: SelectSubset<T, PlatformCityUpdateArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PlatformCities.
+     * @param {PlatformCityDeleteManyArgs} args - Arguments to filter PlatformCities to delete.
+     * @example
+     * // Delete a few PlatformCities
+     * const { count } = await prisma.platformCity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformCityDeleteManyArgs>(args?: SelectSubset<T, PlatformCityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformCities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformCities
+     * const platformCity = await prisma.platformCity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformCityUpdateManyArgs>(args: SelectSubset<T, PlatformCityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PlatformCity.
+     * @param {PlatformCityUpsertArgs} args - Arguments to update or create a PlatformCity.
+     * @example
+     * // Update or create a PlatformCity
+     * const platformCity = await prisma.platformCity.upsert({
+     *   create: {
+     *     // ... data to create a PlatformCity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformCity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformCityUpsertArgs>(args: SelectSubset<T, PlatformCityUpsertArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PlatformCities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityCountArgs} args - Arguments to filter PlatformCities to count.
+     * @example
+     * // Count the number of PlatformCities
+     * const count = await prisma.platformCity.count({
+     *   where: {
+     *     // ... the filter for the PlatformCities we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformCityCountArgs>(
+      args?: Subset<T, PlatformCityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformCityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformCity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformCityAggregateArgs>(args: Subset<T, PlatformCityAggregateArgs>): Prisma.PrismaPromise<GetPlatformCityAggregateType<T>>
+
+    /**
+     * Group by PlatformCity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformCityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformCityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformCityGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformCityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformCityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformCityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformCity model
+   */
+  readonly fields: PlatformCityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformCity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformCityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    localities<T extends PlatformCity$localitiesArgs<ExtArgs> = {}>(args?: Subset<T, PlatformCity$localitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformCity model
+   */ 
+  interface PlatformCityFieldRefs {
+    readonly id: FieldRef<"PlatformCity", 'String'>
+    readonly code: FieldRef<"PlatformCity", 'String'>
+    readonly name: FieldRef<"PlatformCity", 'String'>
+    readonly state: FieldRef<"PlatformCity", 'String'>
+    readonly stateCode: FieldRef<"PlatformCity", 'String'>
+    readonly district: FieldRef<"PlatformCity", 'String'>
+    readonly districtCode: FieldRef<"PlatformCity", 'String'>
+    readonly status: FieldRef<"PlatformCity", 'String'>
+    readonly managerName: FieldRef<"PlatformCity", 'String'>
+    readonly managerEmail: FieldRef<"PlatformCity", 'String'>
+    readonly createdAt: FieldRef<"PlatformCity", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlatformCity", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformCity findUnique
+   */
+  export type PlatformCityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformCity to fetch.
+     */
+    where: PlatformCityWhereUniqueInput
+  }
+
+  /**
+   * PlatformCity findUniqueOrThrow
+   */
+  export type PlatformCityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformCity to fetch.
+     */
+    where: PlatformCityWhereUniqueInput
+  }
+
+  /**
+   * PlatformCity findFirst
+   */
+  export type PlatformCityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformCity to fetch.
+     */
+    where?: PlatformCityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformCities to fetch.
+     */
+    orderBy?: PlatformCityOrderByWithRelationInput | PlatformCityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformCities.
+     */
+    cursor?: PlatformCityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformCities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformCities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformCities.
+     */
+    distinct?: PlatformCityScalarFieldEnum | PlatformCityScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformCity findFirstOrThrow
+   */
+  export type PlatformCityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformCity to fetch.
+     */
+    where?: PlatformCityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformCities to fetch.
+     */
+    orderBy?: PlatformCityOrderByWithRelationInput | PlatformCityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformCities.
+     */
+    cursor?: PlatformCityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformCities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformCities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformCities.
+     */
+    distinct?: PlatformCityScalarFieldEnum | PlatformCityScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformCity findMany
+   */
+  export type PlatformCityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformCities to fetch.
+     */
+    where?: PlatformCityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformCities to fetch.
+     */
+    orderBy?: PlatformCityOrderByWithRelationInput | PlatformCityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformCities.
+     */
+    cursor?: PlatformCityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformCities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformCities.
+     */
+    skip?: number
+    distinct?: PlatformCityScalarFieldEnum | PlatformCityScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformCity create
+   */
+  export type PlatformCityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformCity.
+     */
+    data: XOR<PlatformCityCreateInput, PlatformCityUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformCity createMany
+   */
+  export type PlatformCityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformCities.
+     */
+    data: PlatformCityCreateManyInput | PlatformCityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformCity createManyAndReturn
+   */
+  export type PlatformCityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PlatformCities.
+     */
+    data: PlatformCityCreateManyInput | PlatformCityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformCity update
+   */
+  export type PlatformCityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformCity.
+     */
+    data: XOR<PlatformCityUpdateInput, PlatformCityUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformCity to update.
+     */
+    where: PlatformCityWhereUniqueInput
+  }
+
+  /**
+   * PlatformCity updateMany
+   */
+  export type PlatformCityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformCities.
+     */
+    data: XOR<PlatformCityUpdateManyMutationInput, PlatformCityUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformCities to update
+     */
+    where?: PlatformCityWhereInput
+  }
+
+  /**
+   * PlatformCity upsert
+   */
+  export type PlatformCityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformCity to update in case it exists.
+     */
+    where: PlatformCityWhereUniqueInput
+    /**
+     * In case the PlatformCity found by the `where` argument doesn't exist, create a new PlatformCity with this data.
+     */
+    create: XOR<PlatformCityCreateInput, PlatformCityUncheckedCreateInput>
+    /**
+     * In case the PlatformCity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformCityUpdateInput, PlatformCityUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformCity delete
+   */
+  export type PlatformCityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    /**
+     * Filter which PlatformCity to delete.
+     */
+    where: PlatformCityWhereUniqueInput
+  }
+
+  /**
+   * PlatformCity deleteMany
+   */
+  export type PlatformCityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformCities to delete
+     */
+    where?: PlatformCityWhereInput
+  }
+
+  /**
+   * PlatformCity.localities
+   */
+  export type PlatformCity$localitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    where?: ServiceableLocalityWhereInput
+    orderBy?: ServiceableLocalityOrderByWithRelationInput | ServiceableLocalityOrderByWithRelationInput[]
+    cursor?: ServiceableLocalityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ServiceableLocalityScalarFieldEnum | ServiceableLocalityScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformCity without action
+   */
+  export type PlatformCityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ServiceableLocality
+   */
+
+  export type AggregateServiceableLocality = {
+    _count: ServiceableLocalityCountAggregateOutputType | null
+    _avg: ServiceableLocalityAvgAggregateOutputType | null
+    _sum: ServiceableLocalitySumAggregateOutputType | null
+    _min: ServiceableLocalityMinAggregateOutputType | null
+    _max: ServiceableLocalityMaxAggregateOutputType | null
+  }
+
+  export type ServiceableLocalityAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    radiusMeters: number | null
+  }
+
+  export type ServiceableLocalitySumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    radiusMeters: number | null
+  }
+
+  export type ServiceableLocalityMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    pincode: string | null
+    cityCode: string | null
+    cityName: string | null
+    district: string | null
+    state: string | null
+    latitude: number | null
+    longitude: number | null
+    radiusMeters: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServiceableLocalityMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    pincode: string | null
+    cityCode: string | null
+    cityName: string | null
+    district: string | null
+    state: string | null
+    latitude: number | null
+    longitude: number | null
+    radiusMeters: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServiceableLocalityCountAggregateOutputType = {
+    id: number
+    name: number
+    pincode: number
+    cityCode: number
+    cityName: number
+    district: number
+    state: number
+    latitude: number
+    longitude: number
+    radiusMeters: number
+    status: number
+    geoJson: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ServiceableLocalityAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    radiusMeters?: true
+  }
+
+  export type ServiceableLocalitySumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    radiusMeters?: true
+  }
+
+  export type ServiceableLocalityMinAggregateInputType = {
+    id?: true
+    name?: true
+    pincode?: true
+    cityCode?: true
+    cityName?: true
+    district?: true
+    state?: true
+    latitude?: true
+    longitude?: true
+    radiusMeters?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServiceableLocalityMaxAggregateInputType = {
+    id?: true
+    name?: true
+    pincode?: true
+    cityCode?: true
+    cityName?: true
+    district?: true
+    state?: true
+    latitude?: true
+    longitude?: true
+    radiusMeters?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServiceableLocalityCountAggregateInputType = {
+    id?: true
+    name?: true
+    pincode?: true
+    cityCode?: true
+    cityName?: true
+    district?: true
+    state?: true
+    latitude?: true
+    longitude?: true
+    radiusMeters?: true
+    status?: true
+    geoJson?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ServiceableLocalityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServiceableLocality to aggregate.
+     */
+    where?: ServiceableLocalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceableLocalities to fetch.
+     */
+    orderBy?: ServiceableLocalityOrderByWithRelationInput | ServiceableLocalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServiceableLocalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceableLocalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceableLocalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServiceableLocalities
+    **/
+    _count?: true | ServiceableLocalityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ServiceableLocalityAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ServiceableLocalitySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServiceableLocalityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServiceableLocalityMaxAggregateInputType
+  }
+
+  export type GetServiceableLocalityAggregateType<T extends ServiceableLocalityAggregateArgs> = {
+        [P in keyof T & keyof AggregateServiceableLocality]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServiceableLocality[P]>
+      : GetScalarType<T[P], AggregateServiceableLocality[P]>
+  }
+
+
+
+
+  export type ServiceableLocalityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServiceableLocalityWhereInput
+    orderBy?: ServiceableLocalityOrderByWithAggregationInput | ServiceableLocalityOrderByWithAggregationInput[]
+    by: ServiceableLocalityScalarFieldEnum[] | ServiceableLocalityScalarFieldEnum
+    having?: ServiceableLocalityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServiceableLocalityCountAggregateInputType | true
+    _avg?: ServiceableLocalityAvgAggregateInputType
+    _sum?: ServiceableLocalitySumAggregateInputType
+    _min?: ServiceableLocalityMinAggregateInputType
+    _max?: ServiceableLocalityMaxAggregateInputType
+  }
+
+  export type ServiceableLocalityGroupByOutputType = {
+    id: string
+    name: string
+    pincode: string
+    cityCode: string
+    cityName: string
+    district: string
+    state: string
+    latitude: number
+    longitude: number
+    radiusMeters: number
+    status: string
+    geoJson: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ServiceableLocalityCountAggregateOutputType | null
+    _avg: ServiceableLocalityAvgAggregateOutputType | null
+    _sum: ServiceableLocalitySumAggregateOutputType | null
+    _min: ServiceableLocalityMinAggregateOutputType | null
+    _max: ServiceableLocalityMaxAggregateOutputType | null
+  }
+
+  type GetServiceableLocalityGroupByPayload<T extends ServiceableLocalityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ServiceableLocalityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServiceableLocalityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServiceableLocalityGroupByOutputType[P]>
+            : GetScalarType<T[P], ServiceableLocalityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServiceableLocalitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    pincode?: boolean
+    cityCode?: boolean
+    cityName?: boolean
+    district?: boolean
+    state?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radiusMeters?: boolean
+    status?: boolean
+    geoJson?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    city?: boolean | ServiceableLocality$cityArgs<ExtArgs>
+  }, ExtArgs["result"]["serviceableLocality"]>
+
+  export type ServiceableLocalitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    pincode?: boolean
+    cityCode?: boolean
+    cityName?: boolean
+    district?: boolean
+    state?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radiusMeters?: boolean
+    status?: boolean
+    geoJson?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    city?: boolean | ServiceableLocality$cityArgs<ExtArgs>
+  }, ExtArgs["result"]["serviceableLocality"]>
+
+  export type ServiceableLocalitySelectScalar = {
+    id?: boolean
+    name?: boolean
+    pincode?: boolean
+    cityCode?: boolean
+    cityName?: boolean
+    district?: boolean
+    state?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radiusMeters?: boolean
+    status?: boolean
+    geoJson?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ServiceableLocalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    city?: boolean | ServiceableLocality$cityArgs<ExtArgs>
+  }
+  export type ServiceableLocalityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    city?: boolean | ServiceableLocality$cityArgs<ExtArgs>
+  }
+
+  export type $ServiceableLocalityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ServiceableLocality"
+    objects: {
+      city: Prisma.$PlatformCityPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      pincode: string
+      cityCode: string
+      cityName: string
+      district: string
+      state: string
+      latitude: number
+      longitude: number
+      radiusMeters: number
+      status: string
+      geoJson: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["serviceableLocality"]>
+    composites: {}
+  }
+
+  type ServiceableLocalityGetPayload<S extends boolean | null | undefined | ServiceableLocalityDefaultArgs> = $Result.GetResult<Prisma.$ServiceableLocalityPayload, S>
+
+  type ServiceableLocalityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ServiceableLocalityFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ServiceableLocalityCountAggregateInputType | true
+    }
+
+  export interface ServiceableLocalityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ServiceableLocality'], meta: { name: 'ServiceableLocality' } }
+    /**
+     * Find zero or one ServiceableLocality that matches the filter.
+     * @param {ServiceableLocalityFindUniqueArgs} args - Arguments to find a ServiceableLocality
+     * @example
+     * // Get one ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ServiceableLocalityFindUniqueArgs>(args: SelectSubset<T, ServiceableLocalityFindUniqueArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ServiceableLocality that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ServiceableLocalityFindUniqueOrThrowArgs} args - Arguments to find a ServiceableLocality
+     * @example
+     * // Get one ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ServiceableLocalityFindUniqueOrThrowArgs>(args: SelectSubset<T, ServiceableLocalityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ServiceableLocality that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityFindFirstArgs} args - Arguments to find a ServiceableLocality
+     * @example
+     * // Get one ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ServiceableLocalityFindFirstArgs>(args?: SelectSubset<T, ServiceableLocalityFindFirstArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ServiceableLocality that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityFindFirstOrThrowArgs} args - Arguments to find a ServiceableLocality
+     * @example
+     * // Get one ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ServiceableLocalityFindFirstOrThrowArgs>(args?: SelectSubset<T, ServiceableLocalityFindFirstOrThrowArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ServiceableLocalities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServiceableLocalities
+     * const serviceableLocalities = await prisma.serviceableLocality.findMany()
+     * 
+     * // Get first 10 ServiceableLocalities
+     * const serviceableLocalities = await prisma.serviceableLocality.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serviceableLocalityWithIdOnly = await prisma.serviceableLocality.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ServiceableLocalityFindManyArgs>(args?: SelectSubset<T, ServiceableLocalityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ServiceableLocality.
+     * @param {ServiceableLocalityCreateArgs} args - Arguments to create a ServiceableLocality.
+     * @example
+     * // Create one ServiceableLocality
+     * const ServiceableLocality = await prisma.serviceableLocality.create({
+     *   data: {
+     *     // ... data to create a ServiceableLocality
+     *   }
+     * })
+     * 
+     */
+    create<T extends ServiceableLocalityCreateArgs>(args: SelectSubset<T, ServiceableLocalityCreateArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ServiceableLocalities.
+     * @param {ServiceableLocalityCreateManyArgs} args - Arguments to create many ServiceableLocalities.
+     * @example
+     * // Create many ServiceableLocalities
+     * const serviceableLocality = await prisma.serviceableLocality.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ServiceableLocalityCreateManyArgs>(args?: SelectSubset<T, ServiceableLocalityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ServiceableLocalities and returns the data saved in the database.
+     * @param {ServiceableLocalityCreateManyAndReturnArgs} args - Arguments to create many ServiceableLocalities.
+     * @example
+     * // Create many ServiceableLocalities
+     * const serviceableLocality = await prisma.serviceableLocality.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ServiceableLocalities and only return the `id`
+     * const serviceableLocalityWithIdOnly = await prisma.serviceableLocality.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ServiceableLocalityCreateManyAndReturnArgs>(args?: SelectSubset<T, ServiceableLocalityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ServiceableLocality.
+     * @param {ServiceableLocalityDeleteArgs} args - Arguments to delete one ServiceableLocality.
+     * @example
+     * // Delete one ServiceableLocality
+     * const ServiceableLocality = await prisma.serviceableLocality.delete({
+     *   where: {
+     *     // ... filter to delete one ServiceableLocality
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ServiceableLocalityDeleteArgs>(args: SelectSubset<T, ServiceableLocalityDeleteArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ServiceableLocality.
+     * @param {ServiceableLocalityUpdateArgs} args - Arguments to update one ServiceableLocality.
+     * @example
+     * // Update one ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ServiceableLocalityUpdateArgs>(args: SelectSubset<T, ServiceableLocalityUpdateArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ServiceableLocalities.
+     * @param {ServiceableLocalityDeleteManyArgs} args - Arguments to filter ServiceableLocalities to delete.
+     * @example
+     * // Delete a few ServiceableLocalities
+     * const { count } = await prisma.serviceableLocality.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ServiceableLocalityDeleteManyArgs>(args?: SelectSubset<T, ServiceableLocalityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServiceableLocalities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServiceableLocalities
+     * const serviceableLocality = await prisma.serviceableLocality.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ServiceableLocalityUpdateManyArgs>(args: SelectSubset<T, ServiceableLocalityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ServiceableLocality.
+     * @param {ServiceableLocalityUpsertArgs} args - Arguments to update or create a ServiceableLocality.
+     * @example
+     * // Update or create a ServiceableLocality
+     * const serviceableLocality = await prisma.serviceableLocality.upsert({
+     *   create: {
+     *     // ... data to create a ServiceableLocality
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServiceableLocality we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ServiceableLocalityUpsertArgs>(args: SelectSubset<T, ServiceableLocalityUpsertArgs<ExtArgs>>): Prisma__ServiceableLocalityClient<$Result.GetResult<Prisma.$ServiceableLocalityPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ServiceableLocalities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityCountArgs} args - Arguments to filter ServiceableLocalities to count.
+     * @example
+     * // Count the number of ServiceableLocalities
+     * const count = await prisma.serviceableLocality.count({
+     *   where: {
+     *     // ... the filter for the ServiceableLocalities we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServiceableLocalityCountArgs>(
+      args?: Subset<T, ServiceableLocalityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServiceableLocalityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServiceableLocality.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServiceableLocalityAggregateArgs>(args: Subset<T, ServiceableLocalityAggregateArgs>): Prisma.PrismaPromise<GetServiceableLocalityAggregateType<T>>
+
+    /**
+     * Group by ServiceableLocality.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceableLocalityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServiceableLocalityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServiceableLocalityGroupByArgs['orderBy'] }
+        : { orderBy?: ServiceableLocalityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServiceableLocalityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServiceableLocalityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ServiceableLocality model
+   */
+  readonly fields: ServiceableLocalityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServiceableLocality.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ServiceableLocalityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    city<T extends ServiceableLocality$cityArgs<ExtArgs> = {}>(args?: Subset<T, ServiceableLocality$cityArgs<ExtArgs>>): Prisma__PlatformCityClient<$Result.GetResult<Prisma.$PlatformCityPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ServiceableLocality model
+   */ 
+  interface ServiceableLocalityFieldRefs {
+    readonly id: FieldRef<"ServiceableLocality", 'String'>
+    readonly name: FieldRef<"ServiceableLocality", 'String'>
+    readonly pincode: FieldRef<"ServiceableLocality", 'String'>
+    readonly cityCode: FieldRef<"ServiceableLocality", 'String'>
+    readonly cityName: FieldRef<"ServiceableLocality", 'String'>
+    readonly district: FieldRef<"ServiceableLocality", 'String'>
+    readonly state: FieldRef<"ServiceableLocality", 'String'>
+    readonly latitude: FieldRef<"ServiceableLocality", 'Float'>
+    readonly longitude: FieldRef<"ServiceableLocality", 'Float'>
+    readonly radiusMeters: FieldRef<"ServiceableLocality", 'Int'>
+    readonly status: FieldRef<"ServiceableLocality", 'String'>
+    readonly geoJson: FieldRef<"ServiceableLocality", 'Json'>
+    readonly createdAt: FieldRef<"ServiceableLocality", 'DateTime'>
+    readonly updatedAt: FieldRef<"ServiceableLocality", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ServiceableLocality findUnique
+   */
+  export type ServiceableLocalityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceableLocality to fetch.
+     */
+    where: ServiceableLocalityWhereUniqueInput
+  }
+
+  /**
+   * ServiceableLocality findUniqueOrThrow
+   */
+  export type ServiceableLocalityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceableLocality to fetch.
+     */
+    where: ServiceableLocalityWhereUniqueInput
+  }
+
+  /**
+   * ServiceableLocality findFirst
+   */
+  export type ServiceableLocalityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceableLocality to fetch.
+     */
+    where?: ServiceableLocalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceableLocalities to fetch.
+     */
+    orderBy?: ServiceableLocalityOrderByWithRelationInput | ServiceableLocalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceableLocalities.
+     */
+    cursor?: ServiceableLocalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceableLocalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceableLocalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceableLocalities.
+     */
+    distinct?: ServiceableLocalityScalarFieldEnum | ServiceableLocalityScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceableLocality findFirstOrThrow
+   */
+  export type ServiceableLocalityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceableLocality to fetch.
+     */
+    where?: ServiceableLocalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceableLocalities to fetch.
+     */
+    orderBy?: ServiceableLocalityOrderByWithRelationInput | ServiceableLocalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceableLocalities.
+     */
+    cursor?: ServiceableLocalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceableLocalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceableLocalities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceableLocalities.
+     */
+    distinct?: ServiceableLocalityScalarFieldEnum | ServiceableLocalityScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceableLocality findMany
+   */
+  export type ServiceableLocalityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceableLocalities to fetch.
+     */
+    where?: ServiceableLocalityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceableLocalities to fetch.
+     */
+    orderBy?: ServiceableLocalityOrderByWithRelationInput | ServiceableLocalityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServiceableLocalities.
+     */
+    cursor?: ServiceableLocalityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceableLocalities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceableLocalities.
+     */
+    skip?: number
+    distinct?: ServiceableLocalityScalarFieldEnum | ServiceableLocalityScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceableLocality create
+   */
+  export type ServiceableLocalityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ServiceableLocality.
+     */
+    data: XOR<ServiceableLocalityCreateInput, ServiceableLocalityUncheckedCreateInput>
+  }
+
+  /**
+   * ServiceableLocality createMany
+   */
+  export type ServiceableLocalityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ServiceableLocalities.
+     */
+    data: ServiceableLocalityCreateManyInput | ServiceableLocalityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ServiceableLocality createManyAndReturn
+   */
+  export type ServiceableLocalityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ServiceableLocalities.
+     */
+    data: ServiceableLocalityCreateManyInput | ServiceableLocalityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ServiceableLocality update
+   */
+  export type ServiceableLocalityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ServiceableLocality.
+     */
+    data: XOR<ServiceableLocalityUpdateInput, ServiceableLocalityUncheckedUpdateInput>
+    /**
+     * Choose, which ServiceableLocality to update.
+     */
+    where: ServiceableLocalityWhereUniqueInput
+  }
+
+  /**
+   * ServiceableLocality updateMany
+   */
+  export type ServiceableLocalityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ServiceableLocalities.
+     */
+    data: XOR<ServiceableLocalityUpdateManyMutationInput, ServiceableLocalityUncheckedUpdateManyInput>
+    /**
+     * Filter which ServiceableLocalities to update
+     */
+    where?: ServiceableLocalityWhereInput
+  }
+
+  /**
+   * ServiceableLocality upsert
+   */
+  export type ServiceableLocalityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ServiceableLocality to update in case it exists.
+     */
+    where: ServiceableLocalityWhereUniqueInput
+    /**
+     * In case the ServiceableLocality found by the `where` argument doesn't exist, create a new ServiceableLocality with this data.
+     */
+    create: XOR<ServiceableLocalityCreateInput, ServiceableLocalityUncheckedCreateInput>
+    /**
+     * In case the ServiceableLocality was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServiceableLocalityUpdateInput, ServiceableLocalityUncheckedUpdateInput>
+  }
+
+  /**
+   * ServiceableLocality delete
+   */
+  export type ServiceableLocalityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+    /**
+     * Filter which ServiceableLocality to delete.
+     */
+    where: ServiceableLocalityWhereUniqueInput
+  }
+
+  /**
+   * ServiceableLocality deleteMany
+   */
+  export type ServiceableLocalityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServiceableLocalities to delete
+     */
+    where?: ServiceableLocalityWhereInput
+  }
+
+  /**
+   * ServiceableLocality.city
+   */
+  export type ServiceableLocality$cityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformCity
+     */
+    select?: PlatformCitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformCityInclude<ExtArgs> | null
+    where?: PlatformCityWhereInput
+  }
+
+  /**
+   * ServiceableLocality without action
+   */
+  export type ServiceableLocalityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceableLocality
+     */
+    select?: ServiceableLocalitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceableLocalityInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10545,6 +12874,44 @@ export namespace Prisma {
   };
 
   export type RegistrationStatusHistoryScalarFieldEnum = (typeof RegistrationStatusHistoryScalarFieldEnum)[keyof typeof RegistrationStatusHistoryScalarFieldEnum]
+
+
+  export const PlatformCityScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    state: 'state',
+    stateCode: 'stateCode',
+    district: 'district',
+    districtCode: 'districtCode',
+    status: 'status',
+    managerName: 'managerName',
+    managerEmail: 'managerEmail',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlatformCityScalarFieldEnum = (typeof PlatformCityScalarFieldEnum)[keyof typeof PlatformCityScalarFieldEnum]
+
+
+  export const ServiceableLocalityScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    pincode: 'pincode',
+    cityCode: 'cityCode',
+    cityName: 'cityName',
+    district: 'district',
+    state: 'state',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    radiusMeters: 'radiusMeters',
+    status: 'status',
+    geoJson: 'geoJson',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ServiceableLocalityScalarFieldEnum = (typeof ServiceableLocalityScalarFieldEnum)[keyof typeof ServiceableLocalityScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11558,6 +13925,199 @@ export namespace Prisma {
     reason?: StringNullableWithAggregatesFilter<"RegistrationStatusHistory"> | string | null
     notes?: StringNullableWithAggregatesFilter<"RegistrationStatusHistory"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"RegistrationStatusHistory"> | Date | string
+  }
+
+  export type PlatformCityWhereInput = {
+    AND?: PlatformCityWhereInput | PlatformCityWhereInput[]
+    OR?: PlatformCityWhereInput[]
+    NOT?: PlatformCityWhereInput | PlatformCityWhereInput[]
+    id?: StringFilter<"PlatformCity"> | string
+    code?: StringFilter<"PlatformCity"> | string
+    name?: StringFilter<"PlatformCity"> | string
+    state?: StringFilter<"PlatformCity"> | string
+    stateCode?: StringFilter<"PlatformCity"> | string
+    district?: StringFilter<"PlatformCity"> | string
+    districtCode?: StringFilter<"PlatformCity"> | string
+    status?: StringFilter<"PlatformCity"> | string
+    managerName?: StringNullableFilter<"PlatformCity"> | string | null
+    managerEmail?: StringNullableFilter<"PlatformCity"> | string | null
+    createdAt?: DateTimeFilter<"PlatformCity"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformCity"> | Date | string
+    localities?: ServiceableLocalityListRelationFilter
+  }
+
+  export type PlatformCityOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    state?: SortOrder
+    stateCode?: SortOrder
+    district?: SortOrder
+    districtCode?: SortOrder
+    status?: SortOrder
+    managerName?: SortOrderInput | SortOrder
+    managerEmail?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    localities?: ServiceableLocalityOrderByRelationAggregateInput
+  }
+
+  export type PlatformCityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: PlatformCityWhereInput | PlatformCityWhereInput[]
+    OR?: PlatformCityWhereInput[]
+    NOT?: PlatformCityWhereInput | PlatformCityWhereInput[]
+    name?: StringFilter<"PlatformCity"> | string
+    state?: StringFilter<"PlatformCity"> | string
+    stateCode?: StringFilter<"PlatformCity"> | string
+    district?: StringFilter<"PlatformCity"> | string
+    districtCode?: StringFilter<"PlatformCity"> | string
+    status?: StringFilter<"PlatformCity"> | string
+    managerName?: StringNullableFilter<"PlatformCity"> | string | null
+    managerEmail?: StringNullableFilter<"PlatformCity"> | string | null
+    createdAt?: DateTimeFilter<"PlatformCity"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformCity"> | Date | string
+    localities?: ServiceableLocalityListRelationFilter
+  }, "id" | "code">
+
+  export type PlatformCityOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    state?: SortOrder
+    stateCode?: SortOrder
+    district?: SortOrder
+    districtCode?: SortOrder
+    status?: SortOrder
+    managerName?: SortOrderInput | SortOrder
+    managerEmail?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlatformCityCountOrderByAggregateInput
+    _max?: PlatformCityMaxOrderByAggregateInput
+    _min?: PlatformCityMinOrderByAggregateInput
+  }
+
+  export type PlatformCityScalarWhereWithAggregatesInput = {
+    AND?: PlatformCityScalarWhereWithAggregatesInput | PlatformCityScalarWhereWithAggregatesInput[]
+    OR?: PlatformCityScalarWhereWithAggregatesInput[]
+    NOT?: PlatformCityScalarWhereWithAggregatesInput | PlatformCityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PlatformCity"> | string
+    code?: StringWithAggregatesFilter<"PlatformCity"> | string
+    name?: StringWithAggregatesFilter<"PlatformCity"> | string
+    state?: StringWithAggregatesFilter<"PlatformCity"> | string
+    stateCode?: StringWithAggregatesFilter<"PlatformCity"> | string
+    district?: StringWithAggregatesFilter<"PlatformCity"> | string
+    districtCode?: StringWithAggregatesFilter<"PlatformCity"> | string
+    status?: StringWithAggregatesFilter<"PlatformCity"> | string
+    managerName?: StringNullableWithAggregatesFilter<"PlatformCity"> | string | null
+    managerEmail?: StringNullableWithAggregatesFilter<"PlatformCity"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformCity"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlatformCity"> | Date | string
+  }
+
+  export type ServiceableLocalityWhereInput = {
+    AND?: ServiceableLocalityWhereInput | ServiceableLocalityWhereInput[]
+    OR?: ServiceableLocalityWhereInput[]
+    NOT?: ServiceableLocalityWhereInput | ServiceableLocalityWhereInput[]
+    id?: StringFilter<"ServiceableLocality"> | string
+    name?: StringFilter<"ServiceableLocality"> | string
+    pincode?: StringFilter<"ServiceableLocality"> | string
+    cityCode?: StringFilter<"ServiceableLocality"> | string
+    cityName?: StringFilter<"ServiceableLocality"> | string
+    district?: StringFilter<"ServiceableLocality"> | string
+    state?: StringFilter<"ServiceableLocality"> | string
+    latitude?: FloatFilter<"ServiceableLocality"> | number
+    longitude?: FloatFilter<"ServiceableLocality"> | number
+    radiusMeters?: IntFilter<"ServiceableLocality"> | number
+    status?: StringFilter<"ServiceableLocality"> | string
+    geoJson?: JsonNullableFilter<"ServiceableLocality">
+    createdAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+    updatedAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+    city?: XOR<PlatformCityNullableRelationFilter, PlatformCityWhereInput> | null
+  }
+
+  export type ServiceableLocalityOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pincode?: SortOrder
+    cityCode?: SortOrder
+    cityName?: SortOrder
+    district?: SortOrder
+    state?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+    status?: SortOrder
+    geoJson?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    city?: PlatformCityOrderByWithRelationInput
+  }
+
+  export type ServiceableLocalityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    cityCode_name?: ServiceableLocalityCityCodeNameCompoundUniqueInput
+    AND?: ServiceableLocalityWhereInput | ServiceableLocalityWhereInput[]
+    OR?: ServiceableLocalityWhereInput[]
+    NOT?: ServiceableLocalityWhereInput | ServiceableLocalityWhereInput[]
+    name?: StringFilter<"ServiceableLocality"> | string
+    pincode?: StringFilter<"ServiceableLocality"> | string
+    cityCode?: StringFilter<"ServiceableLocality"> | string
+    cityName?: StringFilter<"ServiceableLocality"> | string
+    district?: StringFilter<"ServiceableLocality"> | string
+    state?: StringFilter<"ServiceableLocality"> | string
+    latitude?: FloatFilter<"ServiceableLocality"> | number
+    longitude?: FloatFilter<"ServiceableLocality"> | number
+    radiusMeters?: IntFilter<"ServiceableLocality"> | number
+    status?: StringFilter<"ServiceableLocality"> | string
+    geoJson?: JsonNullableFilter<"ServiceableLocality">
+    createdAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+    updatedAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+    city?: XOR<PlatformCityNullableRelationFilter, PlatformCityWhereInput> | null
+  }, "id" | "cityCode_name">
+
+  export type ServiceableLocalityOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pincode?: SortOrder
+    cityCode?: SortOrder
+    cityName?: SortOrder
+    district?: SortOrder
+    state?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+    status?: SortOrder
+    geoJson?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ServiceableLocalityCountOrderByAggregateInput
+    _avg?: ServiceableLocalityAvgOrderByAggregateInput
+    _max?: ServiceableLocalityMaxOrderByAggregateInput
+    _min?: ServiceableLocalityMinOrderByAggregateInput
+    _sum?: ServiceableLocalitySumOrderByAggregateInput
+  }
+
+  export type ServiceableLocalityScalarWhereWithAggregatesInput = {
+    AND?: ServiceableLocalityScalarWhereWithAggregatesInput | ServiceableLocalityScalarWhereWithAggregatesInput[]
+    OR?: ServiceableLocalityScalarWhereWithAggregatesInput[]
+    NOT?: ServiceableLocalityScalarWhereWithAggregatesInput | ServiceableLocalityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    name?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    pincode?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    cityCode?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    cityName?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    district?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    state?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    latitude?: FloatWithAggregatesFilter<"ServiceableLocality"> | number
+    longitude?: FloatWithAggregatesFilter<"ServiceableLocality"> | number
+    radiusMeters?: IntWithAggregatesFilter<"ServiceableLocality"> | number
+    status?: StringWithAggregatesFilter<"ServiceableLocality"> | string
+    geoJson?: JsonNullableWithAggregatesFilter<"ServiceableLocality">
+    createdAt?: DateTimeWithAggregatesFilter<"ServiceableLocality"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ServiceableLocality"> | Date | string
   }
 
   export type MerchantCreateInput = {
@@ -12617,6 +15177,233 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlatformCityCreateInput = {
+    id?: string
+    code: string
+    name: string
+    state?: string
+    stateCode?: string
+    district?: string
+    districtCode?: string
+    status?: string
+    managerName?: string | null
+    managerEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    localities?: ServiceableLocalityCreateNestedManyWithoutCityInput
+  }
+
+  export type PlatformCityUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    state?: string
+    stateCode?: string
+    district?: string
+    districtCode?: string
+    status?: string
+    managerName?: string | null
+    managerEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    localities?: ServiceableLocalityUncheckedCreateNestedManyWithoutCityInput
+  }
+
+  export type PlatformCityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    localities?: ServiceableLocalityUpdateManyWithoutCityNestedInput
+  }
+
+  export type PlatformCityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    localities?: ServiceableLocalityUncheckedUpdateManyWithoutCityNestedInput
+  }
+
+  export type PlatformCityCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    state?: string
+    stateCode?: string
+    district?: string
+    districtCode?: string
+    status?: string
+    managerName?: string | null
+    managerEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformCityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformCityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceableLocalityCreateInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    city?: PlatformCityCreateNestedOneWithoutLocalitiesInput
+  }
+
+  export type ServiceableLocalityUncheckedCreateInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityCode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceableLocalityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    city?: PlatformCityUpdateOneWithoutLocalitiesNestedInput
+  }
+
+  export type ServiceableLocalityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceableLocalityCreateManyInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityCode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceableLocalityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceableLocalityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13473,6 +16260,132 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ServiceableLocalityListRelationFilter = {
+    every?: ServiceableLocalityWhereInput
+    some?: ServiceableLocalityWhereInput
+    none?: ServiceableLocalityWhereInput
+  }
+
+  export type ServiceableLocalityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlatformCityCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    state?: SortOrder
+    stateCode?: SortOrder
+    district?: SortOrder
+    districtCode?: SortOrder
+    status?: SortOrder
+    managerName?: SortOrder
+    managerEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformCityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    state?: SortOrder
+    stateCode?: SortOrder
+    district?: SortOrder
+    districtCode?: SortOrder
+    status?: SortOrder
+    managerName?: SortOrder
+    managerEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformCityMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    state?: SortOrder
+    stateCode?: SortOrder
+    district?: SortOrder
+    districtCode?: SortOrder
+    status?: SortOrder
+    managerName?: SortOrder
+    managerEmail?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformCityNullableRelationFilter = {
+    is?: PlatformCityWhereInput | null
+    isNot?: PlatformCityWhereInput | null
+  }
+
+  export type ServiceableLocalityCityCodeNameCompoundUniqueInput = {
+    cityCode: string
+    name: string
+  }
+
+  export type ServiceableLocalityCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pincode?: SortOrder
+    cityCode?: SortOrder
+    cityName?: SortOrder
+    district?: SortOrder
+    state?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+    status?: SortOrder
+    geoJson?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceableLocalityAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+  }
+
+  export type ServiceableLocalityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pincode?: SortOrder
+    cityCode?: SortOrder
+    cityName?: SortOrder
+    district?: SortOrder
+    state?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceableLocalityMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pincode?: SortOrder
+    cityCode?: SortOrder
+    cityName?: SortOrder
+    district?: SortOrder
+    state?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceableLocalitySumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radiusMeters?: SortOrder
+  }
+
   export type OutletCreateNestedManyWithoutMerchantInput = {
     create?: XOR<OutletCreateWithoutMerchantInput, OutletUncheckedCreateWithoutMerchantInput> | OutletCreateWithoutMerchantInput[] | OutletUncheckedCreateWithoutMerchantInput[]
     connectOrCreate?: OutletCreateOrConnectWithoutMerchantInput | OutletCreateOrConnectWithoutMerchantInput[]
@@ -13891,6 +16804,64 @@ export namespace Prisma {
     upsert?: PartnerRegistrationUpsertWithoutStatusHistoryInput
     connect?: PartnerRegistrationWhereUniqueInput
     update?: XOR<XOR<PartnerRegistrationUpdateToOneWithWhereWithoutStatusHistoryInput, PartnerRegistrationUpdateWithoutStatusHistoryInput>, PartnerRegistrationUncheckedUpdateWithoutStatusHistoryInput>
+  }
+
+  export type ServiceableLocalityCreateNestedManyWithoutCityInput = {
+    create?: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput> | ServiceableLocalityCreateWithoutCityInput[] | ServiceableLocalityUncheckedCreateWithoutCityInput[]
+    connectOrCreate?: ServiceableLocalityCreateOrConnectWithoutCityInput | ServiceableLocalityCreateOrConnectWithoutCityInput[]
+    createMany?: ServiceableLocalityCreateManyCityInputEnvelope
+    connect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+  }
+
+  export type ServiceableLocalityUncheckedCreateNestedManyWithoutCityInput = {
+    create?: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput> | ServiceableLocalityCreateWithoutCityInput[] | ServiceableLocalityUncheckedCreateWithoutCityInput[]
+    connectOrCreate?: ServiceableLocalityCreateOrConnectWithoutCityInput | ServiceableLocalityCreateOrConnectWithoutCityInput[]
+    createMany?: ServiceableLocalityCreateManyCityInputEnvelope
+    connect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+  }
+
+  export type ServiceableLocalityUpdateManyWithoutCityNestedInput = {
+    create?: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput> | ServiceableLocalityCreateWithoutCityInput[] | ServiceableLocalityUncheckedCreateWithoutCityInput[]
+    connectOrCreate?: ServiceableLocalityCreateOrConnectWithoutCityInput | ServiceableLocalityCreateOrConnectWithoutCityInput[]
+    upsert?: ServiceableLocalityUpsertWithWhereUniqueWithoutCityInput | ServiceableLocalityUpsertWithWhereUniqueWithoutCityInput[]
+    createMany?: ServiceableLocalityCreateManyCityInputEnvelope
+    set?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    disconnect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    delete?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    connect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    update?: ServiceableLocalityUpdateWithWhereUniqueWithoutCityInput | ServiceableLocalityUpdateWithWhereUniqueWithoutCityInput[]
+    updateMany?: ServiceableLocalityUpdateManyWithWhereWithoutCityInput | ServiceableLocalityUpdateManyWithWhereWithoutCityInput[]
+    deleteMany?: ServiceableLocalityScalarWhereInput | ServiceableLocalityScalarWhereInput[]
+  }
+
+  export type ServiceableLocalityUncheckedUpdateManyWithoutCityNestedInput = {
+    create?: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput> | ServiceableLocalityCreateWithoutCityInput[] | ServiceableLocalityUncheckedCreateWithoutCityInput[]
+    connectOrCreate?: ServiceableLocalityCreateOrConnectWithoutCityInput | ServiceableLocalityCreateOrConnectWithoutCityInput[]
+    upsert?: ServiceableLocalityUpsertWithWhereUniqueWithoutCityInput | ServiceableLocalityUpsertWithWhereUniqueWithoutCityInput[]
+    createMany?: ServiceableLocalityCreateManyCityInputEnvelope
+    set?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    disconnect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    delete?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    connect?: ServiceableLocalityWhereUniqueInput | ServiceableLocalityWhereUniqueInput[]
+    update?: ServiceableLocalityUpdateWithWhereUniqueWithoutCityInput | ServiceableLocalityUpdateWithWhereUniqueWithoutCityInput[]
+    updateMany?: ServiceableLocalityUpdateManyWithWhereWithoutCityInput | ServiceableLocalityUpdateManyWithWhereWithoutCityInput[]
+    deleteMany?: ServiceableLocalityScalarWhereInput | ServiceableLocalityScalarWhereInput[]
+  }
+
+  export type PlatformCityCreateNestedOneWithoutLocalitiesInput = {
+    create?: XOR<PlatformCityCreateWithoutLocalitiesInput, PlatformCityUncheckedCreateWithoutLocalitiesInput>
+    connectOrCreate?: PlatformCityCreateOrConnectWithoutLocalitiesInput
+    connect?: PlatformCityWhereUniqueInput
+  }
+
+  export type PlatformCityUpdateOneWithoutLocalitiesNestedInput = {
+    create?: XOR<PlatformCityCreateWithoutLocalitiesInput, PlatformCityUncheckedCreateWithoutLocalitiesInput>
+    connectOrCreate?: PlatformCityCreateOrConnectWithoutLocalitiesInput
+    upsert?: PlatformCityUpsertWithoutLocalitiesInput
+    disconnect?: PlatformCityWhereInput | boolean
+    delete?: PlatformCityWhereInput | boolean
+    connect?: PlatformCityWhereUniqueInput
+    update?: XOR<XOR<PlatformCityUpdateToOneWithWhereWithoutLocalitiesInput, PlatformCityUpdateWithoutLocalitiesInput>, PlatformCityUncheckedUpdateWithoutLocalitiesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15755,6 +18726,160 @@ export namespace Prisma {
     documents?: RegistrationDocumentUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
+  export type ServiceableLocalityCreateWithoutCityInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceableLocalityUncheckedCreateWithoutCityInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceableLocalityCreateOrConnectWithoutCityInput = {
+    where: ServiceableLocalityWhereUniqueInput
+    create: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput>
+  }
+
+  export type ServiceableLocalityCreateManyCityInputEnvelope = {
+    data: ServiceableLocalityCreateManyCityInput | ServiceableLocalityCreateManyCityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ServiceableLocalityUpsertWithWhereUniqueWithoutCityInput = {
+    where: ServiceableLocalityWhereUniqueInput
+    update: XOR<ServiceableLocalityUpdateWithoutCityInput, ServiceableLocalityUncheckedUpdateWithoutCityInput>
+    create: XOR<ServiceableLocalityCreateWithoutCityInput, ServiceableLocalityUncheckedCreateWithoutCityInput>
+  }
+
+  export type ServiceableLocalityUpdateWithWhereUniqueWithoutCityInput = {
+    where: ServiceableLocalityWhereUniqueInput
+    data: XOR<ServiceableLocalityUpdateWithoutCityInput, ServiceableLocalityUncheckedUpdateWithoutCityInput>
+  }
+
+  export type ServiceableLocalityUpdateManyWithWhereWithoutCityInput = {
+    where: ServiceableLocalityScalarWhereInput
+    data: XOR<ServiceableLocalityUpdateManyMutationInput, ServiceableLocalityUncheckedUpdateManyWithoutCityInput>
+  }
+
+  export type ServiceableLocalityScalarWhereInput = {
+    AND?: ServiceableLocalityScalarWhereInput | ServiceableLocalityScalarWhereInput[]
+    OR?: ServiceableLocalityScalarWhereInput[]
+    NOT?: ServiceableLocalityScalarWhereInput | ServiceableLocalityScalarWhereInput[]
+    id?: StringFilter<"ServiceableLocality"> | string
+    name?: StringFilter<"ServiceableLocality"> | string
+    pincode?: StringFilter<"ServiceableLocality"> | string
+    cityCode?: StringFilter<"ServiceableLocality"> | string
+    cityName?: StringFilter<"ServiceableLocality"> | string
+    district?: StringFilter<"ServiceableLocality"> | string
+    state?: StringFilter<"ServiceableLocality"> | string
+    latitude?: FloatFilter<"ServiceableLocality"> | number
+    longitude?: FloatFilter<"ServiceableLocality"> | number
+    radiusMeters?: IntFilter<"ServiceableLocality"> | number
+    status?: StringFilter<"ServiceableLocality"> | string
+    geoJson?: JsonNullableFilter<"ServiceableLocality">
+    createdAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+    updatedAt?: DateTimeFilter<"ServiceableLocality"> | Date | string
+  }
+
+  export type PlatformCityCreateWithoutLocalitiesInput = {
+    id?: string
+    code: string
+    name: string
+    state?: string
+    stateCode?: string
+    district?: string
+    districtCode?: string
+    status?: string
+    managerName?: string | null
+    managerEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformCityUncheckedCreateWithoutLocalitiesInput = {
+    id?: string
+    code: string
+    name: string
+    state?: string
+    stateCode?: string
+    district?: string
+    districtCode?: string
+    status?: string
+    managerName?: string | null
+    managerEmail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformCityCreateOrConnectWithoutLocalitiesInput = {
+    where: PlatformCityWhereUniqueInput
+    create: XOR<PlatformCityCreateWithoutLocalitiesInput, PlatformCityUncheckedCreateWithoutLocalitiesInput>
+  }
+
+  export type PlatformCityUpsertWithoutLocalitiesInput = {
+    update: XOR<PlatformCityUpdateWithoutLocalitiesInput, PlatformCityUncheckedUpdateWithoutLocalitiesInput>
+    create: XOR<PlatformCityCreateWithoutLocalitiesInput, PlatformCityUncheckedCreateWithoutLocalitiesInput>
+    where?: PlatformCityWhereInput
+  }
+
+  export type PlatformCityUpdateToOneWithWhereWithoutLocalitiesInput = {
+    where?: PlatformCityWhereInput
+    data: XOR<PlatformCityUpdateWithoutLocalitiesInput, PlatformCityUncheckedUpdateWithoutLocalitiesInput>
+  }
+
+  export type PlatformCityUpdateWithoutLocalitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformCityUncheckedUpdateWithoutLocalitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    stateCode?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    districtCode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    managerEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OutletCreateManyMerchantInput = {
     id?: string
     name: string
@@ -16047,6 +19172,70 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServiceableLocalityCreateManyCityInput = {
+    id?: string
+    name: string
+    pincode: string
+    cityName: string
+    district?: string
+    state?: string
+    latitude?: number
+    longitude?: number
+    radiusMeters?: number
+    status?: string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceableLocalityUpdateWithoutCityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceableLocalityUncheckedUpdateWithoutCityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceableLocalityUncheckedUpdateManyWithoutCityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pincode?: StringFieldUpdateOperationsInput | string
+    cityName?: StringFieldUpdateOperationsInput | string
+    district?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    radiusMeters?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    geoJson?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -16064,6 +19253,10 @@ export namespace Prisma {
      * @deprecated Use PartnerRegistrationCountOutputTypeDefaultArgs instead
      */
     export type PartnerRegistrationCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PartnerRegistrationCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PlatformCityCountOutputTypeDefaultArgs instead
+     */
+    export type PlatformCityCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlatformCityCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use MerchantDefaultArgs instead
      */
@@ -16096,6 +19289,14 @@ export namespace Prisma {
      * @deprecated Use RegistrationStatusHistoryDefaultArgs instead
      */
     export type RegistrationStatusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = RegistrationStatusHistoryDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PlatformCityDefaultArgs instead
+     */
+    export type PlatformCityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PlatformCityDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ServiceableLocalityDefaultArgs instead
+     */
+    export type ServiceableLocalityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ServiceableLocalityDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

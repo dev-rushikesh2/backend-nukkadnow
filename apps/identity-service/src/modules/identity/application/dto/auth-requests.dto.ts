@@ -34,6 +34,11 @@ export class VerifyOtpDto {
   @IsString()
   identifier?: string;
 
+  @ApiPropertyOptional({ example: "challenge-1795541256" })
+  @IsOptional()
+  @IsString()
+  challengeId?: string;
+
   @ApiProperty({ example: "123456", description: "6-digit OTP" })
   @IsString()
   @Length(6, 6)

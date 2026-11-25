@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "./client"
 }
 
 model SubscriptionPlan {
@@ -61,4 +62,20 @@ model Invoice {
 
   @@index([cityCode, status])
   @@map("invoices")
+}
+
+model CommissionRule {
+  id            String   @id @default(uuid())
+  name          String
+  category      String   @default("ALL")
+  cityCode      String   @default("ALL")
+  rateBps       Int      // Basis points (e.g. 500 = 5.00%)
+  flatFeePaise  Int      @default(0)
+  minOrderPaise Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([category, cityCode, isActive])
+  @@map("commission_rules")
 }

@@ -4,7 +4,7 @@
   "description": "Products, Variants, Atomic Inventory Stock & Reservations",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && node -e \"const fs=require('fs');if(fs.existsSync('prisma/client'))fs.cpSync('prisma/client','dist/apps/catalog-service/prisma/client',{recursive:true});\"",
     "dev": "nest start --watch",
     "start": "nest start",
     "start:prod": "node dist/main",

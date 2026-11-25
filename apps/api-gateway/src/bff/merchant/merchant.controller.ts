@@ -324,10 +324,55 @@ export class MerchantController {
   // Onboarding / Partner registration
   // -------------------------------------------------------------------------
 
+  @Post("onboarding/draft")
+  @ApiOperation({ summary: "Save progressive partner registration draft (Steps 1-6)" })
+  async saveOnboardingDraft(@Body() body: any) {
+    return this.proxy.dispatch(this.merchantServiceUrl, "/api/v1/merchants/onboarding/draft", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Post("onboarding/submit")
+  @ApiOperation({ summary: "Submit partner registration application (Step 7 -> Step 8)" })
+  async submitOnboarding(@Body() body: any) {
+    return this.proxy.dispatch(this.merchantServiceUrl, "/api/v1/merchants/onboarding/submit", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Get("onboarding/status/:identifier")
+  @ApiOperation({ summary: "Get public/merchant onboarding status by applicationId or mobile" })
+  async getOnboardingStatusByIdentifier(@Param("identifier") identifier: string, @Headers() headers: any) {
+    return this.proxy.dispatch(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/status/${encodeURIComponent(identifier)}`,
+      {
+        method: "GET",
+        headers: headers?.authorization ? { authorization: headers.authorization } : {},
+      }
+    );
+  }
+
+  @Post("onboarding/:applicationId/documents")
+  @ApiOperation({ summary: "Attach KYC/verification document to onboarding application" })
+  async uploadOnboardingDocument(@Param("applicationId") applicationId: string, @Body() body: any, @Headers() headers: any) {
+    return this.proxy.dispatch(
+      this.merchantServiceUrl,
+      `/api/v1/merchants/onboarding/${encodeURIComponent(applicationId)}/documents`,
+      {
+        method: "POST",
+        headers: headers?.authorization ? { authorization: headers.authorization } : {},
+        body: JSON.stringify(body),
+      }
+    );
+  }
+
   @Post("onboarding/register")
   @ApiOperation({ summary: "Submit partner registration (Step 1–8)" })
   async submitRegistration(@Body() body: any) {
-    return this.proxy.dispatch(this.merchantServiceUrl, "/api/v1/merchant/partner/register", {
+    return this.proxy.dispatch(this.merchantServiceUrl, "/api/v1/merchants/onboarding/draft", {
       method: "POST",
       body: JSON.stringify(body),
     });
@@ -338,7 +383,7 @@ export class MerchantController {
   @ApiOperation({ summary: "Get onboarding application status" })
   async getOnboardingStatus(@Headers() headers: any, @Req() req: any) {
     const { tenantId } = resolveTenantContext(headers, req);
-    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/merchant/partner/status/${tenantId}`, {
+    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/merchants/onboarding/status/${tenantId}`, {
       method: "GET",
       headers: { authorization: headers.authorization, "x-tenant-id": tenantId },
     });

@@ -8,6 +8,16 @@ import { CreateMerchantDto, CreateOutletDto, UpdateOperatingHoursDto } from "../
 import { MerchantNotFoundError, OutletNotFoundError } from "../../domain/errors/merchant-errors";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
+const ADMIN_ROLES = new Set([
+  "ROOT_ADMIN",
+  "SUPER_ADMIN",
+  "PLATFORM_ADMIN",
+  "CITY_OPERATIONS_MANAGER",
+  "VERIFICATION_STAFF",
+  "SUPPORT_STAFF",
+  "FINANCE_AUDITOR",
+]);
+
 @Injectable()
 export class MerchantService {
   constructor(
@@ -33,7 +43,7 @@ export class MerchantService {
 
   async getMerchant(id: string, callerTenantId?: string, callerRoles?: string[]): Promise<Merchant> {
     const isSystemAdmin = callerTenantId === "system-admin-tenant";
-    const isAdmin = isSystemAdmin || callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    const isAdmin = isSystemAdmin || callerRoles?.some(r => ADMIN_ROLES.has(r));
     if (!isAdmin && callerTenantId && callerTenantId !== id) {
       throw new ForbiddenException("Cross-tenant access forbidden: You cannot access another organization profile.");
     }
@@ -60,7 +70,7 @@ export class MerchantService {
   }
 
   async listMerchants(callerTenantId?: string, callerRoles?: string[]): Promise<Merchant[]> {
-    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    const isAdmin = callerRoles?.some(r => ADMIN_ROLES.has(r));
     if (this.merchantRepo.listAll) {
       const all = await this.merchantRepo.listAll();
       if (isAdmin) return all;
@@ -76,7 +86,7 @@ export class MerchantService {
   }
 
   async createOutlet(dto: CreateOutletDto, callerTenantId?: string, callerRoles?: string[]): Promise<Outlet> {
-    const isAdmin = callerRoles?.some(r => r === "PLATFORM_ADMIN" || r === "SUPER_ADMIN");
+    const isAdmin = callerRoles?.some(r => ADMIN_ROLES.has(r));
     if (!isAdmin && callerTenantId && callerTenantId !== dto.merchantId) {
       throw new ForbiddenException("Tenant Mismatch: Cannot create outlet under another organization.");
     }

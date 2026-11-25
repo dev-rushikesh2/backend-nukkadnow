@@ -270,6 +270,38 @@ exports.Prisma.RegistrationStatusHistoryScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PlatformCityScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  state: 'state',
+  stateCode: 'stateCode',
+  district: 'district',
+  districtCode: 'districtCode',
+  status: 'status',
+  managerName: 'managerName',
+  managerEmail: 'managerEmail',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServiceableLocalityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  pincode: 'pincode',
+  cityCode: 'cityCode',
+  cityName: 'cityName',
+  district: 'district',
+  state: 'state',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  radiusMeters: 'radiusMeters',
+  status: 'status',
+  geoJson: 'geoJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -309,7 +341,9 @@ exports.Prisma.ModelName = {
   VerificationRecord: 'VerificationRecord',
   PartnerRegistration: 'PartnerRegistration',
   RegistrationDocument: 'RegistrationDocument',
-  RegistrationStatusHistory: 'RegistrationStatusHistory'
+  RegistrationStatusHistory: 'RegistrationStatusHistory',
+  PlatformCity: 'PlatformCity',
+  ServiceableLocality: 'ServiceableLocality'
 };
 
 /**

@@ -1,4 +1,4 @@
-import { Injectable, ServiceUnavailableException, GatewayTimeoutException } from "@nestjs/common";
+import { Injectable, ServiceUnavailableException, GatewayTimeoutException, HttpException } from "@nestjs/common";
 import { StructuredLogger } from "@nukkadnow/observability";
 import * as crypto from "crypto";
 
@@ -45,11 +45,15 @@ export class ProxyDispatcherService {
           message: response.statusText,
           statusCode: response.status,
         }));
-        const err: any = new Error(errorBody.message ?? response.statusText);
-        err.status = response.status;
-        err.correlationId = correlationId;
-        Object.assign(err, errorBody);
-        throw err;
+        throw new HttpException(
+          {
+            ...errorBody,
+            statusCode: response.status,
+            message: errorBody.message ?? response.statusText,
+            correlationId,
+          },
+          response.status
+        );
       }
 
       return (await response.json()) as T;

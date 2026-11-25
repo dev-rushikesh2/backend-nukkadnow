@@ -216,3 +216,43 @@ model RegistrationStatusHistory {
   @@index([registrationId])
   @@map("registration_status_history")
 }
+
+model PlatformCity {
+  id           String                @id @default(uuid())
+  code         String                @unique
+  name         String
+  state        String                @default("Maharashtra")
+  stateCode    String                @default("IN-MH")
+  district     String                @default("Nagpur")
+  districtCode String                @default("NGP")
+  status       String                @default("ACTIVE") // ACTIVE, LAUNCHING, PAUSED
+  managerName  String?
+  managerEmail String?
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  localities   ServiceableLocality[]
+
+  @@map("platform_cities")
+}
+
+model ServiceableLocality {
+  id           String        @id @default(uuid())
+  name         String
+  pincode      String
+  cityCode     String
+  cityName     String
+  district     String        @default("Nagpur")
+  state        String        @default("Maharashtra")
+  latitude     Float         @default(21.1458)
+  longitude    Float         @default(79.0882)
+  radiusMeters Int           @default(5000)
+  status       String        @default("ACTIVE") // ACTIVE, PAUSED
+  geoJson      Json?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  city         PlatformCity? @relation(fields: [cityCode], references: [code], onDelete: SetNull)
+
+  @@unique([cityCode, name])
+  @@index([cityCode, status])
+  @@map("serviceable_localities")
+}

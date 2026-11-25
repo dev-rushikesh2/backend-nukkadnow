@@ -1,6 +1,7 @@
-import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req } from "@nestjs/common";
+import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req, NotFoundException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CatalogService } from "../../../application/services/catalog.service";
+import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
 import {
   CreateProductDto,
   AdjustStockDto,
@@ -12,7 +13,58 @@ import {
 @ApiTags("Catalog & Inventory")
 @Controller("api/v1/catalog")
 export class CatalogController {
-  constructor(private readonly catalogService: CatalogService) {}
+  constructor(
+    private readonly catalogService: CatalogService,
+    private readonly prisma: PrismaService
+  ) {}
+
+  @Get("products")
+  @ApiOperation({ summary: "Admin: List and moderate catalog products across merchants" })
+  async listProducts(
+    @Query("merchantId") merchantId?: string,
+    @Query("category") category?: string,
+    @Query("flagged") flagged?: string,
+    @Query("page") page?: string,
+    @Query("limit") limit?: string
+  ) {
+    const where: any = {};
+    if (merchantId) where.tenantId = merchantId;
+    if (category && category !== "ALL") where.category = category;
+    if (flagged === "true") where.isAvailable = false;
+
+    const pageNum = Math.max(1, Number(page) || 1);
+    const take = Math.min(100, Math.max(1, Number(limit) || 25));
+    const [items, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        include: { variants: { include: { stockBalance: true } } },
+        orderBy: { createdAt: "desc" },
+        skip: (pageNum - 1) * take,
+        take,
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+
+    return {
+      success: true,
+      data: {
+        items,
+        total,
+        page: pageNum,
+        limit: take,
+      },
+    };
+  }
+
+  @Delete("products/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Remove a product from catalog" })
+  async deleteProduct(@Param("id") id: string) {
+    const existing = await this.prisma.product.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException(`Product '${id}' not found`);
+    await this.prisma.product.delete({ where: { id } });
+    return { success: true, data: { deleted: true, id } };
+  }
 
   @Post("products")
   @ApiBearerAuth()

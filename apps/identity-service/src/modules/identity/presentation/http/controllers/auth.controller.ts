@@ -1,7 +1,19 @@
-import { Controller, Post, Get, Patch, Body, Req, Query, Headers } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Body,
+  Req,
+  Query,
+  Headers,
+  BadRequestException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { AuthService } from "../../../application/services/auth.service";
 import { RequestOtpDto, VerifyOtpDto, RefreshTokenDto } from "../../../application/dto/auth-requests.dto";
+import { InvalidOtpError, OtpExpiredError, MaxOtpAttemptsError, UserSuspendedError } from "../../../domain/errors/identity-errors";
 import { Request } from "express";
 
 @ApiTags("Authentication")
@@ -24,7 +36,17 @@ export class AuthController {
     const userAgent = req.headers["user-agent"];
     const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress;
     const identifier = dto.email || dto.phoneNumber || dto.identifier;
-    return this.authService.verifyLoginOtp(identifier || "", dto.otp, userAgent, ip);
+    try {
+      return await this.authService.verifyLoginOtp(identifier || "", dto.otp, userAgent, ip);
+    } catch (err) {
+      if (err instanceof InvalidOtpError || err instanceof OtpExpiredError || err instanceof MaxOtpAttemptsError) {
+        throw new BadRequestException(err.message);
+      }
+      if (err instanceof UserSuspendedError) {
+        throw new UnauthorizedException(err.message);
+      }
+      throw err;
+    }
   }
 
   // ─── Admin-specific auth & Authenticator (TOTP MFA) ────────────

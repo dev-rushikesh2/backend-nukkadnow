@@ -1,0 +1,197 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("IDENTITY_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+model User {
+  id          String       @id @default(uuid())
+  phoneNumber String       @unique
+  email       String?      @unique
+  fullName    String?
+  status      String       @default("ACTIVE")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  sessions    Session[]
+  memberships Membership[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Membership {
+  id        String   @id @default(uuid())
+  userId    String
+  tenantId  String // Merchant Organization ID
+  outletId  String? // Optional Outlet Scope
+  role      String // e.g. MERCHANT_OWNER, OUTLET_MANAGER, CASHIER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId, role])
+  @@index([tenantId])
+  @@map("memberships")
+}
+
+model AuditEvent {
+  id         String   @id @default(uuid())
+  actorId    String
+  action     String
+  targetType String
+  targetId   String
+  metadata   Json?
+  occurredAt DateTime @default(now())
+
+  @@index([actorId])
+  @@map("audit_events")
+}
+
+model AdminUser {
+  id                  String                @id @default(uuid())
+  name                String
+  email               String                @unique
+  phone               String
+  status              String                @default("ACTIVE") // ACTIVE, SUSPENDED
+  mfaEnabled          Boolean               @default(true)
+  isRootProtected     Boolean               @default(false)
+  tokenVersion        Int                   @default(1) // Immediate JWT invalidation on role/geo switch or suspension
+  failedLoginAttempts Int                   @default(0) // Brute-force dictionary protection
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  roleAssignments     AdminRoleAssignment[]
+  geoAssignments      AdminGeoAssignment[]
+  auditLogs           AdminAuditLog[]
+  piiAccessLogs       PiiAccessAuditLog[]
+
+  @@map("admin_users")
+}
+
+model AdminRole {
+  id              String                @id @default(uuid())
+  code            String                @unique
+  title           String
+  subtitle        String?
+  hierarchyLevel  Int                   @default(4)
+  description     String?
+  requiresMfa     Boolean               @default(true)
+  isSystem        Boolean               @default(false)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  roleAssignments AdminRoleAssignment[]
+  rolePermissions AdminRolePermission[]
+
+  @@map("admin_roles")
+}
+
+model AdminPermission {
+  id              String                @id @default(uuid())
+  code            String                @unique
+  module          String
+  description     String?
+  rolePermissions AdminRolePermission[]
+
+  @@map("admin_permissions")
+}
+
+model AdminRoleAssignment {
+  id         String    @id @default(uuid())
+  userId     String
+  roleId     String
+  assignedAt DateTime  @default(now())
+  user       AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       AdminRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("admin_role_assignments")
+}
+
+model AdminRolePermission {
+  id           String          @id @default(uuid())
+  roleId       String
+  permissionId String
+  assignedAt   DateTime        @default(now())
+  role         AdminRole       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   AdminPermission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("admin_role_permissions")
+}
+
+model AdminGeoAssignment {
+  id           String    @id @default(uuid())
+  userId       String
+  state        String
+  stateCode    String    @default("IN-MH")
+  district     String
+  districtCode String    @default("AKL")
+  cityId       String
+  cityCode     String    @default("IN-MH-AKL") // Partition key
+  cityName     String
+  localities   Json
+  assignedAt   DateTime  @default(now())
+  user         AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([cityId])
+  @@index([cityCode])
+  @@map("admin_geo_assignments")
+}
+
+model AdminAuditLog {
+  id            String     @id @default(uuid())
+  operatorId    String?
+  operatorName  String
+  action        String
+  targetEntity  String
+  targetId      String
+  reasonCode    String
+  justification String
+  previousHash  String? // Cryptographic hash chain link (Blockchain-lite integrity)
+  recordHash    String? // SHA-256 HMAC of (operatorId + action + targetId + timestamp + previousHash)
+  ipAddress     String?
+  userAgent     String?
+  timestamp     DateTime   @default(now())
+  user          AdminUser? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+
+  @@index([operatorId])
+  @@index([targetEntity])
+  @@index([timestamp])
+  @@map("admin_audit_logs")
+}
+
+model PiiAccessAuditLog {
+  id                  String     @id @default(uuid())
+  operatorId          String?
+  targetEntity        String // Customer, MerchantBank, HomeChefAddress
+  targetId            String
+  accessedFields      String[] // ["phoneNumber", "residentialAddress", "bankAccountNumber"]
+  purposeCode         String // ORDER_FULFILLMENT_TRIAGE, REGULATORY_KYC_VERIFICATION, DISPUTE_RESOLUTION
+  justification       String
+  consentVerification String?
+  timestamp           DateTime   @default(now())
+  user                AdminUser? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+
+  @@index([operatorId, timestamp])
+  @@index([targetEntity, targetId])
+  @@map("pii_access_audit_logs")
+}

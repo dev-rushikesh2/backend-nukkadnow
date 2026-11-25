@@ -1,0 +1,81 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("SUBSCRIPTION_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+model SubscriptionPlan {
+  id           String                 @id @default(uuid())
+  name         String
+  code         String                 @unique // STARTER, GROWTH, ENTERPRISE
+  pricePaise   Int
+  billingCycle String                 @default("MONTHLY")
+  features     Json
+  createdAt    DateTime               @default(now())
+  subs         MerchantSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model MerchantSubscription {
+  id                 String           @id @default(uuid())
+  merchantId         String           @unique
+  planId             String
+  cityCode           String           @default("IN-MH-NGP") // Municipal city partition
+  status             String           @default("ACTIVE")
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  plan               SubscriptionPlan @relation(fields: [planId], references: [id])
+  invoices           Invoice[]
+
+  @@index([cityCode, status])
+  @@map("merchant_subscriptions")
+}
+
+model Entitlement {
+  id          String   @id @default(uuid())
+  merchantId  String
+  featureCode String
+  isEnabled   Boolean  @default(true)
+  limitValue  Int?
+  updatedAt   DateTime @updatedAt
+
+  @@unique([merchantId, featureCode])
+  @@map("entitlements")
+}
+
+model Invoice {
+  id             String               @id @default(uuid())
+  subscriptionId String
+  merchantId     String
+  cityCode       String               @default("IN-MH-NGP")
+  amountPaise    Int
+  status         String               @default("UNPAID") // UNPAID, PAID, OVERDUE, VOID
+  dueDate        DateTime
+  paidAt         DateTime?
+  createdAt      DateTime             @default(now())
+  subscription   MerchantSubscription @relation(fields: [subscriptionId], references: [id])
+
+  @@index([cityCode, status])
+  @@map("invoices")
+}
+
+model CommissionRule {
+  id            String   @id @default(uuid())
+  name          String
+  category      String   @default("ALL")
+  cityCode      String   @default("ALL")
+  rateBps       Int // Basis points (e.g. 500 = 5.00%)
+  flatFeePaise  Int      @default(0)
+  minOrderPaise Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([category, cityCode, isActive])
+  @@map("commission_rules")
+}

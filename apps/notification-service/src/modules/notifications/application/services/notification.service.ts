@@ -55,4 +55,10 @@ export class NotificationService {
       preview: renderedMessage,
     };
   }
+
+  async sendEmailOtp(email: string, otp: string) {
+    const adapter = this.channelFactory.getAdapter("EMAIL");
+    const body = `Your NukkadNow Merchant Login OTP is: ${otp}. It is valid for 5 minutes.`;
+    return adapter.send(email, body);
+  }
 }

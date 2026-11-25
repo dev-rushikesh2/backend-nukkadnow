@@ -24,12 +24,22 @@ export class PrismaStockRepository implements StockRepositoryPort {
     return records.map((r: any) => this.toDomain(r));
   }
 
+  private async resolveTenantId(variantId: string): Promise<string> {
+    const variant = await this.prisma.productVariant.findUnique({
+      where: { id: variantId },
+      include: { product: { select: { tenantId: true } } },
+    });
+    return variant?.product?.tenantId || "merchant-main";
+  }
+
   async save(stock: StockBalance): Promise<void> {
+    const tenantId = await this.resolveTenantId(stock.variantId);
     await this.prisma.stockBalance.upsert({
       where: { variantId: stock.variantId },
       create: {
         id: stock.id,
         variantId: stock.variantId,
+        tenantId,
         outletId: stock.outletId,
         onHandQuantity: stock.onHandQuantity,
         reservedQuantity: stock.reservedQuantity,
@@ -45,10 +55,12 @@ export class PrismaStockRepository implements StockRepositoryPort {
   }
 
   async recordMovement(movement: StockMovement): Promise<void> {
+    const tenantId = await this.resolveTenantId(movement.variantId);
     await this.prisma.stockMovement.create({
       data: {
         id: movement.id,
         variantId: movement.variantId,
+        tenantId,
         outletId: movement.outletId,
         quantityChange: movement.quantityChange,
         balanceAfter: movement.balanceAfter,
