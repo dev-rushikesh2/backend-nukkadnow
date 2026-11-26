@@ -958,6 +958,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMinAggregateOutputType = {
     id: string | null
     outletId: string | null
+    tenantId: string | null
     merchantName: string | null
     locality: string | null
     city: string | null
@@ -973,6 +974,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMaxAggregateOutputType = {
     id: string | null
     outletId: string | null
+    tenantId: string | null
     merchantName: string | null
     locality: string | null
     city: string | null
@@ -988,6 +990,7 @@ export namespace Prisma {
   export type OutletSearchDocumentCountAggregateOutputType = {
     id: number
     outletId: number
+    tenantId: number
     merchantName: number
     locality: number
     city: number
@@ -1020,6 +1023,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMinAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     merchantName?: true
     locality?: true
     city?: true
@@ -1035,6 +1039,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMaxAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     merchantName?: true
     locality?: true
     city?: true
@@ -1050,6 +1055,7 @@ export namespace Prisma {
   export type OutletSearchDocumentCountAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     merchantName?: true
     locality?: true
     city?: true
@@ -1153,6 +1159,7 @@ export namespace Prisma {
   export type OutletSearchDocumentGroupByOutputType = {
     id: string
     outletId: string
+    tenantId: string | null
     merchantName: string
     locality: string
     city: string
@@ -1188,6 +1195,7 @@ export namespace Prisma {
   export type OutletSearchDocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     merchantName?: boolean
     locality?: boolean
     city?: boolean
@@ -1204,6 +1212,7 @@ export namespace Prisma {
   export type OutletSearchDocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     merchantName?: boolean
     locality?: boolean
     city?: boolean
@@ -1220,6 +1229,7 @@ export namespace Prisma {
   export type OutletSearchDocumentSelectScalar = {
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     merchantName?: boolean
     locality?: boolean
     city?: boolean
@@ -1240,6 +1250,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       outletId: string
+      tenantId: string | null
       merchantName: string
       locality: string
       city: string
@@ -1646,6 +1657,7 @@ export namespace Prisma {
   interface OutletSearchDocumentFieldRefs {
     readonly id: FieldRef<"OutletSearchDocument", 'String'>
     readonly outletId: FieldRef<"OutletSearchDocument", 'String'>
+    readonly tenantId: FieldRef<"OutletSearchDocument", 'String'>
     readonly merchantName: FieldRef<"OutletSearchDocument", 'String'>
     readonly locality: FieldRef<"OutletSearchDocument", 'String'>
     readonly city: FieldRef<"OutletSearchDocument", 'String'>
@@ -1958,6 +1970,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMinAggregateOutputType = {
     id: string | null
     outletId: string | null
+    tenantId: string | null
     hasActiveStock: boolean | null
     nextSlotTime: Date | null
     updatedAt: Date | null
@@ -1966,6 +1979,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMaxAggregateOutputType = {
     id: string | null
     outletId: string | null
+    tenantId: string | null
     hasActiveStock: boolean | null
     nextSlotTime: Date | null
     updatedAt: Date | null
@@ -1974,6 +1988,7 @@ export namespace Prisma {
   export type AvailabilityProjectionCountAggregateOutputType = {
     id: number
     outletId: number
+    tenantId: number
     hasActiveStock: number
     nextSlotTime: number
     updatedAt: number
@@ -1984,6 +1999,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMinAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     hasActiveStock?: true
     nextSlotTime?: true
     updatedAt?: true
@@ -1992,6 +2008,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMaxAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     hasActiveStock?: true
     nextSlotTime?: true
     updatedAt?: true
@@ -2000,6 +2017,7 @@ export namespace Prisma {
   export type AvailabilityProjectionCountAggregateInputType = {
     id?: true
     outletId?: true
+    tenantId?: true
     hasActiveStock?: true
     nextSlotTime?: true
     updatedAt?: true
@@ -2081,6 +2099,7 @@ export namespace Prisma {
   export type AvailabilityProjectionGroupByOutputType = {
     id: string
     outletId: string
+    tenantId: string | null
     hasActiveStock: boolean
     nextSlotTime: Date | null
     updatedAt: Date
@@ -2106,6 +2125,7 @@ export namespace Prisma {
   export type AvailabilityProjectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     hasActiveStock?: boolean
     nextSlotTime?: boolean
     updatedAt?: boolean
@@ -2114,6 +2134,7 @@ export namespace Prisma {
   export type AvailabilityProjectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     hasActiveStock?: boolean
     nextSlotTime?: boolean
     updatedAt?: boolean
@@ -2122,6 +2143,7 @@ export namespace Prisma {
   export type AvailabilityProjectionSelectScalar = {
     id?: boolean
     outletId?: boolean
+    tenantId?: boolean
     hasActiveStock?: boolean
     nextSlotTime?: boolean
     updatedAt?: boolean
@@ -2134,6 +2156,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       outletId: string
+      tenantId: string | null
       hasActiveStock: boolean
       nextSlotTime: Date | null
       updatedAt: Date
@@ -2532,6 +2555,7 @@ export namespace Prisma {
   interface AvailabilityProjectionFieldRefs {
     readonly id: FieldRef<"AvailabilityProjection", 'String'>
     readonly outletId: FieldRef<"AvailabilityProjection", 'String'>
+    readonly tenantId: FieldRef<"AvailabilityProjection", 'String'>
     readonly hasActiveStock: FieldRef<"AvailabilityProjection", 'Boolean'>
     readonly nextSlotTime: FieldRef<"AvailabilityProjection", 'DateTime'>
     readonly updatedAt: FieldRef<"AvailabilityProjection", 'DateTime'>
@@ -2840,6 +2864,7 @@ export namespace Prisma {
   export const OutletSearchDocumentScalarFieldEnum: {
     id: 'id',
     outletId: 'outletId',
+    tenantId: 'tenantId',
     merchantName: 'merchantName',
     locality: 'locality',
     city: 'city',
@@ -2859,6 +2884,7 @@ export namespace Prisma {
   export const AvailabilityProjectionScalarFieldEnum: {
     id: 'id',
     outletId: 'outletId',
+    tenantId: 'tenantId',
     hasActiveStock: 'hasActiveStock',
     nextSlotTime: 'nextSlotTime',
     updatedAt: 'updatedAt'
@@ -2968,6 +2994,7 @@ export namespace Prisma {
     NOT?: OutletSearchDocumentWhereInput | OutletSearchDocumentWhereInput[]
     id?: StringFilter<"OutletSearchDocument"> | string
     outletId?: StringFilter<"OutletSearchDocument"> | string
+    tenantId?: StringNullableFilter<"OutletSearchDocument"> | string | null
     merchantName?: StringFilter<"OutletSearchDocument"> | string
     locality?: StringFilter<"OutletSearchDocument"> | string
     city?: StringFilter<"OutletSearchDocument"> | string
@@ -2984,6 +3011,7 @@ export namespace Prisma {
   export type OutletSearchDocumentOrderByWithRelationInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     merchantName?: SortOrder
     locality?: SortOrder
     city?: SortOrder
@@ -3003,6 +3031,7 @@ export namespace Prisma {
     AND?: OutletSearchDocumentWhereInput | OutletSearchDocumentWhereInput[]
     OR?: OutletSearchDocumentWhereInput[]
     NOT?: OutletSearchDocumentWhereInput | OutletSearchDocumentWhereInput[]
+    tenantId?: StringNullableFilter<"OutletSearchDocument"> | string | null
     merchantName?: StringFilter<"OutletSearchDocument"> | string
     locality?: StringFilter<"OutletSearchDocument"> | string
     city?: StringFilter<"OutletSearchDocument"> | string
@@ -3019,6 +3048,7 @@ export namespace Prisma {
   export type OutletSearchDocumentOrderByWithAggregationInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     merchantName?: SortOrder
     locality?: SortOrder
     city?: SortOrder
@@ -3043,6 +3073,7 @@ export namespace Prisma {
     NOT?: OutletSearchDocumentScalarWhereWithAggregatesInput | OutletSearchDocumentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"OutletSearchDocument"> | string
     outletId?: StringWithAggregatesFilter<"OutletSearchDocument"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"OutletSearchDocument"> | string | null
     merchantName?: StringWithAggregatesFilter<"OutletSearchDocument"> | string
     locality?: StringWithAggregatesFilter<"OutletSearchDocument"> | string
     city?: StringWithAggregatesFilter<"OutletSearchDocument"> | string
@@ -3062,6 +3093,7 @@ export namespace Prisma {
     NOT?: AvailabilityProjectionWhereInput | AvailabilityProjectionWhereInput[]
     id?: StringFilter<"AvailabilityProjection"> | string
     outletId?: StringFilter<"AvailabilityProjection"> | string
+    tenantId?: StringNullableFilter<"AvailabilityProjection"> | string | null
     hasActiveStock?: BoolFilter<"AvailabilityProjection"> | boolean
     nextSlotTime?: DateTimeNullableFilter<"AvailabilityProjection"> | Date | string | null
     updatedAt?: DateTimeFilter<"AvailabilityProjection"> | Date | string
@@ -3070,6 +3102,7 @@ export namespace Prisma {
   export type AvailabilityProjectionOrderByWithRelationInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     hasActiveStock?: SortOrder
     nextSlotTime?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
@@ -3081,6 +3114,7 @@ export namespace Prisma {
     AND?: AvailabilityProjectionWhereInput | AvailabilityProjectionWhereInput[]
     OR?: AvailabilityProjectionWhereInput[]
     NOT?: AvailabilityProjectionWhereInput | AvailabilityProjectionWhereInput[]
+    tenantId?: StringNullableFilter<"AvailabilityProjection"> | string | null
     hasActiveStock?: BoolFilter<"AvailabilityProjection"> | boolean
     nextSlotTime?: DateTimeNullableFilter<"AvailabilityProjection"> | Date | string | null
     updatedAt?: DateTimeFilter<"AvailabilityProjection"> | Date | string
@@ -3089,6 +3123,7 @@ export namespace Prisma {
   export type AvailabilityProjectionOrderByWithAggregationInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     hasActiveStock?: SortOrder
     nextSlotTime?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
@@ -3103,6 +3138,7 @@ export namespace Prisma {
     NOT?: AvailabilityProjectionScalarWhereWithAggregatesInput | AvailabilityProjectionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AvailabilityProjection"> | string
     outletId?: StringWithAggregatesFilter<"AvailabilityProjection"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"AvailabilityProjection"> | string | null
     hasActiveStock?: BoolWithAggregatesFilter<"AvailabilityProjection"> | boolean
     nextSlotTime?: DateTimeNullableWithAggregatesFilter<"AvailabilityProjection"> | Date | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"AvailabilityProjection"> | Date | string
@@ -3111,6 +3147,7 @@ export namespace Prisma {
   export type OutletSearchDocumentCreateInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     merchantName: string
     locality: string
     city?: string
@@ -3127,6 +3164,7 @@ export namespace Prisma {
   export type OutletSearchDocumentUncheckedCreateInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     merchantName: string
     locality: string
     city?: string
@@ -3143,6 +3181,7 @@ export namespace Prisma {
   export type OutletSearchDocumentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantName?: StringFieldUpdateOperationsInput | string
     locality?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
@@ -3159,6 +3198,7 @@ export namespace Prisma {
   export type OutletSearchDocumentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantName?: StringFieldUpdateOperationsInput | string
     locality?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
@@ -3175,6 +3215,7 @@ export namespace Prisma {
   export type OutletSearchDocumentCreateManyInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     merchantName: string
     locality: string
     city?: string
@@ -3191,6 +3232,7 @@ export namespace Prisma {
   export type OutletSearchDocumentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantName?: StringFieldUpdateOperationsInput | string
     locality?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
@@ -3207,6 +3249,7 @@ export namespace Prisma {
   export type OutletSearchDocumentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantName?: StringFieldUpdateOperationsInput | string
     locality?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
@@ -3223,6 +3266,7 @@ export namespace Prisma {
   export type AvailabilityProjectionCreateInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     hasActiveStock?: boolean
     nextSlotTime?: Date | string | null
     updatedAt?: Date | string
@@ -3231,6 +3275,7 @@ export namespace Prisma {
   export type AvailabilityProjectionUncheckedCreateInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     hasActiveStock?: boolean
     nextSlotTime?: Date | string | null
     updatedAt?: Date | string
@@ -3239,6 +3284,7 @@ export namespace Prisma {
   export type AvailabilityProjectionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     hasActiveStock?: BoolFieldUpdateOperationsInput | boolean
     nextSlotTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3247,6 +3293,7 @@ export namespace Prisma {
   export type AvailabilityProjectionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     hasActiveStock?: BoolFieldUpdateOperationsInput | boolean
     nextSlotTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3255,6 +3302,7 @@ export namespace Prisma {
   export type AvailabilityProjectionCreateManyInput = {
     id?: string
     outletId: string
+    tenantId?: string | null
     hasActiveStock?: boolean
     nextSlotTime?: Date | string | null
     updatedAt?: Date | string
@@ -3263,6 +3311,7 @@ export namespace Prisma {
   export type AvailabilityProjectionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     hasActiveStock?: BoolFieldUpdateOperationsInput | boolean
     nextSlotTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3271,6 +3320,7 @@ export namespace Prisma {
   export type AvailabilityProjectionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     hasActiveStock?: BoolFieldUpdateOperationsInput | boolean
     nextSlotTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3289,6 +3339,21 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -3337,9 +3402,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type OutletSearchDocumentCountOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     merchantName?: SortOrder
     locality?: SortOrder
     city?: SortOrder
@@ -3363,6 +3434,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMaxOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     merchantName?: SortOrder
     locality?: SortOrder
     city?: SortOrder
@@ -3378,6 +3450,7 @@ export namespace Prisma {
   export type OutletSearchDocumentMinOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     merchantName?: SortOrder
     locality?: SortOrder
     city?: SortOrder
@@ -3413,6 +3486,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -3480,14 +3571,10 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type AvailabilityProjectionCountOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     hasActiveStock?: SortOrder
     nextSlotTime?: SortOrder
     updatedAt?: SortOrder
@@ -3496,6 +3583,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMaxOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     hasActiveStock?: SortOrder
     nextSlotTime?: SortOrder
     updatedAt?: SortOrder
@@ -3504,6 +3592,7 @@ export namespace Prisma {
   export type AvailabilityProjectionMinOrderByAggregateInput = {
     id?: SortOrder
     outletId?: SortOrder
+    tenantId?: SortOrder
     hasActiveStock?: SortOrder
     nextSlotTime?: SortOrder
     updatedAt?: SortOrder
@@ -3529,6 +3618,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -3576,6 +3669,20 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedFloatFilter<$PrismaModel = never> = {
@@ -3631,6 +3738,34 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -3710,17 +3845,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
 

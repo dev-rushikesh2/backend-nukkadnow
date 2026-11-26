@@ -1329,6 +1329,7 @@ export namespace Prisma {
 
   export type CapacitySlotMinAggregateOutputType = {
     id: string | null
+    tenantId: string | null
     outletId: string | null
     slotDate: string | null
     startTime: string | null
@@ -1341,6 +1342,7 @@ export namespace Prisma {
 
   export type CapacitySlotMaxAggregateOutputType = {
     id: string | null
+    tenantId: string | null
     outletId: string | null
     slotDate: string | null
     startTime: string | null
@@ -1353,6 +1355,7 @@ export namespace Prisma {
 
   export type CapacitySlotCountAggregateOutputType = {
     id: number
+    tenantId: number
     outletId: number
     slotDate: number
     startTime: number
@@ -1379,6 +1382,7 @@ export namespace Prisma {
 
   export type CapacitySlotMinAggregateInputType = {
     id?: true
+    tenantId?: true
     outletId?: true
     slotDate?: true
     startTime?: true
@@ -1391,6 +1395,7 @@ export namespace Prisma {
 
   export type CapacitySlotMaxAggregateInputType = {
     id?: true
+    tenantId?: true
     outletId?: true
     slotDate?: true
     startTime?: true
@@ -1403,6 +1408,7 @@ export namespace Prisma {
 
   export type CapacitySlotCountAggregateInputType = {
     id?: true
+    tenantId?: true
     outletId?: true
     slotDate?: true
     startTime?: true
@@ -1502,6 +1508,7 @@ export namespace Prisma {
 
   export type CapacitySlotGroupByOutputType = {
     id: string
+    tenantId: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -1533,6 +1540,7 @@ export namespace Prisma {
 
   export type CapacitySlotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    tenantId?: boolean
     outletId?: boolean
     slotDate?: boolean
     startTime?: boolean
@@ -1547,6 +1555,7 @@ export namespace Prisma {
 
   export type CapacitySlotSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    tenantId?: boolean
     outletId?: boolean
     slotDate?: boolean
     startTime?: boolean
@@ -1559,6 +1568,7 @@ export namespace Prisma {
 
   export type CapacitySlotSelectScalar = {
     id?: boolean
+    tenantId?: boolean
     outletId?: boolean
     slotDate?: boolean
     startTime?: boolean
@@ -1582,6 +1592,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      tenantId: string | null
       outletId: string
       slotDate: string
       startTime: string
@@ -1985,6 +1996,7 @@ export namespace Prisma {
    */ 
   interface CapacitySlotFieldRefs {
     readonly id: FieldRef<"CapacitySlot", 'String'>
+    readonly tenantId: FieldRef<"CapacitySlot", 'String'>
     readonly outletId: FieldRef<"CapacitySlot", 'String'>
     readonly slotDate: FieldRef<"CapacitySlot", 'String'>
     readonly startTime: FieldRef<"CapacitySlot", 'String'>
@@ -4215,6 +4227,7 @@ export namespace Prisma {
   export type PickupTokenMinAggregateOutputType = {
     id: string | null
     orderId: string | null
+    tenantId: string | null
     outletId: string | null
     tokenNumber: string | null
     status: string | null
@@ -4224,6 +4237,7 @@ export namespace Prisma {
   export type PickupTokenMaxAggregateOutputType = {
     id: string | null
     orderId: string | null
+    tenantId: string | null
     outletId: string | null
     tokenNumber: string | null
     status: string | null
@@ -4233,6 +4247,7 @@ export namespace Prisma {
   export type PickupTokenCountAggregateOutputType = {
     id: number
     orderId: number
+    tenantId: number
     outletId: number
     tokenNumber: number
     status: number
@@ -4244,6 +4259,7 @@ export namespace Prisma {
   export type PickupTokenMinAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     tokenNumber?: true
     status?: true
@@ -4253,6 +4269,7 @@ export namespace Prisma {
   export type PickupTokenMaxAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     tokenNumber?: true
     status?: true
@@ -4262,6 +4279,7 @@ export namespace Prisma {
   export type PickupTokenCountAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     tokenNumber?: true
     status?: true
@@ -4344,6 +4362,7 @@ export namespace Prisma {
   export type PickupTokenGroupByOutputType = {
     id: string
     orderId: string
+    tenantId: string | null
     outletId: string
     tokenNumber: string
     status: string
@@ -4370,6 +4389,7 @@ export namespace Prisma {
   export type PickupTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     tokenNumber?: boolean
     status?: boolean
@@ -4379,6 +4399,7 @@ export namespace Prisma {
   export type PickupTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     tokenNumber?: boolean
     status?: boolean
@@ -4388,6 +4409,7 @@ export namespace Prisma {
   export type PickupTokenSelectScalar = {
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     tokenNumber?: boolean
     status?: boolean
@@ -4401,6 +4423,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
+      tenantId: string | null
       outletId: string
       tokenNumber: string
       status: string
@@ -4800,6 +4823,7 @@ export namespace Prisma {
   interface PickupTokenFieldRefs {
     readonly id: FieldRef<"PickupToken", 'String'>
     readonly orderId: FieldRef<"PickupToken", 'String'>
+    readonly tenantId: FieldRef<"PickupToken", 'String'>
     readonly outletId: FieldRef<"PickupToken", 'String'>
     readonly tokenNumber: FieldRef<"PickupToken", 'String'>
     readonly status: FieldRef<"PickupToken", 'String'>
@@ -5105,6 +5129,7 @@ export namespace Prisma {
   export type DeliveryTaskMinAggregateOutputType = {
     id: string | null
     orderId: string | null
+    tenantId: string | null
     outletId: string | null
     cityCode: string | null
     deliveryAddress: string | null
@@ -5116,6 +5141,7 @@ export namespace Prisma {
   export type DeliveryTaskMaxAggregateOutputType = {
     id: string | null
     orderId: string | null
+    tenantId: string | null
     outletId: string | null
     cityCode: string | null
     deliveryAddress: string | null
@@ -5127,6 +5153,7 @@ export namespace Prisma {
   export type DeliveryTaskCountAggregateOutputType = {
     id: number
     orderId: number
+    tenantId: number
     outletId: number
     cityCode: number
     deliveryAddress: number
@@ -5140,6 +5167,7 @@ export namespace Prisma {
   export type DeliveryTaskMinAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     deliveryAddress?: true
@@ -5151,6 +5179,7 @@ export namespace Prisma {
   export type DeliveryTaskMaxAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     deliveryAddress?: true
@@ -5162,6 +5191,7 @@ export namespace Prisma {
   export type DeliveryTaskCountAggregateInputType = {
     id?: true
     orderId?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     deliveryAddress?: true
@@ -5246,6 +5276,7 @@ export namespace Prisma {
   export type DeliveryTaskGroupByOutputType = {
     id: string
     orderId: string
+    tenantId: string | null
     outletId: string
     cityCode: string
     deliveryAddress: string
@@ -5274,6 +5305,7 @@ export namespace Prisma {
   export type DeliveryTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     deliveryAddress?: boolean
@@ -5285,6 +5317,7 @@ export namespace Prisma {
   export type DeliveryTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     deliveryAddress?: boolean
@@ -5296,6 +5329,7 @@ export namespace Prisma {
   export type DeliveryTaskSelectScalar = {
     id?: boolean
     orderId?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     deliveryAddress?: boolean
@@ -5311,6 +5345,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orderId: string
+      tenantId: string | null
       outletId: string
       cityCode: string
       deliveryAddress: string
@@ -5712,6 +5747,7 @@ export namespace Prisma {
   interface DeliveryTaskFieldRefs {
     readonly id: FieldRef<"DeliveryTask", 'String'>
     readonly orderId: FieldRef<"DeliveryTask", 'String'>
+    readonly tenantId: FieldRef<"DeliveryTask", 'String'>
     readonly outletId: FieldRef<"DeliveryTask", 'String'>
     readonly cityCode: FieldRef<"DeliveryTask", 'String'>
     readonly deliveryAddress: FieldRef<"DeliveryTask", 'String'>
@@ -6934,6 +6970,7 @@ export namespace Prisma {
 
   export const CapacitySlotScalarFieldEnum: {
     id: 'id',
+    tenantId: 'tenantId',
     outletId: 'outletId',
     slotDate: 'slotDate',
     startTime: 'startTime',
@@ -6973,6 +7010,7 @@ export namespace Prisma {
   export const PickupTokenScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
+    tenantId: 'tenantId',
     outletId: 'outletId',
     tokenNumber: 'tokenNumber',
     status: 'status',
@@ -6985,6 +7023,7 @@ export namespace Prisma {
   export const DeliveryTaskScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
+    tenantId: 'tenantId',
     outletId: 'outletId',
     cityCode: 'cityCode',
     deliveryAddress: 'deliveryAddress',
@@ -7107,6 +7146,7 @@ export namespace Prisma {
     OR?: CapacitySlotWhereInput[]
     NOT?: CapacitySlotWhereInput | CapacitySlotWhereInput[]
     id?: StringFilter<"CapacitySlot"> | string
+    tenantId?: StringNullableFilter<"CapacitySlot"> | string | null
     outletId?: StringFilter<"CapacitySlot"> | string
     slotDate?: StringFilter<"CapacitySlot"> | string
     startTime?: StringFilter<"CapacitySlot"> | string
@@ -7120,6 +7160,7 @@ export namespace Prisma {
 
   export type CapacitySlotOrderByWithRelationInput = {
     id?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     slotDate?: SortOrder
     startTime?: SortOrder
@@ -7137,6 +7178,7 @@ export namespace Prisma {
     AND?: CapacitySlotWhereInput | CapacitySlotWhereInput[]
     OR?: CapacitySlotWhereInput[]
     NOT?: CapacitySlotWhereInput | CapacitySlotWhereInput[]
+    tenantId?: StringNullableFilter<"CapacitySlot"> | string | null
     outletId?: StringFilter<"CapacitySlot"> | string
     slotDate?: StringFilter<"CapacitySlot"> | string
     startTime?: StringFilter<"CapacitySlot"> | string
@@ -7150,6 +7192,7 @@ export namespace Prisma {
 
   export type CapacitySlotOrderByWithAggregationInput = {
     id?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     slotDate?: SortOrder
     startTime?: SortOrder
@@ -7170,6 +7213,7 @@ export namespace Prisma {
     OR?: CapacitySlotScalarWhereWithAggregatesInput[]
     NOT?: CapacitySlotScalarWhereWithAggregatesInput | CapacitySlotScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"CapacitySlot"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"CapacitySlot"> | string | null
     outletId?: StringWithAggregatesFilter<"CapacitySlot"> | string
     slotDate?: StringWithAggregatesFilter<"CapacitySlot"> | string
     startTime?: StringWithAggregatesFilter<"CapacitySlot"> | string
@@ -7300,6 +7344,7 @@ export namespace Prisma {
     NOT?: PickupTokenWhereInput | PickupTokenWhereInput[]
     id?: StringFilter<"PickupToken"> | string
     orderId?: StringFilter<"PickupToken"> | string
+    tenantId?: StringNullableFilter<"PickupToken"> | string | null
     outletId?: StringFilter<"PickupToken"> | string
     tokenNumber?: StringFilter<"PickupToken"> | string
     status?: StringFilter<"PickupToken"> | string
@@ -7309,6 +7354,7 @@ export namespace Prisma {
   export type PickupTokenOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     tokenNumber?: SortOrder
     status?: SortOrder
@@ -7321,6 +7367,7 @@ export namespace Prisma {
     AND?: PickupTokenWhereInput | PickupTokenWhereInput[]
     OR?: PickupTokenWhereInput[]
     NOT?: PickupTokenWhereInput | PickupTokenWhereInput[]
+    tenantId?: StringNullableFilter<"PickupToken"> | string | null
     outletId?: StringFilter<"PickupToken"> | string
     tokenNumber?: StringFilter<"PickupToken"> | string
     status?: StringFilter<"PickupToken"> | string
@@ -7330,6 +7377,7 @@ export namespace Prisma {
   export type PickupTokenOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     tokenNumber?: SortOrder
     status?: SortOrder
@@ -7345,6 +7393,7 @@ export namespace Prisma {
     NOT?: PickupTokenScalarWhereWithAggregatesInput | PickupTokenScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PickupToken"> | string
     orderId?: StringWithAggregatesFilter<"PickupToken"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"PickupToken"> | string | null
     outletId?: StringWithAggregatesFilter<"PickupToken"> | string
     tokenNumber?: StringWithAggregatesFilter<"PickupToken"> | string
     status?: StringWithAggregatesFilter<"PickupToken"> | string
@@ -7357,6 +7406,7 @@ export namespace Prisma {
     NOT?: DeliveryTaskWhereInput | DeliveryTaskWhereInput[]
     id?: StringFilter<"DeliveryTask"> | string
     orderId?: StringFilter<"DeliveryTask"> | string
+    tenantId?: StringNullableFilter<"DeliveryTask"> | string | null
     outletId?: StringFilter<"DeliveryTask"> | string
     cityCode?: StringFilter<"DeliveryTask"> | string
     deliveryAddress?: StringFilter<"DeliveryTask"> | string
@@ -7368,6 +7418,7 @@ export namespace Prisma {
   export type DeliveryTaskOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     deliveryAddress?: SortOrder
@@ -7382,6 +7433,7 @@ export namespace Prisma {
     AND?: DeliveryTaskWhereInput | DeliveryTaskWhereInput[]
     OR?: DeliveryTaskWhereInput[]
     NOT?: DeliveryTaskWhereInput | DeliveryTaskWhereInput[]
+    tenantId?: StringNullableFilter<"DeliveryTask"> | string | null
     outletId?: StringFilter<"DeliveryTask"> | string
     cityCode?: StringFilter<"DeliveryTask"> | string
     deliveryAddress?: StringFilter<"DeliveryTask"> | string
@@ -7393,6 +7445,7 @@ export namespace Prisma {
   export type DeliveryTaskOrderByWithAggregationInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     deliveryAddress?: SortOrder
@@ -7410,6 +7463,7 @@ export namespace Prisma {
     NOT?: DeliveryTaskScalarWhereWithAggregatesInput | DeliveryTaskScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DeliveryTask"> | string
     orderId?: StringWithAggregatesFilter<"DeliveryTask"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"DeliveryTask"> | string | null
     outletId?: StringWithAggregatesFilter<"DeliveryTask"> | string
     cityCode?: StringWithAggregatesFilter<"DeliveryTask"> | string
     deliveryAddress?: StringWithAggregatesFilter<"DeliveryTask"> | string
@@ -7475,6 +7529,7 @@ export namespace Prisma {
 
   export type CapacitySlotCreateInput = {
     id?: string
+    tenantId?: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -7488,6 +7543,7 @@ export namespace Prisma {
 
   export type CapacitySlotUncheckedCreateInput = {
     id?: string
+    tenantId?: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -7501,6 +7557,7 @@ export namespace Prisma {
 
   export type CapacitySlotUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -7514,6 +7571,7 @@ export namespace Prisma {
 
   export type CapacitySlotUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -7527,6 +7585,7 @@ export namespace Prisma {
 
   export type CapacitySlotCreateManyInput = {
     id?: string
+    tenantId?: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -7539,6 +7598,7 @@ export namespace Prisma {
 
   export type CapacitySlotUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -7551,6 +7611,7 @@ export namespace Prisma {
 
   export type CapacitySlotUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -7682,6 +7743,7 @@ export namespace Prisma {
   export type PickupTokenCreateInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     tokenNumber: string
     status?: string
@@ -7691,6 +7753,7 @@ export namespace Prisma {
   export type PickupTokenUncheckedCreateInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     tokenNumber: string
     status?: string
@@ -7700,6 +7763,7 @@ export namespace Prisma {
   export type PickupTokenUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     tokenNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
@@ -7709,6 +7773,7 @@ export namespace Prisma {
   export type PickupTokenUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     tokenNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
@@ -7718,6 +7783,7 @@ export namespace Prisma {
   export type PickupTokenCreateManyInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     tokenNumber: string
     status?: string
@@ -7727,6 +7793,7 @@ export namespace Prisma {
   export type PickupTokenUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     tokenNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
@@ -7736,6 +7803,7 @@ export namespace Prisma {
   export type PickupTokenUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     tokenNumber?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
@@ -7745,6 +7813,7 @@ export namespace Prisma {
   export type DeliveryTaskCreateInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     deliveryAddress: string
@@ -7756,6 +7825,7 @@ export namespace Prisma {
   export type DeliveryTaskUncheckedCreateInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     deliveryAddress: string
@@ -7767,6 +7837,7 @@ export namespace Prisma {
   export type DeliveryTaskUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     deliveryAddress?: StringFieldUpdateOperationsInput | string
@@ -7778,6 +7849,7 @@ export namespace Prisma {
   export type DeliveryTaskUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     deliveryAddress?: StringFieldUpdateOperationsInput | string
@@ -7789,6 +7861,7 @@ export namespace Prisma {
   export type DeliveryTaskCreateManyInput = {
     id?: string
     orderId: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     deliveryAddress: string
@@ -7800,6 +7873,7 @@ export namespace Prisma {
   export type DeliveryTaskUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     deliveryAddress?: StringFieldUpdateOperationsInput | string
@@ -7811,6 +7885,7 @@ export namespace Prisma {
   export type DeliveryTaskUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orderId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     deliveryAddress?: StringFieldUpdateOperationsInput | string
@@ -7890,6 +7965,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7912,6 +8002,11 @@ export namespace Prisma {
     none?: SlotReservationWhereInput
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type SlotReservationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -7924,6 +8019,7 @@ export namespace Prisma {
 
   export type CapacitySlotCountOrderByAggregateInput = {
     id?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     slotDate?: SortOrder
     startTime?: SortOrder
@@ -7942,6 +8038,7 @@ export namespace Prisma {
 
   export type CapacitySlotMaxOrderByAggregateInput = {
     id?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     slotDate?: SortOrder
     startTime?: SortOrder
@@ -7954,6 +8051,7 @@ export namespace Prisma {
 
   export type CapacitySlotMinOrderByAggregateInput = {
     id?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     slotDate?: SortOrder
     startTime?: SortOrder
@@ -7986,6 +8084,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -8106,6 +8222,7 @@ export namespace Prisma {
   export type PickupTokenCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     tokenNumber?: SortOrder
     status?: SortOrder
@@ -8115,6 +8232,7 @@ export namespace Prisma {
   export type PickupTokenMaxOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     tokenNumber?: SortOrder
     status?: SortOrder
@@ -8124,35 +8242,17 @@ export namespace Prisma {
   export type PickupTokenMinOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     tokenNumber?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type DeliveryTaskCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     deliveryAddress?: SortOrder
@@ -8164,6 +8264,7 @@ export namespace Prisma {
   export type DeliveryTaskMaxOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     deliveryAddress?: SortOrder
@@ -8175,30 +8276,13 @@ export namespace Prisma {
   export type DeliveryTaskMinOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     deliveryAddress?: SortOrder
     status?: SortOrder
     assignedStaffId?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type OutletTokenSequenceOutletIdSeqDateCompoundUniqueInput = {
@@ -8254,6 +8338,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -8314,10 +8402,6 @@ export namespace Prisma {
     update?: XOR<XOR<CapacitySlotUpdateToOneWithWhereWithoutReservationsInput, CapacitySlotUpdateWithoutReservationsInput>, CapacitySlotUncheckedUpdateWithoutReservationsInput>
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8330,6 +8414,20 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8363,6 +8461,34 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -8425,48 +8551,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type SlotReservationCreateWithoutSlotInput = {
     id?: string
     orderId: string
@@ -8523,6 +8607,7 @@ export namespace Prisma {
 
   export type CapacitySlotCreateWithoutReservationsInput = {
     id?: string
+    tenantId?: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -8535,6 +8620,7 @@ export namespace Prisma {
 
   export type CapacitySlotUncheckedCreateWithoutReservationsInput = {
     id?: string
+    tenantId?: string | null
     outletId: string
     slotDate: string
     startTime: string
@@ -8563,6 +8649,7 @@ export namespace Prisma {
 
   export type CapacitySlotUpdateWithoutReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
@@ -8575,6 +8662,7 @@ export namespace Prisma {
 
   export type CapacitySlotUncheckedUpdateWithoutReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     slotDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string

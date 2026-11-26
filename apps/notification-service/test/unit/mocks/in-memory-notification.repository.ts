@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { NotificationRepositoryPort } from "../../../domain/entities/notification-template.entity";
-import { NotificationTemplate, NotificationJob } from "../../../domain/entities/notification-template.entity";
+import { NotificationRepositoryPort } from "../../../src/modules/notifications/domain/entities/notification-template.entity";
+import { NotificationTemplate, NotificationJob } from "../../../src/modules/notifications/domain/entities/notification-template.entity";
 
 @Injectable()
 export class InMemoryNotificationRepository implements NotificationRepositoryPort {

@@ -27,4 +27,16 @@ export class DiscoveryController {
     await this.discoveryService.syncOutletDocument(dto);
     return { success: true };
   }
+
+  @Post("availability")
+  @ApiOperation({ summary: "Internal sync hook to update outlet stock availability projection" })
+  async syncAvailability(@Body() body: { outletId: string; tenantId?: string; hasActiveStock: boolean; nextSlotTime?: string }) {
+    await this.discoveryService.syncAvailability(
+      body.outletId,
+      body.hasActiveStock,
+      body.nextSlotTime ? new Date(body.nextSlotTime) : null,
+      body.tenantId
+    );
+    return { success: true };
+  }
 }

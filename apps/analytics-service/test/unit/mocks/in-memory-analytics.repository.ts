@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AnalyticsRepositoryPort, DailyMetric } from "../../../domain/entities/daily-metric.entity";
+import { AnalyticsRepositoryPort, DailyMetric } from "../../../src/modules/analytics/domain/entities/daily-metric.entity";
 
 @Injectable()
 export class InMemoryAnalyticsRepository implements AnalyticsRepositoryPort {

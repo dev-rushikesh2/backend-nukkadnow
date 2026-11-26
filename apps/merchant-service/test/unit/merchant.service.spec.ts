@@ -1,5 +1,5 @@
 import { MerchantService } from "../../src/modules/merchant/application/services/merchant.service";
-import { InMemoryMerchantRepository, InMemoryOutletRepository } from "../../src/modules/merchant/infrastructure/persistence/repositories/in-memory-merchant.repository";
+import { InMemoryMerchantRepository, InMemoryOutletRepository } from "./mocks/in-memory-merchant.repository";
 import { SellerMode } from "../../src/modules/merchant/domain/value-objects/seller-mode.vo";
 import { ForbiddenException } from "@nestjs/common";
 

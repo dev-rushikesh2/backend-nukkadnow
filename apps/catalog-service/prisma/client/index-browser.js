@@ -138,6 +138,8 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
+  tenantId: 'tenantId',
+  outletId: 'outletId',
   name: 'name',
   sku: 'sku',
   barcode: 'barcode',

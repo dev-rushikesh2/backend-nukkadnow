@@ -1,5 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { StockRepositoryPort } from "../../../domain/repositories/catalog.repository.port";
+import { Injectable, ConflictException, ForbiddenException, NotFoundException } from "@nestjs/common";
+import {
+  StockRepositoryPort,
+  AtomicStockAdjustCommand,
+  AtomicStockAdjustResult,
+} from "../../../domain/repositories/catalog.repository.port";
 import { StockBalance } from "../../../domain/entities/stock-balance.entity";
 import { StockMovement, StockMovementReason } from "../../../domain/entities/stock-movement.entity";
 import { InsufficientStockError } from "../../../domain/errors/catalog-errors";
@@ -24,44 +28,71 @@ export class PrismaStockRepository implements StockRepositoryPort {
     return records.map((r: any) => this.toDomain(r));
   }
 
-  private async resolveTenantId(variantId: string): Promise<string> {
-    const variant = await this.prisma.productVariant.findUnique({
+  private async resolveVariantContext(variantId: string, tx: any = this.prisma): Promise<{ tenantId: string; outletId: string }> {
+    const variant = await tx.productVariant.findUnique({
       where: { id: variantId },
-      include: { product: { select: { tenantId: true } } },
+      include: { product: { select: { tenantId: true, outletId: true } } },
     });
-    return variant?.product?.tenantId || "merchant-main";
+    if (!variant?.product) {
+      throw new NotFoundException(`ProductVariant '${variantId}' not found in catalog.`);
+    }
+    return {
+      tenantId: variant.product.tenantId,
+      outletId: variant.product.outletId,
+    };
   }
 
   async save(stock: StockBalance): Promise<void> {
-    const tenantId = await this.resolveTenantId(stock.variantId);
-    await this.prisma.stockBalance.upsert({
+    const ctx = await this.resolveVariantContext(stock.variantId);
+    if (ctx.outletId !== stock.outletId) {
+      throw new ForbiddenException(`Outlet Mismatch: Variant '${stock.variantId}' does not belong to outlet '${stock.outletId}'.`);
+    }
+
+    const existing = await this.prisma.stockBalance.findUnique({
       where: { variantId: stock.variantId },
-      create: {
-        id: stock.id,
-        variantId: stock.variantId,
-        tenantId,
-        outletId: stock.outletId,
+      select: { version: true },
+    });
+
+    if (!existing) {
+      await this.prisma.stockBalance.create({
+        data: {
+          id: stock.id,
+          variantId: stock.variantId,
+          tenantId: ctx.tenantId,
+          outletId: ctx.outletId,
+          onHandQuantity: stock.onHandQuantity,
+          reservedQuantity: stock.reservedQuantity,
+          version: stock.version,
+        },
+      });
+      return;
+    }
+
+    const expectedVersion = stock.version > existing.version ? stock.version - 1 : existing.version;
+    const updated = await this.prisma.stockBalance.updateMany({
+      where: { variantId: stock.variantId, version: expectedVersion },
+      data: {
+        tenantId: ctx.tenantId,
+        outletId: ctx.outletId,
         onHandQuantity: stock.onHandQuantity,
         reservedQuantity: stock.reservedQuantity,
-        version: stock.version,
-      },
-      update: {
-        onHandQuantity: stock.onHandQuantity,
-        reservedQuantity: stock.reservedQuantity,
-        version: stock.version,
+        version: existing.version + 1,
         updatedAt: new Date(),
       },
     });
+    if (updated.count === 0) {
+      throw new ConflictException(`Concurrent stock modification detected for variant '${stock.variantId}'. Please retry.`);
+    }
   }
 
   async recordMovement(movement: StockMovement): Promise<void> {
-    const tenantId = await this.resolveTenantId(movement.variantId);
+    const ctx = await this.resolveVariantContext(movement.variantId);
     await this.prisma.stockMovement.create({
       data: {
         id: movement.id,
         variantId: movement.variantId,
-        tenantId,
-        outletId: movement.outletId,
+        tenantId: ctx.tenantId,
+        outletId: ctx.outletId,
         quantityChange: movement.quantityChange,
         balanceAfter: movement.balanceAfter,
         reason: movement.reason,
@@ -70,6 +101,88 @@ export class PrismaStockRepository implements StockRepositoryPort {
         notes: movement.notes ?? null,
         createdAt: movement.createdAt,
       },
+    });
+  }
+
+  async atomicAdjustStock(command: AtomicStockAdjustCommand): Promise<AtomicStockAdjustResult> {
+    const [result] = await this.atomicAdjustBatch([command]);
+    return result;
+  }
+
+  async atomicAdjustBatch(commands: AtomicStockAdjustCommand[]): Promise<AtomicStockAdjustResult[]> {
+    return this.prisma.$transaction(async (tx: any) => {
+      const results: AtomicStockAdjustResult[] = [];
+      for (const cmd of commands) {
+        const ctx = await this.resolveVariantContext(cmd.variantId, tx);
+        if (ctx.outletId !== cmd.outletId) {
+          throw new ForbiddenException(`Outlet Mismatch: Variant '${cmd.variantId}' belongs to another outlet.`);
+        }
+        if (cmd.callerTenantId && ctx.tenantId !== cmd.callerTenantId) {
+          throw new ForbiddenException(`Tenant Mismatch: Variant '${cmd.variantId}' belongs to another merchant organization.`);
+        }
+
+        // Ensure 1:1 balance row exists before atomic conditional update
+        await tx.$executeRaw`
+          INSERT INTO "stock_balances" ("id", "variantId", "tenantId", "outletId", "onHandQuantity", "reservedQuantity", "safetyStock", "version", "updatedAt")
+          VALUES (${UniqueIdentifier.generateV7()}, ${cmd.variantId}, ${ctx.tenantId}, ${ctx.outletId}, 0, 0, 5, 1, NOW())
+          ON CONFLICT ("variantId") DO NOTHING
+        `;
+
+        const updatedRows: Array<{
+          onHandQuantity: number;
+          reservedQuantity: number;
+          tenantId: string;
+          outletId: string;
+          version: number;
+        }> = await tx.$queryRaw`
+          UPDATE "stock_balances"
+          SET "onHandQuantity" = "onHandQuantity" + ${cmd.quantityChange},
+              "version" = "version" + 1,
+              "updatedAt" = NOW()
+          WHERE "variantId" = ${cmd.variantId}
+            AND "outletId" = ${ctx.outletId}
+            AND "tenantId" = ${ctx.tenantId}
+            AND ("onHandQuantity" + ${cmd.quantityChange}) >= "reservedQuantity"
+            AND ("onHandQuantity" + ${cmd.quantityChange}) >= 0
+          RETURNING "onHandQuantity", "reservedQuantity", "tenantId", "outletId", "version"
+        `;
+
+        if (!updatedRows || updatedRows.length === 0) {
+          const current = await tx.stockBalance.findUnique({ where: { variantId: cmd.variantId } });
+          const avail = current ? Math.max(0, current.onHandQuantity - current.reservedQuantity) : 0;
+          throw new InsufficientStockError(avail, Math.abs(cmd.quantityChange));
+        }
+
+        const updated = updatedRows[0];
+        const available = Math.max(0, updated.onHandQuantity - updated.reservedQuantity);
+
+        await tx.stockMovement.create({
+          data: {
+            id: UniqueIdentifier.generateV7(),
+            variantId: cmd.variantId,
+            tenantId: ctx.tenantId,
+            outletId: ctx.outletId,
+            quantityChange: cmd.quantityChange,
+            balanceAfter: available,
+            reason: cmd.reason || "RESTOCK",
+            actorId: cmd.actorId,
+            referenceId: cmd.referenceId ?? null,
+            notes: cmd.notes ?? null,
+            createdAt: new Date(),
+          },
+        });
+
+        results.push({
+          variantId: cmd.variantId,
+          tenantId: ctx.tenantId,
+          outletId: ctx.outletId,
+          onHand: updated.onHandQuantity,
+          reserved: updated.reservedQuantity,
+          available,
+          version: updated.version,
+        });
+      }
+      return results;
     });
   }
 
@@ -105,13 +218,22 @@ export class PrismaStockRepository implements StockRepositoryPort {
     tenantId?: string;
   }): Promise<void> {
     await this.prisma.$transaction(async (tx: any) => {
+      const ctx = await this.resolveVariantContext(res.variantId, tx);
+      if (ctx.outletId !== res.outletId) {
+        throw new ForbiddenException(`Outlet Mismatch: Variant '${res.variantId}' does not belong to outlet '${res.outletId}'.`);
+      }
+      if (res.tenantId && ctx.tenantId !== res.tenantId) {
+        throw new ForbiddenException(`Tenant Mismatch: Variant '${res.variantId}' belongs to another merchant.`);
+      }
+
       const updated = await tx.$executeRaw`
-        UPDATE stock_balances
-        SET reserved_quantity = reserved_quantity + ${res.quantity},
-            version = version + 1,
-            updated_at = NOW()
-        WHERE variant_id = ${res.variantId}
-          AND (on_hand_quantity - reserved_quantity) >= ${res.quantity}
+        UPDATE "stock_balances"
+        SET "reservedQuantity" = "reservedQuantity" + ${res.quantity},
+            "version" = "version" + 1,
+            "updatedAt" = NOW()
+        WHERE "variantId" = ${res.variantId}
+          AND "outletId" = ${ctx.outletId}
+          AND ("onHandQuantity" - "reservedQuantity") >= ${res.quantity}
       `;
       if (updated === 0) {
         throw new InsufficientStockError(0, res.quantity);
@@ -120,8 +242,8 @@ export class PrismaStockRepository implements StockRepositoryPort {
         data: {
           id: UniqueIdentifier.generateV7(),
           variantId: res.variantId,
-          tenantId: res.tenantId || "merchant-main",
-          outletId: res.outletId,
+          tenantId: ctx.tenantId,
+          outletId: ctx.outletId,
           quantity: res.quantity,
           orderId: res.orderId,
           expiresAt: new Date(Date.now() + (res.ttlMinutes ?? 10) * 60 * 1000),
@@ -133,68 +255,76 @@ export class PrismaStockRepository implements StockRepositoryPort {
 
   async commitReservation(orderId: string): Promise<void> {
     await this.prisma.$transaction(async (tx: any) => {
-      const reservation = await tx.stockReservation.findFirst({
+      const reservations = await tx.stockReservation.findMany({
         where: { orderId, status: "ACTIVE" },
       });
-      if (!reservation) return;
-      await tx.stockReservation.update({
-        where: { id: reservation.id },
-        data: { status: "COMMITTED" },
-      });
-      await tx.$executeRaw`
-        UPDATE stock_balances
-        SET on_hand_quantity = on_hand_quantity - ${reservation.quantity},
-            reserved_quantity = reserved_quantity - ${reservation.quantity},
-            version = version + 1,
-            updated_at = NOW()
-        WHERE variant_id = ${reservation.variantId}
-      `;
-      await tx.stockMovement.create({
-        data: {
-          id: UniqueIdentifier.generateV7(),
-          variantId: reservation.variantId,
-          tenantId: reservation.tenantId,
-          outletId: reservation.outletId,
-          quantityChange: -reservation.quantity,
-          balanceAfter: 0,
-          reason: "SALE_COMMIT",
-          actorId: "ORDER_SERVICE",
-          referenceId: orderId,
-        },
-      });
+      for (const reservation of reservations) {
+        await tx.stockReservation.update({
+          where: { id: reservation.id },
+          data: { status: "COMMITTED" },
+        });
+        const rows: Array<{ onHandQuantity: number; reservedQuantity: number }> = await tx.$queryRaw`
+          UPDATE "stock_balances"
+          SET "onHandQuantity" = "onHandQuantity" - ${reservation.quantity},
+              "reservedQuantity" = "reservedQuantity" - ${reservation.quantity},
+              "version" = "version" + 1,
+              "updatedAt" = NOW()
+          WHERE "variantId" = ${reservation.variantId}
+            AND "reservedQuantity" >= ${reservation.quantity}
+            AND "onHandQuantity" >= ${reservation.quantity}
+          RETURNING "onHandQuantity", "reservedQuantity"
+        `;
+        const avail = rows[0] ? Math.max(0, rows[0].onHandQuantity - rows[0].reservedQuantity) : 0;
+        await tx.stockMovement.create({
+          data: {
+            id: UniqueIdentifier.generateV7(),
+            variantId: reservation.variantId,
+            tenantId: reservation.tenantId,
+            outletId: reservation.outletId,
+            quantityChange: -reservation.quantity,
+            balanceAfter: avail,
+            reason: "SALE_COMMIT",
+            actorId: "ORDER_SERVICE",
+            referenceId: orderId,
+          },
+        });
+      }
     });
   }
 
   async releaseReservation(orderId: string): Promise<void> {
     await this.prisma.$transaction(async (tx: any) => {
-      const reservation = await tx.stockReservation.findFirst({
+      const reservations = await tx.stockReservation.findMany({
         where: { orderId, status: "ACTIVE" },
       });
-      if (!reservation) return;
-      await tx.stockReservation.update({
-        where: { id: reservation.id },
-        data: { status: "RELEASED" },
-      });
-      await tx.$executeRaw`
-        UPDATE stock_balances
-        SET reserved_quantity = reserved_quantity - ${reservation.quantity},
-            version = version + 1,
-            updated_at = NOW()
-        WHERE variant_id = ${reservation.variantId}
-      `;
-      await tx.stockMovement.create({
-        data: {
-          id: UniqueIdentifier.generateV7(),
-          variantId: reservation.variantId,
-          tenantId: reservation.tenantId,
-          outletId: reservation.outletId,
-          quantityChange: 0,
-          balanceAfter: 0,
-          reason: "RESERVATION_RELEASE",
-          actorId: "ORDER_SERVICE",
-          referenceId: orderId,
-        },
-      });
+      for (const reservation of reservations) {
+        await tx.stockReservation.update({
+          where: { id: reservation.id },
+          data: { status: "RELEASED" },
+        });
+        const rows: Array<{ onHandQuantity: number; reservedQuantity: number }> = await tx.$queryRaw`
+          UPDATE "stock_balances"
+          SET "reservedQuantity" = GREATEST(0, "reservedQuantity" - ${reservation.quantity}),
+              "version" = "version" + 1,
+              "updatedAt" = NOW()
+          WHERE "variantId" = ${reservation.variantId}
+          RETURNING "onHandQuantity", "reservedQuantity"
+        `;
+        const avail = rows[0] ? Math.max(0, rows[0].onHandQuantity - rows[0].reservedQuantity) : 0;
+        await tx.stockMovement.create({
+          data: {
+            id: UniqueIdentifier.generateV7(),
+            variantId: reservation.variantId,
+            tenantId: reservation.tenantId,
+            outletId: reservation.outletId,
+            quantityChange: 0,
+            balanceAfter: avail,
+            reason: "RESERVATION_RELEASE",
+            actorId: "ORDER_SERVICE",
+            referenceId: orderId,
+          },
+        });
+      }
     });
   }
 
@@ -211,13 +341,15 @@ export class PrismaStockRepository implements StockRepositoryPort {
         where: { id: resId },
         data: { status: "EXPIRED" },
       });
-      await tx.$executeRaw`
-        UPDATE stock_balances
-        SET reserved_quantity = GREATEST(0, reserved_quantity - ${quantity}),
-            version = version + 1,
-            updated_at = NOW()
-        WHERE variant_id = ${variantId}
+      const rows: Array<{ onHandQuantity: number; reservedQuantity: number }> = await tx.$queryRaw`
+        UPDATE "stock_balances"
+        SET "reservedQuantity" = GREATEST(0, "reservedQuantity" - ${quantity}),
+            "version" = "version" + 1,
+            "updatedAt" = NOW()
+        WHERE "variantId" = ${variantId}
+        RETURNING "onHandQuantity", "reservedQuantity"
       `;
+      const avail = rows[0] ? Math.max(0, rows[0].onHandQuantity - rows[0].reservedQuantity) : 0;
       await tx.stockMovement.create({
         data: {
           id: UniqueIdentifier.generateV7(),
@@ -225,7 +357,7 @@ export class PrismaStockRepository implements StockRepositoryPort {
           tenantId,
           outletId,
           quantityChange: 0,
-          balanceAfter: 0,
+          balanceAfter: avail,
           reason: "RESERVATION_RELEASE",
           actorId: "TTL_SWEEPER",
           referenceId: orderId,

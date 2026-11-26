@@ -1,5 +1,5 @@
 import { SubscriptionService } from "../../src/modules/subscriptions/application/services/subscription.service";
-import { InMemorySubscriptionRepository } from "../../src/modules/subscriptions/infrastructure/persistence/repositories/in-memory-subscription.repository";
+import { InMemorySubscriptionRepository } from "./mocks/in-memory-subscription.repository";
 
 describe("Subscription Service (Sprint 13)", () => {
   let service: SubscriptionService;

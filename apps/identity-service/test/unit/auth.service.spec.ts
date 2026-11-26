@@ -1,6 +1,6 @@
 import { AuthService } from "../../src/modules/identity/application/services/auth.service";
 import { OtpManagerService } from "../../src/modules/identity/infrastructure/otp/otp-manager.service";
-import { InMemoryUserRepository, InMemorySessionRepository } from "../../src/modules/identity/infrastructure/persistence/repositories/in-memory-identity.repository";
+import { InMemoryUserRepository, InMemorySessionRepository } from "./mocks/in-memory-identity.repository";
 import { InvalidOtpError, MaxOtpAttemptsError } from "../../src/modules/identity/domain/errors/identity-errors";
 
 describe("Identity Service - AuthService (Sprint 2)", () => {

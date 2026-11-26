@@ -3,7 +3,7 @@ import {
   InMemoryProductRepository,
   InMemoryStockRepository,
   InMemoryPriceCapRepository,
-} from "../../src/modules/catalog/infrastructure/persistence/repositories/in-memory-catalog.repository";
+} from "./mocks/in-memory-catalog.repository";
 import { InsufficientStockError } from "../../src/modules/catalog/domain/errors/catalog-errors";
 import { UnprocessableEntityException } from "@nestjs/common";
 

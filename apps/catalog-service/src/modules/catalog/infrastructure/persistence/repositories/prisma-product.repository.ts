@@ -32,56 +32,62 @@ export class PrismaProductRepository implements ProductRepositoryPort {
   }
 
   async save(product: Product): Promise<void> {
-    await this.prisma.product.upsert({
-      where: { id: product.id },
-      create: {
-        id: product.id,
-        tenantId: product.tenantId,
-        outletId: product.outletId,
-        name: product.name,
-        description: product.description ?? null,
-        category: product.category,
-        subCategory: product.subCategory ?? null,
-        isAvailable: product.isAvailable,
-      },
-      update: {
-        tenantId: product.tenantId,
-        outletId: product.outletId,
-        name: product.name,
-        description: product.description ?? null,
-        category: product.category,
-        subCategory: product.subCategory ?? null,
-        isAvailable: product.isAvailable,
-        updatedAt: new Date(),
-      },
-    });
-
-    for (const v of product.variants) {
-      await this.prisma.productVariant.upsert({
-        where: { id: v.id },
+    await this.prisma.$transaction(async (tx: any) => {
+      await tx.product.upsert({
+        where: { id: product.id },
         create: {
-          id: v.id,
-          productId: product.id,
-          name: v.name,
-          sku: v.sku ?? null,
-          barcode: v.barcode ?? null,
-          pricePaise: v.pricePaise,
-          compareAtPricePaise: v.compareAtPricePaise ?? null,
-          isPreorder: v.isPreorder,
-          leadTimeMinutes: v.leadTimeMinutes,
+          id: product.id,
+          tenantId: product.tenantId,
+          outletId: product.outletId,
+          name: product.name,
+          description: product.description ?? null,
+          category: product.category,
+          subCategory: product.subCategory ?? null,
+          isAvailable: product.isAvailable,
         },
         update: {
-          name: v.name,
-          sku: v.sku ?? null,
-          barcode: v.barcode ?? null,
-          pricePaise: v.pricePaise,
-          compareAtPricePaise: v.compareAtPricePaise ?? null,
-          isPreorder: v.isPreorder,
-          leadTimeMinutes: v.leadTimeMinutes,
+          tenantId: product.tenantId,
+          outletId: product.outletId,
+          name: product.name,
+          description: product.description ?? null,
+          category: product.category,
+          subCategory: product.subCategory ?? null,
+          isAvailable: product.isAvailable,
           updatedAt: new Date(),
         },
       });
-    }
+
+      for (const v of product.variants) {
+        await tx.productVariant.upsert({
+          where: { id: v.id },
+          create: {
+            id: v.id,
+            productId: product.id,
+            tenantId: product.tenantId,
+            outletId: product.outletId,
+            name: v.name,
+            sku: v.sku ?? null,
+            barcode: v.barcode ?? null,
+            pricePaise: v.pricePaise,
+            compareAtPricePaise: v.compareAtPricePaise ?? null,
+            isPreorder: v.isPreorder,
+            leadTimeMinutes: v.leadTimeMinutes,
+          },
+          update: {
+            tenantId: product.tenantId,
+            outletId: product.outletId,
+            name: v.name,
+            sku: v.sku ?? null,
+            barcode: v.barcode ?? null,
+            pricePaise: v.pricePaise,
+            compareAtPricePaise: v.compareAtPricePaise ?? null,
+            isPreorder: v.isPreorder,
+            leadTimeMinutes: v.leadTimeMinutes,
+            updatedAt: new Date(),
+          },
+        });
+      }
+    });
   }
 
   async delete(id: string): Promise<void> {

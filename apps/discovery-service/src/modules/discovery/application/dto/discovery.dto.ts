@@ -35,6 +35,11 @@ export class SyncOutletDocumentDto {
   @IsString()
   outletId!: string;
 
+  @ApiProperty({ example: "tenant_uuid_1", required: false })
+  @IsString()
+  @IsOptional()
+  tenantId?: string;
+
   @ApiProperty({ example: "Apna Bakery" })
   @IsString()
   merchantName!: string;
@@ -50,6 +55,11 @@ export class SyncOutletDocumentDto {
   @ApiProperty({ example: "Nagpur" })
   @IsString()
   city!: string;
+
+  @ApiProperty({ example: "IN-MH-NGP", required: false })
+  @IsString()
+  @IsOptional()
+  cityCode?: string;
 
   @ApiProperty({ example: 21.1458 })
   @IsNumber()

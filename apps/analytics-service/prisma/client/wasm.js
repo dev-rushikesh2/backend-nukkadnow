@@ -125,6 +125,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.DailyMetricScalarFieldEnum = {
   id: 'id',
   metricDate: 'metricDate',
+  tenantId: 'tenantId',
   outletId: 'outletId',
   cityCode: 'cityCode',
   totalOrders: 'totalOrders',
@@ -151,6 +152,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 

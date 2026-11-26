@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { SubscriptionRepositoryPort, SubscriptionPlan, MerchantSubscription } from "../../../domain/entities/subscription-plan.entity";
+import { SubscriptionRepositoryPort, SubscriptionPlan, MerchantSubscription } from "../../../src/modules/subscriptions/domain/entities/subscription-plan.entity";
 
 @Injectable()
 export class InMemorySubscriptionRepository implements SubscriptionRepositoryPort {

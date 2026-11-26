@@ -1,5 +1,5 @@
 import { AnalyticsService } from "../../src/modules/analytics/application/services/analytics.service";
-import { InMemoryAnalyticsRepository } from "../../src/modules/analytics/infrastructure/persistence/repositories/in-memory-analytics.repository";
+import { InMemoryAnalyticsRepository } from "./mocks/in-memory-analytics.repository";
 
 describe("Analytics & Operational Reporting Service (Sprint 14)", () => {
   let service: AnalyticsService;

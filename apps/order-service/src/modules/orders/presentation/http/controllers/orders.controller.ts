@@ -1,6 +1,7 @@
-import { Controller, Post, Get, Patch, Body, Param, Query, Headers, Req, UnauthorizedException, NotFoundException, ForbiddenException, BadRequestException } from "@nestjs/common";
+import { Controller, Post, Get, Patch, Body, Param, Query, Headers, Req, UnauthorizedException, NotFoundException, ForbiddenException, BadRequestException, ConflictException, ServiceUnavailableException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { OrderService } from "../../../application/services/order.service";
+import { OrderOutboxRelayService } from "../../../application/services/order-outbox-relay.service";
 import { AddToCartDto, CheckoutDto, AcceptOrderDto } from "../../../application/dto/order.dto";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
 
@@ -11,49 +12,66 @@ export class OrdersController {
 
   constructor(
     private readonly orderService: OrderService,
+    private readonly outboxRelay: OrderOutboxRelayService,
     private readonly prisma: PrismaService
   ) {}
 
   private async resolveCatalogInventoryItems(
     items: Array<{ productId?: string; variantId?: string; quantity: number; title?: string; name?: string }>,
-    direction: -1 | 1
-  ): Promise<Array<{ variantId: string; quantity: number }>> {
-    const resolved: Array<{ variantId: string; quantity: number }> = [];
-    for (const item of items) {
+    direction: -1 | 1,
+    expectedTenantId?: string,
+    expectedOutletId?: string
+  ): Promise<{ resolvedVariantIds: Map<number, string>; adjustments: Array<{ variantId: string; quantity: number }> }> {
+    const resolvedVariantIds = new Map<number, string>();
+    const aggregated = new Map<string, number>();
+
+    for (let idx = 0; idx < items.length; idx++) {
+      const item = items[idx];
       const qty = Math.max(1, Number(item.quantity) || 1);
       const productId = String(item.productId || "").trim();
       let variantId = String(item.variantId || "").trim();
       let shouldAdjust = false;
 
       if (productId && productId !== "item" && productId !== "pos-item") {
+        let prodRes: Response;
         try {
-          const prodRes = await fetch(`${this.catalogServiceUrl}/api/v1/catalog/products/${encodeURIComponent(productId)}`);
-          if (prodRes.ok) {
-            const prodJson: any = await prodRes.json();
-            const variants: any[] = Array.isArray(prodJson?.variants) ? prodJson.variants : [];
-            const matched = variants.find((v) => v.id === variantId) || variants[0];
-            if (matched) {
-              variantId = matched.id;
-              const onHand = Number(matched.onHandStock ?? 0);
-              const available = Number(matched.availableStock ?? onHand);
-              if (direction === -1 && onHand > 0 && available < qty) {
-                throw new BadRequestException(
-                  `Insufficient stock for "${item.title || item.name || prodJson.name || "Item"}" (available: ${available}, requested: ${qty})`
-                );
-              }
-              shouldAdjust = onHand > 0 || direction === 1;
-            }
-          }
+          prodRes = await fetch(`${this.catalogServiceUrl}/api/v1/catalog/products/${encodeURIComponent(productId)}`);
         } catch (err: any) {
-          if (err instanceof BadRequestException) throw err;
+          throw new ServiceUnavailableException(`Catalog service unreachable to validate inventory: ${err?.message}`);
+        }
+
+        if (prodRes.ok) {
+          const prodJson: any = await prodRes.json();
+          if (expectedTenantId && prodJson?.tenantId && prodJson.tenantId !== expectedTenantId) {
+            throw new ForbiddenException(`Cross-merchant item detected in order payload ("${prodJson.name}")`);
+          }
+          if (expectedOutletId && prodJson?.outletId && prodJson.outletId !== expectedOutletId) {
+            throw new ForbiddenException(`Cross-outlet item detected in order payload ("${prodJson.name}")`);
+          }
+
+          const variants: any[] = Array.isArray(prodJson?.variants) ? prodJson.variants : [];
+          const matched = variants.find((v) => v.id === variantId) || variants[0];
+          if (matched) {
+            variantId = matched.id;
+            resolvedVariantIds.set(idx, variantId);
+            const available = Number(matched.availableStock ?? matched.onHandStock ?? 0);
+            if (direction === -1 && available < qty) {
+              throw new BadRequestException(
+                `Insufficient stock for "${item.title || item.name || prodJson.name || "Item"}" (available: ${available}, requested: ${qty})`
+              );
+            }
+            shouldAdjust = true;
+          }
         }
       }
 
       if (variantId && variantId !== "var" && variantId !== "pos-var" && shouldAdjust) {
-        resolved.push({ variantId, quantity: qty });
+        aggregated.set(variantId, (aggregated.get(variantId) || 0) + qty);
       }
     }
-    return resolved;
+
+    const adjustments = Array.from(aggregated.entries()).map(([variantId, quantity]) => ({ variantId, quantity }));
+    return { resolvedVariantIds, adjustments };
   }
 
   private async applyCatalogInventoryAdjustments(
@@ -61,23 +79,42 @@ export class OrdersController {
     orderNumber: string,
     adjustments: Array<{ variantId: string; quantity: number }>,
     direction: -1 | 1,
-    actorId: string
+    actorId: string,
+    tenantId?: string
   ): Promise<void> {
     if (!outletId || adjustments.length === 0) return;
 
-    for (const adj of adjustments) {
-      await fetch(`${this.catalogServiceUrl}/api/v1/catalog/inventory/adjust`, {
+    let res: Response;
+    try {
+      res = await fetch(`${this.catalogServiceUrl}/api/v1/catalog/inventory/adjust-batch`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(tenantId ? { "x-tenant-id": tenantId } : {}),
+        },
         body: JSON.stringify({
-          variantId: adj.variantId,
           outletId,
-          quantityChange: direction * adj.quantity,
+          tenantId,
           reason: direction === -1 ? "ORDER_SALE" : "RETURN_RESTOCK",
+          referenceId: orderNumber,
           actorId,
-          notes: `${direction === -1 ? "Deducted for order" : "Restocked from cancelled order"} ${orderNumber}`,
+          notes: `${direction === -1 ? "Deducted atomically for order" : "Restocked from cancelled order"} ${orderNumber}`,
+          items: adjustments.map((adj) => ({
+            variantId: adj.variantId,
+            quantityChange: direction * adj.quantity,
+          })),
         }),
-      }).catch(() => {});
+      });
+    } catch (err: any) {
+      throw new ServiceUnavailableException(`Catalog service unreachable for stock update: ${err?.message}`);
+    }
+
+    if (!res.ok) {
+      const errBody: any = await res.json().catch(() => ({}));
+      const msg = errBody?.message || `Inventory adjustment failed (HTTP ${res.status})`;
+      if (res.status === 403) throw new ForbiddenException(msg);
+      if (res.status === 409) throw new ConflictException(msg);
+      throw new BadRequestException(msg);
     }
   }
 
@@ -169,39 +206,70 @@ export class OrdersController {
       itemsInput.reduce((sum, it) => sum + Number(it.unitPricePaise || it.pricePaise || 0) * Number(it.quantity || 1), 0);
 
     const orderNumber = `WLK-${Date.now().toString().slice(-6)}`;
-    const stockAdjustments = await this.resolveCatalogInventoryItems(itemsInput, -1);
+    const { resolvedVariantIds, adjustments } = await this.resolveCatalogInventoryItems(
+      itemsInput,
+      -1,
+      tenantId,
+      outletId
+    );
 
-    const created = await this.prisma.order.create({
-      data: {
-        orderNumber,
-        customerId: body?.customerId || "WALKIN-COUNTER",
-        tenantId,
-        outletId,
-        status: "CONFIRMED",
-        totalAmountPaise: Math.max(0, Number(totalPaise) || 0),
-        paymentStatus: body?.paymentStatus || "PAID",
-        fulfillmentType: "WALK_IN",
-        items: {
-          create: itemsInput.map((it) => ({
-            productId: it.productId || it.id || "pos-item",
-            variantId: it.variantId || it.id || "pos-var",
-            title: it.title || it.name || "Counter Item",
-            quantity: Math.max(1, Number(it.quantity) || 1),
-            unitPricePaise: Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0),
-            totalPricePaise:
-              Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0) * Math.max(1, Number(it.quantity) || 1),
-          })),
-        },
-      },
-      include: { items: true },
-    });
+    await this.applyCatalogInventoryAdjustments(outletId, orderNumber, adjustments, -1, tenantId, tenantId);
 
-    const walkinAdjustments = await this.resolveCatalogInventoryItems(
-      created.items.map((it) => ({ productId: it.productId, variantId: it.variantId, quantity: it.quantity, title: it.title })),
-      -1
-    ).catch(() => []);
-    await this.applyCatalogInventoryAdjustments(outletId, orderNumber, walkinAdjustments, -1, tenantId);
+    let created: any;
+    try {
+      created = await this.prisma.$transaction(async (tx) => {
+        const ord = await tx.order.create({
+          data: {
+            orderNumber,
+            customerId: body?.customerId || "WALKIN-COUNTER",
+            tenantId,
+            outletId,
+            status: "CONFIRMED",
+            totalAmountPaise: Math.max(0, Number(totalPaise) || 0),
+            paymentStatus: body?.paymentStatus || "PAID",
+            fulfillmentType: "WALK_IN",
+            items: {
+              create: itemsInput.map((it, idx) => ({
+                productId: it.productId || it.id || "pos-item",
+                variantId: resolvedVariantIds.get(idx) || it.variantId || it.id || "pos-var",
+                title: it.title || it.name || "Counter Item",
+                quantity: Math.max(1, Number(it.quantity) || 1),
+                unitPricePaise: Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0),
+                totalPricePaise:
+                  Math.max(0, Number(it.unitPricePaise ?? it.pricePaise) || 0) * Math.max(1, Number(it.quantity) || 1),
+              })),
+            },
+          },
+          include: { items: true },
+        });
 
+        await tx.transactionalOutbox.create({
+          data: {
+            aggregateType: "ORDER",
+            aggregateId: ord.id,
+            eventType: "ORDER_PLACED",
+            payload: JSON.stringify({
+              orderId: ord.id,
+              orderNumber: ord.orderNumber,
+              tenantId: ord.tenantId,
+              outletId: ord.outletId,
+              cityCode: ord.cityCode,
+              status: ord.status,
+              fulfillmentType: ord.fulfillmentType,
+              totalAmountPaise: ord.totalAmountPaise,
+            }),
+            status: "PENDING",
+          },
+        });
+
+        return ord;
+      });
+    } catch (err) {
+      await this.applyCatalogInventoryAdjustments(outletId, orderNumber, adjustments, 1, "ORDER_ROLLBACK", tenantId).catch(() => {});
+      throw err;
+    }
+
+    void this.outboxRelay.flushPending();
     return { success: true, data: created };
   }
 
@@ -264,39 +332,61 @@ export class OrdersController {
     });
     if (!order) throw new NotFoundException(`Order '${id}' not found`);
 
-    const updated = await this.prisma.order.update({
-      where: { id: order.id },
-      data: {
-        status: "CANCELLED",
-        events: {
-          create: {
+    const { updated, cancelledNow } = await this.prisma.$transaction(async (tx) => {
+      const claim = await tx.order.updateMany({
+        where: { id: order.id, status: { not: "CANCELLED" } },
+        data: { status: "CANCELLED" },
+      });
+
+      if (claim.count > 0) {
+        await tx.orderEvent.create({
+          data: {
+            orderId: order.id,
             eventType: "ADMIN_FORCE_CANCEL",
             fromStatus: order.status,
             toStatus: "CANCELLED",
             metadata: { reason: body?.reason || "Admin intervention" },
           },
-        },
-      },
-      include: { items: true, events: true },
+        });
+        await tx.transactionalOutbox.create({
+          data: {
+            aggregateType: "ORDER",
+            aggregateId: order.id,
+            eventType: "ORDER_CANCELLED",
+            payload: JSON.stringify({ orderId: order.id, orderNumber: order.orderNumber, tenantId: order.tenantId, outletId: order.outletId }),
+            status: "PENDING",
+          },
+        });
+      }
+
+      const full = await tx.order.findUnique({
+        where: { id: order.id },
+        include: { items: true, events: true },
+      });
+      return { updated: full!, cancelledNow: claim.count > 0 };
     });
 
-    if (order.status !== "CANCELLED") {
-      const restockAdjustments = await this.resolveCatalogInventoryItems(
+    if (cancelledNow) {
+      const { adjustments } = await this.resolveCatalogInventoryItems(
         updated.items.map((it) => ({
           productId: it.productId,
           variantId: it.variantId,
           quantity: it.quantity,
           title: it.title,
         })),
-        1
+        1,
+        order.tenantId,
+        order.outletId
       );
       await this.applyCatalogInventoryAdjustments(
         order.outletId,
         order.orderNumber,
-        restockAdjustments,
+        adjustments,
         1,
-        "ADMIN"
+        "ADMIN",
+        order.tenantId
       );
+      void this.outboxRelay.flushPending();
     }
 
     return { success: true, data: updated };
@@ -436,59 +526,95 @@ export class OrdersController {
     const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
     const pickupToken = `T-${Math.floor(10 + Math.random() * 89)}`;
 
-    const stockAdjustments = await this.resolveCatalogInventoryItems(itemsInput, -1);
+    const { resolvedVariantIds, adjustments } = await this.resolveCatalogInventoryItems(
+      itemsInput,
+      -1,
+      tenantId,
+      outletId
+    );
 
-    const created = await this.prisma.order.create({
-      data: {
-        orderNumber,
-        customerId,
-        tenantId,
-        outletId,
-        locality: body?.locality || null,
-        status: "CONFIRMED",
-        totalAmountPaise: totalPaise,
-        paymentStatus: String(body?.paymentMethod || "").toUpperCase() === "COD" ? "COD_PENDING" : "PAID",
-        fulfillmentType,
-        pickupSlotId: body?.slotId || null,
-        items: {
-          create: itemsInput.map((it) => {
-            const qty = Math.max(1, Number(it.quantity) || 1);
-            const unitPaise = Math.max(0, Number(it.unitPricePaise ?? Math.round(Number(it.price || 0) * 100)));
-            return {
-              productId: String(it.productId || it.id || "item"),
-              variantId: String(it.variantId || it.id || "var"),
-              title: String(it.title || it.name || "Product"),
-              quantity: qty,
-              unitPricePaise: unitPaise,
-              totalPricePaise: unitPaise * qty,
-            };
-          }),
-        },
-        events: {
-          create: {
-            eventType: "ORDER_PLACED",
-            fromStatus: null,
-            toStatus: "CONFIRMED",
-            metadata: {
-              shopName: body?.shopName || "NukkadNow Store",
-              shopImage: body?.shopImage || "",
-              shopPhone: body?.shopPhone || "",
-              categories: body?.categories || "Local Store",
-              deliveryAddress: body?.deliveryAddress || "",
-              itemTotal: Number(body?.itemTotal ?? Math.round(totalPaise / 100)),
-              discount: Number(body?.discount ?? 0),
-              deliveryFee: Number(body?.deliveryFee ?? 0),
-              paymentMethod: body?.paymentMethod || "UPI",
-              notes: body?.notes || "",
-              pickupToken,
+    await this.applyCatalogInventoryAdjustments(outletId, orderNumber, adjustments, -1, customerId, tenantId);
+
+    let created: any;
+    try {
+      created = await this.prisma.$transaction(async (tx) => {
+        const ord = await tx.order.create({
+          data: {
+            orderNumber,
+            customerId,
+            tenantId,
+            outletId,
+            locality: body?.locality || null,
+            status: "CONFIRMED",
+            totalAmountPaise: totalPaise,
+            paymentStatus: String(body?.paymentMethod || "").toUpperCase() === "COD" ? "COD_PENDING" : "PAID",
+            fulfillmentType,
+            pickupSlotId: body?.slotId || null,
+            items: {
+              create: itemsInput.map((it, idx) => {
+                const qty = Math.max(1, Number(it.quantity) || 1);
+                const unitPaise = Math.max(0, Number(it.unitPricePaise ?? Math.round(Number(it.price || 0) * 100)));
+                return {
+                  productId: String(it.productId || it.id || "item"),
+                  variantId: resolvedVariantIds.get(idx) || String(it.variantId || it.id || "var"),
+                  title: String(it.title || it.name || "Product"),
+                  quantity: qty,
+                  unitPricePaise: unitPaise,
+                  totalPricePaise: unitPaise * qty,
+                };
+              }),
+            },
+            events: {
+              create: {
+                eventType: "ORDER_PLACED",
+                fromStatus: null,
+                toStatus: "CONFIRMED",
+                metadata: {
+                  shopName: body?.shopName || "NukkadNow Store",
+                  shopImage: body?.shopImage || "",
+                  shopPhone: body?.shopPhone || "",
+                  categories: body?.categories || "Local Store",
+                  deliveryAddress: body?.deliveryAddress || "",
+                  itemTotal: Number(body?.itemTotal ?? Math.round(totalPaise / 100)),
+                  discount: Number(body?.discount ?? 0),
+                  deliveryFee: Number(body?.deliveryFee ?? 0),
+                  paymentMethod: body?.paymentMethod || "UPI",
+                  notes: body?.notes || "",
+                  pickupToken,
+                },
+              },
             },
           },
-        },
-      },
-      include: { items: true, events: true },
-    });
+          include: { items: true, events: true },
+        });
 
-    await this.applyCatalogInventoryAdjustments(outletId, orderNumber, stockAdjustments, -1, customerId);
+        await tx.transactionalOutbox.create({
+          data: {
+            aggregateType: "ORDER",
+            aggregateId: ord.id,
+            eventType: "ORDER_PLACED",
+            payload: JSON.stringify({
+              orderId: ord.id,
+              orderNumber: ord.orderNumber,
+              tenantId: ord.tenantId,
+              outletId: ord.outletId,
+              cityCode: ord.cityCode,
+              status: ord.status,
+              fulfillmentType: ord.fulfillmentType,
+              totalAmountPaise: ord.totalAmountPaise,
+            }),
+            status: "PENDING",
+          },
+        });
+
+        return ord;
+      });
+    } catch (err) {
+      await this.applyCatalogInventoryAdjustments(outletId, orderNumber, adjustments, 1, "ORDER_ROLLBACK", tenantId).catch(() => {});
+      throw err;
+    }
+
+    void this.outboxRelay.flushPending();
 
     const totalPaid = Math.round(created.totalAmountPaise / 100);
     return {
@@ -607,39 +733,116 @@ export class OrdersController {
       CANCELLED: "CANCELLED",
     };
     const nextStatus = statusMap[(body?.status || "").toUpperCase()] || (body?.status || order.status).toUpperCase();
-    const updated = await this.prisma.order.update({
-      where: { id: order.id },
-      data: {
-        status: nextStatus,
-        events: {
-          create: {
-            eventType: "MERCHANT_STATUS_UPDATE",
-            fromStatus: order.status,
-            toStatus: nextStatus,
-            metadata: { prepMinutes: body?.prepMinutes },
+
+    const { updated, cancelledNow, completedNow } = await this.prisma.$transaction(async (tx) => {
+      if (nextStatus === "CANCELLED") {
+        const claim = await tx.order.updateMany({
+          where: { id: order.id, status: { not: "CANCELLED" } },
+          data: { status: "CANCELLED" },
+        });
+        if (claim.count > 0) {
+          await tx.orderEvent.create({
+            data: {
+              orderId: order.id,
+              eventType: "MERCHANT_STATUS_UPDATE",
+              fromStatus: order.status,
+              toStatus: "CANCELLED",
+              metadata: { prepMinutes: body?.prepMinutes },
+            },
+          });
+          await tx.transactionalOutbox.create({
+            data: {
+              aggregateType: "ORDER",
+              aggregateId: order.id,
+              eventType: "ORDER_CANCELLED",
+              payload: JSON.stringify({ orderId: order.id, orderNumber: order.orderNumber, tenantId: order.tenantId, outletId: order.outletId }),
+              status: "PENDING",
+            },
+          });
+        }
+        const full = await tx.order.findUnique({ where: { id: order.id }, include: { items: true, events: true } });
+        return { updated: full!, cancelledNow: claim.count > 0, completedNow: false };
+      }
+
+      if (nextStatus === "COMPLETED") {
+        const claim = await tx.order.updateMany({
+          where: { id: order.id, status: { not: "COMPLETED" } },
+          data: { status: "COMPLETED" },
+        });
+        if (claim.count > 0) {
+          await tx.orderEvent.create({
+            data: {
+              orderId: order.id,
+              eventType: "MERCHANT_STATUS_UPDATE",
+              fromStatus: order.status,
+              toStatus: "COMPLETED",
+              metadata: { prepMinutes: body?.prepMinutes },
+            },
+          });
+          await tx.transactionalOutbox.create({
+            data: {
+              aggregateType: "ORDER",
+              aggregateId: order.id,
+              eventType: "ORDER_COMPLETED",
+              payload: JSON.stringify({
+                orderId: order.id,
+                orderNumber: order.orderNumber,
+                tenantId: order.tenantId,
+                outletId: order.outletId,
+                cityCode: order.cityCode,
+                totalAmountPaise: order.totalAmountPaise,
+                prepMinutes: Number(body?.prepMinutes ?? 15),
+              }),
+              status: "PENDING",
+            },
+          });
+        }
+        const full = await tx.order.findUnique({ where: { id: order.id }, include: { items: true, events: true } });
+        return { updated: full!, cancelledNow: false, completedNow: claim.count > 0 };
+      }
+
+      const ord = await tx.order.update({
+        where: { id: order.id },
+        data: {
+          status: nextStatus,
+          events: {
+            create: {
+              eventType: "MERCHANT_STATUS_UPDATE",
+              fromStatus: order.status,
+              toStatus: nextStatus,
+              metadata: { prepMinutes: body?.prepMinutes },
+            },
           },
         },
-      },
-      include: { items: true, events: true },
+        include: { items: true, events: true },
+      });
+      return { updated: ord, cancelledNow: false, completedNow: false };
     });
 
-    if (nextStatus === "CANCELLED" && order.status !== "CANCELLED") {
-      const restockAdjustments = await this.resolveCatalogInventoryItems(
+    if (cancelledNow) {
+      const { adjustments } = await this.resolveCatalogInventoryItems(
         updated.items.map((it) => ({
           productId: it.productId,
           variantId: it.variantId,
           quantity: it.quantity,
           title: it.title,
         })),
-        1
+        1,
+        order.tenantId,
+        order.outletId
       );
       await this.applyCatalogInventoryAdjustments(
         order.outletId,
         order.orderNumber,
-        restockAdjustments,
+        adjustments,
         1,
-        callerTenantId || "MERCHANT"
+        callerTenantId || "MERCHANT",
+        order.tenantId
       );
+    }
+
+    if (cancelledNow || completedNow) {
+      void this.outboxRelay.flushPending();
     }
 
     return { success: true, data: updated };

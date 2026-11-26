@@ -1,10 +1,11 @@
-import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req, NotFoundException } from "@nestjs/common";
+import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req, Headers, NotFoundException, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CatalogService } from "../../../application/services/catalog.service";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
 import {
   CreateProductDto,
   AdjustStockDto,
+  AdjustStockBatchDto,
   ReserveStockDto,
   UpdateVariantPricingDto,
   CreatePriceCapRuleDto,
@@ -114,8 +115,8 @@ export class CatalogController {
   @ApiOperation({ summary: "Create product with variants and initial inventory, validating Admin Price Caps" })
   @ApiResponse({ status: 201, description: "Product created" })
   @ApiResponse({ status: 422, description: "Price Cap or MRP Violation" })
-  async createProduct(@Body() dto: CreateProductDto, @Req() req: any) {
-    const callerTenantId = req.user?.tenantId;
+  async createProduct(@Body() dto: CreateProductDto, @Headers("x-tenant-id") headerTenantId: string | undefined, @Req() req: any) {
+    const callerTenantId = req.user?.tenantId || headerTenantId;
     return this.catalogService.createProduct(dto, callerTenantId);
   }
 
@@ -136,23 +137,52 @@ export class CatalogController {
   @ApiOperation({ summary: "Merchant update variant pricing with Admin Price Cap enforcement" })
   @ApiResponse({ status: 200, description: "Pricing updated" })
   @ApiResponse({ status: 422, description: "Price Cap or MRP Violation" })
-  async updatePricing(@Param("id") id: string, @Body() dto: UpdateVariantPricingDto, @Req() req: any) {
-    const callerTenantId = req.user?.tenantId;
+  async updatePricing(
+    @Param("id") id: string,
+    @Body() dto: UpdateVariantPricingDto,
+    @Headers("x-tenant-id") headerTenantId: string | undefined,
+    @Req() req: any
+  ) {
+    const callerTenantId = req.user?.tenantId || headerTenantId;
     return this.catalogService.updateVariantPricing(id, dto, callerTenantId);
   }
 
   @Post("inventory/adjust")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Manual inventory restock or deduction with double-entry audit logging" })
-  async adjustStock(@Body() dto: AdjustStockDto, @Req() req: any) {
-    const callerTenantId = req.user?.tenantId;
+  @ApiOperation({ summary: "Atomic inventory restock or deduction with double-entry audit logging" })
+  async adjustStock(@Body() dto: AdjustStockDto, @Headers("x-tenant-id") headerTenantId: string | undefined, @Req() req: any) {
+    const callerTenantId = req.user?.tenantId || headerTenantId || dto.tenantId;
     return this.catalogService.adjustStock(dto, callerTenantId);
+  }
+
+  @Post("inventory/adjust-batch")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "All-or-nothing atomic batch stock adjustment for order checkout / cancellation" })
+  async adjustStockBatch(
+    @Body() dto: AdjustStockBatchDto,
+    @Headers("x-tenant-id") headerTenantId: string | undefined,
+    @Req() req: any
+  ) {
+    const callerTenantId = req.user?.tenantId || headerTenantId || dto.tenantId;
+    return this.catalogService.adjustStockBatch(dto, callerTenantId);
   }
 
   @Get("outlets/:outletId/movements")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Get immutable stock movement audit ledger for an outlet" })
-  async getOutletMovements(@Param("outletId") outletId: string, @Query("limit") limit?: number) {
+  async getOutletMovements(
+    @Param("outletId") outletId: string,
+    @Query("limit") limit?: number,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const callerTenantId = req?.user?.tenantId || headerTenantId;
+    if (callerTenantId) {
+      const sample = await this.prisma.product.findFirst({ where: { outletId }, select: { tenantId: true } });
+      if (sample && sample.tenantId !== callerTenantId) {
+        throw new ForbiddenException("Cross-tenant access forbidden for outlet movements.");
+      }
+    }
     return this.catalogService.getOutletMovements(outletId, limit ? Number(limit) : 50);
   }
 

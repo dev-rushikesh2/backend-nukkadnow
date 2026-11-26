@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { FulfillmentRepositoryPort } from "../../../domain/repositories/fulfillment.repository.port";
-import { CapacitySlot, PickupToken } from "../../../domain/entities/capacity-slot.entity";
+import { FulfillmentRepositoryPort } from "../../../src/modules/fulfillment/domain/repositories/fulfillment.repository.port";
+import { CapacitySlot, PickupToken } from "../../../src/modules/fulfillment/domain/entities/capacity-slot.entity";
 
 @Injectable()
 export class InMemoryFulfillmentRepository implements FulfillmentRepositoryPort {

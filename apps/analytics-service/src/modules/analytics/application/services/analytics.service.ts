@@ -6,7 +6,7 @@ import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 export class AnalyticsService {
   constructor(private readonly analyticsRepo: AnalyticsRepositoryPort) {}
 
-  async recordOrderFact(outletId: string, amountPaise: number, prepMinutes: number) {
+  async recordOrderFact(outletId: string, amountPaise: number, prepMinutes: number, tenantId?: string, cityCode = "IN-MH-NGP", isFulfilled = true) {
     const today = new Date().toISOString().slice(0, 10);
     let metric = await this.analyticsRepo.findMetric(outletId, today);
 
@@ -14,7 +14,9 @@ export class AnalyticsService {
       metric = new DailyMetric({
         id: UniqueIdentifier.generateV7(),
         metricDate: today,
+        tenantId,
         outletId,
+        cityCode,
         totalOrders: 0,
         totalSalesPaise: 0,
         avgPrepMinutes: 0,
@@ -23,9 +25,13 @@ export class AnalyticsService {
 
     metric.recordSale(amountPaise, prepMinutes);
     await this.analyticsRepo.saveMetric(metric);
+    if (this.analyticsRepo.recordPlatformFact) {
+      await this.analyticsRepo.recordPlatformFact(today, cityCode, amountPaise, isFulfilled);
+    }
 
     return {
       outletId,
+      tenantId,
       date: today,
       totalOrders: metric.totalOrders,
       totalSalesPaise: metric.totalSalesPaise,

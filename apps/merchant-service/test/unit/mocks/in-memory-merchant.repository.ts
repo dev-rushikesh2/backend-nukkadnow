@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { MerchantRepositoryPort, OutletRepositoryPort } from "../../../domain/repositories/merchant.repository.port";
-import { Merchant } from "../../../domain/entities/merchant.entity";
-import { Outlet } from "../../../domain/entities/outlet.entity";
-import { Address } from "../../../domain/value-objects/address.vo";
-import { OperatingHours } from "../../../domain/value-objects/operating-hours.vo";
-import { SellerMode } from "../../../domain/value-objects/seller-mode.vo";
+import { MerchantRepositoryPort, OutletRepositoryPort } from "../../../src/modules/merchant/domain/repositories/merchant.repository.port";
+import { Merchant } from "../../../src/modules/merchant/domain/entities/merchant.entity";
+import { Outlet } from "../../../src/modules/merchant/domain/entities/outlet.entity";
+import { Address } from "../../../src/modules/merchant/domain/value-objects/address.vo";
+import { OperatingHours } from "../../../src/modules/merchant/domain/value-objects/operating-hours.vo";
+import { SellerMode } from "../../../src/modules/merchant/domain/value-objects/seller-mode.vo";
 
 @Injectable()
 export class InMemoryMerchantRepository implements MerchantRepositoryPort {

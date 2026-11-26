@@ -8,6 +8,7 @@ import { PriceCapPolicy } from "../../domain/policies/price-cap.policy";
 import {
   CreateProductDto,
   AdjustStockDto,
+  AdjustStockBatchDto,
   ReserveStockDto,
   UpdateVariantPricingDto,
   CreatePriceCapRuleDto,
@@ -136,13 +137,10 @@ export class CatalogService {
     return product;
   }
 
-  async getProduct(id: string) {
-    const product = await this.productRepo.findById(id);
-    if (!product) throw new NotFoundException(`Product '${id}' not found`);
-
+  private async buildProductView(product: Product, stockMap?: Map<string, StockBalance>) {
     const variantViews = await Promise.all(
       product.variants.map(async v => {
-        const stock = await this.stockRepo.findByVariantId(v.id);
+        const stock = stockMap ? stockMap.get(v.id) : await this.stockRepo.findByVariantId(v.id);
         return {
           id: v.id,
           name: v.name,
@@ -173,14 +171,27 @@ export class CatalogService {
     };
   }
 
+  async getProduct(id: string) {
+    const product = await this.productRepo.findById(id);
+    if (!product) throw new NotFoundException(`Product '${id}' not found`);
+    return this.buildProductView(product);
+  }
+
   async listOutletProducts(outletId: string) {
-    const products = await this.productRepo.findByOutletId(outletId);
-    return Promise.all(products.map(p => this.getProduct(p.id)));
+    const [products, outletStock] = await Promise.all([
+      this.productRepo.findByOutletId(outletId),
+      this.stockRepo.findByOutletId(outletId),
+    ]);
+    const stockMap = new Map(outletStock.map(s => [s.variantId, s]));
+    return Promise.all(products.map(p => this.buildProductView(p, stockMap)));
   }
 
   async listTenantProducts(tenantId: string) {
     const products = await this.productRepo.findByTenantId(tenantId);
-    return Promise.all(products.map(p => this.getProduct(p.id)));
+    const outletIds = Array.from(new Set(products.map(p => p.outletId)));
+    const stocksByOutlet = await Promise.all(outletIds.map(oid => this.stockRepo.findByOutletId(oid)));
+    const stockMap = new Map(stocksByOutlet.flat().map(s => [s.variantId, s]));
+    return Promise.all(products.map(p => this.buildProductView(p, stockMap)));
   }
 
   /**
@@ -231,7 +242,37 @@ export class CatalogService {
 
   // --- Realtime Inventory & Stock Operations ---
 
+  private async notifyDiscoveryAvailability(outletId: string, tenantId?: string): Promise<void> {
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    try {
+      const stocks = await this.stockRepo.findByOutletId(outletId);
+      const hasActiveStock = stocks.some((s) => s.availableQuantity > 0);
+      await fetch(`${discoveryUrl}/api/v1/discovery/availability`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ outletId, tenantId, hasActiveStock }),
+      }).catch(() => {});
+    } catch {
+      // Best-effort projection update; never blocks stock mutation
+    }
+  }
+
   async adjustStock(dto: AdjustStockDto, callerTenantId?: string) {
+    if (this.stockRepo.atomicAdjustStock) {
+      const result = await this.stockRepo.atomicAdjustStock({
+        variantId: dto.variantId,
+        outletId: dto.outletId,
+        callerTenantId: callerTenantId || dto.tenantId,
+        quantityChange: dto.quantityChange,
+        reason: dto.reason || "RESTOCK",
+        actorId: dto.actorId || callerTenantId || "STAFF",
+        referenceId: dto.referenceId,
+        notes: dto.notes,
+      });
+      void this.notifyDiscoveryAvailability(result.outletId, result.tenantId);
+      return result;
+    }
+
     let stock = await this.stockRepo.findByVariantId(dto.variantId);
     if (!stock) {
       stock = new StockBalance({
@@ -257,6 +298,7 @@ export class CatalogService {
       balanceAfter: stock.availableQuantity,
       reason: (dto.reason as any) || "RESTOCK",
       actorId: dto.actorId || callerTenantId || "STAFF",
+      referenceId: dto.referenceId,
       notes: dto.notes,
       createdAt: new Date(),
     });
@@ -270,7 +312,72 @@ export class CatalogService {
     };
   }
 
+  async adjustStockBatch(dto: AdjustStockBatchDto, callerTenantId?: string) {
+    const effectiveTenantId = callerTenantId || dto.tenantId;
+    if (this.stockRepo.atomicAdjustBatch) {
+      const results = await this.stockRepo.atomicAdjustBatch(
+        dto.items.map((item) => ({
+          variantId: item.variantId,
+          outletId: dto.outletId,
+          callerTenantId: effectiveTenantId,
+          quantityChange: item.quantityChange,
+          reason: dto.reason || "ORDER_SALE",
+          actorId: dto.actorId || effectiveTenantId || "ORDER_SERVICE",
+          referenceId: dto.referenceId,
+          notes: dto.notes,
+        }))
+      );
+      void this.notifyDiscoveryAvailability(dto.outletId, effectiveTenantId);
+      return { success: true, results };
+    }
+
+    const results = [];
+    for (const item of dto.items) {
+      results.push(
+        await this.adjustStock(
+          {
+            variantId: item.variantId,
+            outletId: dto.outletId,
+            tenantId: effectiveTenantId,
+            quantityChange: item.quantityChange,
+            reason: dto.reason,
+            referenceId: dto.referenceId,
+            actorId: dto.actorId,
+            notes: dto.notes,
+          },
+          effectiveTenantId
+        )
+      );
+    }
+    return { success: true, results };
+  }
+
   async reserveStock(dto: ReserveStockDto) {
+    if ("addReservation" in this.stockRepo) {
+      const before = await this.stockRepo.findByVariantId(dto.variantId);
+      if (!before) throw new VariantNotFoundError(dto.variantId);
+      if (!before.hasAvailable(dto.quantity)) {
+        throw new InsufficientStockError(before.availableQuantity, dto.quantity);
+      }
+
+      await (this.stockRepo as any).addReservation({
+        variantId: dto.variantId,
+        outletId: before.outletId,
+        quantity: dto.quantity,
+        orderId: dto.orderId,
+        ttlMinutes: dto.ttlMinutes || 10,
+      });
+
+      const after = await this.stockRepo.findByVariantId(dto.variantId);
+      return {
+        success: true,
+        variantId: dto.variantId,
+        orderId: dto.orderId,
+        reservedQuantity: dto.quantity,
+        remainingAvailable: after ? after.availableQuantity : Math.max(0, before.availableQuantity - dto.quantity),
+      };
+    }
+
     const stock = await this.stockRepo.findByVariantId(dto.variantId);
     if (!stock) throw new VariantNotFoundError(dto.variantId);
 
@@ -280,17 +387,6 @@ export class CatalogService {
 
     stock.reserve(dto.quantity);
     await this.stockRepo.save(stock);
-
-    // If in-memory repo has addReservation helper
-    if ("addReservation" in this.stockRepo) {
-      await (this.stockRepo as any).addReservation({
-        variantId: dto.variantId,
-        outletId: stock.outletId,
-        quantity: dto.quantity,
-        orderId: dto.orderId,
-        ttlMinutes: dto.ttlMinutes || 10,
-      });
-    }
 
     return {
       success: true,

@@ -83,19 +83,32 @@ export class CreateProductDto {
 export class AdjustStockDto {
   @ApiProperty({ example: "variant_uuid_here" })
   @IsString()
+  @IsNotEmpty()
   variantId!: string;
 
   @ApiProperty({ example: "outlet_uuid_here" })
   @IsString()
+  @IsNotEmpty()
   outletId!: string;
+
+  @ApiProperty({ example: "tenant_uuid_here", required: false })
+  @IsString()
+  @IsOptional()
+  tenantId?: string;
 
   @ApiProperty({ example: 25, description: "Positive to restock, negative to reduce" })
   @IsNumber()
   quantityChange!: number;
 
-  @ApiProperty({ example: "RESTOCK", description: "RESTOCK, DAMAGE_WASTE, AUDIT_CORRECTION, RETURN_RESTOCK" })
+  @ApiProperty({ example: "RESTOCK", description: "RESTOCK, ORDER_SALE, DAMAGE_WASTE, AUDIT_CORRECTION, RETURN_RESTOCK" })
   @IsString()
+  @IsNotEmpty()
   reason!: string;
+
+  @ApiProperty({ example: "ORD-123456", required: false })
+  @IsString()
+  @IsOptional()
+  referenceId?: string;
 
   @ApiProperty({ example: "Staff (Kitchen Register)", required: false })
   @IsString()
@@ -106,6 +119,55 @@ export class AdjustStockDto {
   @IsString()
   @IsOptional()
   notes?: string;
+}
+
+export class AdjustStockBatchItemDto {
+  @ApiProperty({ example: "variant_uuid_here" })
+  @IsString()
+  @IsNotEmpty()
+  variantId!: string;
+
+  @ApiProperty({ example: -2 })
+  @IsNumber()
+  quantityChange!: number;
+}
+
+export class AdjustStockBatchDto {
+  @ApiProperty({ example: "outlet_uuid_here" })
+  @IsString()
+  @IsNotEmpty()
+  outletId!: string;
+
+  @ApiProperty({ example: "tenant_uuid_here", required: false })
+  @IsString()
+  @IsOptional()
+  tenantId?: string;
+
+  @ApiProperty({ example: "ORDER_SALE" })
+  @IsString()
+  @IsNotEmpty()
+  reason!: string;
+
+  @ApiProperty({ example: "ORD-123456", required: false })
+  @IsString()
+  @IsOptional()
+  referenceId?: string;
+
+  @ApiProperty({ example: "ORDER_SERVICE", required: false })
+  @IsString()
+  @IsOptional()
+  actorId?: string;
+
+  @ApiProperty({ example: "Deducted atomically on order placement", required: false })
+  @IsString()
+  @IsOptional()
+  notes?: string;
+
+  @ApiProperty({ type: [AdjustStockBatchItemDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdjustStockBatchItemDto)
+  items!: AdjustStockBatchItemDto[];
 }
 
 export class ReserveStockDto {

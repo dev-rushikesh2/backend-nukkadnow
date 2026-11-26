@@ -122,7 +122,35 @@ export class MerchantService {
     });
 
     await this.outletRepo.save(outlet);
+    void this.syncOutletToDiscovery(outlet, merchant.organizationName);
     return outlet;
+  }
+
+  private async syncOutletToDiscovery(outlet: Outlet, organizationName?: string): Promise<void> {
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    try {
+      await fetch(`${discoveryUrl}/api/v1/discovery/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          outletId: outlet.id,
+          tenantId: outlet.merchantId,
+          merchantName: organizationName || outlet.name,  // ← org name is source of truth
+          sellerMode: outlet.sellerMode,
+          locality: outlet.address.locality || "Nagpur",
+          city: outlet.address.city || "Nagpur",
+          latitude: outlet.address.latitude ?? 21.1458,
+          longitude: outlet.address.longitude ?? 79.0882,
+          categoryTags: ["Grocery & Daily Needs"],
+          isCurrentlyOpen: outlet.isActive,
+          queueEstimateMinutes: 5,
+          isApproximateLocation: !outlet.address.isAddressPublic,
+          addressDisplay: outlet.address.addressLine || outlet.address.locality || "Nagpur",
+        }),
+      }).catch(() => {});
+    } catch {
+      // Best-effort sync
+    }
   }
 
   async getPublicOutlet(id: string) {

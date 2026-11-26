@@ -17,17 +17,46 @@ export class PrismaAnalyticsRepository implements AnalyticsRepositoryPort {
       create: {
         id: metric.id,
         metricDate: metric.metricDate,
+        tenantId: metric.tenantId ?? null,
         outletId: metric.outletId,
+        cityCode: metric.cityCode,
         totalOrders: metric.totalOrders,
         totalSalesPaise: BigInt(metric.totalSalesPaise),
         avgPrepTimeMinutes: metric.avgPrepMinutes,
       },
       update: {
+        ...(metric.tenantId ? { tenantId: metric.tenantId } : {}),
         totalOrders: metric.totalOrders,
         totalSalesPaise: BigInt(metric.totalSalesPaise),
         avgPrepTimeMinutes: metric.avgPrepMinutes,
       },
     });
+  }
+
+  async recordPlatformFact(factDate: string, cityCode: string, amountPaise: number, isFulfilled: boolean): Promise<void> {
+    for (const targetCity of Array.from(new Set(["GLOBAL", cityCode || "IN-MH-NGP"]))) {
+      await this.prisma.platformReportingFact.upsert({
+        where: {
+          factDate_cityCode: {
+            factDate,
+            cityCode: targetCity,
+          },
+        },
+        create: {
+          id: `${factDate}-${targetCity}`,
+          factDate,
+          cityCode: targetCity,
+          totalGmvPaise: BigInt(amountPaise),
+          activeMerchantsCount: 1,
+          activeCustomersCount: 1,
+          totalOrdersFulfilled: isFulfilled ? 1 : 0,
+        },
+        update: {
+          totalGmvPaise: { increment: BigInt(amountPaise) },
+          ...(isFulfilled ? { totalOrdersFulfilled: { increment: 1 } } : {}),
+        },
+      });
+    }
   }
 
   async findMetric(outletId: string, date: string): Promise<DailyMetric | null> {

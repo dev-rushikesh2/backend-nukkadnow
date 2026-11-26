@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { OrderRepositoryPort, CartRepositoryPort } from "../../../domain/repositories/order.repository.port";
-import { Order } from "../../../domain/entities/order.entity";
-import { Cart } from "../../../domain/entities/cart.entity";
+import { OrderRepositoryPort, CartRepositoryPort } from "../../../src/modules/orders/domain/repositories/order.repository.port";
+import { Order } from "../../../src/modules/orders/domain/entities/order.entity";
+import { Cart } from "../../../src/modules/orders/domain/entities/cart.entity";
 
 @Injectable()
 export class InMemoryOrderRepository implements OrderRepositoryPort {

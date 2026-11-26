@@ -41,8 +41,15 @@ export class AnalyticsController {
   @Post("record")
   @ApiOperation({ summary: "Internal event consumer hook to record completed order facts" })
   async recordOrderFact(
-    @Body() body: { outletId: string; amountPaise: number; prepMinutes: number }
+    @Body() body: { outletId: string; tenantId?: string; cityCode?: string; amountPaise: number; prepMinutes: number; isFulfilled?: boolean }
   ) {
-    return this.analyticsService.recordOrderFact(body.outletId, body.amountPaise, body.prepMinutes);
+    return this.analyticsService.recordOrderFact(
+      body.outletId,
+      body.amountPaise,
+      body.prepMinutes,
+      body.tenantId,
+      body.cityCode || "IN-MH-NGP",
+      body.isFulfilled ?? true
+    );
   }
 }

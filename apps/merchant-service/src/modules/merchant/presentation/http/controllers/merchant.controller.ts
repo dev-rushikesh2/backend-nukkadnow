@@ -263,7 +263,46 @@ export class MerchantController {
       },
     });
 
+    void this.syncProfileToDiscovery(id, primaryOutlet?.id);
+
     return this.getMyProfile(id, req);
+  }
+
+  /** Fire-and-forget: keep discovery search document in sync after any profile update */
+  private async syncProfileToDiscovery(merchantId: string, primaryOutletId?: string): Promise<void> {
+    if (!primaryOutletId) return;
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    try {
+      const merchant = await this.prisma.merchant.findUnique({
+        where: { id: merchantId },
+        include: { outlets: { where: { id: primaryOutletId } } },
+      });
+      if (!merchant) return;
+      const outlet = merchant.outlets?.[0];
+      if (!outlet) return;
+      await fetch(`${discoveryUrl}/api/v1/discovery/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          outletId: outlet.id,
+          tenantId: merchantId,
+          merchantName: merchant.organizationName,   // ← always the org name, not outlet.name
+          sellerMode: outlet.sellerMode,
+          locality: outlet.locality || "Nagpur",
+          city: outlet.city || "Nagpur",
+          cityCode: outlet.cityCode,
+          latitude: outlet.latitude ?? 21.1458,
+          longitude: outlet.longitude ?? 79.0882,
+          categoryTags: [merchant.category || "Grocery & Daily Needs"],
+          isCurrentlyOpen: outlet.isActive,
+          queueEstimateMinutes: 5,
+          isApproximateLocation: !outlet.isAddressPublic,
+          addressDisplay: outlet.addressLine || outlet.locality || "Nagpur",
+        }),
+      }).catch(() => {});
+    } catch {
+      // Best-effort — discovery is an eventual-consistency read model
+    }
   }
 
   @Get(":id/qr-standees")

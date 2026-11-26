@@ -1,5 +1,5 @@
 import { PaymentService } from "../../src/modules/payments/application/services/payment.service";
-import { InMemoryPaymentRepository } from "../../src/modules/payments/infrastructure/persistence/repositories/in-memory-payment.repository";
+import { InMemoryPaymentRepository } from "./mocks/in-memory-payment.repository";
 import { PspClientFactory } from "../../src/modules/payments/infrastructure/external-clients/psp-client-factory.service";
 import { MockPspAdapter } from "../../src/modules/payments/infrastructure/external-clients/mock-psp.adapter";
 import { RazorpayAdapter } from "../../src/modules/payments/infrastructure/external-clients/razorpay.adapter";

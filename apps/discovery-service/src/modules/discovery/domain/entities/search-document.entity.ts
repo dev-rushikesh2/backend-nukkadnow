@@ -1,10 +1,12 @@
 export interface OutletSearchDocumentProps {
   id: string;
   outletId: string;
+  tenantId?: string;
   merchantName: string;
   sellerMode: string;
   locality: string;
   city: string;
+  cityCode?: string;
   latitude: number;
   longitude: number;
   rating: number;

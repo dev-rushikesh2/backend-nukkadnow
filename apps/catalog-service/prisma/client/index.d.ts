@@ -2378,6 +2378,8 @@ export namespace Prisma {
   export type ProductVariantMinAggregateOutputType = {
     id: string | null
     productId: string | null
+    tenantId: string | null
+    outletId: string | null
     name: string | null
     sku: string | null
     barcode: string | null
@@ -2392,6 +2394,8 @@ export namespace Prisma {
   export type ProductVariantMaxAggregateOutputType = {
     id: string | null
     productId: string | null
+    tenantId: string | null
+    outletId: string | null
     name: string | null
     sku: string | null
     barcode: string | null
@@ -2406,6 +2410,8 @@ export namespace Prisma {
   export type ProductVariantCountAggregateOutputType = {
     id: number
     productId: number
+    tenantId: number
+    outletId: number
     name: number
     sku: number
     barcode: number
@@ -2434,6 +2440,8 @@ export namespace Prisma {
   export type ProductVariantMinAggregateInputType = {
     id?: true
     productId?: true
+    tenantId?: true
+    outletId?: true
     name?: true
     sku?: true
     barcode?: true
@@ -2448,6 +2456,8 @@ export namespace Prisma {
   export type ProductVariantMaxAggregateInputType = {
     id?: true
     productId?: true
+    tenantId?: true
+    outletId?: true
     name?: true
     sku?: true
     barcode?: true
@@ -2462,6 +2472,8 @@ export namespace Prisma {
   export type ProductVariantCountAggregateInputType = {
     id?: true
     productId?: true
+    tenantId?: true
+    outletId?: true
     name?: true
     sku?: true
     barcode?: true
@@ -2563,6 +2575,8 @@ export namespace Prisma {
   export type ProductVariantGroupByOutputType = {
     id: string
     productId: string
+    tenantId: string | null
+    outletId: string | null
     name: string
     sku: string | null
     barcode: string | null
@@ -2596,6 +2610,8 @@ export namespace Prisma {
   export type ProductVariantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
+    tenantId?: boolean
+    outletId?: boolean
     name?: boolean
     sku?: boolean
     barcode?: boolean
@@ -2615,6 +2631,8 @@ export namespace Prisma {
   export type ProductVariantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
+    tenantId?: boolean
+    outletId?: boolean
     name?: boolean
     sku?: boolean
     barcode?: boolean
@@ -2630,6 +2648,8 @@ export namespace Prisma {
   export type ProductVariantSelectScalar = {
     id?: boolean
     productId?: boolean
+    tenantId?: boolean
+    outletId?: boolean
     name?: boolean
     sku?: boolean
     barcode?: boolean
@@ -2663,6 +2683,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
+      tenantId: string | null
+      outletId: string | null
       name: string
       sku: string | null
       barcode: string | null
@@ -3071,6 +3093,8 @@ export namespace Prisma {
   interface ProductVariantFieldRefs {
     readonly id: FieldRef<"ProductVariant", 'String'>
     readonly productId: FieldRef<"ProductVariant", 'String'>
+    readonly tenantId: FieldRef<"ProductVariant", 'String'>
+    readonly outletId: FieldRef<"ProductVariant", 'String'>
     readonly name: FieldRef<"ProductVariant", 'String'>
     readonly sku: FieldRef<"ProductVariant", 'String'>
     readonly barcode: FieldRef<"ProductVariant", 'String'>
@@ -7572,6 +7596,8 @@ export namespace Prisma {
   export const ProductVariantScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
+    tenantId: 'tenantId',
+    outletId: 'outletId',
     name: 'name',
     sku: 'sku',
     barcode: 'barcode',
@@ -7830,6 +7856,8 @@ export namespace Prisma {
     NOT?: ProductVariantWhereInput | ProductVariantWhereInput[]
     id?: StringFilter<"ProductVariant"> | string
     productId?: StringFilter<"ProductVariant"> | string
+    tenantId?: StringNullableFilter<"ProductVariant"> | string | null
+    outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
     sku?: StringNullableFilter<"ProductVariant"> | string | null
     barcode?: StringNullableFilter<"ProductVariant"> | string | null
@@ -7848,6 +7876,8 @@ export namespace Prisma {
   export type ProductVariantOrderByWithRelationInput = {
     id?: SortOrder
     productId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
+    outletId?: SortOrderInput | SortOrder
     name?: SortOrder
     sku?: SortOrderInput | SortOrder
     barcode?: SortOrderInput | SortOrder
@@ -7869,6 +7899,8 @@ export namespace Prisma {
     OR?: ProductVariantWhereInput[]
     NOT?: ProductVariantWhereInput | ProductVariantWhereInput[]
     productId?: StringFilter<"ProductVariant"> | string
+    tenantId?: StringNullableFilter<"ProductVariant"> | string | null
+    outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
     sku?: StringNullableFilter<"ProductVariant"> | string | null
     barcode?: StringNullableFilter<"ProductVariant"> | string | null
@@ -7887,6 +7919,8 @@ export namespace Prisma {
   export type ProductVariantOrderByWithAggregationInput = {
     id?: SortOrder
     productId?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
+    outletId?: SortOrderInput | SortOrder
     name?: SortOrder
     sku?: SortOrderInput | SortOrder
     barcode?: SortOrderInput | SortOrder
@@ -7909,6 +7943,8 @@ export namespace Prisma {
     NOT?: ProductVariantScalarWhereWithAggregatesInput | ProductVariantScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ProductVariant"> | string
     productId?: StringWithAggregatesFilter<"ProductVariant"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
+    outletId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     name?: StringWithAggregatesFilter<"ProductVariant"> | string
     sku?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     barcode?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
@@ -8337,6 +8373,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -8355,6 +8393,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateInput = {
     id?: string
     productId: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -8371,6 +8411,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8389,6 +8431,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8406,6 +8450,8 @@ export namespace Prisma {
   export type ProductVariantCreateManyInput = {
     id?: string
     productId: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -8419,6 +8465,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8433,6 +8481,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9011,6 +9061,8 @@ export namespace Prisma {
   export type ProductVariantCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
     name?: SortOrder
     sku?: SortOrder
     barcode?: SortOrder
@@ -9031,6 +9083,8 @@ export namespace Prisma {
   export type ProductVariantMaxOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
     name?: SortOrder
     sku?: SortOrder
     barcode?: SortOrder
@@ -9045,6 +9099,8 @@ export namespace Prisma {
   export type ProductVariantMinOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    tenantId?: SortOrder
+    outletId?: SortOrder
     name?: SortOrder
     sku?: SortOrder
     barcode?: SortOrder
@@ -9723,6 +9779,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutProductInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -9739,6 +9797,8 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -9785,6 +9845,8 @@ export namespace Prisma {
     NOT?: ProductVariantScalarWhereInput | ProductVariantScalarWhereInput[]
     id?: StringFilter<"ProductVariant"> | string
     productId?: StringFilter<"ProductVariant"> | string
+    tenantId?: StringNullableFilter<"ProductVariant"> | string | null
+    outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
     sku?: StringNullableFilter<"ProductVariant"> | string | null
     barcode?: StringNullableFilter<"ProductVariant"> | string | null
@@ -10058,6 +10120,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutStockBalanceInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10075,6 +10139,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockBalanceInput = {
     id?: string
     productId: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10106,6 +10172,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockBalanceInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10123,6 +10191,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockBalanceInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10138,6 +10208,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutStockMovementsInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10155,6 +10227,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockMovementsInput = {
     id?: string
     productId: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10186,6 +10260,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10203,6 +10279,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10218,6 +10296,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutStockReservationsInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10235,6 +10315,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockReservationsInput = {
     id?: string
     productId: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10266,6 +10348,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10283,6 +10367,8 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10298,6 +10384,8 @@ export namespace Prisma {
 
   export type ProductVariantCreateManyProductInput = {
     id?: string
+    tenantId?: string | null
+    outletId?: string | null
     name: string
     sku?: string | null
     barcode?: string | null
@@ -10311,6 +10399,8 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10327,6 +10417,8 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10343,6 +10435,8 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
+    outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sku?: NullableStringFieldUpdateOperationsInput | string | null
     barcode?: NullableStringFieldUpdateOperationsInput | string | null

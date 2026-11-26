@@ -10,6 +10,7 @@ generator client {
 
 model CapacitySlot {
   id            String            @id @default(uuid())
+  tenantId      String? // Merchant Organization ID
   outletId      String
   slotDate      String // "YYYY-MM-DD"
   startTime     String // "10:00"
@@ -21,6 +22,7 @@ model CapacitySlot {
   reservations  SlotReservation[]
 
   @@unique([outletId, slotDate, startTime])
+  @@index([tenantId, outletId])
   @@map("capacity_slots")
 }
 
@@ -51,18 +53,21 @@ model QueueSnapshot {
 model PickupToken {
   id          String   @id @default(uuid())
   orderId     String   @unique
+  tenantId    String? // Merchant Organization ID
   outletId    String
   tokenNumber String // "A-12"
   status      String   @default("ISSUED") // ISSUED, READY, COLLECTED
   createdAt   DateTime @default(now())
 
   @@index([outletId, status])
+  @@index([tenantId, outletId])
   @@map("pickup_tokens")
 }
 
 model DeliveryTask {
   id              String   @id @default(uuid())
   orderId         String   @unique
+  tenantId        String? // Merchant Organization ID
   outletId        String
   cityCode        String   @default("IN-MH-NGP") // Municipal city boundary
   deliveryAddress String
@@ -71,6 +76,7 @@ model DeliveryTask {
   createdAt       DateTime @default(now())
 
   @@index([cityCode, status])
+  @@index([tenantId, outletId])
   @@map("delivery_tasks")
 }
 

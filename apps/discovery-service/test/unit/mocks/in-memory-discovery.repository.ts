@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { DiscoveryRepositoryPort, PopularLocality } from "../../../domain/repositories/discovery.repository.port";
-import { OutletSearchDocument } from "../../../domain/entities/search-document.entity";
+import { DiscoveryRepositoryPort, PopularLocality } from "../../../src/modules/discovery/domain/repositories/discovery.repository.port";
+import { OutletSearchDocument } from "../../../src/modules/discovery/domain/entities/search-document.entity";
 
 @Injectable()
 export class InMemoryDiscoveryRepository implements DiscoveryRepositoryPort {

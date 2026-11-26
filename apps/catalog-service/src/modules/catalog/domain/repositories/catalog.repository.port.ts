@@ -11,6 +11,27 @@ export abstract class ProductRepositoryPort {
   abstract delete(id: string): Promise<void>;
 }
 
+export interface AtomicStockAdjustCommand {
+  variantId: string;
+  outletId: string;
+  callerTenantId?: string;
+  quantityChange: number;
+  reason: string;
+  actorId: string;
+  referenceId?: string;
+  notes?: string;
+}
+
+export interface AtomicStockAdjustResult {
+  variantId: string;
+  tenantId: string;
+  outletId: string;
+  onHand: number;
+  reserved: number;
+  available: number;
+  version: number;
+}
+
 export abstract class StockRepositoryPort {
   abstract findByVariantId(variantId: string): Promise<StockBalance | null>;
   abstract findByOutletId(outletId: string): Promise<StockBalance[]>;
@@ -18,6 +39,8 @@ export abstract class StockRepositoryPort {
   abstract recordMovement(movement: StockMovement): Promise<void>;
   abstract findMovementsByOutlet(outletId: string, limit?: number): Promise<StockMovement[]>;
   abstract expireExpiredReservations(): Promise<number>;
+  abstract atomicAdjustStock?(command: AtomicStockAdjustCommand): Promise<AtomicStockAdjustResult>;
+  abstract atomicAdjustBatch?(commands: AtomicStockAdjustCommand[]): Promise<AtomicStockAdjustResult[]>;
 }
 
 export abstract class PriceCapRepositoryPort {

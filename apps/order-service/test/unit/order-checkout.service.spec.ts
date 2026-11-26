@@ -1,5 +1,5 @@
 import { OrderService } from "../../src/modules/orders/application/services/order.service";
-import { InMemoryOrderRepository, InMemoryCartRepository } from "../../src/modules/orders/infrastructure/persistence/repositories/in-memory-order.repository";
+import { InMemoryOrderRepository, InMemoryCartRepository } from "./mocks/in-memory-order.repository";
 import { MultiSellerCartNotAllowedError, EmptyCartError } from "../../src/modules/orders/domain/errors/order-errors";
 
 describe("Order & Checkout Service (Sprint 7 & 8)", () => {

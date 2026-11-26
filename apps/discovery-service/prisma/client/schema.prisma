@@ -11,6 +11,7 @@ generator client {
 model OutletSearchDocument {
   id                   String   @id @default(uuid())
   outletId             String   @unique
+  tenantId             String? // Merchant Organization ID
   merchantName         String
   locality             String
   city                 String   @default("Nagpur")
@@ -23,6 +24,7 @@ model OutletSearchDocument {
   queueEstimateMinutes Int      @default(5)
   updatedAt            DateTime @updatedAt
 
+  @@index([tenantId])
   @@index([cityCode, isCurrentlyOpen])
   @@index([locality])
   @@map("outlet_search_documents")
@@ -31,9 +33,11 @@ model OutletSearchDocument {
 model AvailabilityProjection {
   id             String    @id @default(uuid())
   outletId       String    @unique
+  tenantId       String? // Merchant Organization ID
   hasActiveStock Boolean   @default(true)
   nextSlotTime   DateTime?
   updatedAt      DateTime  @updatedAt
 
+  @@index([tenantId])
   @@map("availability_projections")
 }

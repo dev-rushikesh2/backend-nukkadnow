@@ -956,6 +956,7 @@ export namespace Prisma {
   export type DailyMetricMinAggregateOutputType = {
     id: string | null
     metricDate: string | null
+    tenantId: string | null
     outletId: string | null
     cityCode: string | null
     totalOrders: number | null
@@ -967,6 +968,7 @@ export namespace Prisma {
   export type DailyMetricMaxAggregateOutputType = {
     id: string | null
     metricDate: string | null
+    tenantId: string | null
     outletId: string | null
     cityCode: string | null
     totalOrders: number | null
@@ -978,6 +980,7 @@ export namespace Prisma {
   export type DailyMetricCountAggregateOutputType = {
     id: number
     metricDate: number
+    tenantId: number
     outletId: number
     cityCode: number
     totalOrders: number
@@ -1003,6 +1006,7 @@ export namespace Prisma {
   export type DailyMetricMinAggregateInputType = {
     id?: true
     metricDate?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     totalOrders?: true
@@ -1014,6 +1018,7 @@ export namespace Prisma {
   export type DailyMetricMaxAggregateInputType = {
     id?: true
     metricDate?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     totalOrders?: true
@@ -1025,6 +1030,7 @@ export namespace Prisma {
   export type DailyMetricCountAggregateInputType = {
     id?: true
     metricDate?: true
+    tenantId?: true
     outletId?: true
     cityCode?: true
     totalOrders?: true
@@ -1123,6 +1129,7 @@ export namespace Prisma {
   export type DailyMetricGroupByOutputType = {
     id: string
     metricDate: string
+    tenantId: string | null
     outletId: string
     cityCode: string
     totalOrders: number
@@ -1153,6 +1160,7 @@ export namespace Prisma {
   export type DailyMetricSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     metricDate?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     totalOrders?: boolean
@@ -1164,6 +1172,7 @@ export namespace Prisma {
   export type DailyMetricSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     metricDate?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     totalOrders?: boolean
@@ -1175,6 +1184,7 @@ export namespace Prisma {
   export type DailyMetricSelectScalar = {
     id?: boolean
     metricDate?: boolean
+    tenantId?: boolean
     outletId?: boolean
     cityCode?: boolean
     totalOrders?: boolean
@@ -1190,6 +1200,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       metricDate: string
+      tenantId: string | null
       outletId: string
       cityCode: string
       totalOrders: number
@@ -1591,6 +1602,7 @@ export namespace Prisma {
   interface DailyMetricFieldRefs {
     readonly id: FieldRef<"DailyMetric", 'String'>
     readonly metricDate: FieldRef<"DailyMetric", 'String'>
+    readonly tenantId: FieldRef<"DailyMetric", 'String'>
     readonly outletId: FieldRef<"DailyMetric", 'String'>
     readonly cityCode: FieldRef<"DailyMetric", 'String'>
     readonly totalOrders: FieldRef<"DailyMetric", 'Int'>
@@ -2850,6 +2862,7 @@ export namespace Prisma {
   export const DailyMetricScalarFieldEnum: {
     id: 'id',
     metricDate: 'metricDate',
+    tenantId: 'tenantId',
     outletId: 'outletId',
     cityCode: 'cityCode',
     totalOrders: 'totalOrders',
@@ -2888,6 +2901,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -2974,6 +2995,7 @@ export namespace Prisma {
     NOT?: DailyMetricWhereInput | DailyMetricWhereInput[]
     id?: StringFilter<"DailyMetric"> | string
     metricDate?: StringFilter<"DailyMetric"> | string
+    tenantId?: StringNullableFilter<"DailyMetric"> | string | null
     outletId?: StringFilter<"DailyMetric"> | string
     cityCode?: StringFilter<"DailyMetric"> | string
     totalOrders?: IntFilter<"DailyMetric"> | number
@@ -2985,6 +3007,7 @@ export namespace Prisma {
   export type DailyMetricOrderByWithRelationInput = {
     id?: SortOrder
     metricDate?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     totalOrders?: SortOrder
@@ -3000,6 +3023,7 @@ export namespace Prisma {
     OR?: DailyMetricWhereInput[]
     NOT?: DailyMetricWhereInput | DailyMetricWhereInput[]
     metricDate?: StringFilter<"DailyMetric"> | string
+    tenantId?: StringNullableFilter<"DailyMetric"> | string | null
     outletId?: StringFilter<"DailyMetric"> | string
     cityCode?: StringFilter<"DailyMetric"> | string
     totalOrders?: IntFilter<"DailyMetric"> | number
@@ -3011,6 +3035,7 @@ export namespace Prisma {
   export type DailyMetricOrderByWithAggregationInput = {
     id?: SortOrder
     metricDate?: SortOrder
+    tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     totalOrders?: SortOrder
@@ -3030,6 +3055,7 @@ export namespace Prisma {
     NOT?: DailyMetricScalarWhereWithAggregatesInput | DailyMetricScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DailyMetric"> | string
     metricDate?: StringWithAggregatesFilter<"DailyMetric"> | string
+    tenantId?: StringNullableWithAggregatesFilter<"DailyMetric"> | string | null
     outletId?: StringWithAggregatesFilter<"DailyMetric"> | string
     cityCode?: StringWithAggregatesFilter<"DailyMetric"> | string
     totalOrders?: IntWithAggregatesFilter<"DailyMetric"> | number
@@ -3106,6 +3132,7 @@ export namespace Prisma {
   export type DailyMetricCreateInput = {
     id?: string
     metricDate: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     totalOrders?: number
@@ -3117,6 +3144,7 @@ export namespace Prisma {
   export type DailyMetricUncheckedCreateInput = {
     id?: string
     metricDate: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     totalOrders?: number
@@ -3128,6 +3156,7 @@ export namespace Prisma {
   export type DailyMetricUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     metricDate?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     totalOrders?: IntFieldUpdateOperationsInput | number
@@ -3139,6 +3168,7 @@ export namespace Prisma {
   export type DailyMetricUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     metricDate?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     totalOrders?: IntFieldUpdateOperationsInput | number
@@ -3150,6 +3180,7 @@ export namespace Prisma {
   export type DailyMetricCreateManyInput = {
     id?: string
     metricDate: string
+    tenantId?: string | null
     outletId: string
     cityCode?: string
     totalOrders?: number
@@ -3161,6 +3192,7 @@ export namespace Prisma {
   export type DailyMetricUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     metricDate?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     totalOrders?: IntFieldUpdateOperationsInput | number
@@ -3172,6 +3204,7 @@ export namespace Prisma {
   export type DailyMetricUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     metricDate?: StringFieldUpdateOperationsInput | string
+    tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: StringFieldUpdateOperationsInput | string
     cityCode?: StringFieldUpdateOperationsInput | string
     totalOrders?: IntFieldUpdateOperationsInput | number
@@ -3265,6 +3298,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -3309,6 +3357,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type DailyMetricMetricDateOutletIdCompoundUniqueInput = {
     metricDate: string
     outletId: string
@@ -3317,6 +3370,7 @@ export namespace Prisma {
   export type DailyMetricCountOrderByAggregateInput = {
     id?: SortOrder
     metricDate?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     totalOrders?: SortOrder
@@ -3334,6 +3388,7 @@ export namespace Prisma {
   export type DailyMetricMaxOrderByAggregateInput = {
     id?: SortOrder
     metricDate?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     totalOrders?: SortOrder
@@ -3345,6 +3400,7 @@ export namespace Prisma {
   export type DailyMetricMinOrderByAggregateInput = {
     id?: SortOrder
     metricDate?: SortOrder
+    tenantId?: SortOrder
     outletId?: SortOrder
     cityCode?: SortOrder
     totalOrders?: SortOrder
@@ -3375,6 +3431,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -3492,6 +3566,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -3532,6 +3610,20 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -3593,6 +3685,34 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {

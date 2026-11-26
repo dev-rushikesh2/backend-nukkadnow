@@ -11,6 +11,7 @@ generator client {
 model DailyMetric {
   id                 String   @id @default(uuid())
   metricDate         String // "YYYY-MM-DD"
+  tenantId           String? // Merchant Organization ID
   outletId           String
   cityCode           String   @default("IN-MH-NGP") // Municipal partition (IN-MH-NGP, IN-MH-AKL, IN-MH-PUN, IN-MH-AMR)
   totalOrders        Int      @default(0)
@@ -19,6 +20,7 @@ model DailyMetric {
   updatedAt          DateTime @updatedAt
 
   @@unique([metricDate, outletId])
+  @@index([tenantId, metricDate])
   @@index([cityCode, metricDate])
   @@map("daily_metrics")
 }

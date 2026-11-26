@@ -12,5 +12,5 @@ export abstract class DiscoveryRepositoryPort {
   abstract findById(outletId: string): Promise<OutletSearchDocument | null>;
   abstract findAll(): Promise<OutletSearchDocument[]>;
   abstract getPopularLocalities(): Promise<PopularLocality[]>;
-  abstract saveAvailability(outletId: string, hasActiveStock: boolean, nextSlotTime?: Date | null): Promise<void>;
+  abstract saveAvailability(outletId: string, hasActiveStock: boolean, nextSlotTime?: Date | null, tenantId?: string): Promise<void>;
 }

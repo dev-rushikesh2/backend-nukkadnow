@@ -8,14 +8,17 @@ export class PrismaDiscoveryRepository implements DiscoveryRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
   async save(doc: OutletSearchDocument): Promise<void> {
+    const raw: any = (doc as any).props || doc;
     await this.prisma.outletSearchDocument.upsert({
       where: { outletId: doc.outletId },
       create: {
         id: doc.id,
         outletId: doc.outletId,
+        tenantId: raw.tenantId ?? null,
         merchantName: doc.merchantName,
         locality: doc.locality,
         city: doc.city,
+        cityCode: raw.cityCode || "IN-MH-NGP",
         latitude: doc.latitude,
         longitude: doc.longitude,
         rating: doc.rating,
@@ -24,6 +27,8 @@ export class PrismaDiscoveryRepository implements DiscoveryRepositoryPort {
         queueEstimateMinutes: doc.queueEstimateMinutes,
       },
       update: {
+        ...(raw.tenantId ? { tenantId: raw.tenantId } : {}),
+        ...(raw.cityCode ? { cityCode: raw.cityCode } : {}),
         merchantName: doc.merchantName,
         locality: doc.locality,
         city: doc.city,
@@ -76,15 +81,17 @@ export class PrismaDiscoveryRepository implements DiscoveryRepositoryPort {
     }));
   }
 
-  async saveAvailability(outletId: string, hasActiveStock: boolean, nextSlotTime?: Date | null): Promise<void> {
+  async saveAvailability(outletId: string, hasActiveStock: boolean, nextSlotTime?: Date | null, tenantId?: string): Promise<void> {
     await this.prisma.availabilityProjection.upsert({
       where: { outletId },
       create: {
         outletId,
+        tenantId: tenantId ?? null,
         hasActiveStock,
         nextSlotTime: nextSlotTime ?? null,
       },
       update: {
+        ...(tenantId ? { tenantId } : {}),
         hasActiveStock,
         nextSlotTime: nextSlotTime ?? null,
         updatedAt: new Date(),

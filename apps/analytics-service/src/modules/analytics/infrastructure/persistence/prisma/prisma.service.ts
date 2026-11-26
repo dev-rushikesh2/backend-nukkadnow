@@ -1,14 +1,41 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from "@nestjs/common";
 import { PrismaClient } from "../../../../../../prisma/client";
 
+/**
+ * PrismaService — explicit connection pool limits for production scale.
+ *
+ * connection_limit=5  Max 5 DB connections per pod.
+ *   12 services × 3 pods = 180 total — safe under PgBouncer (default 200).
+ *   Without this Prisma defaults to (CPU cores × 2 + 1), exhausting
+ *   PostgreSQL max_connections=100 under horizontal scale.
+ *
+ * pool_timeout=10     Fail fast waiting for a free slot (10 s).
+ * connect_timeout=5   Fail fast if Postgres host is unreachable.
+ */
+function buildDatasourceUrl(raw: string | undefined): string {
+  if (!raw) return "";
+  if (raw.includes("connection_limit=")) return raw;
+  const sep = raw.includes("?") ? "&" : "?";
+  return `${raw}${sep}connection_limit=5&pool_timeout=10&connect_timeout=5`;
+}
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
   [key: string]: any;
 
+  constructor() {
+    super({
+      datasources: { db: { url: buildDatasourceUrl(process.env["ANALYTICS_DATABASE_URL"]) } },
+      log: process.env.NODE_ENV === "production"
+        ? [{ emit: "event", level: "error" }]
+        : [{ emit: "stdout", level: "warn" }],
+    });
+  }
+
   async onModuleInit() {
     await this.$connect();
-    this.logger.log("PostgreSQL connected via Prisma.");
+    this.logger.log("PostgreSQL connected via Prisma (pool_limit=5).");
   }
 
   async onModuleDestroy() {

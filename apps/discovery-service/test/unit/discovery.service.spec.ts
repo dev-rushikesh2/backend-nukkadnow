@@ -1,5 +1,5 @@
 import { DiscoveryService } from "../../src/modules/discovery/application/services/discovery.service";
-import { InMemoryDiscoveryRepository } from "../../src/modules/discovery/infrastructure/persistence/repositories/in-memory-discovery.repository";
+import { InMemoryDiscoveryRepository } from "./mocks/in-memory-discovery.repository";
 
 describe("Discovery Service (Sprint 6)", () => {
   let service: DiscoveryService;

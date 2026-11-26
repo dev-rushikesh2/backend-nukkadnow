@@ -124,6 +124,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.CapacitySlotScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   outletId: 'outletId',
   slotDate: 'slotDate',
   startTime: 'startTime',
@@ -154,6 +155,7 @@ exports.Prisma.QueueSnapshotScalarFieldEnum = {
 exports.Prisma.PickupTokenScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
+  tenantId: 'tenantId',
   outletId: 'outletId',
   tokenNumber: 'tokenNumber',
   status: 'status',
@@ -163,6 +165,7 @@ exports.Prisma.PickupTokenScalarFieldEnum = {
 exports.Prisma.DeliveryTaskScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
+  tenantId: 'tenantId',
   outletId: 'outletId',
   cityCode: 'cityCode',
   deliveryAddress: 'deliveryAddress',

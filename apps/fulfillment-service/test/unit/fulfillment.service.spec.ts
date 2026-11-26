@@ -1,5 +1,5 @@
 import { FulfillmentService } from "../../src/modules/fulfillment/application/services/fulfillment.service";
-import { InMemoryFulfillmentRepository } from "../../src/modules/fulfillment/infrastructure/persistence/repositories/in-memory-fulfillment.repository";
+import { InMemoryFulfillmentRepository } from "./mocks/in-memory-fulfillment.repository";
 import { SlotCapacityExceededError } from "../../src/modules/fulfillment/domain/errors/fulfillment-errors";
 
 describe("Fulfillment & Capacity Service (Sprint 10 & 11)", () => {

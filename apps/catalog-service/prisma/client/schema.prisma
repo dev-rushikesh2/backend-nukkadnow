@@ -22,6 +22,7 @@ model Product {
   variants    ProductVariant[]
 
   @@index([tenantId, outletId])
+  @@index([outletId, isAvailable])
   @@index([category])
   @@map("products")
 }
@@ -29,6 +30,8 @@ model Product {
 model ProductVariant {
   id                  String             @id @default(uuid())
   productId           String
+  tenantId            String? // Denormalized Merchant Org ID for direct variant tenant checks
+  outletId            String? // Denormalized Merchant Outlet ID
   name                String
   sku                 String?
   barcode             String?
@@ -44,6 +47,7 @@ model ProductVariant {
   stockMovements      StockMovement[]
 
   @@index([productId])
+  @@index([tenantId, outletId])
   @@map("product_variants")
 }
 

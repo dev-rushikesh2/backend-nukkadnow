@@ -125,6 +125,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.OutletSearchDocumentScalarFieldEnum = {
   id: 'id',
   outletId: 'outletId',
+  tenantId: 'tenantId',
   merchantName: 'merchantName',
   locality: 'locality',
   city: 'city',
@@ -141,6 +142,7 @@ exports.Prisma.OutletSearchDocumentScalarFieldEnum = {
 exports.Prisma.AvailabilityProjectionScalarFieldEnum = {
   id: 'id',
   outletId: 'outletId',
+  tenantId: 'tenantId',
   hasActiveStock: 'hasActiveStock',
   nextSlotTime: 'nextSlotTime',
   updatedAt: 'updatedAt'

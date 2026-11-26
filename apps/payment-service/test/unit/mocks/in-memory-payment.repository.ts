@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { PaymentRepositoryPort } from "../../../domain/repositories/payment.repository.port";
-import { PaymentIntent, Payment } from "../../../domain/entities/payment-intent.entity";
+import { PaymentRepositoryPort } from "../../../src/modules/payments/domain/repositories/payment.repository.port";
+import { PaymentIntent, Payment } from "../../../src/modules/payments/domain/entities/payment-intent.entity";
 
 @Injectable()
 export class InMemoryPaymentRepository implements PaymentRepositoryPort {

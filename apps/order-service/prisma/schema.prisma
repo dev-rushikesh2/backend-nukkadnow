@@ -31,6 +31,8 @@ model Order {
 
   @@index([customerId])
   @@index([tenantId, outletId])
+  @@index([tenantId, outletId, status, createdAt])
+  @@index([outletId, status])
   @@index([cityCode, status])
   @@index([cityCode, createdAt])
   @@index([tenantId, cityCode])
@@ -49,6 +51,8 @@ model OrderItem {
   order          Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
+  @@index([productId])
+  @@index([variantId])
   @@map("order_items")
 }
 

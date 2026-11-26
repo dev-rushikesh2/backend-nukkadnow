@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { ProductRepositoryPort, StockRepositoryPort, PriceCapRepositoryPort } from "../../../domain/repositories/catalog.repository.port";
-import { Product, ProductVariant } from "../../../domain/entities/product.entity";
-import { StockBalance } from "../../../domain/entities/stock-balance.entity";
-import { StockMovement } from "../../../domain/entities/stock-movement.entity";
-import { AdminPriceCapRule } from "../../../domain/entities/price-cap.entity";
+import { ProductRepositoryPort, StockRepositoryPort, PriceCapRepositoryPort } from "../../../src/modules/catalog/domain/repositories/catalog.repository.port";
+import { Product, ProductVariant } from "../../../src/modules/catalog/domain/entities/product.entity";
+import { StockBalance } from "../../../src/modules/catalog/domain/entities/stock-balance.entity";
+import { StockMovement } from "../../../src/modules/catalog/domain/entities/stock-movement.entity";
+import { AdminPriceCapRule } from "../../../src/modules/catalog/domain/entities/price-cap.entity";
 import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
 @Injectable()

@@ -48,10 +48,12 @@ export class DiscoveryService {
     const doc = new OutletSearchDocument({
       id: UniqueIdentifier.generateV7(),
       outletId: dto.outletId,
+      tenantId: dto.tenantId,
       merchantName: dto.merchantName,
       sellerMode: dto.sellerMode,
       locality: dto.locality,
       city: dto.city || "Nagpur",
+      cityCode: dto.cityCode || "IN-MH-NGP",
       latitude: dto.latitude,
       longitude: dto.longitude,
       rating: (dto as any).rating ?? 0.0,
@@ -63,6 +65,10 @@ export class DiscoveryService {
     });
 
     await this.discoveryRepo.save(doc);
+  }
+
+  async syncAvailability(outletId: string, hasActiveStock: boolean, nextSlotTime?: Date | null, tenantId?: string): Promise<void> {
+    await this.discoveryRepo.saveAvailability(outletId, hasActiveStock, nextSlotTime ?? null, tenantId);
   }
 
   async listPopularLocalities() {

@@ -1,5 +1,5 @@
 import { NotificationService } from "../../src/modules/notifications/application/services/notification.service";
-import { InMemoryNotificationRepository } from "../../src/modules/notifications/infrastructure/persistence/repositories/in-memory-notification.repository";
+import { InMemoryNotificationRepository } from "./mocks/in-memory-notification.repository";
 import { NotificationChannelFactory } from "../../src/modules/notifications/infrastructure/external-clients/channel-factory.service";
 import { MockChannelAdapter } from "../../src/modules/notifications/infrastructure/external-clients/mock-channel.adapter";
 import { Msg91SmsAdapter } from "../../src/modules/notifications/infrastructure/external-clients/msg91-sms.adapter";

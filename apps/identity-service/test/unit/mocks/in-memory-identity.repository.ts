@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { UserRepositoryPort } from "../../../domain/repositories/user.repository.port";
-import { SessionRepositoryPort } from "../../../domain/repositories/session.repository.port";
-import { User } from "../../../domain/entities/user.entity";
-import { Session } from "../../../domain/entities/session.entity";
-import { PhoneNumber } from "../../../domain/value-objects/phone-number.vo";
+import { UserRepositoryPort } from "../../../src/modules/identity/domain/repositories/user.repository.port";
+import { SessionRepositoryPort } from "../../../src/modules/identity/domain/repositories/session.repository.port";
+import { User } from "../../../src/modules/identity/domain/entities/user.entity";
+import { Session } from "../../../src/modules/identity/domain/entities/session.entity";
+import { PhoneNumber } from "../../../src/modules/identity/domain/value-objects/phone-number.vo";
 
 @Injectable()
 export class InMemoryUserRepository implements UserRepositoryPort {
