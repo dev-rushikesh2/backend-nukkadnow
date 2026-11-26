@@ -149,6 +149,8 @@ export class MerchantController {
         locality: primaryOutlet?.locality || merchant.partnerApplication?.locality || "",
         city: profileMeta.city || primaryOutlet?.city || merchant.partnerApplication?.city || "",
         pincode: profileMeta.pincode || primaryOutlet?.pincode || merchant.partnerApplication?.pincode || "",
+        latitude: primaryOutlet?.latitude ?? merchant.partnerApplication?.latitude ?? null,
+        longitude: primaryOutlet?.longitude ?? merchant.partnerApplication?.longitude ?? null,
         gstin: profileMeta.gstin || "",
         fssai: profileMeta.fssai || "",
         coverUrl: profileMeta.coverUrl || undefined,
@@ -209,13 +211,18 @@ export class MerchantController {
     });
 
     if (primaryOutlet) {
+      const parsedLat = body.latitude !== undefined && body.latitude !== null ? Number(body.latitude) : undefined;
+      const parsedLng = body.longitude !== undefined && body.longitude !== null ? Number(body.longitude) : undefined;
       await this.prisma.outlet.update({
         where: { id: primaryOutlet.id },
         data: {
           ...(body.shopName ? { name: `${String(body.shopName).trim()} - Main Outlet` } : {}),
           ...(body.addressStreet !== undefined ? { addressLine: String(body.addressStreet) } : {}),
+          ...(body.locality !== undefined ? { locality: String(body.locality) } : {}),
           ...(body.city !== undefined ? { city: String(body.city) } : {}),
           ...(body.pincode !== undefined ? { pincode: String(body.pincode) } : {}),
+          ...(parsedLat !== undefined && !Number.isNaN(parsedLat) ? { latitude: parsedLat } : {}),
+          ...(parsedLng !== undefined && !Number.isNaN(parsedLng) ? { longitude: parsedLng } : {}),
         },
       });
 
@@ -257,6 +264,86 @@ export class MerchantController {
     });
 
     return this.getMyProfile(id, req);
+  }
+
+  @Get(":id/qr-standees")
+  @ApiOperation({ summary: "Get persisted shop QR standees for merchant outlet" })
+  async getQrStandees(@Param("id") id: string, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const callerTenantId = headers?.["x-tenant-id"] || req.user?.tenantId;
+    if (callerTenantId && callerTenantId !== id) {
+      throw new ForbiddenException("Cross-tenant access forbidden");
+    }
+    const merchant = await this.prisma.merchant.findUnique({
+      where: { id },
+      include: { outlets: { include: { serviceAreas: true } } },
+    });
+    if (!merchant) throw new NotFoundException(`Merchant '${id}' not found`);
+    const primaryOutlet = merchant.outlets?.[0];
+    const geo: any = (primaryOutlet?.serviceAreas?.[0]?.geoJson as any) || {};
+    const profileMeta: any = geo.profile || {};
+    return {
+      success: true,
+      data: {
+        tenantId: merchant.id,
+        outletId: primaryOutlet?.id || merchant.id,
+        shopName: profileMeta.shopName || merchant.organizationName,
+        locality: primaryOutlet?.locality || "",
+        city: profileMeta.city || primaryOutlet?.city || "",
+        standees: Array.isArray(geo.qrStandees) ? geo.qrStandees : [],
+      },
+    };
+  }
+
+  @Put(":id/qr-standees")
+  @ApiOperation({ summary: "Save shop QR standees to PostgreSQL" })
+  async saveQrStandees(
+    @Param("id") id: string,
+    @Body() body: any,
+    @Headers() headers: Record<string, any>,
+    @Req() req: any
+  ) {
+    const callerTenantId = headers?.["x-tenant-id"] || req.user?.tenantId;
+    if (callerTenantId && callerTenantId !== id) {
+      throw new ForbiddenException("Cross-tenant access forbidden");
+    }
+    const merchant = await this.prisma.merchant.findUnique({
+      where: { id },
+      include: { outlets: { include: { serviceAreas: true } } },
+    });
+    if (!merchant) throw new NotFoundException(`Merchant '${id}' not found`);
+    const primaryOutlet = merchant.outlets?.[0];
+    if (!primaryOutlet) throw new NotFoundException("Primary outlet not found");
+
+    const cleanStandees = (Array.isArray(body?.standees) ? body.standees : []).map((s: any) => ({
+      id: String(s.id),
+      label: String(s.label || "Shop QR"),
+      type: String(s.type || "COUNTER"),
+      tableNumber: s.tableNumber ? Number(s.tableNumber) : undefined,
+      sourceTag: String(s.sourceTag || "counter_main"),
+      targetUrl: String(s.targetUrl || ""),
+      scanCount: Number(s.scanCount || 0),
+      orderCount: Number(s.orderCount || 0),
+      isActive: s.isActive !== false,
+      lastScannedAt: s.lastScannedAt || "Never yet",
+    }));
+
+    const area = primaryOutlet.serviceAreas?.[0];
+    const existingGeo: any = (area?.geoJson as any) || {};
+    const nextGeo = { ...existingGeo, qrStandees: cleanStandees };
+    if (area) {
+      await this.prisma.serviceArea.update({ where: { id: area.id }, data: { geoJson: nextGeo } });
+    } else {
+      await this.prisma.serviceArea.create({
+        data: {
+          id: UniqueIdentifier.generateV7(),
+          outletId: primaryOutlet.id,
+          radiusMeters: Math.round((primaryOutlet.deliveryRadiusKm || 5) * 1000),
+          geoJson: nextGeo,
+        },
+      });
+    }
+
+    return { success: true, data: { standees: cleanStandees } };
   }
 
   @Get(":id/delivery-settings")
@@ -933,6 +1020,128 @@ export class MerchantController {
     const callerTenantId = headerTenantId || req.user?.tenantId;
     const callerRoles = req.user?.roles;
     return this.merchantService.createOutlet(dto, callerTenantId, callerRoles);
+  }
+
+  @Get("localities/public")
+  @ApiOperation({ summary: "Customer-facing: List serviceable localities and active outlet hubs with optional distance/search" })
+  async listPublicLocalities(
+    @Query("q") q?: string,
+    @Query("lat") lat?: string,
+    @Query("lng") lng?: string
+  ) {
+    const [storedLocalities, activeOutlets] = await Promise.all([
+      this.prisma.serviceableLocality.findMany({
+        where: { status: "ACTIVE" },
+        orderBy: { name: "asc" },
+      }),
+      this.prisma.outlet.findMany({
+        where: { isActive: true, merchant: { isSuspended: false } },
+        select: {
+          id: true,
+          locality: true,
+          city: true,
+          cityCode: true,
+          pincode: true,
+          latitude: true,
+          longitude: true,
+        },
+      }),
+    ]);
+
+    const parsedLat = lat !== undefined && lat !== "undefined" && lat !== "" ? Number(lat) : NaN;
+    const parsedLng = lng !== undefined && lng !== "undefined" && lng !== "" ? Number(lng) : NaN;
+    const hasCoords = !Number.isNaN(parsedLat) && !Number.isNaN(parsedLng);
+    const toRad = (deg: number) => (deg * Math.PI) / 180;
+    const calcKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    };
+
+    const hubMap = new Map<string, any>();
+
+    const countNearbyStores = (hubLat: number, hubLng: number, cityName: string) =>
+      activeOutlets.filter(
+        (o) =>
+          calcKm(hubLat, hubLng, o.latitude, o.longitude) <= 15 ||
+          o.city.toLowerCase() === cityName.toLowerCase()
+      ).length;
+
+    for (const o of activeOutlets) {
+      const loc = (o.locality || "Central").trim();
+      const city = (o.city || "Akola").trim();
+      const key = `${city.toLowerCase()}:${loc.toLowerCase()}`;
+      if (!hubMap.has(key)) {
+        const nearby = countNearbyStores(o.latitude, o.longitude, city);
+        hubMap.set(key, {
+          id: `${city.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${loc.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+          name: `${loc}, ${city}`,
+          locality: loc,
+          city,
+          cityCode: o.cityCode,
+          pincode: o.pincode || "444001",
+          latitude: o.latitude,
+          longitude: o.longitude,
+          outletsCount: nearby,
+          isServiceable: nearby > 0,
+        });
+      }
+    }
+
+    for (const loc of storedLocalities) {
+      const key = `${loc.cityName.toLowerCase()}:${loc.name.toLowerCase()}`;
+      if (!hubMap.has(key)) {
+        const nearby = countNearbyStores(loc.latitude, loc.longitude, loc.cityName);
+        hubMap.set(key, {
+          id: loc.id,
+          name: `${loc.name}, ${loc.cityName}`,
+          locality: loc.name,
+          city: loc.cityName,
+          cityCode: loc.cityCode,
+          pincode: loc.pincode,
+          latitude: loc.latitude,
+          longitude: loc.longitude,
+          outletsCount: nearby,
+          isServiceable: true,
+        });
+      }
+    }
+
+    const queryLower = String(q || "").trim().toLowerCase();
+    let results = Array.from(hubMap.values()).map((h) => {
+      const distanceKm = hasCoords ? Number(calcKm(parsedLat, parsedLng, h.latitude, h.longitude).toFixed(1)) : null;
+      const storeLabel = h.outletsCount === 1 ? "1 active store" : `${h.outletsCount} active stores`;
+      const distance =
+        distanceKm !== null
+          ? `${distanceKm} km away • ${storeLabel} • ${h.pincode}`
+          : `${storeLabel} • ${h.pincode}`;
+      return {
+        ...h,
+        distanceKm,
+        distance,
+        source: "SERVICEABLE_HUB",
+      };
+    });
+
+    if (queryLower) {
+      results = results.filter(
+        (h) =>
+          h.name.toLowerCase().includes(queryLower) ||
+          h.city.toLowerCase().includes(queryLower) ||
+          h.pincode.includes(queryLower)
+      );
+    }
+
+    results.sort((a, b) => {
+      if (a.distanceKm !== null && b.distanceKm !== null) return a.distanceKm - b.distanceKm;
+      return b.outletsCount - a.outletsCount;
+    });
+
+    return { success: true, data: results };
   }
 
   @Get("outlets/public")

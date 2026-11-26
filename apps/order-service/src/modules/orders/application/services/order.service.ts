@@ -151,7 +151,8 @@ export class OrderService {
       throw new ForbiddenException("Tenant Mismatch: Cannot accept orders of another organization.");
     }
 
-    order.accept(dto.estimatedMinutes);
+    const mins = Number(dto?.estimatedMinutes ?? dto?.prepTimeMinutes ?? dto?.prepMinutes ?? 15) || 15;
+    order.accept(mins);
     await this.orderRepo.save(order);
     return this.formatOrderResponse(order);
   }

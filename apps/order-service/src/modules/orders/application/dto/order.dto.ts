@@ -53,7 +53,18 @@ export class CheckoutDto {
 }
 
 export class AcceptOrderDto {
-  @ApiProperty({ example: 15, description: "Estimated prep time in minutes" })
+  @ApiProperty({ example: 15, required: false, description: "Estimated prep time in minutes" })
+  @IsOptional()
   @IsNumber()
-  estimatedMinutes!: number;
+  estimatedMinutes?: number;
+
+  @ApiProperty({ example: 15, required: false, description: "Estimated prep time in minutes (alias)" })
+  @IsOptional()
+  @IsNumber()
+  prepMinutes?: number;
+
+  @ApiProperty({ example: 15, required: false, description: "Estimated prep time in minutes (alias)" })
+  @IsOptional()
+  @IsNumber()
+  prepTimeMinutes?: number;
 }

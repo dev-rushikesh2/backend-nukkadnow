@@ -15,6 +15,7 @@ import {
 } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 import { ProxyDispatcherService } from "../../clients/proxy-dispatcher.service";
+import { searchLocationsWithOsm, reverseGeocodeWithOsm } from "../shared/locations.helper";
 import * as jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -71,7 +72,7 @@ function formatCatalogProduct(
     compareAtPrice,
     discountBadge: discountPct,
     isAvailable: p.isAvailable ?? true,
-    availableStock: firstVar?.availableStock ?? firstVar?.stockBalance?.onHandQuantity ?? 10,
+    availableStock: firstVar?.availableStock ?? firstVar?.stockBalance?.onHandQuantity ?? 0,
     rating: ratingSummary?.averageRating ?? 0,
     reviewsCount: ratingSummary?.totalReviews ?? 0,
     image:
@@ -96,6 +97,26 @@ export class CustomerController {
   private readonly paymentServiceUrl = process.env.PAYMENT_SERVICE_URL as string;
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
+
+  // -------------------------------------------------------------------------
+  // Customer Location Search & Reverse Geocoding (Swiggy / Zomato / Blinkit)
+  // -------------------------------------------------------------------------
+
+  @Get("locations/areas")
+  @ApiOperation({ summary: "Search serviceable areas, streets & pincodes with live OSM/Photon autocomplete" })
+  async searchAreas(
+    @Query("q") q?: string,
+    @Query("lat") lat?: string,
+    @Query("lng") lng?: string
+  ) {
+    return searchLocationsWithOsm({ proxy: this.proxy, merchantServiceUrl: this.merchantServiceUrl, q, lat, lng });
+  }
+
+  @Get("locations/reverse")
+  @ApiOperation({ summary: "Reverse-geocode real GPS/map coordinates via Nominatim + BigDataCloud" })
+  async reverseGeocode(@Query("lat") lat: string, @Query("lng") lng: string) {
+    return reverseGeocodeWithOsm({ proxy: this.proxy, merchantServiceUrl: this.merchantServiceUrl, lat, lng });
+  }
 
   // -------------------------------------------------------------------------
   // Discovery & Storefronts (backed directly by Merchant + Catalog PostgreSQL)
@@ -174,7 +195,9 @@ export class CustomerController {
 
     const productSummaries = summaries?.products || {};
     const productsList = Array.isArray(rawProducts)
-      ? rawProducts.map((p) => formatCatalogProduct(p, enrichedOutlet, productSummaries[p.id]))
+      ? rawProducts
+          .filter((p) => p?.isAvailable !== false)
+          .map((p) => formatCatalogProduct(p, enrichedOutlet, productSummaries[p.id]))
       : [];
 
     return { outlet: enrichedOutlet, products: productsList, reviews };
@@ -512,6 +535,8 @@ export class CustomerController {
 
     return {
       orderId: order?.orderNumber || id,
+      status: order?.status || "CONFIRMED",
+      fulfillmentType: order?.fulfillmentType || "MERCHANT_DELIVERY",
       shopName: order?.shopName || outlet?.name || "NukkadNow Store",
       verified: true,
       itemCount: Array.isArray(order?.items) ? order.items.reduce((s: number, it: any) => s + Number(it.quantity || 1), 0) : 1,

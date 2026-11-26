@@ -33,4 +33,8 @@ export class StockMovement {
   get referenceId(): string | undefined { return this.props.referenceId; }
   get notes(): string | undefined { return this.props.notes; }
   get createdAt(): Date { return this.props.createdAt; }
+
+  toJSON(): StockMovementProps {
+    return { ...this.props };
+  }
 }
