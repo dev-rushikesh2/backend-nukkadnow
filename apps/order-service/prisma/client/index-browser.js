@@ -132,6 +132,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   districtCode: 'districtCode',
   stateCode: 'stateCode',
   locality: 'locality',
+  deliveryLat: 'deliveryLat',
+  deliveryLng: 'deliveryLng',
   status: 'status',
   totalAmountPaise: 'totalAmountPaise',
   paymentStatus: 'paymentStatus',

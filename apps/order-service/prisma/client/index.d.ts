@@ -1356,10 +1356,14 @@ export namespace Prisma {
   }
 
   export type OrderAvgAggregateOutputType = {
+    deliveryLat: number | null
+    deliveryLng: number | null
     totalAmountPaise: number | null
   }
 
   export type OrderSumAggregateOutputType = {
+    deliveryLat: number | null
+    deliveryLng: number | null
     totalAmountPaise: number | null
   }
 
@@ -1373,6 +1377,8 @@ export namespace Prisma {
     districtCode: string | null
     stateCode: string | null
     locality: string | null
+    deliveryLat: number | null
+    deliveryLng: number | null
     status: string | null
     totalAmountPaise: number | null
     paymentStatus: string | null
@@ -1393,6 +1399,8 @@ export namespace Prisma {
     districtCode: string | null
     stateCode: string | null
     locality: string | null
+    deliveryLat: number | null
+    deliveryLng: number | null
     status: string | null
     totalAmountPaise: number | null
     paymentStatus: string | null
@@ -1413,6 +1421,8 @@ export namespace Prisma {
     districtCode: number
     stateCode: number
     locality: number
+    deliveryLat: number
+    deliveryLng: number
     status: number
     totalAmountPaise: number
     paymentStatus: number
@@ -1426,10 +1436,14 @@ export namespace Prisma {
 
 
   export type OrderAvgAggregateInputType = {
+    deliveryLat?: true
+    deliveryLng?: true
     totalAmountPaise?: true
   }
 
   export type OrderSumAggregateInputType = {
+    deliveryLat?: true
+    deliveryLng?: true
     totalAmountPaise?: true
   }
 
@@ -1443,6 +1457,8 @@ export namespace Prisma {
     districtCode?: true
     stateCode?: true
     locality?: true
+    deliveryLat?: true
+    deliveryLng?: true
     status?: true
     totalAmountPaise?: true
     paymentStatus?: true
@@ -1463,6 +1479,8 @@ export namespace Prisma {
     districtCode?: true
     stateCode?: true
     locality?: true
+    deliveryLat?: true
+    deliveryLng?: true
     status?: true
     totalAmountPaise?: true
     paymentStatus?: true
@@ -1483,6 +1501,8 @@ export namespace Prisma {
     districtCode?: true
     stateCode?: true
     locality?: true
+    deliveryLat?: true
+    deliveryLng?: true
     status?: true
     totalAmountPaise?: true
     paymentStatus?: true
@@ -1590,6 +1610,8 @@ export namespace Prisma {
     districtCode: string
     stateCode: string
     locality: string | null
+    deliveryLat: number | null
+    deliveryLng: number | null
     status: string
     totalAmountPaise: number
     paymentStatus: string
@@ -1629,6 +1651,8 @@ export namespace Prisma {
     districtCode?: boolean
     stateCode?: boolean
     locality?: boolean
+    deliveryLat?: boolean
+    deliveryLng?: boolean
     status?: boolean
     totalAmountPaise?: boolean
     paymentStatus?: boolean
@@ -1652,6 +1676,8 @@ export namespace Prisma {
     districtCode?: boolean
     stateCode?: boolean
     locality?: boolean
+    deliveryLat?: boolean
+    deliveryLng?: boolean
     status?: boolean
     totalAmountPaise?: boolean
     paymentStatus?: boolean
@@ -1672,6 +1698,8 @@ export namespace Prisma {
     districtCode?: boolean
     stateCode?: boolean
     locality?: boolean
+    deliveryLat?: boolean
+    deliveryLng?: boolean
     status?: boolean
     totalAmountPaise?: boolean
     paymentStatus?: boolean
@@ -1705,6 +1733,8 @@ export namespace Prisma {
       districtCode: string
       stateCode: string
       locality: string | null
+      deliveryLat: number | null
+      deliveryLng: number | null
       status: string
       totalAmountPaise: number
       paymentStatus: string
@@ -2117,6 +2147,8 @@ export namespace Prisma {
     readonly districtCode: FieldRef<"Order", 'String'>
     readonly stateCode: FieldRef<"Order", 'String'>
     readonly locality: FieldRef<"Order", 'String'>
+    readonly deliveryLat: FieldRef<"Order", 'Float'>
+    readonly deliveryLng: FieldRef<"Order", 'Float'>
     readonly status: FieldRef<"Order", 'String'>
     readonly totalAmountPaise: FieldRef<"Order", 'Int'>
     readonly paymentStatus: FieldRef<"Order", 'String'>
@@ -7372,6 +7404,8 @@ export namespace Prisma {
     districtCode: 'districtCode',
     stateCode: 'stateCode',
     locality: 'locality',
+    deliveryLat: 'deliveryLat',
+    deliveryLng: 'deliveryLng',
     status: 'status',
     totalAmountPaise: 'totalAmountPaise',
     paymentStatus: 'paymentStatus',
@@ -7511,6 +7545,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -7543,20 +7591,6 @@ export namespace Prisma {
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
     
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
   /**
    * Deep Input Types
    */
@@ -7575,6 +7609,8 @@ export namespace Prisma {
     districtCode?: StringFilter<"Order"> | string
     stateCode?: StringFilter<"Order"> | string
     locality?: StringNullableFilter<"Order"> | string | null
+    deliveryLat?: FloatNullableFilter<"Order"> | number | null
+    deliveryLng?: FloatNullableFilter<"Order"> | number | null
     status?: StringFilter<"Order"> | string
     totalAmountPaise?: IntFilter<"Order"> | number
     paymentStatus?: StringFilter<"Order"> | string
@@ -7597,6 +7633,8 @@ export namespace Prisma {
     districtCode?: SortOrder
     stateCode?: SortOrder
     locality?: SortOrderInput | SortOrder
+    deliveryLat?: SortOrderInput | SortOrder
+    deliveryLng?: SortOrderInput | SortOrder
     status?: SortOrder
     totalAmountPaise?: SortOrder
     paymentStatus?: SortOrder
@@ -7623,6 +7661,8 @@ export namespace Prisma {
     districtCode?: StringFilter<"Order"> | string
     stateCode?: StringFilter<"Order"> | string
     locality?: StringNullableFilter<"Order"> | string | null
+    deliveryLat?: FloatNullableFilter<"Order"> | number | null
+    deliveryLng?: FloatNullableFilter<"Order"> | number | null
     status?: StringFilter<"Order"> | string
     totalAmountPaise?: IntFilter<"Order"> | number
     paymentStatus?: StringFilter<"Order"> | string
@@ -7644,6 +7684,8 @@ export namespace Prisma {
     districtCode?: SortOrder
     stateCode?: SortOrder
     locality?: SortOrderInput | SortOrder
+    deliveryLat?: SortOrderInput | SortOrder
+    deliveryLng?: SortOrderInput | SortOrder
     status?: SortOrder
     totalAmountPaise?: SortOrder
     paymentStatus?: SortOrder
@@ -7672,6 +7714,8 @@ export namespace Prisma {
     districtCode?: StringWithAggregatesFilter<"Order"> | string
     stateCode?: StringWithAggregatesFilter<"Order"> | string
     locality?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    deliveryLat?: FloatNullableWithAggregatesFilter<"Order"> | number | null
+    deliveryLng?: FloatNullableWithAggregatesFilter<"Order"> | number | null
     status?: StringWithAggregatesFilter<"Order"> | string
     totalAmountPaise?: IntWithAggregatesFilter<"Order"> | number
     paymentStatus?: StringWithAggregatesFilter<"Order"> | string
@@ -8022,6 +8066,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -8044,6 +8090,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -8066,6 +8114,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -8088,6 +8138,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -8110,6 +8162,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -8130,6 +8184,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -8150,6 +8206,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -8541,6 +8599,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -8598,6 +8667,8 @@ export namespace Prisma {
     districtCode?: SortOrder
     stateCode?: SortOrder
     locality?: SortOrder
+    deliveryLat?: SortOrder
+    deliveryLng?: SortOrder
     status?: SortOrder
     totalAmountPaise?: SortOrder
     paymentStatus?: SortOrder
@@ -8609,6 +8680,8 @@ export namespace Prisma {
   }
 
   export type OrderAvgOrderByAggregateInput = {
+    deliveryLat?: SortOrder
+    deliveryLng?: SortOrder
     totalAmountPaise?: SortOrder
   }
 
@@ -8622,6 +8695,8 @@ export namespace Prisma {
     districtCode?: SortOrder
     stateCode?: SortOrder
     locality?: SortOrder
+    deliveryLat?: SortOrder
+    deliveryLng?: SortOrder
     status?: SortOrder
     totalAmountPaise?: SortOrder
     paymentStatus?: SortOrder
@@ -8642,6 +8717,8 @@ export namespace Prisma {
     districtCode?: SortOrder
     stateCode?: SortOrder
     locality?: SortOrder
+    deliveryLat?: SortOrder
+    deliveryLng?: SortOrder
     status?: SortOrder
     totalAmountPaise?: SortOrder
     paymentStatus?: SortOrder
@@ -8653,6 +8730,8 @@ export namespace Prisma {
   }
 
   export type OrderSumOrderByAggregateInput = {
+    deliveryLat?: SortOrder
+    deliveryLng?: SortOrder
     totalAmountPaise?: SortOrder
   }
 
@@ -8690,6 +8769,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9038,6 +9133,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -9222,6 +9325,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9287,6 +9401,22 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9504,6 +9634,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -9525,6 +9657,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -9562,6 +9696,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -9583,6 +9719,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -9604,6 +9742,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -9625,6 +9765,8 @@ export namespace Prisma {
     districtCode?: string
     stateCode?: string
     locality?: string | null
+    deliveryLat?: number | null
+    deliveryLng?: number | null
     status?: string
     totalAmountPaise: number
     paymentStatus?: string
@@ -9662,6 +9804,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
@@ -9683,6 +9827,8 @@ export namespace Prisma {
     districtCode?: StringFieldUpdateOperationsInput | string
     stateCode?: StringFieldUpdateOperationsInput | string
     locality?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    deliveryLng?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     totalAmountPaise?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string

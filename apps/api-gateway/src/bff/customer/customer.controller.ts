@@ -72,7 +72,9 @@ function formatCatalogProduct(
     compareAtPrice,
     discountBadge: discountPct,
     isAvailable: p.isAvailable ?? true,
-    availableStock: firstVar?.availableStock ?? firstVar?.stockBalance?.onHandQuantity ?? 0,
+    availableStock:
+      firstVar?.availableStock ??
+      Math.max(0, Number(firstVar?.stockBalance?.onHandQuantity ?? 0) - Number(firstVar?.stockBalance?.reservedQuantity ?? 0)),
     rating: ratingSummary?.averageRating ?? 0,
     reviewsCount: ratingSummary?.totalReviews ?? 0,
     image:
@@ -95,6 +97,7 @@ export class CustomerController {
   private readonly identityServiceUrl = process.env.IDENTITY_SERVICE_URL as string;
   private readonly reviewServiceUrl = process.env.REVIEW_SUPPORT_SERVICE_URL as string;
   private readonly paymentServiceUrl = process.env.PAYMENT_SERVICE_URL as string;
+  private readonly notificationServiceUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
 
@@ -326,17 +329,26 @@ export class CustomerController {
     if (page) params.set("page", page);
     params.set("limit", limit ?? "50");
 
-    const [res, summaries] = await Promise.all([
+    const [res, summaries, publicOutlets] = await Promise.all([
       this.proxy.dispatch<any>(this.catalogServiceUrl, `/api/v1/catalog/products?${params.toString()}`),
       this.proxy.dispatch<any>(this.reviewServiceUrl, "/api/v1/support/reviews/summaries").catch(() => null),
+      this.proxy.dispatch<any[]>(this.merchantServiceUrl, "/api/v1/merchants/outlets/public?limit=100").catch(() => null),
     ]);
+    const activeOutletMap = Array.isArray(publicOutlets)
+      ? new Map(publicOutlets.map((o: any) => [o.id, o]))
+      : null;
     const rawItems = Array.isArray(res?.data?.items)
       ? res.data.items
       : Array.isArray(res)
         ? res
         : [];
     const productSummaries = summaries?.products || {};
-    const data = rawItems.map((p: any) => formatCatalogProduct(p, undefined, productSummaries[p.id]));
+    const filteredItems = activeOutletMap
+      ? rawItems.filter((p: any) => p?.isAvailable !== false && activeOutletMap.has(p.outletId))
+      : rawItems.filter((p: any) => p?.isAvailable !== false);
+    const data = filteredItems.map((p: any) =>
+      formatCatalogProduct(p, activeOutletMap?.get(p.outletId), productSummaries[p.id])
+    );
     return { success: true, data };
   }
 
@@ -455,10 +467,30 @@ export class CustomerController {
       tenantId = outlet?.merchantId || shopId;
     }
 
+    let deliveryLat = body?.deliveryLat;
+    let deliveryLng = body?.deliveryLng;
+    if ((deliveryLat === undefined || deliveryLng === undefined) && headers?.authorization) {
+      const addrRes = await this.proxy
+        .dispatch<any>(this.identityServiceUrl, "/api/v1/identity/addresses", {
+          method: "GET",
+          headers: { authorization: headers.authorization },
+        })
+        .catch(() => null);
+      const addrs: any[] = Array.isArray(addrRes?.data) ? addrRes.data : [];
+      const chosen =
+        (body?.addressId ? addrs.find((a) => String(a.id) === String(body.addressId)) : null) ||
+        addrs.find((a) => a.isDefault) ||
+        addrs[0];
+      if (chosen?.latitude !== undefined && chosen?.longitude !== undefined) {
+        deliveryLat = chosen.latitude;
+        deliveryLng = chosen.longitude;
+      }
+    }
+
     return this.proxy.dispatch(this.orderServiceUrl, "/api/v1/orders/customer-place", {
       method: "POST",
       headers: { authorization: headers.authorization, "x-customer-id": sub },
-      body: JSON.stringify({ ...body, outletId: shopId, tenantId }),
+      body: JSON.stringify({ ...body, outletId: shopId, tenantId, deliveryLat, deliveryLng }),
     });
   }
 
@@ -514,18 +546,25 @@ export class CustomerController {
       headers: { authorization: headers.authorization, "x-customer-id": sub },
     });
     const order = res?.data || res;
-    const outlet = order?.outletId
-      ? await this.proxy
-          .dispatch<any>(this.merchantServiceUrl, `/api/v1/merchants/outlets/public/${encodeURIComponent(order.outletId)}`)
-          .catch(() => null)
-      : null;
+    const [outlet, taskRes] = await Promise.all([
+      order?.outletId
+        ? this.proxy
+            .dispatch<any>(this.merchantServiceUrl, `/api/v1/merchants/outlets/public/${encodeURIComponent(order.outletId)}`)
+            .catch(() => null)
+        : Promise.resolve(null),
+      order?.id
+        ? this.proxy
+            .dispatch<any>(this.fulfillmentServiceUrl, `/api/v1/fulfillment/delivery-tasks/order/${encodeURIComponent(order.id)}`)
+            .catch(() => null)
+        : Promise.resolve(null),
+    ]);
 
     const storeLat = Number(outlet?.latitude ?? 20.7002);
     const storeLng = Number(outlet?.longitude ?? 77.0082);
-    const destLat = Number((storeLat + 0.008).toFixed(5));
-    const destLng = Number((storeLng + 0.009).toFixed(5));
-    const riderLat = Number((storeLat + 0.004).toFixed(5));
-    const riderLng = Number((storeLng + 0.0045).toFixed(5));
+    const destLat = Number(order?.deliveryLat ?? (storeLat + 0.008).toFixed(5));
+    const destLng = Number(order?.deliveryLng ?? (storeLng + 0.009).toFixed(5));
+    const riderLat = Number(((storeLat + destLat) / 2).toFixed(5));
+    const riderLng = Number(((storeLng + destLng) / 2).toFixed(5));
     const firstRider = Array.isArray(outlet?.deliverySettings?.riders) && outlet.deliverySettings.riders.length > 0
       ? outlet.deliverySettings.riders[0]
       : null;
@@ -536,6 +575,7 @@ export class CustomerController {
     return {
       orderId: order?.orderNumber || id,
       status: order?.status || "CONFIRMED",
+      deliveryTaskStatus: taskRes?.data?.status || null,
       fulfillmentType: order?.fulfillmentType || "MERCHANT_DELIVERY",
       shopName: order?.shopName || outlet?.name || "NukkadNow Store",
       verified: true,
@@ -669,33 +709,72 @@ export class CustomerController {
   // -------------------------------------------------------------------------
 
   @Get("notifications")
-  async getNotifications() {
-    return { success: true, data: [] };
+  async getNotifications(@Headers() headers: any, @Req() req: any) {
+    const ctx = resolveCustomerContext(headers || {}, req);
+    const params = new URLSearchParams({ role: "CUSTOMER" });
+    if (ctx?.sub) params.set("userId", ctx.sub);
+    const data = await this.proxy
+      .dispatch<any[]>(this.notificationServiceUrl, `/api/v1/notifications/feed?${params.toString()}`)
+      .catch(() => []);
+    return { success: true, data: Array.isArray(data) ? data : [] };
   }
 
   @Patch("notifications/read-all")
-  async markAllRead() {
+  async markAllRead(@Headers() headers: any, @Req() req: any) {
+    const ctx = resolveCustomerContext(headers || {}, req);
+    await this.proxy
+      .dispatch(this.notificationServiceUrl, "/api/v1/notifications/read-all", {
+        method: "PATCH",
+        body: JSON.stringify({ userId: ctx?.sub, role: "CUSTOMER" }),
+      })
+      .catch(() => {});
     return { success: true };
   }
 
   @Post("notifications/register-token")
-  async registerPushToken(@Body() body: { token?: string; platform?: string }) {
-    return { success: true, registered: Boolean(body?.token) };
+  async registerPushToken(@Body() body: { token?: string; platform?: string }, @Headers() headers: any, @Req() req: any) {
+    const ctx = resolveCustomerContext(headers || {}, req);
+    if (!body?.token || !ctx?.sub) {
+      return { success: true, registered: false };
+    }
+    return this.proxy
+      .dispatch(this.notificationServiceUrl, "/api/v1/notifications/device-tokens", {
+        method: "POST",
+        body: JSON.stringify({ userId: ctx.sub, role: "CUSTOMER", token: body.token, platform: body.platform || "web" }),
+      })
+      .catch(() => ({ success: true, registered: false }));
   }
 
   @Get("favourites")
-  async getFavourites() {
-    return { success: true, data: { shops: [], products: [] } };
+  @ApiBearerAuth()
+  async getFavourites(@Headers() headers: any, @Req() req: any) {
+    const ctx = resolveCustomerContext(headers || {}, req);
+    if (!ctx) return { success: true, data: { shops: [], products: [] } };
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/identity/favourites", {
+      method: "GET",
+      headers: { authorization: headers.authorization },
+    });
   }
 
   @Post("favourites")
-  async addFavourite(@Body() body: any) {
-    return { success: true, data: body };
+  @ApiBearerAuth()
+  async addFavourite(@Body() body: any, @Headers() headers: any, @Req() req: any) {
+    requireCustomer(headers, req);
+    return this.proxy.dispatch(this.identityServiceUrl, "/api/v1/identity/favourites", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
   }
 
   @Delete("favourites/:id")
-  async removeFavourite(@Param("id") id: string) {
-    return { success: true, deletedId: id };
+  @ApiBearerAuth()
+  async removeFavourite(@Param("id") id: string, @Headers() headers: any, @Req() req: any) {
+    requireCustomer(headers, req);
+    return this.proxy.dispatch(this.identityServiceUrl, `/api/v1/identity/favourites/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { authorization: headers.authorization },
+    });
   }
 
   @Get("reviews/eligibility")
@@ -914,14 +993,30 @@ export class CustomerController {
     };
   }
 
+  @Get("support/tickets")
+  @Get("support/tickets/my")
+  @ApiBearerAuth()
+  async getMyTickets(@Headers() headers: any, @Req() req: any) {
+    const { sub } = requireCustomer(headers, req);
+    const items = await this.proxy.dispatch(
+      this.reviewServiceUrl,
+      `/api/v1/support/tickets/customer/${encodeURIComponent(sub)}`,
+      {
+        method: "GET",
+        headers: { authorization: headers.authorization, "x-customer-id": sub },
+      }
+    );
+    return { success: true, data: items };
+  }
+
   @Post("support/tickets")
   @ApiBearerAuth()
   async createTicket(@Body() body: any, @Headers() headers: any, @Req() req: any) {
-    requireCustomer(headers, req);
+    const { sub } = requireCustomer(headers, req);
     return this.proxy.dispatch(this.reviewServiceUrl, "/api/v1/support/tickets", {
       method: "POST",
-      headers: { authorization: headers.authorization },
-      body: JSON.stringify(body),
+      headers: { authorization: headers.authorization, "x-customer-id": sub },
+      body: JSON.stringify({ ...body, customerId: sub }),
     });
   }
 }

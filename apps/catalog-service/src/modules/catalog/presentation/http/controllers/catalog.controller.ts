@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Patch, Delete, Body, Param, Query, Req, Headers, NotFoundException, ForbiddenException } from "@nestjs/common";
+import { Controller, Post, Get, Put, Patch, Delete, Body, Param, Query, Req, Headers, NotFoundException, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CatalogService } from "../../../application/services/catalog.service";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
@@ -100,14 +100,87 @@ export class CatalogController {
     };
   }
 
-  @Delete("products/:id")
+  @Patch("products/:id/status")
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Admin: Remove a product from catalog" })
-  async deleteProduct(@Param("id") id: string) {
+  @ApiOperation({ summary: "Admin: Enable or flag/disable a product in catalog" })
+  async updateProductStatus(@Param("id") id: string, @Body() body: { status?: string; isAvailable?: boolean }) {
     const existing = await this.prisma.product.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException(`Product '${id}' not found`);
+    const nextAvail =
+      body?.isAvailable !== undefined
+        ? Boolean(body.isAvailable)
+        : !["FLAGGED", "DISABLED", "REJECTED", "REMOVED", "INACTIVE"].includes(String(body?.status || "").toUpperCase());
+    const updated = await this.prisma.product.update({
+      where: { id },
+      data: { isAvailable: nextAvail },
+    });
+    return { success: true, data: updated };
+  }
+
+  @Delete("products/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin or Merchant: Remove a product from catalog" })
+  async deleteProduct(@Param("id") id: string, @Headers("x-tenant-id") headerTenantId?: string, @Req() req?: any) {
+    const existing = await this.prisma.product.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException(`Product '${id}' not found`);
+    const callerTenantId = req?.user?.tenantId || headerTenantId;
+    if (callerTenantId && existing.tenantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden");
+    }
     await this.prisma.product.delete({ where: { id } });
     return { success: true, data: { deleted: true, id } };
+  }
+
+  @Put("products/:id")
+  @Patch("products/:id")
+  @Post("products/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update product metadata and primary variant details" })
+  async updateProduct(
+    @Param("id") id: string,
+    @Body() body: any,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const existing = await this.prisma.product.findUnique({
+      where: { id },
+      include: { variants: true },
+    });
+    if (!existing) throw new NotFoundException(`Product '${id}' not found`);
+    const callerTenantId = req?.user?.tenantId || headerTenantId;
+    if (callerTenantId && existing.tenantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant access forbidden");
+    }
+
+    const updated = await this.prisma.product.update({
+      where: { id },
+      data: {
+        ...(body?.name !== undefined ? { name: String(body.name).trim() } : {}),
+        ...(body?.title !== undefined ? { name: String(body.title).trim() } : {}),
+        ...(body?.description !== undefined ? { description: String(body.description) } : {}),
+        ...(body?.category !== undefined ? { category: String(body.category) } : {}),
+        ...(body?.subCategory !== undefined ? { subCategory: body.subCategory ? String(body.subCategory) : null } : {}),
+        ...(body?.isAvailable !== undefined ? { isAvailable: Boolean(body.isAvailable) } : {}),
+      },
+      include: { variants: { include: { stockBalance: true } } },
+    });
+
+    const firstVariant = existing.variants?.[0];
+    if (firstVariant && (body?.pricePaise !== undefined || body?.compareAtPricePaise !== undefined)) {
+      await this.catalogService.updateVariantPricing(
+        id,
+        {
+          variantId: body?.variantId || firstVariant.id,
+          pricePaise: Number(body.pricePaise ?? firstVariant.pricePaise),
+          compareAtPricePaise:
+            body?.compareAtPricePaise !== undefined ? Number(body.compareAtPricePaise) : firstVariant.compareAtPricePaise ?? undefined,
+        },
+        callerTenantId
+      );
+      return this.catalogService.getProduct(id);
+    }
+
+    return updated;
   }
 
   @Post("products")
@@ -153,6 +226,61 @@ export class CatalogController {
   async adjustStock(@Body() dto: AdjustStockDto, @Headers("x-tenant-id") headerTenantId: string | undefined, @Req() req: any) {
     const callerTenantId = req.user?.tenantId || headerTenantId || dto.tenantId;
     return this.catalogService.adjustStock(dto, callerTenantId);
+  }
+
+  @Get("stock/:variantId")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Get live stock balance for a single variant" })
+  async getVariantStock(
+    @Param("variantId") variantId: string,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const record = await this.prisma.stockBalance.findUnique({ where: { variantId } });
+    if (!record) throw new NotFoundException(`Stock balance for variant '${variantId}' not found`);
+    const callerTenantId = req?.user?.tenantId || headerTenantId;
+    if (callerTenantId && record.tenantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant stock access forbidden");
+    }
+    return {
+      variantId: record.variantId,
+      tenantId: record.tenantId,
+      outletId: record.outletId,
+      onHand: record.onHandQuantity,
+      reserved: record.reservedQuantity,
+      available: Math.max(0, record.onHandQuantity - record.reservedQuantity),
+      version: record.version,
+    };
+  }
+
+  @Post("stock/:variantId/adjust")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Adjust variant stock by variantId" })
+  async adjustVariantStock(
+    @Param("variantId") variantId: string,
+    @Body() body: any,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const existing = await this.prisma.productVariant.findUnique({
+      where: { id: variantId },
+      include: { product: { select: { outletId: true, tenantId: true } } },
+    });
+    if (!existing?.product) throw new NotFoundException(`Variant '${variantId}' not found`);
+    const callerTenantId = req?.user?.tenantId || headerTenantId || body?.tenantId;
+    return this.catalogService.adjustStock(
+      {
+        variantId,
+        outletId: body?.outletId || existing.product.outletId,
+        tenantId: existing.product.tenantId,
+        quantityChange: Number(body?.quantityChange ?? body?.delta ?? 0),
+        reason: body?.reason || "RESTOCK",
+        actorId: body?.actorId || callerTenantId || "STAFF",
+        referenceId: body?.referenceId,
+        notes: body?.notes,
+      },
+      callerTenantId
+    );
   }
 
   @Post("inventory/adjust-batch")

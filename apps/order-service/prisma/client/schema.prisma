@@ -18,6 +18,8 @@ model Order {
   districtCode     String       @default("NGP")
   stateCode        String       @default("IN-MH")
   locality         String?
+  deliveryLat      Float?
+  deliveryLng      Float?
   status           String       @default("PENDING_PAYMENT")
   totalAmountPaise Int
   paymentStatus    String       @default("UNPAID")

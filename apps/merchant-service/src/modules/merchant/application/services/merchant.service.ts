@@ -127,7 +127,7 @@ export class MerchantService {
   }
 
   private async syncOutletToDiscovery(outlet: Outlet, organizationName?: string): Promise<void> {
-    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4004";
     try {
       await fetch(`${discoveryUrl}/api/v1/discovery/sync`, {
         method: "POST",

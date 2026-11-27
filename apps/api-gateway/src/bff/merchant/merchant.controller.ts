@@ -55,6 +55,7 @@ export class MerchantController {
   private readonly analyticsServiceUrl = process.env.ANALYTICS_SERVICE_URL as string;
   private readonly fulfillmentServiceUrl = process.env.FULFILLMENT_SERVICE_URL as string;
   private readonly subscriptionServiceUrl = process.env.SUBSCRIPTION_SERVICE_URL || "http://localhost:4008";
+  private readonly notificationServiceUrl = process.env.NOTIFICATION_SERVICE_URL || "http://localhost:4009";
 
   constructor(private readonly proxy: ProxyDispatcherService) {}
 
@@ -1141,10 +1142,19 @@ export class MerchantController {
   @Get("notifications")
   @UseGuards(StaffPermissionGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: "Get merchant notifications" })
+  @ApiOperation({ summary: "Get merchant notifications from PostgreSQL" })
   async getNotifications(@Headers() headers: any, @Req() req: any) {
-    resolveTenantContext(headers, req);
-    return [];
+    const { tenantId } = resolveTenantContext(headers, req);
+    return this.proxy
+      .dispatch(
+        this.notificationServiceUrl,
+        `/api/v1/notifications/feed?role=MERCHANT&userId=${encodeURIComponent(tenantId)}`,
+        {
+          method: "GET",
+          headers: { authorization: headers.authorization, "x-tenant-id": tenantId },
+        }
+      )
+      .catch(() => []);
   }
 
   @Get("variants")

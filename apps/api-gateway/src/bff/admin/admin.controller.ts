@@ -114,7 +114,7 @@ export class AdminController {
     requireAdmin(headers);
     const authHeaders = { authorization: headers.authorization };
 
-    const [gmvRes, dirRes, citiesRes, usersRes, operatorsRes, ticketsRes, paymentsRes] =
+    const [gmvRes, dirRes, citiesRes, usersRes, operatorsRes, ticketsRes, paymentsRes, ordersRes] =
       await Promise.allSettled([
         this.proxy.dispatch<any>(this.analyticsServiceUrl, "/api/v1/analytics/admin/gmv", {
           method: "GET",
@@ -144,6 +144,10 @@ export class AdminController {
           method: "GET",
           headers: authHeaders,
         }),
+        this.proxy.dispatch<any>(this.orderServiceUrl, "/api/v1/orders/admin?limit=100", {
+          method: "GET",
+          headers: authHeaders,
+        }),
       ]);
 
     const gmv = gmvRes.status === "fulfilled" ? gmvRes.value : {};
@@ -153,6 +157,19 @@ export class AdminController {
     const operatorsData = operatorsRes.status === "fulfilled" ? operatorsRes.value?.data || {} : {};
     const ticketsData = ticketsRes.status === "fulfilled" ? ticketsRes.value?.data || {} : {};
     const paymentsData = paymentsRes.status === "fulfilled" ? paymentsRes.value?.data || {} : {};
+    const ordersList: any[] =
+      ordersRes.status === "fulfilled" && Array.isArray(ordersRes.value?.data?.items)
+        ? ordersRes.value.data.items.filter((o: any) => String(o.status || "").toUpperCase() !== "CANCELLED")
+        : [];
+
+    const cityStats = new Map<string, { orders: number; gmvPaise: number }>();
+    for (const o of ordersList) {
+      const code = String(o.cityCode || "IN-MH-NGP");
+      const cur = cityStats.get(code) || { orders: 0, gmvPaise: 0 };
+      cur.orders += 1;
+      cur.gmvPaise += Number(o.totalAmountPaise || 0);
+      cityStats.set(code, cur);
+    }
 
     const totalMerchants = dirData?.metrics?.totalMerchants ?? 0;
     const activeMerchants = dirData?.metrics?.activeMerchants ?? 0;
@@ -224,14 +241,17 @@ export class AdminController {
             tone: "info",
           },
         ],
-        cityPerformance: citiesData.map((c: any) => ({
-          city: c.name || c.code,
-          cityCode: c.code,
-          activeMerchants: c.activeMerchants ?? 0,
-          orders: 0,
-          gmv: "₹0",
-          growth: "0%",
-        })),
+        cityPerformance: citiesData.map((c: any) => {
+          const stats = cityStats.get(c.code) || { orders: 0, gmvPaise: 0 };
+          return {
+            city: c.name || c.code,
+            cityCode: c.code,
+            activeMerchants: c.activeMerchants ?? 0,
+            orders: stats.orders,
+            gmv: (stats.gmvPaise / 100).toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }),
+            growth: stats.orders > 0 ? "+100%" : "0%",
+          };
+        }),
         marketplaceMix: {
           totalUsers,
           segments: [
@@ -285,10 +305,69 @@ export class AdminController {
     if (q) params.set("q", q);
     if (search) params.set("search", search);
     if (summary) params.set("summary", summary);
-    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/merchants/admin/directory?${params.toString()}`, {
-      method: "GET",
-      headers: { authorization: headers!.authorization },
-    });
+    const [dirRes, prodRes, ordRes, revRes] = await Promise.allSettled([
+      this.proxy.dispatch<any>(this.merchantServiceUrl, `/api/v1/merchants/admin/directory?${params.toString()}`, {
+        method: "GET",
+        headers: { authorization: headers!.authorization },
+      }),
+      this.proxy.dispatch<any>(this.catalogServiceUrl, "/api/v1/catalog/products?limit=100", {
+        method: "GET",
+        headers: { authorization: headers!.authorization },
+      }),
+      this.proxy.dispatch<any>(this.orderServiceUrl, "/api/v1/orders/admin?limit=100", {
+        method: "GET",
+        headers: { authorization: headers!.authorization },
+      }),
+      this.proxy.dispatch<any>(this.reviewServiceUrl, "/api/v1/support/reviews/summaries", {
+        method: "GET",
+        headers: { authorization: headers!.authorization },
+      }),
+    ]);
+
+    if (dirRes.status === "rejected") throw dirRes.reason;
+    const directory = dirRes.value;
+    const products: any[] = prodRes.status === "fulfilled" && Array.isArray(prodRes.value?.data?.items) ? prodRes.value.data.items : [];
+    const orders: any[] = ordRes.status === "fulfilled" && Array.isArray(ordRes.value?.data?.items) ? ordRes.value.data.items : [];
+    const outletReviews: Record<string, any> = revRes.status === "fulfilled" ? revRes.value?.outlets || {} : {};
+
+    const prodCountByTenant = new Map<string, number>();
+    const outletIdByTenant = new Map<string, string>();
+    for (const p of products) {
+      if (p?.isAvailable !== false && p?.tenantId) {
+        prodCountByTenant.set(p.tenantId, (prodCountByTenant.get(p.tenantId) || 0) + 1);
+        if (p.outletId && !outletIdByTenant.has(p.tenantId)) outletIdByTenant.set(p.tenantId, p.outletId);
+      }
+    }
+
+    const orderStatsByTenant = new Map<string, { count: number; salesPaise: number }>();
+    for (const o of orders) {
+      if (!o?.tenantId || String(o.status || "").toUpperCase() === "CANCELLED") continue;
+      const cur = orderStatsByTenant.get(o.tenantId) || { count: 0, salesPaise: 0 };
+      cur.count += 1;
+      cur.salesPaise += Number(o.totalAmountPaise || 0);
+      orderStatsByTenant.set(o.tenantId, cur);
+      if (o.outletId && !outletIdByTenant.has(o.tenantId)) outletIdByTenant.set(o.tenantId, o.outletId);
+    }
+
+    if (Array.isArray(directory?.data?.items)) {
+      directory.data.items = directory.data.items.map((item: any) => {
+        const tid = item.merchantId || item.id;
+        const st = orderStatsByTenant.get(tid);
+        const oid = outletIdByTenant.get(tid);
+        const rev = oid ? outletReviews[oid] : null;
+        const salesRupees = Math.round((st?.salesPaise || 0) / 100);
+        return {
+          ...item,
+          activeProductsCount: prodCountByTenant.get(tid) ?? item.activeProductsCount ?? 0,
+          orders30d: st?.count ?? item.orders30d ?? 0,
+          sales30d: salesRupees,
+          salesFormatted: salesRupees > 0 ? `₹${salesRupees.toLocaleString("en-IN")}` : "₹0",
+          rating: rev?.averageRating ?? item.rating ?? 0,
+        };
+      });
+    }
+
+    return directory;
   }
 
   @Get("merchants/:id")
@@ -318,7 +397,11 @@ export class AdminController {
   @ApiOperation({ summary: "Update merchant KYC verification checklist item" })
   async updateMerchantKycChecklist(@Param("id") id: string, @Body() body: any, @Headers() headers: any) {
     requireAdmin(headers);
-    return { success: true, data: { merchantId: id, ...body } };
+    return this.proxy.dispatch(this.merchantServiceUrl, `/api/v1/merchants/admin/directory/${encodeURIComponent(id)}/kyc`, {
+      method: "PATCH",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
   }
 
   @Post("merchants/:id/verify")
@@ -507,6 +590,7 @@ export class AdminController {
   @ApiQuery({ name: "cityCode", required: false })
   @ApiQuery({ name: "status", required: false })
   @ApiQuery({ name: "merchantId", required: false })
+  @ApiQuery({ name: "customerId", required: false })
   @ApiQuery({ name: "from", required: false })
   @ApiQuery({ name: "to", required: false })
   @ApiQuery({ name: "page", required: false })
@@ -515,6 +599,7 @@ export class AdminController {
     @Query("cityCode") cityCode?: string,
     @Query("status") status?: string,
     @Query("merchantId") merchantId?: string,
+    @Query("customerId") customerId?: string,
     @Query("from") from?: string,
     @Query("to") to?: string,
     @Query("page") page?: string,
@@ -526,6 +611,7 @@ export class AdminController {
     if (cityCode) params.set("cityCode", cityCode);
     if (status) params.set("status", status);
     if (merchantId) params.set("merchantId", merchantId);
+    if (customerId) params.set("customerId", customerId);
     if (from) params.set("from", from);
     if (to) params.set("to", to);
     if (page) params.set("page", page);
@@ -533,6 +619,25 @@ export class AdminController {
     return this.proxy.dispatch(this.orderServiceUrl, `/api/v1/orders/admin?${params.toString()}`, {
       method: "GET",
       headers: { authorization: headers!.authorization },
+    });
+  }
+
+  @Patch("orders/:id/status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin update order status" })
+  async adminUpdateOrderStatus(@Param("id") id: string, @Body() body: { status: string; reason?: string }, @Headers() headers: any) {
+    requireAdmin(headers);
+    if (String(body?.status || "").toUpperCase() === "CANCELLED") {
+      return this.proxy.dispatch(this.orderServiceUrl, `/api/v1/orders/${id}/cancel`, {
+        method: "POST",
+        headers: { authorization: headers.authorization },
+        body: JSON.stringify({ reason: body?.reason || "Admin update" }),
+      });
+    }
+    return this.proxy.dispatch(this.orderServiceUrl, `/api/v1/orders/${id}/status`, {
+      method: "PATCH",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
     });
   }
 
@@ -761,6 +866,7 @@ export class AdminController {
   // CATALOGUE MODERATION / PRICE CAPS
   // =========================================================================
 
+  @Get("price-caps")
   @Get("price-cap-rules")
   @ApiBearerAuth()
   @ApiOperation({ summary: "List active price cap rules" })
@@ -773,6 +879,7 @@ export class AdminController {
     return Array.isArray(data) ? { success: true, data: { items: data, total: data.length } } : { success: true, data };
   }
 
+  @Post("price-caps")
   @Post("price-cap-rules")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Create a price cap rule" })
@@ -782,6 +889,18 @@ export class AdminController {
       method: "POST",
       headers: { authorization: headers.authorization },
       body: JSON.stringify(body),
+    });
+  }
+
+  @Post("inventory/cleanup-expired")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Trigger expired stock reservation cleanup in catalog-service" })
+  async triggerInventoryCleanup(@Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, "/api/v1/catalog/inventory/cleanup-expired", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify({}),
     });
   }
 
@@ -819,6 +938,18 @@ export class AdminController {
     return this.proxy.dispatch(this.catalogServiceUrl, `/api/v1/catalog/products/${id}`, {
       method: "DELETE",
       headers: { authorization: headers.authorization },
+    });
+  }
+
+  @Patch("catalog/products/:id/status")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin moderate/toggle catalog product availability" })
+  async adminModerateProduct(@Param("id") id: string, @Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, `/api/v1/catalog/products/${id}/status`, {
+      method: "PATCH",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
     });
   }
 

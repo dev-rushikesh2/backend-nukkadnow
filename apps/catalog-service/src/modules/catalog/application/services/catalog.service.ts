@@ -243,7 +243,7 @@ export class CatalogService {
   // --- Realtime Inventory & Stock Operations ---
 
   private async notifyDiscoveryAvailability(outletId: string, tenantId?: string): Promise<void> {
-    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4004";
     try {
       const stocks = await this.stockRepo.findByOutletId(outletId);
       const hasActiveStock = stocks.some((s) => s.availableQuantity > 0);

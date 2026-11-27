@@ -19,6 +19,7 @@ model User {
   sessions     Session[]
   memberships  Membership[]
   addresses    CustomerAddress[]
+  favourites   CustomerFavourite[]
 
   @@map("users")
 }
@@ -214,4 +215,20 @@ model PiiAccessAuditLog {
   @@index([operatorId, timestamp])
   @@index([targetEntity, targetId])
   @@map("pii_access_audit_logs")
+}
+
+model CustomerFavourite {
+  id        String   @id @default(uuid())
+  userId    String
+  itemType  String   // SHOP, PRODUCT
+  itemId    String
+  tenantId  String?
+  outletId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemType, itemId])
+  @@index([userId])
+  @@map("customer_favourites")
 }

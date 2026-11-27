@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagg
 import { PaymentService } from "../../../application/services/payment.service";
 import { CreatePaymentIntentDto, ProcessRefundDto } from "../../../application/dto/payment.dto";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
+import { UniqueIdentifier } from "@nukkadnow/platform-kernel";
 
 @ApiTags("Payments & Webhooks")
 @Controller("api/v1/payments")
@@ -91,17 +92,22 @@ export class PaymentsController {
     const where: any = {};
     if (cityCode && cityCode !== "ALL") where.cityCode = cityCode;
 
-    const payments = await this.prisma.payment.findMany({
-      where,
-      include: { intent: true, refunds: true },
-      orderBy: { verifiedAt: "desc" },
-      take: 100,
-    });
+    const [payments, settlements] = await Promise.all([
+      this.prisma.payment.findMany({
+        where,
+        include: { intent: true, refunds: true },
+        orderBy: { verifiedAt: "desc" },
+        take: 100,
+      }),
+      this.prisma.payoutSettlement.findMany(),
+    ]);
+    const settlementByMerchant = new Map(settlements.map((s: any) => [s.merchantId, s]));
 
     const grouped = new Map<string, any>();
     for (const p of payments) {
       const tenantId = p.intent?.tenantId || "UNKNOWN_MERCHANT";
       if (!grouped.has(tenantId)) {
+        const persisted: any = settlementByMerchant.get(tenantId);
         grouped.set(tenantId, {
           id: `payout-${tenantId}`,
           merchantId: tenantId,
@@ -110,8 +116,8 @@ export class PaymentsController {
           refundedPaise: 0,
           netPayoutPaise: 0,
           transactionsCount: 0,
-          status: status || "SETTLED",
-          lastSettledAt: p.verifiedAt,
+          status: persisted?.status || status || "PENDING",
+          lastSettledAt: persisted?.releasedAt || p.verifiedAt,
         });
       }
       const entry = grouped.get(tenantId);
@@ -122,22 +128,98 @@ export class PaymentsController {
       entry.transactionsCount += 1;
     }
 
-    const items = Array.from(grouped.values());
+    const items = Array.from(grouped.values()).filter((it) => !status || status === "ALL" || it.status === status.toUpperCase());
     return { success: true, data: { items, total: items.length } };
   }
 
   @Post("admin/payouts/:id/release")
   @ApiBearerAuth()
   @ApiOperation({ summary: "Admin: Release a held merchant payout" })
-  async releasePayout(@Param("id") id: string) {
-    return {
-      success: true,
-      data: {
-        id,
+  async releasePayout(@Param("id") id: string, @Headers("x-admin-id") adminId?: string) {
+    const merchantId = id.startsWith("payout-") ? id.slice("payout-".length) : id;
+    const payments = await this.prisma.payment.findMany({
+      where: { intent: { tenantId: merchantId } },
+      include: { refunds: true },
+    });
+    const grossAmountPaise = payments.reduce((sum, p) => sum + Number(p.amountPaise || 0), 0);
+    const refundedPaise = payments.reduce(
+      (sum, p) => sum + (p.refunds || []).reduce((rs, r) => rs + Number(r.amountPaise || 0), 0),
+      0
+    );
+    const netAmountPaise = Math.max(0, grossAmountPaise - refundedPaise);
+    const saved = await this.prisma.payoutSettlement.upsert({
+      where: { merchantId },
+      create: {
+        id: UniqueIdentifier.generateV7(),
+        merchantId,
+        cityCode: payments[0]?.cityCode || "IN-MH-NGP",
+        grossAmountPaise,
+        refundedPaise,
+        netAmountPaise,
         status: "RELEASED",
-        releasedAt: new Date().toISOString(),
+        releasedAt: new Date(),
+        releasedBy: adminId || "PLATFORM_ADMIN",
       },
-    };
+      update: {
+        grossAmountPaise,
+        refundedPaise,
+        netAmountPaise,
+        status: "RELEASED",
+        releasedAt: new Date(),
+        releasedBy: adminId || "PLATFORM_ADMIN",
+      },
+    });
+    return { success: true, data: { ...saved, id: `payout-${merchantId}` } };
+  }
+
+  @Post("internal/record-order-payment")
+  @ApiOperation({ summary: "Internal outbox hook: record PaymentIntent & Payment for checkout/walk-in order" })
+  async recordOrderPayment(
+    @Body()
+    body: {
+      orderId: string;
+      orderNumber?: string;
+      tenantId: string;
+      cityCode?: string;
+      amountPaise: number;
+      provider?: string;
+      paymentStatus?: string;
+    }
+  ) {
+    const provider = String(body.provider || "UPI").toUpperCase();
+    const isPaid = String(body.paymentStatus || "").toUpperCase() === "PAID";
+    const intent = await this.prisma.paymentIntent.upsert({
+      where: { orderId: body.orderId },
+      create: {
+        id: UniqueIdentifier.generateV7(),
+        orderId: body.orderId,
+        tenantId: body.tenantId,
+        cityCode: body.cityCode || "IN-MH-NGP",
+        amountPaise: Math.max(0, Number(body.amountPaise) || 0),
+        status: isPaid ? "SUCCEEDED" : "CREATED",
+        provider,
+        pspReference: body.orderNumber || body.orderId,
+      },
+      update: {
+        status: isPaid ? "SUCCEEDED" : "CREATED",
+      },
+    });
+
+    let payment = await this.prisma.payment.findUnique({ where: { intentId: intent.id } });
+    if (!payment && isPaid) {
+      payment = await this.prisma.payment.create({
+        data: {
+          id: UniqueIdentifier.generateV7(),
+          intentId: intent.id,
+          orderId: body.orderId,
+          cityCode: body.cityCode || "IN-MH-NGP",
+          amountPaise: Math.max(0, Number(body.amountPaise) || 0),
+          pspPaymentId: `PAY-${body.orderNumber || body.orderId.slice(0, 8)}`,
+          status: "CONFIRMED",
+        },
+      });
+    }
+    return { success: true, intent, payment };
   }
 
   @Post("intents")

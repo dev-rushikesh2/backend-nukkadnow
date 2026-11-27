@@ -53,8 +53,30 @@ export class identityController {
   @ApiOperation({ summary: "Get authenticated customer profile" })
   async getMyProfile(@Headers() headers: Record<string, any>, @Req() req: any) {
     const userId = this.resolveCustomerId(req, headers);
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const [user, favCounts] = await Promise.all([
+      this.prisma.user.findUnique({ where: { id: userId } }),
+      this.prisma.customerFavourite.groupBy({
+        by: ["itemType"],
+        where: { userId },
+        _count: { _all: true },
+      }),
+    ]);
     if (!user) throw new NotFoundException("Customer profile not found");
+
+    const orderServiceUrl = process.env.ORDER_SERVICE_URL || "http://localhost:4005";
+    let totalOrders = 0;
+    try {
+      const ordRes = await fetch(`${orderServiceUrl}/api/v1/orders/admin?customerId=${encodeURIComponent(userId)}&limit=100`);
+      if (ordRes.ok) {
+        const ordJson: any = await ordRes.json();
+        const items: any[] = Array.isArray(ordJson?.data?.items) ? ordJson.data.items : [];
+        totalOrders = items.filter((o) => String(o.status || "").toUpperCase() !== "CANCELLED").length;
+      }
+    } catch {}
+
+    const favShops = favCounts.find((f) => f.itemType === "SHOP")?._count?._all ?? 0;
+    const favProducts = favCounts.find((f) => f.itemType === "PRODUCT")?._count?._all ?? 0;
+
     return {
       success: true,
       data: {
@@ -64,12 +86,62 @@ export class identityController {
         email: user.email || "",
         verified: true,
         isGuest: false,
-        totalOrders: 0,
-        favouritesCount: 0,
-        followedShopsCount: 0,
+        totalOrders,
+        favouritesCount: favShops + favProducts,
+        followedShopsCount: favShops,
         totalSavings: 0,
       },
     };
+  }
+
+  @Get("favourites")
+  @ApiOperation({ summary: "List customer saved favourite shops and products from PostgreSQL" })
+  async listFavourites(@Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const rows = await this.prisma.customerFavourite.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
+    const shops = rows.filter((r) => r.itemType === "SHOP").map((r) => ({ id: r.itemId, ...(r.metadata as any), outletId: r.outletId || r.itemId }));
+    const products = rows.filter((r) => r.itemType === "PRODUCT").map((r) => ({ id: r.itemId, ...(r.metadata as any), outletId: r.outletId }));
+    return { success: true, data: { shops, products, items: rows } };
+  }
+
+  @Post("favourites")
+  @ApiOperation({ summary: "Save a favourite shop or product in PostgreSQL" })
+  async addFavourite(@Body() body: any, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    const itemType = String(body?.itemType || body?.type || (body?.shopId ? "SHOP" : "PRODUCT")).toUpperCase() === "SHOP" ? "SHOP" : "PRODUCT";
+    const itemId = String(body?.itemId || body?.shopId || body?.productId || body?.id || "").trim();
+    if (!itemId) {
+      throw new NotFoundException("Favourite itemId is required");
+    }
+    const saved = await this.prisma.customerFavourite.upsert({
+      where: { userId_itemType_itemId: { userId, itemType, itemId } },
+      create: {
+        id: UniqueIdentifier.generateV7(),
+        userId,
+        itemType,
+        itemId,
+        tenantId: body?.tenantId ? String(body.tenantId) : null,
+        outletId: body?.outletId || body?.shopId ? String(body.outletId || body.shopId) : null,
+        metadata: body?.metadata || body || {},
+      },
+      update: {
+        metadata: body?.metadata || body || {},
+      },
+    });
+    return { success: true, data: saved };
+  }
+
+  @Delete("favourites/:id")
+  @ApiOperation({ summary: "Remove a favourite shop or product from PostgreSQL" })
+  async removeFavourite(@Param("id") id: string, @Headers() headers: Record<string, any>, @Req() req: any) {
+    const userId = this.resolveCustomerId(req, headers);
+    await this.prisma.customerFavourite.deleteMany({
+      where: { userId, OR: [{ id }, { itemId: id }] },
+    });
+    return { success: true, deletedId: id };
   }
 
   @Put("me")

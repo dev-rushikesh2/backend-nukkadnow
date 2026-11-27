@@ -270,6 +270,17 @@ exports.Prisma.PiiAccessAuditLogScalarFieldEnum = {
   timestamp: 'timestamp'
 };
 
+exports.Prisma.CustomerFavouriteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  itemType: 'itemType',
+  itemId: 'itemId',
+  tenantId: 'tenantId',
+  outletId: 'outletId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -314,7 +325,8 @@ exports.Prisma.ModelName = {
   AdminRolePermission: 'AdminRolePermission',
   AdminGeoAssignment: 'AdminGeoAssignment',
   AdminAuditLog: 'AdminAuditLog',
-  PiiAccessAuditLog: 'PiiAccessAuditLog'
+  PiiAccessAuditLog: 'PiiAccessAuditLog',
+  CustomerFavourite: 'CustomerFavourite'
 };
 
 /**

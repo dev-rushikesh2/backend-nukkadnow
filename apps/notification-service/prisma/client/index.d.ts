@@ -28,6 +28,11 @@ export type NotificationJob = $Result.DefaultSelection<Prisma.$NotificationJobPa
  * 
  */
 export type DeliveryAttempt = $Result.DefaultSelection<Prisma.$DeliveryAttemptPayload>
+/**
+ * Model PushDeviceToken
+ * 
+ */
+export type PushDeviceToken = $Result.DefaultSelection<Prisma.$PushDeviceTokenPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -181,6 +186,16 @@ export class PrismaClient<
     * ```
     */
   get deliveryAttempt(): Prisma.DeliveryAttemptDelegate<ExtArgs>;
+
+  /**
+   * `prisma.pushDeviceToken`: Exposes CRUD operations for the **PushDeviceToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PushDeviceTokens
+    * const pushDeviceTokens = await prisma.pushDeviceToken.findMany()
+    * ```
+    */
+  get pushDeviceToken(): Prisma.PushDeviceTokenDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -624,7 +639,8 @@ export namespace Prisma {
   export const ModelName: {
     NotificationTemplate: 'NotificationTemplate',
     NotificationJob: 'NotificationJob',
-    DeliveryAttempt: 'DeliveryAttempt'
+    DeliveryAttempt: 'DeliveryAttempt',
+    PushDeviceToken: 'PushDeviceToken'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -640,7 +656,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "notificationTemplate" | "notificationJob" | "deliveryAttempt"
+      modelProps: "notificationTemplate" | "notificationJob" | "deliveryAttempt" | "pushDeviceToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -851,6 +867,76 @@ export namespace Prisma {
           count: {
             args: Prisma.DeliveryAttemptCountArgs<ExtArgs>
             result: $Utils.Optional<DeliveryAttemptCountAggregateOutputType> | number
+          }
+        }
+      }
+      PushDeviceToken: {
+        payload: Prisma.$PushDeviceTokenPayload<ExtArgs>
+        fields: Prisma.PushDeviceTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PushDeviceTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PushDeviceTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.PushDeviceTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PushDeviceTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          findMany: {
+            args: Prisma.PushDeviceTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>[]
+          }
+          create: {
+            args: Prisma.PushDeviceTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          createMany: {
+            args: Prisma.PushDeviceTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PushDeviceTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.PushDeviceTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          update: {
+            args: Prisma.PushDeviceTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.PushDeviceTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PushDeviceTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PushDeviceTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PushDeviceTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.PushDeviceTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePushDeviceToken>
+          }
+          groupBy: {
+            args: Prisma.PushDeviceTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PushDeviceTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PushDeviceTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<PushDeviceTokenCountAggregateOutputType> | number
           }
         }
       }
@@ -2025,10 +2111,15 @@ export namespace Prisma {
   export type NotificationJobMinAggregateOutputType = {
     id: string | null
     recipient: string | null
+    userId: string | null
+    role: string | null
+    title: string | null
+    message: string | null
     channel: string | null
     templateId: string | null
     cityCode: string | null
     status: string | null
+    isRead: boolean | null
     sentAt: Date | null
     createdAt: Date | null
   }
@@ -2036,10 +2127,15 @@ export namespace Prisma {
   export type NotificationJobMaxAggregateOutputType = {
     id: string | null
     recipient: string | null
+    userId: string | null
+    role: string | null
+    title: string | null
+    message: string | null
     channel: string | null
     templateId: string | null
     cityCode: string | null
     status: string | null
+    isRead: boolean | null
     sentAt: Date | null
     createdAt: Date | null
   }
@@ -2047,10 +2143,15 @@ export namespace Prisma {
   export type NotificationJobCountAggregateOutputType = {
     id: number
     recipient: number
+    userId: number
+    role: number
+    title: number
+    message: number
     channel: number
     templateId: number
     cityCode: number
     status: number
+    isRead: number
     sentAt: number
     createdAt: number
     _all: number
@@ -2060,10 +2161,15 @@ export namespace Prisma {
   export type NotificationJobMinAggregateInputType = {
     id?: true
     recipient?: true
+    userId?: true
+    role?: true
+    title?: true
+    message?: true
     channel?: true
     templateId?: true
     cityCode?: true
     status?: true
+    isRead?: true
     sentAt?: true
     createdAt?: true
   }
@@ -2071,10 +2177,15 @@ export namespace Prisma {
   export type NotificationJobMaxAggregateInputType = {
     id?: true
     recipient?: true
+    userId?: true
+    role?: true
+    title?: true
+    message?: true
     channel?: true
     templateId?: true
     cityCode?: true
     status?: true
+    isRead?: true
     sentAt?: true
     createdAt?: true
   }
@@ -2082,10 +2193,15 @@ export namespace Prisma {
   export type NotificationJobCountAggregateInputType = {
     id?: true
     recipient?: true
+    userId?: true
+    role?: true
+    title?: true
+    message?: true
     channel?: true
     templateId?: true
     cityCode?: true
     status?: true
+    isRead?: true
     sentAt?: true
     createdAt?: true
     _all?: true
@@ -2166,10 +2282,15 @@ export namespace Prisma {
   export type NotificationJobGroupByOutputType = {
     id: string
     recipient: string
+    userId: string | null
+    role: string | null
+    title: string | null
+    message: string | null
     channel: string
     templateId: string
     cityCode: string | null
     status: string
+    isRead: boolean
     sentAt: Date | null
     createdAt: Date
     _count: NotificationJobCountAggregateOutputType | null
@@ -2194,10 +2315,15 @@ export namespace Prisma {
   export type NotificationJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     recipient?: boolean
+    userId?: boolean
+    role?: boolean
+    title?: boolean
+    message?: boolean
     channel?: boolean
     templateId?: boolean
     cityCode?: boolean
     status?: boolean
+    isRead?: boolean
     sentAt?: boolean
     createdAt?: boolean
     template?: boolean | NotificationTemplateDefaultArgs<ExtArgs>
@@ -2208,10 +2334,15 @@ export namespace Prisma {
   export type NotificationJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     recipient?: boolean
+    userId?: boolean
+    role?: boolean
+    title?: boolean
+    message?: boolean
     channel?: boolean
     templateId?: boolean
     cityCode?: boolean
     status?: boolean
+    isRead?: boolean
     sentAt?: boolean
     createdAt?: boolean
     template?: boolean | NotificationTemplateDefaultArgs<ExtArgs>
@@ -2220,10 +2351,15 @@ export namespace Prisma {
   export type NotificationJobSelectScalar = {
     id?: boolean
     recipient?: boolean
+    userId?: boolean
+    role?: boolean
+    title?: boolean
+    message?: boolean
     channel?: boolean
     templateId?: boolean
     cityCode?: boolean
     status?: boolean
+    isRead?: boolean
     sentAt?: boolean
     createdAt?: boolean
   }
@@ -2246,10 +2382,15 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       recipient: string
+      userId: string | null
+      role: string | null
+      title: string | null
+      message: string | null
       channel: string
       templateId: string
       cityCode: string | null
       status: string
+      isRead: boolean
       sentAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["notificationJob"]>
@@ -2649,10 +2790,15 @@ export namespace Prisma {
   interface NotificationJobFieldRefs {
     readonly id: FieldRef<"NotificationJob", 'String'>
     readonly recipient: FieldRef<"NotificationJob", 'String'>
+    readonly userId: FieldRef<"NotificationJob", 'String'>
+    readonly role: FieldRef<"NotificationJob", 'String'>
+    readonly title: FieldRef<"NotificationJob", 'String'>
+    readonly message: FieldRef<"NotificationJob", 'String'>
     readonly channel: FieldRef<"NotificationJob", 'String'>
     readonly templateId: FieldRef<"NotificationJob", 'String'>
     readonly cityCode: FieldRef<"NotificationJob", 'String'>
     readonly status: FieldRef<"NotificationJob", 'String'>
+    readonly isRead: FieldRef<"NotificationJob", 'Boolean'>
     readonly sentAt: FieldRef<"NotificationJob", 'DateTime'>
     readonly createdAt: FieldRef<"NotificationJob", 'DateTime'>
   }
@@ -3987,6 +4133,908 @@ export namespace Prisma {
 
 
   /**
+   * Model PushDeviceToken
+   */
+
+  export type AggregatePushDeviceToken = {
+    _count: PushDeviceTokenCountAggregateOutputType | null
+    _min: PushDeviceTokenMinAggregateOutputType | null
+    _max: PushDeviceTokenMaxAggregateOutputType | null
+  }
+
+  export type PushDeviceTokenMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    token: string | null
+    platform: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PushDeviceTokenMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    token: string | null
+    platform: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PushDeviceTokenCountAggregateOutputType = {
+    id: number
+    userId: number
+    role: number
+    token: number
+    platform: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PushDeviceTokenMinAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    token?: true
+    platform?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PushDeviceTokenMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    token?: true
+    platform?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PushDeviceTokenCountAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    token?: true
+    platform?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PushDeviceTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushDeviceToken to aggregate.
+     */
+    where?: PushDeviceTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDeviceTokens to fetch.
+     */
+    orderBy?: PushDeviceTokenOrderByWithRelationInput | PushDeviceTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PushDeviceTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDeviceTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDeviceTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PushDeviceTokens
+    **/
+    _count?: true | PushDeviceTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PushDeviceTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PushDeviceTokenMaxAggregateInputType
+  }
+
+  export type GetPushDeviceTokenAggregateType<T extends PushDeviceTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregatePushDeviceToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePushDeviceToken[P]>
+      : GetScalarType<T[P], AggregatePushDeviceToken[P]>
+  }
+
+
+
+
+  export type PushDeviceTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PushDeviceTokenWhereInput
+    orderBy?: PushDeviceTokenOrderByWithAggregationInput | PushDeviceTokenOrderByWithAggregationInput[]
+    by: PushDeviceTokenScalarFieldEnum[] | PushDeviceTokenScalarFieldEnum
+    having?: PushDeviceTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PushDeviceTokenCountAggregateInputType | true
+    _min?: PushDeviceTokenMinAggregateInputType
+    _max?: PushDeviceTokenMaxAggregateInputType
+  }
+
+  export type PushDeviceTokenGroupByOutputType = {
+    id: string
+    userId: string
+    role: string
+    token: string
+    platform: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PushDeviceTokenCountAggregateOutputType | null
+    _min: PushDeviceTokenMinAggregateOutputType | null
+    _max: PushDeviceTokenMaxAggregateOutputType | null
+  }
+
+  type GetPushDeviceTokenGroupByPayload<T extends PushDeviceTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PushDeviceTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PushDeviceTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PushDeviceTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], PushDeviceTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PushDeviceTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    token?: boolean
+    platform?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["pushDeviceToken"]>
+
+  export type PushDeviceTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    token?: boolean
+    platform?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["pushDeviceToken"]>
+
+  export type PushDeviceTokenSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    token?: boolean
+    platform?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $PushDeviceTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PushDeviceToken"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      role: string
+      token: string
+      platform: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["pushDeviceToken"]>
+    composites: {}
+  }
+
+  type PushDeviceTokenGetPayload<S extends boolean | null | undefined | PushDeviceTokenDefaultArgs> = $Result.GetResult<Prisma.$PushDeviceTokenPayload, S>
+
+  type PushDeviceTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PushDeviceTokenFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PushDeviceTokenCountAggregateInputType | true
+    }
+
+  export interface PushDeviceTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PushDeviceToken'], meta: { name: 'PushDeviceToken' } }
+    /**
+     * Find zero or one PushDeviceToken that matches the filter.
+     * @param {PushDeviceTokenFindUniqueArgs} args - Arguments to find a PushDeviceToken
+     * @example
+     * // Get one PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PushDeviceTokenFindUniqueArgs>(args: SelectSubset<T, PushDeviceTokenFindUniqueArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PushDeviceToken that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PushDeviceTokenFindUniqueOrThrowArgs} args - Arguments to find a PushDeviceToken
+     * @example
+     * // Get one PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PushDeviceTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, PushDeviceTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PushDeviceToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenFindFirstArgs} args - Arguments to find a PushDeviceToken
+     * @example
+     * // Get one PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PushDeviceTokenFindFirstArgs>(args?: SelectSubset<T, PushDeviceTokenFindFirstArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PushDeviceToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenFindFirstOrThrowArgs} args - Arguments to find a PushDeviceToken
+     * @example
+     * // Get one PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PushDeviceTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, PushDeviceTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PushDeviceTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PushDeviceTokens
+     * const pushDeviceTokens = await prisma.pushDeviceToken.findMany()
+     * 
+     * // Get first 10 PushDeviceTokens
+     * const pushDeviceTokens = await prisma.pushDeviceToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pushDeviceTokenWithIdOnly = await prisma.pushDeviceToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PushDeviceTokenFindManyArgs>(args?: SelectSubset<T, PushDeviceTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PushDeviceToken.
+     * @param {PushDeviceTokenCreateArgs} args - Arguments to create a PushDeviceToken.
+     * @example
+     * // Create one PushDeviceToken
+     * const PushDeviceToken = await prisma.pushDeviceToken.create({
+     *   data: {
+     *     // ... data to create a PushDeviceToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends PushDeviceTokenCreateArgs>(args: SelectSubset<T, PushDeviceTokenCreateArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PushDeviceTokens.
+     * @param {PushDeviceTokenCreateManyArgs} args - Arguments to create many PushDeviceTokens.
+     * @example
+     * // Create many PushDeviceTokens
+     * const pushDeviceToken = await prisma.pushDeviceToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PushDeviceTokenCreateManyArgs>(args?: SelectSubset<T, PushDeviceTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PushDeviceTokens and returns the data saved in the database.
+     * @param {PushDeviceTokenCreateManyAndReturnArgs} args - Arguments to create many PushDeviceTokens.
+     * @example
+     * // Create many PushDeviceTokens
+     * const pushDeviceToken = await prisma.pushDeviceToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PushDeviceTokens and only return the `id`
+     * const pushDeviceTokenWithIdOnly = await prisma.pushDeviceToken.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PushDeviceTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, PushDeviceTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PushDeviceToken.
+     * @param {PushDeviceTokenDeleteArgs} args - Arguments to delete one PushDeviceToken.
+     * @example
+     * // Delete one PushDeviceToken
+     * const PushDeviceToken = await prisma.pushDeviceToken.delete({
+     *   where: {
+     *     // ... filter to delete one PushDeviceToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PushDeviceTokenDeleteArgs>(args: SelectSubset<T, PushDeviceTokenDeleteArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PushDeviceToken.
+     * @param {PushDeviceTokenUpdateArgs} args - Arguments to update one PushDeviceToken.
+     * @example
+     * // Update one PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PushDeviceTokenUpdateArgs>(args: SelectSubset<T, PushDeviceTokenUpdateArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PushDeviceTokens.
+     * @param {PushDeviceTokenDeleteManyArgs} args - Arguments to filter PushDeviceTokens to delete.
+     * @example
+     * // Delete a few PushDeviceTokens
+     * const { count } = await prisma.pushDeviceToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PushDeviceTokenDeleteManyArgs>(args?: SelectSubset<T, PushDeviceTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PushDeviceTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PushDeviceTokens
+     * const pushDeviceToken = await prisma.pushDeviceToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PushDeviceTokenUpdateManyArgs>(args: SelectSubset<T, PushDeviceTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PushDeviceToken.
+     * @param {PushDeviceTokenUpsertArgs} args - Arguments to update or create a PushDeviceToken.
+     * @example
+     * // Update or create a PushDeviceToken
+     * const pushDeviceToken = await prisma.pushDeviceToken.upsert({
+     *   create: {
+     *     // ... data to create a PushDeviceToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PushDeviceToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PushDeviceTokenUpsertArgs>(args: SelectSubset<T, PushDeviceTokenUpsertArgs<ExtArgs>>): Prisma__PushDeviceTokenClient<$Result.GetResult<Prisma.$PushDeviceTokenPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PushDeviceTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenCountArgs} args - Arguments to filter PushDeviceTokens to count.
+     * @example
+     * // Count the number of PushDeviceTokens
+     * const count = await prisma.pushDeviceToken.count({
+     *   where: {
+     *     // ... the filter for the PushDeviceTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends PushDeviceTokenCountArgs>(
+      args?: Subset<T, PushDeviceTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PushDeviceTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PushDeviceToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PushDeviceTokenAggregateArgs>(args: Subset<T, PushDeviceTokenAggregateArgs>): Prisma.PrismaPromise<GetPushDeviceTokenAggregateType<T>>
+
+    /**
+     * Group by PushDeviceToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PushDeviceTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PushDeviceTokenGroupByArgs['orderBy'] }
+        : { orderBy?: PushDeviceTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PushDeviceTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPushDeviceTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PushDeviceToken model
+   */
+  readonly fields: PushDeviceTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PushDeviceToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PushDeviceTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PushDeviceToken model
+   */ 
+  interface PushDeviceTokenFieldRefs {
+    readonly id: FieldRef<"PushDeviceToken", 'String'>
+    readonly userId: FieldRef<"PushDeviceToken", 'String'>
+    readonly role: FieldRef<"PushDeviceToken", 'String'>
+    readonly token: FieldRef<"PushDeviceToken", 'String'>
+    readonly platform: FieldRef<"PushDeviceToken", 'String'>
+    readonly createdAt: FieldRef<"PushDeviceToken", 'DateTime'>
+    readonly updatedAt: FieldRef<"PushDeviceToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PushDeviceToken findUnique
+   */
+  export type PushDeviceTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which PushDeviceToken to fetch.
+     */
+    where: PushDeviceTokenWhereUniqueInput
+  }
+
+  /**
+   * PushDeviceToken findUniqueOrThrow
+   */
+  export type PushDeviceTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which PushDeviceToken to fetch.
+     */
+    where: PushDeviceTokenWhereUniqueInput
+  }
+
+  /**
+   * PushDeviceToken findFirst
+   */
+  export type PushDeviceTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which PushDeviceToken to fetch.
+     */
+    where?: PushDeviceTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDeviceTokens to fetch.
+     */
+    orderBy?: PushDeviceTokenOrderByWithRelationInput | PushDeviceTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushDeviceTokens.
+     */
+    cursor?: PushDeviceTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDeviceTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDeviceTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushDeviceTokens.
+     */
+    distinct?: PushDeviceTokenScalarFieldEnum | PushDeviceTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PushDeviceToken findFirstOrThrow
+   */
+  export type PushDeviceTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which PushDeviceToken to fetch.
+     */
+    where?: PushDeviceTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDeviceTokens to fetch.
+     */
+    orderBy?: PushDeviceTokenOrderByWithRelationInput | PushDeviceTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushDeviceTokens.
+     */
+    cursor?: PushDeviceTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDeviceTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDeviceTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushDeviceTokens.
+     */
+    distinct?: PushDeviceTokenScalarFieldEnum | PushDeviceTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PushDeviceToken findMany
+   */
+  export type PushDeviceTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which PushDeviceTokens to fetch.
+     */
+    where?: PushDeviceTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDeviceTokens to fetch.
+     */
+    orderBy?: PushDeviceTokenOrderByWithRelationInput | PushDeviceTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PushDeviceTokens.
+     */
+    cursor?: PushDeviceTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDeviceTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDeviceTokens.
+     */
+    skip?: number
+    distinct?: PushDeviceTokenScalarFieldEnum | PushDeviceTokenScalarFieldEnum[]
+  }
+
+  /**
+   * PushDeviceToken create
+   */
+  export type PushDeviceTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to create a PushDeviceToken.
+     */
+    data: XOR<PushDeviceTokenCreateInput, PushDeviceTokenUncheckedCreateInput>
+  }
+
+  /**
+   * PushDeviceToken createMany
+   */
+  export type PushDeviceTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PushDeviceTokens.
+     */
+    data: PushDeviceTokenCreateManyInput | PushDeviceTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PushDeviceToken createManyAndReturn
+   */
+  export type PushDeviceTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PushDeviceTokens.
+     */
+    data: PushDeviceTokenCreateManyInput | PushDeviceTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PushDeviceToken update
+   */
+  export type PushDeviceTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to update a PushDeviceToken.
+     */
+    data: XOR<PushDeviceTokenUpdateInput, PushDeviceTokenUncheckedUpdateInput>
+    /**
+     * Choose, which PushDeviceToken to update.
+     */
+    where: PushDeviceTokenWhereUniqueInput
+  }
+
+  /**
+   * PushDeviceToken updateMany
+   */
+  export type PushDeviceTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PushDeviceTokens.
+     */
+    data: XOR<PushDeviceTokenUpdateManyMutationInput, PushDeviceTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which PushDeviceTokens to update
+     */
+    where?: PushDeviceTokenWhereInput
+  }
+
+  /**
+   * PushDeviceToken upsert
+   */
+  export type PushDeviceTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * The filter to search for the PushDeviceToken to update in case it exists.
+     */
+    where: PushDeviceTokenWhereUniqueInput
+    /**
+     * In case the PushDeviceToken found by the `where` argument doesn't exist, create a new PushDeviceToken with this data.
+     */
+    create: XOR<PushDeviceTokenCreateInput, PushDeviceTokenUncheckedCreateInput>
+    /**
+     * In case the PushDeviceToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PushDeviceTokenUpdateInput, PushDeviceTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * PushDeviceToken delete
+   */
+  export type PushDeviceTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+    /**
+     * Filter which PushDeviceToken to delete.
+     */
+    where: PushDeviceTokenWhereUniqueInput
+  }
+
+  /**
+   * PushDeviceToken deleteMany
+   */
+  export type PushDeviceTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushDeviceTokens to delete
+     */
+    where?: PushDeviceTokenWhereInput
+  }
+
+  /**
+   * PushDeviceToken without action
+   */
+  export type PushDeviceTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDeviceToken
+     */
+    select?: PushDeviceTokenSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4013,10 +5061,15 @@ export namespace Prisma {
   export const NotificationJobScalarFieldEnum: {
     id: 'id',
     recipient: 'recipient',
+    userId: 'userId',
+    role: 'role',
+    title: 'title',
+    message: 'message',
     channel: 'channel',
     templateId: 'templateId',
     cityCode: 'cityCode',
     status: 'status',
+    isRead: 'isRead',
     sentAt: 'sentAt',
     createdAt: 'createdAt'
   };
@@ -4034,6 +5087,19 @@ export namespace Prisma {
   };
 
   export type DeliveryAttemptScalarFieldEnum = (typeof DeliveryAttemptScalarFieldEnum)[keyof typeof DeliveryAttemptScalarFieldEnum]
+
+
+  export const PushDeviceTokenScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    role: 'role',
+    token: 'token',
+    platform: 'platform',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PushDeviceTokenScalarFieldEnum = (typeof PushDeviceTokenScalarFieldEnum)[keyof typeof PushDeviceTokenScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4076,6 +5142,13 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4180,10 +5253,15 @@ export namespace Prisma {
     NOT?: NotificationJobWhereInput | NotificationJobWhereInput[]
     id?: StringFilter<"NotificationJob"> | string
     recipient?: StringFilter<"NotificationJob"> | string
+    userId?: StringNullableFilter<"NotificationJob"> | string | null
+    role?: StringNullableFilter<"NotificationJob"> | string | null
+    title?: StringNullableFilter<"NotificationJob"> | string | null
+    message?: StringNullableFilter<"NotificationJob"> | string | null
     channel?: StringFilter<"NotificationJob"> | string
     templateId?: StringFilter<"NotificationJob"> | string
     cityCode?: StringNullableFilter<"NotificationJob"> | string | null
     status?: StringFilter<"NotificationJob"> | string
+    isRead?: BoolFilter<"NotificationJob"> | boolean
     sentAt?: DateTimeNullableFilter<"NotificationJob"> | Date | string | null
     createdAt?: DateTimeFilter<"NotificationJob"> | Date | string
     template?: XOR<NotificationTemplateRelationFilter, NotificationTemplateWhereInput>
@@ -4193,10 +5271,15 @@ export namespace Prisma {
   export type NotificationJobOrderByWithRelationInput = {
     id?: SortOrder
     recipient?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    role?: SortOrderInput | SortOrder
+    title?: SortOrderInput | SortOrder
+    message?: SortOrderInput | SortOrder
     channel?: SortOrder
     templateId?: SortOrder
     cityCode?: SortOrderInput | SortOrder
     status?: SortOrder
+    isRead?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     template?: NotificationTemplateOrderByWithRelationInput
@@ -4209,10 +5292,15 @@ export namespace Prisma {
     OR?: NotificationJobWhereInput[]
     NOT?: NotificationJobWhereInput | NotificationJobWhereInput[]
     recipient?: StringFilter<"NotificationJob"> | string
+    userId?: StringNullableFilter<"NotificationJob"> | string | null
+    role?: StringNullableFilter<"NotificationJob"> | string | null
+    title?: StringNullableFilter<"NotificationJob"> | string | null
+    message?: StringNullableFilter<"NotificationJob"> | string | null
     channel?: StringFilter<"NotificationJob"> | string
     templateId?: StringFilter<"NotificationJob"> | string
     cityCode?: StringNullableFilter<"NotificationJob"> | string | null
     status?: StringFilter<"NotificationJob"> | string
+    isRead?: BoolFilter<"NotificationJob"> | boolean
     sentAt?: DateTimeNullableFilter<"NotificationJob"> | Date | string | null
     createdAt?: DateTimeFilter<"NotificationJob"> | Date | string
     template?: XOR<NotificationTemplateRelationFilter, NotificationTemplateWhereInput>
@@ -4222,10 +5310,15 @@ export namespace Prisma {
   export type NotificationJobOrderByWithAggregationInput = {
     id?: SortOrder
     recipient?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    role?: SortOrderInput | SortOrder
+    title?: SortOrderInput | SortOrder
+    message?: SortOrderInput | SortOrder
     channel?: SortOrder
     templateId?: SortOrder
     cityCode?: SortOrderInput | SortOrder
     status?: SortOrder
+    isRead?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: NotificationJobCountOrderByAggregateInput
@@ -4239,10 +5332,15 @@ export namespace Prisma {
     NOT?: NotificationJobScalarWhereWithAggregatesInput | NotificationJobScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"NotificationJob"> | string
     recipient?: StringWithAggregatesFilter<"NotificationJob"> | string
+    userId?: StringNullableWithAggregatesFilter<"NotificationJob"> | string | null
+    role?: StringNullableWithAggregatesFilter<"NotificationJob"> | string | null
+    title?: StringNullableWithAggregatesFilter<"NotificationJob"> | string | null
+    message?: StringNullableWithAggregatesFilter<"NotificationJob"> | string | null
     channel?: StringWithAggregatesFilter<"NotificationJob"> | string
     templateId?: StringWithAggregatesFilter<"NotificationJob"> | string
     cityCode?: StringNullableWithAggregatesFilter<"NotificationJob"> | string | null
     status?: StringWithAggregatesFilter<"NotificationJob"> | string
+    isRead?: BoolWithAggregatesFilter<"NotificationJob"> | boolean
     sentAt?: DateTimeNullableWithAggregatesFilter<"NotificationJob"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"NotificationJob"> | Date | string
   }
@@ -4309,6 +5407,68 @@ export namespace Prisma {
     attemptedAt?: DateTimeWithAggregatesFilter<"DeliveryAttempt"> | Date | string
   }
 
+  export type PushDeviceTokenWhereInput = {
+    AND?: PushDeviceTokenWhereInput | PushDeviceTokenWhereInput[]
+    OR?: PushDeviceTokenWhereInput[]
+    NOT?: PushDeviceTokenWhereInput | PushDeviceTokenWhereInput[]
+    id?: StringFilter<"PushDeviceToken"> | string
+    userId?: StringFilter<"PushDeviceToken"> | string
+    role?: StringFilter<"PushDeviceToken"> | string
+    token?: StringFilter<"PushDeviceToken"> | string
+    platform?: StringFilter<"PushDeviceToken"> | string
+    createdAt?: DateTimeFilter<"PushDeviceToken"> | Date | string
+    updatedAt?: DateTimeFilter<"PushDeviceToken"> | Date | string
+  }
+
+  export type PushDeviceTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PushDeviceTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: PushDeviceTokenWhereInput | PushDeviceTokenWhereInput[]
+    OR?: PushDeviceTokenWhereInput[]
+    NOT?: PushDeviceTokenWhereInput | PushDeviceTokenWhereInput[]
+    userId?: StringFilter<"PushDeviceToken"> | string
+    role?: StringFilter<"PushDeviceToken"> | string
+    platform?: StringFilter<"PushDeviceToken"> | string
+    createdAt?: DateTimeFilter<"PushDeviceToken"> | Date | string
+    updatedAt?: DateTimeFilter<"PushDeviceToken"> | Date | string
+  }, "id" | "token">
+
+  export type PushDeviceTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PushDeviceTokenCountOrderByAggregateInput
+    _max?: PushDeviceTokenMaxOrderByAggregateInput
+    _min?: PushDeviceTokenMinOrderByAggregateInput
+  }
+
+  export type PushDeviceTokenScalarWhereWithAggregatesInput = {
+    AND?: PushDeviceTokenScalarWhereWithAggregatesInput | PushDeviceTokenScalarWhereWithAggregatesInput[]
+    OR?: PushDeviceTokenScalarWhereWithAggregatesInput[]
+    NOT?: PushDeviceTokenScalarWhereWithAggregatesInput | PushDeviceTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PushDeviceToken"> | string
+    userId?: StringWithAggregatesFilter<"PushDeviceToken"> | string
+    role?: StringWithAggregatesFilter<"PushDeviceToken"> | string
+    token?: StringWithAggregatesFilter<"PushDeviceToken"> | string
+    platform?: StringWithAggregatesFilter<"PushDeviceToken"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PushDeviceToken"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PushDeviceToken"> | Date | string
+  }
+
   export type NotificationTemplateCreateInput = {
     id?: string
     code: string
@@ -4365,9 +5525,14 @@ export namespace Prisma {
   export type NotificationJobCreateInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
     template: NotificationTemplateCreateNestedOneWithoutJobsInput
@@ -4377,10 +5542,15 @@ export namespace Prisma {
   export type NotificationJobUncheckedCreateInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     templateId: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
     attempts?: DeliveryAttemptUncheckedCreateNestedManyWithoutJobInput
@@ -4389,9 +5559,14 @@ export namespace Prisma {
   export type NotificationJobUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     template?: NotificationTemplateUpdateOneRequiredWithoutJobsNestedInput
@@ -4401,10 +5576,15 @@ export namespace Prisma {
   export type NotificationJobUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attempts?: DeliveryAttemptUncheckedUpdateManyWithoutJobNestedInput
@@ -4413,10 +5593,15 @@ export namespace Prisma {
   export type NotificationJobCreateManyInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     templateId: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -4424,9 +5609,14 @@ export namespace Prisma {
   export type NotificationJobUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4434,10 +5624,15 @@ export namespace Prisma {
   export type NotificationJobUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4502,6 +5697,76 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     responseCode?: NullableStringFieldUpdateOperationsInput | string | null
     attemptedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceTokenCreateInput = {
+    id?: string
+    userId: string
+    role?: string
+    token: string
+    platform?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushDeviceTokenUncheckedCreateInput = {
+    id?: string
+    userId: string
+    role?: string
+    token: string
+    platform?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushDeviceTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceTokenCreateManyInput = {
+    id?: string
+    userId: string
+    role?: string
+    token: string
+    platform?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PushDeviceTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -4583,6 +5848,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -4628,10 +5898,15 @@ export namespace Prisma {
   export type NotificationJobCountOrderByAggregateInput = {
     id?: SortOrder
     recipient?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
     channel?: SortOrder
     templateId?: SortOrder
     cityCode?: SortOrder
     status?: SortOrder
+    isRead?: SortOrder
     sentAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -4639,10 +5914,15 @@ export namespace Prisma {
   export type NotificationJobMaxOrderByAggregateInput = {
     id?: SortOrder
     recipient?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
     channel?: SortOrder
     templateId?: SortOrder
     cityCode?: SortOrder
     status?: SortOrder
+    isRead?: SortOrder
     sentAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -4650,10 +5930,15 @@ export namespace Prisma {
   export type NotificationJobMinOrderByAggregateInput = {
     id?: SortOrder
     recipient?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
     channel?: SortOrder
     templateId?: SortOrder
     cityCode?: SortOrder
     status?: SortOrder
+    isRead?: SortOrder
     sentAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -4674,6 +5959,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -4771,6 +6064,36 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type PushDeviceTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PushDeviceTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PushDeviceTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type NotificationJobCreateNestedManyWithoutTemplateInput = {
     create?: XOR<NotificationJobCreateWithoutTemplateInput, NotificationJobUncheckedCreateWithoutTemplateInput> | NotificationJobCreateWithoutTemplateInput[] | NotificationJobUncheckedCreateWithoutTemplateInput[]
     connectOrCreate?: NotificationJobCreateOrConnectWithoutTemplateInput | NotificationJobCreateOrConnectWithoutTemplateInput[]
@@ -4839,6 +6162,10 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -4963,6 +6290,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -5011,6 +6343,14 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5071,9 +6411,14 @@ export namespace Prisma {
   export type NotificationJobCreateWithoutTemplateInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
     attempts?: DeliveryAttemptCreateNestedManyWithoutJobInput
@@ -5082,9 +6427,14 @@ export namespace Prisma {
   export type NotificationJobUncheckedCreateWithoutTemplateInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
     attempts?: DeliveryAttemptUncheckedCreateNestedManyWithoutJobInput
@@ -5122,10 +6472,15 @@ export namespace Prisma {
     NOT?: NotificationJobScalarWhereInput | NotificationJobScalarWhereInput[]
     id?: StringFilter<"NotificationJob"> | string
     recipient?: StringFilter<"NotificationJob"> | string
+    userId?: StringNullableFilter<"NotificationJob"> | string | null
+    role?: StringNullableFilter<"NotificationJob"> | string | null
+    title?: StringNullableFilter<"NotificationJob"> | string | null
+    message?: StringNullableFilter<"NotificationJob"> | string | null
     channel?: StringFilter<"NotificationJob"> | string
     templateId?: StringFilter<"NotificationJob"> | string
     cityCode?: StringNullableFilter<"NotificationJob"> | string | null
     status?: StringFilter<"NotificationJob"> | string
+    isRead?: BoolFilter<"NotificationJob"> | boolean
     sentAt?: DateTimeNullableFilter<"NotificationJob"> | Date | string | null
     createdAt?: DateTimeFilter<"NotificationJob"> | Date | string
   }
@@ -5231,9 +6586,14 @@ export namespace Prisma {
   export type NotificationJobCreateWithoutAttemptsInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
     template: NotificationTemplateCreateNestedOneWithoutJobsInput
@@ -5242,10 +6602,15 @@ export namespace Prisma {
   export type NotificationJobUncheckedCreateWithoutAttemptsInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     templateId: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -5269,9 +6634,14 @@ export namespace Prisma {
   export type NotificationJobUpdateWithoutAttemptsInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     template?: NotificationTemplateUpdateOneRequiredWithoutJobsNestedInput
@@ -5280,10 +6650,15 @@ export namespace Prisma {
   export type NotificationJobUncheckedUpdateWithoutAttemptsInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     templateId?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5291,9 +6666,14 @@ export namespace Prisma {
   export type NotificationJobCreateManyTemplateInput = {
     id?: string
     recipient: string
+    userId?: string | null
+    role?: string | null
+    title?: string | null
+    message?: string | null
     channel: string
     cityCode?: string | null
     status?: string
+    isRead?: boolean
     sentAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -5301,9 +6681,14 @@ export namespace Prisma {
   export type NotificationJobUpdateWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attempts?: DeliveryAttemptUpdateManyWithoutJobNestedInput
@@ -5312,9 +6697,14 @@ export namespace Prisma {
   export type NotificationJobUncheckedUpdateWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attempts?: DeliveryAttemptUncheckedUpdateManyWithoutJobNestedInput
@@ -5323,9 +6713,14 @@ export namespace Prisma {
   export type NotificationJobUncheckedUpdateManyWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipient?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    message?: NullableStringFieldUpdateOperationsInput | string | null
     channel?: StringFieldUpdateOperationsInput | string
     cityCode?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5387,6 +6782,10 @@ export namespace Prisma {
      * @deprecated Use DeliveryAttemptDefaultArgs instead
      */
     export type DeliveryAttemptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DeliveryAttemptDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PushDeviceTokenDefaultArgs instead
+     */
+    export type PushDeviceTokenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PushDeviceTokenDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

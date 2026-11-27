@@ -82,3 +82,20 @@ model ReconciliationRecord {
 
   @@map("reconciliation_records")
 }
+
+model PayoutSettlement {
+  id               String    @id @default(uuid())
+  merchantId       String    @unique
+  cityCode         String    @default("IN-MH-NGP")
+  grossAmountPaise Int       @default(0)
+  refundedPaise    Int       @default(0)
+  netAmountPaise   Int       @default(0)
+  status           String    @default("PENDING") // PENDING, RELEASED, HELD
+  releasedAt       DateTime?
+  releasedBy       String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([cityCode, status])
+  @@map("payout_settlements")
+}

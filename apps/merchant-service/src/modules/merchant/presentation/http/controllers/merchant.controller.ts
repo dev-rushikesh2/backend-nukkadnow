@@ -271,7 +271,7 @@ export class MerchantController {
   /** Fire-and-forget: keep discovery search document in sync after any profile update */
   private async syncProfileToDiscovery(merchantId: string, primaryOutletId?: string): Promise<void> {
     if (!primaryOutletId) return;
-    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4006";
+    const discoveryUrl = process.env.DISCOVERY_SERVICE_URL || "http://localhost:4004";
     try {
       const merchant = await this.prisma.merchant.findUnique({
         where: { id: merchantId },
@@ -1200,7 +1200,10 @@ export class MerchantController {
     const outlets = await this.prisma.outlet.findMany({
       where: {
         isActive: true,
-        merchant: { isSuspended: false },
+        merchant: {
+          isSuspended: false,
+          verificationStatus: "VERIFIED",
+        },
       },
       include: {
         merchant: true,
@@ -1328,7 +1331,9 @@ export class MerchantController {
       where: { id },
       include: { merchant: true, hours: true, serviceAreas: true },
     });
-    if (!o) throw new NotFoundException(`Outlet '${id}' not found`);
+    if (!o || !o.isActive || !o.merchant || o.merchant.isSuspended || o.merchant.verificationStatus !== "VERIFIED") {
+      throw new NotFoundException(`Outlet '${id}' is unavailable or not found`);
+    }
     const geo: any = (o.serviceAreas?.[0]?.geoJson as any) || {};
     const profileMeta: any = geo.profile || {};
     const deliveryMeta: any = geo.deliverySettings || {};

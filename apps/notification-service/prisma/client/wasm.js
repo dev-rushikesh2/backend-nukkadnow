@@ -132,10 +132,15 @@ exports.Prisma.NotificationTemplateScalarFieldEnum = {
 exports.Prisma.NotificationJobScalarFieldEnum = {
   id: 'id',
   recipient: 'recipient',
+  userId: 'userId',
+  role: 'role',
+  title: 'title',
+  message: 'message',
   channel: 'channel',
   templateId: 'templateId',
   cityCode: 'cityCode',
   status: 'status',
+  isRead: 'isRead',
   sentAt: 'sentAt',
   createdAt: 'createdAt'
 };
@@ -147,6 +152,16 @@ exports.Prisma.DeliveryAttemptScalarFieldEnum = {
   status: 'status',
   responseCode: 'responseCode',
   attemptedAt: 'attemptedAt'
+};
+
+exports.Prisma.PushDeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  role: 'role',
+  token: 'token',
+  platform: 'platform',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -168,7 +183,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   NotificationTemplate: 'NotificationTemplate',
   NotificationJob: 'NotificationJob',
-  DeliveryAttempt: 'DeliveryAttempt'
+  DeliveryAttempt: 'DeliveryAttempt',
+  PushDeviceToken: 'PushDeviceToken'
 };
 
 /**

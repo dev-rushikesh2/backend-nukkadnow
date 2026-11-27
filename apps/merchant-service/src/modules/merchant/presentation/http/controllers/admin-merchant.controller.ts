@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Put,
+  Patch,
   Delete,
   Body,
   Param,
@@ -344,6 +345,79 @@ export class AdminMerchantController {
         statusHistory: reg.statusHistory,
       },
     };
+  }
+
+  @Patch("merchants/admin/directory/:id/kyc")
+  @ApiOperation({ summary: "Admin: Persist KYC document / checklist item verification state in PostgreSQL" })
+  async updateKycChecklist(
+    @Param("id") id: string,
+    @Body() body: { documentId?: string; documentType?: string; status?: string; verificationStatus?: string; notes?: string }
+  ) {
+    const nextStatus = String(body?.verificationStatus || body?.status || "VERIFIED").toUpperCase();
+    if (body?.documentId) {
+      const regDoc = await this.prisma.registrationDocument.findUnique({ where: { id: body.documentId } });
+      if (regDoc) {
+        const updatedDoc = await this.prisma.registrationDocument.update({
+          where: { id: regDoc.id },
+          data: {
+            verificationStatus: nextStatus,
+            ...(body?.notes !== undefined ? { rejectionReason: body.notes } : {}),
+          },
+        });
+        return { success: true, data: updatedDoc };
+      }
+    }
+
+    const merchant = await this.prisma.merchant.findUnique({ where: { id } });
+    if (!merchant) {
+      const reg = await this.prisma.partnerRegistration.findFirst({
+        where: { OR: [{ id }, { applicationId: id }] },
+        include: { documents: true },
+      });
+      if (!reg) throw new NotFoundException(`Merchant or application '${id}' not found`);
+      const targetDoc = body?.documentType
+        ? reg.documents.find((d) => d.documentType === body.documentType)
+        : reg.documents[0];
+      if (targetDoc) {
+        const updatedDoc = await this.prisma.registrationDocument.update({
+          where: { id: targetDoc.id },
+          data: {
+            verificationStatus: nextStatus,
+            ...(body?.notes !== undefined ? { rejectionReason: body.notes } : {}),
+          },
+        });
+        return { success: true, data: updatedDoc };
+      }
+      return { success: true, data: reg };
+    }
+
+    const existing = await this.prisma.verificationRecord.findFirst({
+      where: {
+        merchantId: merchant.id,
+        ...(body?.documentType ? { documentType: body.documentType } : {}),
+      },
+    });
+    const saved = existing
+      ? await this.prisma.verificationRecord.update({
+          where: { id: existing.id },
+          data: {
+            status: nextStatus,
+            notes: body?.notes ?? existing.notes,
+            verifiedAt: nextStatus === "VERIFIED" ? new Date() : null,
+          },
+        })
+      : await this.prisma.verificationRecord.create({
+          data: {
+            id: UniqueIdentifier.generateV7(),
+            merchantId: merchant.id,
+            documentType: body?.documentType || "KYC_CHECKLIST",
+            documentUrl: "",
+            status: nextStatus,
+            notes: body?.notes ?? null,
+            verifiedAt: nextStatus === "VERIFIED" ? new Date() : null,
+          },
+        });
+    return { success: true, data: saved };
   }
 
   @Post("merchants/admin/directory/:id/verify")

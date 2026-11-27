@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Query, NotFoundException } from "@nestjs/common";
+import { Controller, Get, Post, Patch, Body, Param, Query, Headers, NotFoundException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { SupportService } from "../../../application/services/support.service";
 import { CreateReviewDto, CreateTicketDto, AddMessageDto } from "../../../application/dto/review-support.dto";
@@ -176,7 +176,14 @@ export class supportController {
   @Post("tickets")
   @ApiOperation({ summary: "Open a customer support ticket" })
   @ApiResponse({ status: 201, description: "Ticket created" })
-  async createTicket(@Body() dto: CreateTicketDto) {
+  async createTicket(@Body() body: any, @Headers("x-customer-id") headerCustomerId?: string) {
+    const dto: CreateTicketDto = {
+      customerId: String(headerCustomerId || body?.customerId || "").trim(),
+      subject: String(body?.subject || "General Support Request").trim(),
+      initialMessage: String(body?.initialMessage || body?.message || body?.description || "Customer support request").trim(),
+      orderId: body?.orderId,
+      priority: body?.priority,
+    };
     return this.supportService.createTicket(dto);
   }
 

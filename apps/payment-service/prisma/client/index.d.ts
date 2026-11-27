@@ -38,6 +38,11 @@ export type WebhookInbox = $Result.DefaultSelection<Prisma.$WebhookInboxPayload>
  * 
  */
 export type ReconciliationRecord = $Result.DefaultSelection<Prisma.$ReconciliationRecordPayload>
+/**
+ * Model PayoutSettlement
+ * 
+ */
+export type PayoutSettlement = $Result.DefaultSelection<Prisma.$PayoutSettlementPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -211,6 +216,16 @@ export class PrismaClient<
     * ```
     */
   get reconciliationRecord(): Prisma.ReconciliationRecordDelegate<ExtArgs>;
+
+  /**
+   * `prisma.payoutSettlement`: Exposes CRUD operations for the **PayoutSettlement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayoutSettlements
+    * const payoutSettlements = await prisma.payoutSettlement.findMany()
+    * ```
+    */
+  get payoutSettlement(): Prisma.PayoutSettlementDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -656,7 +671,8 @@ export namespace Prisma {
     Payment: 'Payment',
     Refund: 'Refund',
     WebhookInbox: 'WebhookInbox',
-    ReconciliationRecord: 'ReconciliationRecord'
+    ReconciliationRecord: 'ReconciliationRecord',
+    PayoutSettlement: 'PayoutSettlement'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -672,7 +688,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "paymentIntent" | "payment" | "refund" | "webhookInbox" | "reconciliationRecord"
+      modelProps: "paymentIntent" | "payment" | "refund" | "webhookInbox" | "reconciliationRecord" | "payoutSettlement"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1023,6 +1039,76 @@ export namespace Prisma {
           count: {
             args: Prisma.ReconciliationRecordCountArgs<ExtArgs>
             result: $Utils.Optional<ReconciliationRecordCountAggregateOutputType> | number
+          }
+        }
+      }
+      PayoutSettlement: {
+        payload: Prisma.$PayoutSettlementPayload<ExtArgs>
+        fields: Prisma.PayoutSettlementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayoutSettlementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayoutSettlementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          findFirst: {
+            args: Prisma.PayoutSettlementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayoutSettlementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          findMany: {
+            args: Prisma.PayoutSettlementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>[]
+          }
+          create: {
+            args: Prisma.PayoutSettlementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          createMany: {
+            args: Prisma.PayoutSettlementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PayoutSettlementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>[]
+          }
+          delete: {
+            args: Prisma.PayoutSettlementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          update: {
+            args: Prisma.PayoutSettlementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          deleteMany: {
+            args: Prisma.PayoutSettlementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayoutSettlementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PayoutSettlementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutSettlementPayload>
+          }
+          aggregate: {
+            args: Prisma.PayoutSettlementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayoutSettlement>
+          }
+          groupBy: {
+            args: Prisma.PayoutSettlementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayoutSettlementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayoutSettlementCountArgs<ExtArgs>
+            result: $Utils.Optional<PayoutSettlementCountAggregateOutputType> | number
           }
         }
       }
@@ -6147,6 +6233,998 @@ export namespace Prisma {
 
 
   /**
+   * Model PayoutSettlement
+   */
+
+  export type AggregatePayoutSettlement = {
+    _count: PayoutSettlementCountAggregateOutputType | null
+    _avg: PayoutSettlementAvgAggregateOutputType | null
+    _sum: PayoutSettlementSumAggregateOutputType | null
+    _min: PayoutSettlementMinAggregateOutputType | null
+    _max: PayoutSettlementMaxAggregateOutputType | null
+  }
+
+  export type PayoutSettlementAvgAggregateOutputType = {
+    grossAmountPaise: number | null
+    refundedPaise: number | null
+    netAmountPaise: number | null
+  }
+
+  export type PayoutSettlementSumAggregateOutputType = {
+    grossAmountPaise: number | null
+    refundedPaise: number | null
+    netAmountPaise: number | null
+  }
+
+  export type PayoutSettlementMinAggregateOutputType = {
+    id: string | null
+    merchantId: string | null
+    cityCode: string | null
+    grossAmountPaise: number | null
+    refundedPaise: number | null
+    netAmountPaise: number | null
+    status: string | null
+    releasedAt: Date | null
+    releasedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayoutSettlementMaxAggregateOutputType = {
+    id: string | null
+    merchantId: string | null
+    cityCode: string | null
+    grossAmountPaise: number | null
+    refundedPaise: number | null
+    netAmountPaise: number | null
+    status: string | null
+    releasedAt: Date | null
+    releasedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayoutSettlementCountAggregateOutputType = {
+    id: number
+    merchantId: number
+    cityCode: number
+    grossAmountPaise: number
+    refundedPaise: number
+    netAmountPaise: number
+    status: number
+    releasedAt: number
+    releasedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PayoutSettlementAvgAggregateInputType = {
+    grossAmountPaise?: true
+    refundedPaise?: true
+    netAmountPaise?: true
+  }
+
+  export type PayoutSettlementSumAggregateInputType = {
+    grossAmountPaise?: true
+    refundedPaise?: true
+    netAmountPaise?: true
+  }
+
+  export type PayoutSettlementMinAggregateInputType = {
+    id?: true
+    merchantId?: true
+    cityCode?: true
+    grossAmountPaise?: true
+    refundedPaise?: true
+    netAmountPaise?: true
+    status?: true
+    releasedAt?: true
+    releasedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayoutSettlementMaxAggregateInputType = {
+    id?: true
+    merchantId?: true
+    cityCode?: true
+    grossAmountPaise?: true
+    refundedPaise?: true
+    netAmountPaise?: true
+    status?: true
+    releasedAt?: true
+    releasedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayoutSettlementCountAggregateInputType = {
+    id?: true
+    merchantId?: true
+    cityCode?: true
+    grossAmountPaise?: true
+    refundedPaise?: true
+    netAmountPaise?: true
+    status?: true
+    releasedAt?: true
+    releasedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PayoutSettlementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayoutSettlement to aggregate.
+     */
+    where?: PayoutSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutSettlements to fetch.
+     */
+    orderBy?: PayoutSettlementOrderByWithRelationInput | PayoutSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayoutSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayoutSettlements
+    **/
+    _count?: true | PayoutSettlementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PayoutSettlementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PayoutSettlementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayoutSettlementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayoutSettlementMaxAggregateInputType
+  }
+
+  export type GetPayoutSettlementAggregateType<T extends PayoutSettlementAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayoutSettlement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayoutSettlement[P]>
+      : GetScalarType<T[P], AggregatePayoutSettlement[P]>
+  }
+
+
+
+
+  export type PayoutSettlementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayoutSettlementWhereInput
+    orderBy?: PayoutSettlementOrderByWithAggregationInput | PayoutSettlementOrderByWithAggregationInput[]
+    by: PayoutSettlementScalarFieldEnum[] | PayoutSettlementScalarFieldEnum
+    having?: PayoutSettlementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayoutSettlementCountAggregateInputType | true
+    _avg?: PayoutSettlementAvgAggregateInputType
+    _sum?: PayoutSettlementSumAggregateInputType
+    _min?: PayoutSettlementMinAggregateInputType
+    _max?: PayoutSettlementMaxAggregateInputType
+  }
+
+  export type PayoutSettlementGroupByOutputType = {
+    id: string
+    merchantId: string
+    cityCode: string
+    grossAmountPaise: number
+    refundedPaise: number
+    netAmountPaise: number
+    status: string
+    releasedAt: Date | null
+    releasedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PayoutSettlementCountAggregateOutputType | null
+    _avg: PayoutSettlementAvgAggregateOutputType | null
+    _sum: PayoutSettlementSumAggregateOutputType | null
+    _min: PayoutSettlementMinAggregateOutputType | null
+    _max: PayoutSettlementMaxAggregateOutputType | null
+  }
+
+  type GetPayoutSettlementGroupByPayload<T extends PayoutSettlementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayoutSettlementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayoutSettlementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayoutSettlementGroupByOutputType[P]>
+            : GetScalarType<T[P], PayoutSettlementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayoutSettlementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    merchantId?: boolean
+    cityCode?: boolean
+    grossAmountPaise?: boolean
+    refundedPaise?: boolean
+    netAmountPaise?: boolean
+    status?: boolean
+    releasedAt?: boolean
+    releasedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["payoutSettlement"]>
+
+  export type PayoutSettlementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    merchantId?: boolean
+    cityCode?: boolean
+    grossAmountPaise?: boolean
+    refundedPaise?: boolean
+    netAmountPaise?: boolean
+    status?: boolean
+    releasedAt?: boolean
+    releasedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["payoutSettlement"]>
+
+  export type PayoutSettlementSelectScalar = {
+    id?: boolean
+    merchantId?: boolean
+    cityCode?: boolean
+    grossAmountPaise?: boolean
+    refundedPaise?: boolean
+    netAmountPaise?: boolean
+    status?: boolean
+    releasedAt?: boolean
+    releasedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $PayoutSettlementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayoutSettlement"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      merchantId: string
+      cityCode: string
+      grossAmountPaise: number
+      refundedPaise: number
+      netAmountPaise: number
+      status: string
+      releasedAt: Date | null
+      releasedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["payoutSettlement"]>
+    composites: {}
+  }
+
+  type PayoutSettlementGetPayload<S extends boolean | null | undefined | PayoutSettlementDefaultArgs> = $Result.GetResult<Prisma.$PayoutSettlementPayload, S>
+
+  type PayoutSettlementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PayoutSettlementFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PayoutSettlementCountAggregateInputType | true
+    }
+
+  export interface PayoutSettlementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayoutSettlement'], meta: { name: 'PayoutSettlement' } }
+    /**
+     * Find zero or one PayoutSettlement that matches the filter.
+     * @param {PayoutSettlementFindUniqueArgs} args - Arguments to find a PayoutSettlement
+     * @example
+     * // Get one PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayoutSettlementFindUniqueArgs>(args: SelectSubset<T, PayoutSettlementFindUniqueArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PayoutSettlement that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PayoutSettlementFindUniqueOrThrowArgs} args - Arguments to find a PayoutSettlement
+     * @example
+     * // Get one PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayoutSettlementFindUniqueOrThrowArgs>(args: SelectSubset<T, PayoutSettlementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PayoutSettlement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementFindFirstArgs} args - Arguments to find a PayoutSettlement
+     * @example
+     * // Get one PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayoutSettlementFindFirstArgs>(args?: SelectSubset<T, PayoutSettlementFindFirstArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PayoutSettlement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementFindFirstOrThrowArgs} args - Arguments to find a PayoutSettlement
+     * @example
+     * // Get one PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayoutSettlementFindFirstOrThrowArgs>(args?: SelectSubset<T, PayoutSettlementFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PayoutSettlements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayoutSettlements
+     * const payoutSettlements = await prisma.payoutSettlement.findMany()
+     * 
+     * // Get first 10 PayoutSettlements
+     * const payoutSettlements = await prisma.payoutSettlement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payoutSettlementWithIdOnly = await prisma.payoutSettlement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayoutSettlementFindManyArgs>(args?: SelectSubset<T, PayoutSettlementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PayoutSettlement.
+     * @param {PayoutSettlementCreateArgs} args - Arguments to create a PayoutSettlement.
+     * @example
+     * // Create one PayoutSettlement
+     * const PayoutSettlement = await prisma.payoutSettlement.create({
+     *   data: {
+     *     // ... data to create a PayoutSettlement
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayoutSettlementCreateArgs>(args: SelectSubset<T, PayoutSettlementCreateArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PayoutSettlements.
+     * @param {PayoutSettlementCreateManyArgs} args - Arguments to create many PayoutSettlements.
+     * @example
+     * // Create many PayoutSettlements
+     * const payoutSettlement = await prisma.payoutSettlement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayoutSettlementCreateManyArgs>(args?: SelectSubset<T, PayoutSettlementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PayoutSettlements and returns the data saved in the database.
+     * @param {PayoutSettlementCreateManyAndReturnArgs} args - Arguments to create many PayoutSettlements.
+     * @example
+     * // Create many PayoutSettlements
+     * const payoutSettlement = await prisma.payoutSettlement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PayoutSettlements and only return the `id`
+     * const payoutSettlementWithIdOnly = await prisma.payoutSettlement.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PayoutSettlementCreateManyAndReturnArgs>(args?: SelectSubset<T, PayoutSettlementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PayoutSettlement.
+     * @param {PayoutSettlementDeleteArgs} args - Arguments to delete one PayoutSettlement.
+     * @example
+     * // Delete one PayoutSettlement
+     * const PayoutSettlement = await prisma.payoutSettlement.delete({
+     *   where: {
+     *     // ... filter to delete one PayoutSettlement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayoutSettlementDeleteArgs>(args: SelectSubset<T, PayoutSettlementDeleteArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PayoutSettlement.
+     * @param {PayoutSettlementUpdateArgs} args - Arguments to update one PayoutSettlement.
+     * @example
+     * // Update one PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayoutSettlementUpdateArgs>(args: SelectSubset<T, PayoutSettlementUpdateArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PayoutSettlements.
+     * @param {PayoutSettlementDeleteManyArgs} args - Arguments to filter PayoutSettlements to delete.
+     * @example
+     * // Delete a few PayoutSettlements
+     * const { count } = await prisma.payoutSettlement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayoutSettlementDeleteManyArgs>(args?: SelectSubset<T, PayoutSettlementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayoutSettlements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayoutSettlements
+     * const payoutSettlement = await prisma.payoutSettlement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayoutSettlementUpdateManyArgs>(args: SelectSubset<T, PayoutSettlementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PayoutSettlement.
+     * @param {PayoutSettlementUpsertArgs} args - Arguments to update or create a PayoutSettlement.
+     * @example
+     * // Update or create a PayoutSettlement
+     * const payoutSettlement = await prisma.payoutSettlement.upsert({
+     *   create: {
+     *     // ... data to create a PayoutSettlement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayoutSettlement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayoutSettlementUpsertArgs>(args: SelectSubset<T, PayoutSettlementUpsertArgs<ExtArgs>>): Prisma__PayoutSettlementClient<$Result.GetResult<Prisma.$PayoutSettlementPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PayoutSettlements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementCountArgs} args - Arguments to filter PayoutSettlements to count.
+     * @example
+     * // Count the number of PayoutSettlements
+     * const count = await prisma.payoutSettlement.count({
+     *   where: {
+     *     // ... the filter for the PayoutSettlements we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayoutSettlementCountArgs>(
+      args?: Subset<T, PayoutSettlementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayoutSettlementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayoutSettlement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayoutSettlementAggregateArgs>(args: Subset<T, PayoutSettlementAggregateArgs>): Prisma.PrismaPromise<GetPayoutSettlementAggregateType<T>>
+
+    /**
+     * Group by PayoutSettlement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutSettlementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayoutSettlementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayoutSettlementGroupByArgs['orderBy'] }
+        : { orderBy?: PayoutSettlementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayoutSettlementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayoutSettlementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayoutSettlement model
+   */
+  readonly fields: PayoutSettlementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayoutSettlement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayoutSettlementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayoutSettlement model
+   */ 
+  interface PayoutSettlementFieldRefs {
+    readonly id: FieldRef<"PayoutSettlement", 'String'>
+    readonly merchantId: FieldRef<"PayoutSettlement", 'String'>
+    readonly cityCode: FieldRef<"PayoutSettlement", 'String'>
+    readonly grossAmountPaise: FieldRef<"PayoutSettlement", 'Int'>
+    readonly refundedPaise: FieldRef<"PayoutSettlement", 'Int'>
+    readonly netAmountPaise: FieldRef<"PayoutSettlement", 'Int'>
+    readonly status: FieldRef<"PayoutSettlement", 'String'>
+    readonly releasedAt: FieldRef<"PayoutSettlement", 'DateTime'>
+    readonly releasedBy: FieldRef<"PayoutSettlement", 'String'>
+    readonly createdAt: FieldRef<"PayoutSettlement", 'DateTime'>
+    readonly updatedAt: FieldRef<"PayoutSettlement", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayoutSettlement findUnique
+   */
+  export type PayoutSettlementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter, which PayoutSettlement to fetch.
+     */
+    where: PayoutSettlementWhereUniqueInput
+  }
+
+  /**
+   * PayoutSettlement findUniqueOrThrow
+   */
+  export type PayoutSettlementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter, which PayoutSettlement to fetch.
+     */
+    where: PayoutSettlementWhereUniqueInput
+  }
+
+  /**
+   * PayoutSettlement findFirst
+   */
+  export type PayoutSettlementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter, which PayoutSettlement to fetch.
+     */
+    where?: PayoutSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutSettlements to fetch.
+     */
+    orderBy?: PayoutSettlementOrderByWithRelationInput | PayoutSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayoutSettlements.
+     */
+    cursor?: PayoutSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayoutSettlements.
+     */
+    distinct?: PayoutSettlementScalarFieldEnum | PayoutSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutSettlement findFirstOrThrow
+   */
+  export type PayoutSettlementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter, which PayoutSettlement to fetch.
+     */
+    where?: PayoutSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutSettlements to fetch.
+     */
+    orderBy?: PayoutSettlementOrderByWithRelationInput | PayoutSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayoutSettlements.
+     */
+    cursor?: PayoutSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayoutSettlements.
+     */
+    distinct?: PayoutSettlementScalarFieldEnum | PayoutSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutSettlement findMany
+   */
+  export type PayoutSettlementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter, which PayoutSettlements to fetch.
+     */
+    where?: PayoutSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutSettlements to fetch.
+     */
+    orderBy?: PayoutSettlementOrderByWithRelationInput | PayoutSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayoutSettlements.
+     */
+    cursor?: PayoutSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutSettlements.
+     */
+    skip?: number
+    distinct?: PayoutSettlementScalarFieldEnum | PayoutSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutSettlement create
+   */
+  export type PayoutSettlementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * The data needed to create a PayoutSettlement.
+     */
+    data: XOR<PayoutSettlementCreateInput, PayoutSettlementUncheckedCreateInput>
+  }
+
+  /**
+   * PayoutSettlement createMany
+   */
+  export type PayoutSettlementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayoutSettlements.
+     */
+    data: PayoutSettlementCreateManyInput | PayoutSettlementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayoutSettlement createManyAndReturn
+   */
+  export type PayoutSettlementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PayoutSettlements.
+     */
+    data: PayoutSettlementCreateManyInput | PayoutSettlementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayoutSettlement update
+   */
+  export type PayoutSettlementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * The data needed to update a PayoutSettlement.
+     */
+    data: XOR<PayoutSettlementUpdateInput, PayoutSettlementUncheckedUpdateInput>
+    /**
+     * Choose, which PayoutSettlement to update.
+     */
+    where: PayoutSettlementWhereUniqueInput
+  }
+
+  /**
+   * PayoutSettlement updateMany
+   */
+  export type PayoutSettlementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayoutSettlements.
+     */
+    data: XOR<PayoutSettlementUpdateManyMutationInput, PayoutSettlementUncheckedUpdateManyInput>
+    /**
+     * Filter which PayoutSettlements to update
+     */
+    where?: PayoutSettlementWhereInput
+  }
+
+  /**
+   * PayoutSettlement upsert
+   */
+  export type PayoutSettlementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * The filter to search for the PayoutSettlement to update in case it exists.
+     */
+    where: PayoutSettlementWhereUniqueInput
+    /**
+     * In case the PayoutSettlement found by the `where` argument doesn't exist, create a new PayoutSettlement with this data.
+     */
+    create: XOR<PayoutSettlementCreateInput, PayoutSettlementUncheckedCreateInput>
+    /**
+     * In case the PayoutSettlement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayoutSettlementUpdateInput, PayoutSettlementUncheckedUpdateInput>
+  }
+
+  /**
+   * PayoutSettlement delete
+   */
+  export type PayoutSettlementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+    /**
+     * Filter which PayoutSettlement to delete.
+     */
+    where: PayoutSettlementWhereUniqueInput
+  }
+
+  /**
+   * PayoutSettlement deleteMany
+   */
+  export type PayoutSettlementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayoutSettlements to delete
+     */
+    where?: PayoutSettlementWhereInput
+  }
+
+  /**
+   * PayoutSettlement without action
+   */
+  export type PayoutSettlementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutSettlement
+     */
+    select?: PayoutSettlementSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6230,6 +7308,23 @@ export namespace Prisma {
   };
 
   export type ReconciliationRecordScalarFieldEnum = (typeof ReconciliationRecordScalarFieldEnum)[keyof typeof ReconciliationRecordScalarFieldEnum]
+
+
+  export const PayoutSettlementScalarFieldEnum: {
+    id: 'id',
+    merchantId: 'merchantId',
+    cityCode: 'cityCode',
+    grossAmountPaise: 'grossAmountPaise',
+    refundedPaise: 'refundedPaise',
+    netAmountPaise: 'netAmountPaise',
+    status: 'status',
+    releasedAt: 'releasedAt',
+    releasedBy: 'releasedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PayoutSettlementScalarFieldEnum = (typeof PayoutSettlementScalarFieldEnum)[keyof typeof PayoutSettlementScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6715,6 +7810,90 @@ export namespace Prisma {
     reconciledAt?: DateTimeWithAggregatesFilter<"ReconciliationRecord"> | Date | string
   }
 
+  export type PayoutSettlementWhereInput = {
+    AND?: PayoutSettlementWhereInput | PayoutSettlementWhereInput[]
+    OR?: PayoutSettlementWhereInput[]
+    NOT?: PayoutSettlementWhereInput | PayoutSettlementWhereInput[]
+    id?: StringFilter<"PayoutSettlement"> | string
+    merchantId?: StringFilter<"PayoutSettlement"> | string
+    cityCode?: StringFilter<"PayoutSettlement"> | string
+    grossAmountPaise?: IntFilter<"PayoutSettlement"> | number
+    refundedPaise?: IntFilter<"PayoutSettlement"> | number
+    netAmountPaise?: IntFilter<"PayoutSettlement"> | number
+    status?: StringFilter<"PayoutSettlement"> | string
+    releasedAt?: DateTimeNullableFilter<"PayoutSettlement"> | Date | string | null
+    releasedBy?: StringNullableFilter<"PayoutSettlement"> | string | null
+    createdAt?: DateTimeFilter<"PayoutSettlement"> | Date | string
+    updatedAt?: DateTimeFilter<"PayoutSettlement"> | Date | string
+  }
+
+  export type PayoutSettlementOrderByWithRelationInput = {
+    id?: SortOrder
+    merchantId?: SortOrder
+    cityCode?: SortOrder
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+    status?: SortOrder
+    releasedAt?: SortOrderInput | SortOrder
+    releasedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayoutSettlementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    merchantId?: string
+    AND?: PayoutSettlementWhereInput | PayoutSettlementWhereInput[]
+    OR?: PayoutSettlementWhereInput[]
+    NOT?: PayoutSettlementWhereInput | PayoutSettlementWhereInput[]
+    cityCode?: StringFilter<"PayoutSettlement"> | string
+    grossAmountPaise?: IntFilter<"PayoutSettlement"> | number
+    refundedPaise?: IntFilter<"PayoutSettlement"> | number
+    netAmountPaise?: IntFilter<"PayoutSettlement"> | number
+    status?: StringFilter<"PayoutSettlement"> | string
+    releasedAt?: DateTimeNullableFilter<"PayoutSettlement"> | Date | string | null
+    releasedBy?: StringNullableFilter<"PayoutSettlement"> | string | null
+    createdAt?: DateTimeFilter<"PayoutSettlement"> | Date | string
+    updatedAt?: DateTimeFilter<"PayoutSettlement"> | Date | string
+  }, "id" | "merchantId">
+
+  export type PayoutSettlementOrderByWithAggregationInput = {
+    id?: SortOrder
+    merchantId?: SortOrder
+    cityCode?: SortOrder
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+    status?: SortOrder
+    releasedAt?: SortOrderInput | SortOrder
+    releasedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PayoutSettlementCountOrderByAggregateInput
+    _avg?: PayoutSettlementAvgOrderByAggregateInput
+    _max?: PayoutSettlementMaxOrderByAggregateInput
+    _min?: PayoutSettlementMinOrderByAggregateInput
+    _sum?: PayoutSettlementSumOrderByAggregateInput
+  }
+
+  export type PayoutSettlementScalarWhereWithAggregatesInput = {
+    AND?: PayoutSettlementScalarWhereWithAggregatesInput | PayoutSettlementScalarWhereWithAggregatesInput[]
+    OR?: PayoutSettlementScalarWhereWithAggregatesInput[]
+    NOT?: PayoutSettlementScalarWhereWithAggregatesInput | PayoutSettlementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayoutSettlement"> | string
+    merchantId?: StringWithAggregatesFilter<"PayoutSettlement"> | string
+    cityCode?: StringWithAggregatesFilter<"PayoutSettlement"> | string
+    grossAmountPaise?: IntWithAggregatesFilter<"PayoutSettlement"> | number
+    refundedPaise?: IntWithAggregatesFilter<"PayoutSettlement"> | number
+    netAmountPaise?: IntWithAggregatesFilter<"PayoutSettlement"> | number
+    status?: StringWithAggregatesFilter<"PayoutSettlement"> | string
+    releasedAt?: DateTimeNullableWithAggregatesFilter<"PayoutSettlement"> | Date | string | null
+    releasedBy?: StringNullableWithAggregatesFilter<"PayoutSettlement"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PayoutSettlement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PayoutSettlement"> | Date | string
+  }
+
   export type PaymentIntentCreateInput = {
     id?: string
     orderId: string
@@ -7118,6 +8297,104 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     reconciledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayoutSettlementCreateInput = {
+    id?: string
+    merchantId: string
+    cityCode?: string
+    grossAmountPaise?: number
+    refundedPaise?: number
+    netAmountPaise?: number
+    status?: string
+    releasedAt?: Date | string | null
+    releasedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayoutSettlementUncheckedCreateInput = {
+    id?: string
+    merchantId: string
+    cityCode?: string
+    grossAmountPaise?: number
+    refundedPaise?: number
+    netAmountPaise?: number
+    status?: string
+    releasedAt?: Date | string | null
+    releasedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayoutSettlementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    merchantId?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    grossAmountPaise?: IntFieldUpdateOperationsInput | number
+    refundedPaise?: IntFieldUpdateOperationsInput | number
+    netAmountPaise?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayoutSettlementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    merchantId?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    grossAmountPaise?: IntFieldUpdateOperationsInput | number
+    refundedPaise?: IntFieldUpdateOperationsInput | number
+    netAmountPaise?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayoutSettlementCreateManyInput = {
+    id?: string
+    merchantId: string
+    cityCode?: string
+    grossAmountPaise?: number
+    refundedPaise?: number
+    netAmountPaise?: number
+    status?: string
+    releasedAt?: Date | string | null
+    releasedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayoutSettlementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    merchantId?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    grossAmountPaise?: IntFieldUpdateOperationsInput | number
+    refundedPaise?: IntFieldUpdateOperationsInput | number
+    netAmountPaise?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayoutSettlementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    merchantId?: StringFieldUpdateOperationsInput | string
+    cityCode?: StringFieldUpdateOperationsInput | string
+    grossAmountPaise?: IntFieldUpdateOperationsInput | number
+    refundedPaise?: IntFieldUpdateOperationsInput | number
+    netAmountPaise?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    releasedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7554,6 +8831,60 @@ export namespace Prisma {
   export type ReconciliationRecordSumOrderByAggregateInput = {
     internalAmountPaise?: SortOrder
     pspAmountPaise?: SortOrder
+  }
+
+  export type PayoutSettlementCountOrderByAggregateInput = {
+    id?: SortOrder
+    merchantId?: SortOrder
+    cityCode?: SortOrder
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+    status?: SortOrder
+    releasedAt?: SortOrder
+    releasedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayoutSettlementAvgOrderByAggregateInput = {
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+  }
+
+  export type PayoutSettlementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    merchantId?: SortOrder
+    cityCode?: SortOrder
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+    status?: SortOrder
+    releasedAt?: SortOrder
+    releasedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayoutSettlementMinOrderByAggregateInput = {
+    id?: SortOrder
+    merchantId?: SortOrder
+    cityCode?: SortOrder
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
+    status?: SortOrder
+    releasedAt?: SortOrder
+    releasedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayoutSettlementSumOrderByAggregateInput = {
+    grossAmountPaise?: SortOrder
+    refundedPaise?: SortOrder
+    netAmountPaise?: SortOrder
   }
 
   export type PaymentCreateNestedOneWithoutIntentInput = {
@@ -8214,6 +9545,10 @@ export namespace Prisma {
      * @deprecated Use ReconciliationRecordDefaultArgs instead
      */
     export type ReconciliationRecordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ReconciliationRecordDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PayoutSettlementDefaultArgs instead
+     */
+    export type PayoutSettlementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PayoutSettlementDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

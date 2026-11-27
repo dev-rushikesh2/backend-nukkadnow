@@ -21,16 +21,22 @@ model NotificationTemplate {
 model NotificationJob {
   id           String            @id @default(uuid())
   recipient    String
+  userId       String?
+  role         String?           @default("ALL") // CUSTOMER, MERCHANT, ALL
+  title        String?
+  message      String?
   channel      String
   templateId   String
   cityCode     String?           @default("GLOBAL") // Municipal target or GLOBAL
   status       String            @default("PENDING")
+  isRead       Boolean           @default(false)
   sentAt       DateTime?
   createdAt    DateTime          @default(now())
   template     NotificationTemplate @relation(fields: [templateId], references: [id])
   attempts     DeliveryAttempt[]
 
   @@index([cityCode, status])
+  @@index([userId, createdAt])
   @@map("notification_jobs")
 }
 
@@ -44,4 +50,17 @@ model DeliveryAttempt {
   job          NotificationJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@map("delivery_attempts")
+}
+
+model PushDeviceToken {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String   @default("CUSTOMER")
+  token     String   @unique
+  platform  String   @default("web")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("push_device_tokens")
 }

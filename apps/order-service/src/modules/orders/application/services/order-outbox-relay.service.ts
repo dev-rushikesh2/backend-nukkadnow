@@ -5,8 +5,9 @@ import { PrismaService } from "../../infrastructure/persistence/prisma/prisma.se
 @Injectable()
 export class OrderOutboxRelayService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new StructuredLogger("order-outbox-relay");
-  private readonly analyticsUrl = process.env.ANALYTICS_SERVICE_URL || "http://localhost:4007";
-  private readonly fulfillmentUrl = process.env.FULFILLMENT_SERVICE_URL || "http://localhost:4005";
+  private readonly analyticsUrl = process.env.ANALYTICS_SERVICE_URL || "http://localhost:4011";
+  private readonly fulfillmentUrl = process.env.FULFILLMENT_SERVICE_URL || "http://localhost:4006";
+  private readonly paymentUrl = process.env.PAYMENT_SERVICE_URL || "http://localhost:4007";
   private timer: NodeJS.Timeout | null = null;
   private isFlushing = false;
 
@@ -64,6 +65,23 @@ export class OrderOutboxRelayService implements OnModuleInit, OnModuleDestroy {
 
   private async dispatchEvent(eventType: string, payload: any): Promise<void> {
     if (eventType === "ORDER_PLACED") {
+      const payRes = await fetch(`${this.paymentUrl}/api/v1/payments/internal/record-order-payment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: payload.orderId,
+          orderNumber: payload.orderNumber,
+          tenantId: payload.tenantId,
+          cityCode: payload.cityCode || "IN-MH-NGP",
+          amountPaise: Number(payload.totalAmountPaise || 0),
+          provider: String(payload.paymentMethod || "UPI").toUpperCase(),
+          paymentStatus: payload.paymentStatus || "PAID",
+        }),
+      });
+      if (!payRes.ok) {
+        throw new Error(`Payment sync HTTP ${payRes.status}`);
+      }
+
       if (payload.fulfillmentType === "STORE_PICKUP") {
         const tokenRes = await fetch(`${this.fulfillmentUrl}/api/v1/fulfillment/tokens/generate`, {
           method: "POST",
@@ -75,6 +93,22 @@ export class OrderOutboxRelayService implements OnModuleInit, OnModuleDestroy {
         });
         if (!tokenRes.ok) {
           throw new Error(`Fulfillment token sync HTTP ${tokenRes.status}`);
+        }
+      } else if (payload.fulfillmentType === "MERCHANT_DELIVERY") {
+        const taskRes = await fetch(`${this.fulfillmentUrl}/api/v1/fulfillment/delivery-tasks/sync`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: payload.orderId,
+            outletId: payload.outletId,
+            tenantId: payload.tenantId,
+            cityCode: payload.cityCode || "IN-MH-NGP",
+            deliveryAddress: payload.deliveryAddress || "",
+            status: "PENDING",
+          }),
+        });
+        if (!taskRes.ok) {
+          throw new Error(`Delivery task sync HTTP ${taskRes.status}`);
         }
       }
 
@@ -96,7 +130,34 @@ export class OrderOutboxRelayService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
+    if (eventType === "ORDER_CANCELLED") {
+      await fetch(`${this.fulfillmentUrl}/api/v1/fulfillment/delivery-tasks/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: payload.orderId,
+          outletId: payload.outletId,
+          tenantId: payload.tenantId,
+          deliveryAddress: "",
+          status: "CANCELLED",
+        }),
+      }).catch(() => {});
+      return;
+    }
+
     if (eventType === "ORDER_COMPLETED") {
+      await fetch(`${this.fulfillmentUrl}/api/v1/fulfillment/delivery-tasks/sync`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: payload.orderId,
+          outletId: payload.outletId,
+          tenantId: payload.tenantId,
+          deliveryAddress: "",
+          status: "DELIVERED",
+        }),
+      }).catch(() => {});
+
       const res = await fetch(`${this.analyticsUrl}/api/v1/analytics/record`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -251,11 +251,15 @@ export class OrdersController {
             payload: JSON.stringify({
               orderId: ord.id,
               orderNumber: ord.orderNumber,
+              customerId: ord.customerId,
               tenantId: ord.tenantId,
               outletId: ord.outletId,
               cityCode: ord.cityCode,
               status: ord.status,
               fulfillmentType: ord.fulfillmentType,
+              paymentStatus: ord.paymentStatus,
+              paymentMethod: body?.paymentMethod || "UPI",
+              deliveryAddress: body?.deliveryAddress || "",
               totalAmountPaise: ord.totalAmountPaise,
             }),
             status: "PENDING",
@@ -545,6 +549,8 @@ export class OrdersController {
             tenantId,
             outletId,
             locality: body?.locality || null,
+            deliveryLat: body?.deliveryLat !== undefined ? Number(body.deliveryLat) : null,
+            deliveryLng: body?.deliveryLng !== undefined ? Number(body.deliveryLng) : null,
             status: "CONFIRMED",
             totalAmountPaise: totalPaise,
             paymentStatus: String(body?.paymentMethod || "").toUpperCase() === "COD" ? "COD_PENDING" : "PAID",
@@ -596,11 +602,15 @@ export class OrdersController {
             payload: JSON.stringify({
               orderId: ord.id,
               orderNumber: ord.orderNumber,
+              customerId: ord.customerId,
               tenantId: ord.tenantId,
               outletId: ord.outletId,
               cityCode: ord.cityCode,
               status: ord.status,
               fulfillmentType: ord.fulfillmentType,
+              paymentStatus: ord.paymentStatus,
+              paymentMethod: body?.paymentMethod || "UPI",
+              deliveryAddress: body?.deliveryAddress || "",
               totalAmountPaise: ord.totalAmountPaise,
             }),
             status: "PENDING",
@@ -636,13 +646,23 @@ export class OrdersController {
   }
 
   @Get(":id")
-  @ApiOperation({ summary: "Get authoritative order status" })
-  async getOrder(@Param("id") id: string) {
+  @ApiOperation({ summary: "Get authoritative order status with customer/tenant isolation check" })
+  async getOrder(
+    @Param("id") id: string,
+    @Headers("x-customer-id") callerCustomerId?: string,
+    @Headers("x-tenant-id") callerTenantId?: string
+  ) {
     const order = await this.prisma.order.findFirst({
       where: { OR: [{ id }, { orderNumber: id }] },
       include: { items: true, events: { orderBy: { occurredAt: "asc" } } },
     });
     if (!order) throw new NotFoundException(`Order '${id}' not found`);
+    if (callerCustomerId && order.customerId !== callerCustomerId) {
+      throw new ForbiddenException("Cross-customer order access forbidden");
+    }
+    if (callerTenantId && order.tenantId !== callerTenantId) {
+      throw new ForbiddenException("Cross-tenant order access forbidden");
+    }
     const firstMeta: any = (order.events?.[0]?.metadata as any) || {};
     const totalAmount = Math.round(order.totalAmountPaise / 100);
     const items = order.items.map((it) => ({
@@ -691,8 +711,12 @@ export class OrdersController {
     @Headers("x-tenant-id") headerTenantId?: string,
     @Req() req?: any
   ) {
-    const callerTenantId = headerTenantId || req?.user?.tenantId;
-    return this.orderService.acceptOrder(id, dto, callerTenantId);
+    return this.updateStatus(
+      id,
+      { status: "PREPARING", prepMinutes: Number(dto?.estimatedMinutes ?? dto?.prepTimeMinutes ?? dto?.prepMinutes ?? 15) || 15 },
+      headerTenantId,
+      req
+    );
   }
 
   @Post(":id/ready")
@@ -703,8 +727,7 @@ export class OrdersController {
     @Headers("x-tenant-id") headerTenantId?: string,
     @Req() req?: any
   ) {
-    const callerTenantId = headerTenantId || req?.user?.tenantId;
-    return this.orderService.markOrderReady(id, callerTenantId);
+    return this.updateStatus(id, { status: "READY" }, headerTenantId, req);
   }
 
   @Patch(":id/status")

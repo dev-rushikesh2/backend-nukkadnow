@@ -179,6 +179,20 @@ exports.Prisma.ReconciliationRecordScalarFieldEnum = {
   reconciledAt: 'reconciledAt'
 };
 
+exports.Prisma.PayoutSettlementScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  cityCode: 'cityCode',
+  grossAmountPaise: 'grossAmountPaise',
+  refundedPaise: 'refundedPaise',
+  netAmountPaise: 'netAmountPaise',
+  status: 'status',
+  releasedAt: 'releasedAt',
+  releasedBy: 'releasedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -210,7 +224,8 @@ exports.Prisma.ModelName = {
   Payment: 'Payment',
   Refund: 'Refund',
   WebhookInbox: 'WebhookInbox',
-  ReconciliationRecord: 'ReconciliationRecord'
+  ReconciliationRecord: 'ReconciliationRecord',
+  PayoutSettlement: 'PayoutSettlement'
 };
 
 /**
