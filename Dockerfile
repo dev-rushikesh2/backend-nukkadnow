@@ -14,6 +14,9 @@ COPY .npmrc package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig
 COPY packages ./packages
 COPY apps ./apps
 
+# Install workspace dependencies and compile shared packages ONCE across all 12 services
+RUN pnpm install --frozen-lockfile && pnpm --filter "./packages/*" build
+
 # ------------------------------------------------------------------------------
 # Builder Stage
 # ------------------------------------------------------------------------------
@@ -21,16 +24,13 @@ FROM base AS builder
 ARG SERVICE_NAME
 ARG SERVICE_PORT=4000
 
-# Install all workspace dependencies cleanly from frozen lockfile
-RUN pnpm install --frozen-lockfile
-
 # Generate Prisma Client if schema exists for this microservice
 RUN if [ -f "./apps/${SERVICE_NAME}/prisma/schema.prisma" ]; then \
       pnpm --filter @nukkadnow/${SERVICE_NAME} prisma:generate; \
     fi
 
-# Build workspace packages and target microservice
-RUN pnpm --filter @nukkadnow/${SERVICE_NAME}... build
+# Build target microservice (shared packages are already compiled in base)
+RUN pnpm --filter @nukkadnow/${SERVICE_NAME} build
 
 # ------------------------------------------------------------------------------
 # Runner Stage
