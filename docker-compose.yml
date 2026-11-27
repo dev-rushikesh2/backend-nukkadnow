@@ -43,10 +43,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=dokploy-network"
-      - "traefik.http.routers.commerce-api-websecure.rule=Host(`api.nukkadnow.logixspire.tech`) || Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-websecure.rule=Host(`api.nukkadnow.logixspire.tech`)"
       - "traefik.http.routers.commerce-api-websecure.entrypoints=websecure"
       - "traefik.http.routers.commerce-api-websecure.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.commerce-api-web.rule=Host(`api.nukkadnow.logixspire.tech`) || Host(`api.rushi.cloud`)"
+      - "traefik.http.routers.commerce-api-web.rule=Host(`api.nukkadnow.logixspire.tech`)"
       - "traefik.http.routers.commerce-api-web.entrypoints=web"
       - "traefik.http.services.commerce-api.loadbalancer.server.port=4000"
     depends_on:
