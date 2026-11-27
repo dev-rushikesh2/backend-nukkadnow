@@ -32,6 +32,7 @@ model MerchantSubscription {
   plan               SubscriptionPlan @relation(fields: [planId], references: [id])
   invoices           Invoice[]
 
+  @@index([merchantId])
   @@index([cityCode, status])
   @@map("merchant_subscriptions")
 }
