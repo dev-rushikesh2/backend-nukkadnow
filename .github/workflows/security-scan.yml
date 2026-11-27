@@ -18,6 +18,12 @@ jobs:
         with:
           version: 9.12.3
 
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
       - name: Audit Dependencies
         run: pnpm audit --prod
 

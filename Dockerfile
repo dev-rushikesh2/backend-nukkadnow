@@ -3,15 +3,16 @@
 # Fast and lean builds via topological pnpm compilation and layer caching
 # ==============================================================================
 
-FROM node:20.18-alpine AS base
+FROM node:24-alpine AS base
 WORKDIR /app
 RUN npm install -g pnpm@9.12.3
 
-# Copy root workspace manifests
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig.base.json ./
+# Copy root workspace manifests and engine/npm config
+COPY .npmrc package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig.base.json ./
 
-# Copy shared packages
+# Copy shared packages and all workspace service manifests/sources
 COPY packages ./packages
+COPY apps ./apps
 
 # ------------------------------------------------------------------------------
 # Builder Stage
@@ -20,10 +21,7 @@ FROM base AS builder
 ARG SERVICE_NAME
 ARG SERVICE_PORT=4000
 
-# Copy target service directory
-COPY apps/${SERVICE_NAME} ./apps/${SERVICE_NAME}
-
-# Install dependencies for target service and workspace packages
+# Install all workspace dependencies cleanly from frozen lockfile
 RUN pnpm install --frozen-lockfile
 
 # Generate Prisma Client if schema exists for this microservice
@@ -37,7 +35,7 @@ RUN pnpm --filter @nukkadnow/${SERVICE_NAME}... build
 # ------------------------------------------------------------------------------
 # Runner Stage
 # ------------------------------------------------------------------------------
-FROM node:20.18-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
