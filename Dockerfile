@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apk add --no-cache openssl && npm install -g pnpm@9.12.3
 
 # Copy root workspace manifests and engine/npm config
-COPY .npmrc package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig.base.json ./
+COPY .npmrc package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig.base.json nest-cli.json* ./
 
 # Copy shared packages and all workspace service manifests/sources
 COPY packages ./packages

@@ -1,14 +1,12 @@
 FROM node:24-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache openssl && npm install -g pnpm@9.12.3
-COPY .npmrc package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json tsconfig.base.json ./
+COPY .npmrc package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json tsconfig.base.json nest-cli.json* ./
 COPY packages ./packages
 COPY apps ./apps
 RUN pnpm install --frozen-lockfile && pnpm --filter "./packages/*" build
 
-FROM node:24-alpine AS builder
-WORKDIR /app
-COPY --from=base /app /app
+FROM base AS builder
 RUN if [ -f "./apps/catalog-service/prisma/schema.prisma" ]; then \
       pnpm --filter @nukkadnow/catalog-service prisma:generate; \
     fi
