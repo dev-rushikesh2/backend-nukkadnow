@@ -63,14 +63,26 @@ async function bootstrap() {
         "https://api.nukkadnow.logixspire.tech",
         "http://localhost:3000",
         "http://localhost:4200",
+        "http://localhost:4201",
+        "http://localhost:4300",
+        "http://localhost:4400",
         "http://localhost:8100",
         "capacitor://localhost",
+        "https://localhost",
         "http://localhost",
       ];
 
   app.enableCors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
+      const isLocalhostOrigin =
+        typeof origin === "string" &&
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        isLocalhostOrigin ||
+        process.env.NODE_ENV !== "production"
+      ) {
         callback(null, true);
       } else {
         callback(new Error(`Origin ${origin} not allowed by CORS policy`));
