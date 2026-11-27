@@ -34,6 +34,7 @@ services:
       - JWT_SECRET=local-development-secret-must-be-min-32-chars-long!
       - JWT_ISSUER=https://auth.nukkadnow.internal
       - JWT_AUDIENCE=nukkadnow-api
+      - OTP_HMAC_SECRET=nukkadnow-prod-otp-hmac-secret-key-min-32-chars
       - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
       - REDIS_URL=redis://redis:6379
     networks:
@@ -79,6 +80,7 @@ services:
       - JWT_SECRET=local-development-secret-must-be-min-32-chars-long!
       - JWT_ISSUER=https://auth.nukkadnow.internal
       - JWT_AUDIENCE=nukkadnow-api
+      - OTP_HMAC_SECRET=nukkadnow-prod-otp-hmac-secret-key-min-32-chars
       - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
     networks:
       - commerce-internal
@@ -229,6 +231,7 @@ services:
       - DATABASE_URL=postgresql://root:root@postgres:5432/fulfillment_db?schema=public
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - QR_SIGNING_SECRET=nukkadnow-prod-qr-signing-secret-key-32chars
       - INTERNAL_SERVICE_SECRET=internal-service-hmac-mesh-secret-key-32chars
     networks:
       - commerce-internal

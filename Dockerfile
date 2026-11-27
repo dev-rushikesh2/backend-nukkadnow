@@ -5,7 +5,7 @@
 
 FROM node:24-alpine AS base
 WORKDIR /app
-RUN npm install -g pnpm@9.12.3
+RUN apk add --no-cache openssl && npm install -g pnpm@9.12.3
 
 # Copy root workspace manifests and engine/npm config
 COPY .npmrc package.json pnpm-lock.yaml* pnpm-workspace.yaml turbo.json tsconfig.base.json ./
@@ -44,7 +44,7 @@ ARG SERVICE_PORT=4000
 ENV SERVICE_NAME=${SERVICE_NAME}
 ENV PORT=${SERVICE_PORT}
 
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
+RUN apk add --no-cache openssl && addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
 
 # Copy the monorepo root node_modules and shared packages
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
@@ -60,4 +60,4 @@ USER nestjs
 EXPOSE ${SERVICE_PORT}
 
 # Run prisma db push without accept-data-loss if schema exists, then start service with fallback to all common dist layouts
-CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ../../node_modules/.bin/prisma db push --skip-generate || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]
+CMD ["sh", "-c", "if [ -f prisma/schema.prisma ]; then ./node_modules/.bin/prisma db push --skip-generate || true; fi; if [ -f dist/apps/${SERVICE_NAME}/src/main.js ]; then exec node dist/apps/${SERVICE_NAME}/src/main.js; elif [ -f dist/src/main.js ]; then exec node dist/src/main.js; else exec node dist/main.js; fi"]
