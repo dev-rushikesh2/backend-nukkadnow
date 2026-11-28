@@ -24,6 +24,16 @@ export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
  */
 export type ProductVariant = $Result.DefaultSelection<Prisma.$ProductVariantPayload>
 /**
+ * Model MasterProductTemplate
+ * 
+ */
+export type MasterProductTemplate = $Result.DefaultSelection<Prisma.$MasterProductTemplatePayload>
+/**
+ * Model MasterVariantTemplate
+ * 
+ */
+export type MasterVariantTemplate = $Result.DefaultSelection<Prisma.$MasterVariantTemplatePayload>
+/**
  * Model StockBalance
  * 
  */
@@ -186,6 +196,26 @@ export class PrismaClient<
     * ```
     */
   get productVariant(): Prisma.ProductVariantDelegate<ExtArgs>;
+
+  /**
+   * `prisma.masterProductTemplate`: Exposes CRUD operations for the **MasterProductTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MasterProductTemplates
+    * const masterProductTemplates = await prisma.masterProductTemplate.findMany()
+    * ```
+    */
+  get masterProductTemplate(): Prisma.MasterProductTemplateDelegate<ExtArgs>;
+
+  /**
+   * `prisma.masterVariantTemplate`: Exposes CRUD operations for the **MasterVariantTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MasterVariantTemplates
+    * const masterVariantTemplates = await prisma.masterVariantTemplate.findMany()
+    * ```
+    */
+  get masterVariantTemplate(): Prisma.MasterVariantTemplateDelegate<ExtArgs>;
 
   /**
    * `prisma.stockBalance`: Exposes CRUD operations for the **StockBalance** model.
@@ -669,6 +699,8 @@ export namespace Prisma {
   export const ModelName: {
     Product: 'Product',
     ProductVariant: 'ProductVariant',
+    MasterProductTemplate: 'MasterProductTemplate',
+    MasterVariantTemplate: 'MasterVariantTemplate',
     StockBalance: 'StockBalance',
     StockMovement: 'StockMovement',
     StockReservation: 'StockReservation',
@@ -688,7 +720,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "product" | "productVariant" | "stockBalance" | "stockMovement" | "stockReservation" | "adminPriceCapRule"
+      modelProps: "product" | "productVariant" | "masterProductTemplate" | "masterVariantTemplate" | "stockBalance" | "stockMovement" | "stockReservation" | "adminPriceCapRule"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -829,6 +861,146 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductVariantCountArgs<ExtArgs>
             result: $Utils.Optional<ProductVariantCountAggregateOutputType> | number
+          }
+        }
+      }
+      MasterProductTemplate: {
+        payload: Prisma.$MasterProductTemplatePayload<ExtArgs>
+        fields: Prisma.MasterProductTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MasterProductTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MasterProductTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.MasterProductTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MasterProductTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.MasterProductTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.MasterProductTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.MasterProductTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MasterProductTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.MasterProductTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          update: {
+            args: Prisma.MasterProductTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.MasterProductTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MasterProductTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MasterProductTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterProductTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.MasterProductTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMasterProductTemplate>
+          }
+          groupBy: {
+            args: Prisma.MasterProductTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MasterProductTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MasterProductTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<MasterProductTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      MasterVariantTemplate: {
+        payload: Prisma.$MasterVariantTemplatePayload<ExtArgs>
+        fields: Prisma.MasterVariantTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MasterVariantTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MasterVariantTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.MasterVariantTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MasterVariantTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.MasterVariantTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.MasterVariantTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.MasterVariantTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MasterVariantTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.MasterVariantTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          update: {
+            args: Prisma.MasterVariantTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.MasterVariantTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MasterVariantTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MasterVariantTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MasterVariantTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.MasterVariantTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMasterVariantTemplate>
+          }
+          groupBy: {
+            args: Prisma.MasterVariantTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MasterVariantTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MasterVariantTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<MasterVariantTemplateCountAggregateOutputType> | number
           }
         }
       }
@@ -1340,6 +1512,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type MasterProductTemplateCountOutputType
+   */
+
+  export type MasterProductTemplateCountOutputType = {
+    variants: number
+  }
+
+  export type MasterProductTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variants?: boolean | MasterProductTemplateCountOutputTypeCountVariantsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MasterProductTemplateCountOutputType without action
+   */
+  export type MasterProductTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplateCountOutputType
+     */
+    select?: MasterProductTemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MasterProductTemplateCountOutputType without action
+   */
+  export type MasterProductTemplateCountOutputTypeCountVariantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MasterVariantTemplateWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -1357,10 +1560,12 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     outletId: string | null
+    masterProductId: string | null
     name: string | null
     description: string | null
     category: string | null
     subCategory: string | null
+    imageUrl: string | null
     isAvailable: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1370,10 +1575,12 @@ export namespace Prisma {
     id: string | null
     tenantId: string | null
     outletId: string | null
+    masterProductId: string | null
     name: string | null
     description: string | null
     category: string | null
     subCategory: string | null
+    imageUrl: string | null
     isAvailable: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1383,10 +1590,12 @@ export namespace Prisma {
     id: number
     tenantId: number
     outletId: number
+    masterProductId: number
     name: number
     description: number
     category: number
     subCategory: number
+    imageUrl: number
     isAvailable: number
     createdAt: number
     updatedAt: number
@@ -1398,10 +1607,12 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     outletId?: true
+    masterProductId?: true
     name?: true
     description?: true
     category?: true
     subCategory?: true
+    imageUrl?: true
     isAvailable?: true
     createdAt?: true
     updatedAt?: true
@@ -1411,10 +1622,12 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     outletId?: true
+    masterProductId?: true
     name?: true
     description?: true
     category?: true
     subCategory?: true
+    imageUrl?: true
     isAvailable?: true
     createdAt?: true
     updatedAt?: true
@@ -1424,10 +1637,12 @@ export namespace Prisma {
     id?: true
     tenantId?: true
     outletId?: true
+    masterProductId?: true
     name?: true
     description?: true
     category?: true
     subCategory?: true
+    imageUrl?: true
     isAvailable?: true
     createdAt?: true
     updatedAt?: true
@@ -1510,10 +1725,12 @@ export namespace Prisma {
     id: string
     tenantId: string
     outletId: string
+    masterProductId: string | null
     name: string
     description: string | null
     category: string
     subCategory: string | null
+    imageUrl: string | null
     isAvailable: boolean
     createdAt: Date
     updatedAt: Date
@@ -1540,10 +1757,12 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     outletId?: boolean
+    masterProductId?: boolean
     name?: boolean
     description?: boolean
     category?: boolean
     subCategory?: boolean
+    imageUrl?: boolean
     isAvailable?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1555,10 +1774,12 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     outletId?: boolean
+    masterProductId?: boolean
     name?: boolean
     description?: boolean
     category?: boolean
     subCategory?: boolean
+    imageUrl?: boolean
     isAvailable?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1568,10 +1789,12 @@ export namespace Prisma {
     id?: boolean
     tenantId?: boolean
     outletId?: boolean
+    masterProductId?: boolean
     name?: boolean
     description?: boolean
     category?: boolean
     subCategory?: boolean
+    imageUrl?: boolean
     isAvailable?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1592,10 +1815,12 @@ export namespace Prisma {
       id: string
       tenantId: string
       outletId: string
+      masterProductId: string | null
       name: string
       description: string | null
       category: string
       subCategory: string | null
+      imageUrl: string | null
       isAvailable: boolean
       createdAt: Date
       updatedAt: Date
@@ -1996,10 +2221,12 @@ export namespace Prisma {
     readonly id: FieldRef<"Product", 'String'>
     readonly tenantId: FieldRef<"Product", 'String'>
     readonly outletId: FieldRef<"Product", 'String'>
+    readonly masterProductId: FieldRef<"Product", 'String'>
     readonly name: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
     readonly category: FieldRef<"Product", 'String'>
     readonly subCategory: FieldRef<"Product", 'String'>
+    readonly imageUrl: FieldRef<"Product", 'String'>
     readonly isAvailable: FieldRef<"Product", 'Boolean'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
@@ -2378,6 +2605,7 @@ export namespace Prisma {
   export type ProductVariantMinAggregateOutputType = {
     id: string | null
     productId: string | null
+    masterVariantId: string | null
     tenantId: string | null
     outletId: string | null
     name: string | null
@@ -2394,6 +2622,7 @@ export namespace Prisma {
   export type ProductVariantMaxAggregateOutputType = {
     id: string | null
     productId: string | null
+    masterVariantId: string | null
     tenantId: string | null
     outletId: string | null
     name: string | null
@@ -2410,6 +2639,7 @@ export namespace Prisma {
   export type ProductVariantCountAggregateOutputType = {
     id: number
     productId: number
+    masterVariantId: number
     tenantId: number
     outletId: number
     name: number
@@ -2440,6 +2670,7 @@ export namespace Prisma {
   export type ProductVariantMinAggregateInputType = {
     id?: true
     productId?: true
+    masterVariantId?: true
     tenantId?: true
     outletId?: true
     name?: true
@@ -2456,6 +2687,7 @@ export namespace Prisma {
   export type ProductVariantMaxAggregateInputType = {
     id?: true
     productId?: true
+    masterVariantId?: true
     tenantId?: true
     outletId?: true
     name?: true
@@ -2472,6 +2704,7 @@ export namespace Prisma {
   export type ProductVariantCountAggregateInputType = {
     id?: true
     productId?: true
+    masterVariantId?: true
     tenantId?: true
     outletId?: true
     name?: true
@@ -2575,6 +2808,7 @@ export namespace Prisma {
   export type ProductVariantGroupByOutputType = {
     id: string
     productId: string
+    masterVariantId: string | null
     tenantId: string | null
     outletId: string | null
     name: string
@@ -2610,6 +2844,7 @@ export namespace Prisma {
   export type ProductVariantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
+    masterVariantId?: boolean
     tenantId?: boolean
     outletId?: boolean
     name?: boolean
@@ -2631,6 +2866,7 @@ export namespace Prisma {
   export type ProductVariantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     productId?: boolean
+    masterVariantId?: boolean
     tenantId?: boolean
     outletId?: boolean
     name?: boolean
@@ -2648,6 +2884,7 @@ export namespace Prisma {
   export type ProductVariantSelectScalar = {
     id?: boolean
     productId?: boolean
+    masterVariantId?: boolean
     tenantId?: boolean
     outletId?: boolean
     name?: boolean
@@ -2683,6 +2920,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
+      masterVariantId: string | null
       tenantId: string | null
       outletId: string | null
       name: string
@@ -3093,6 +3331,7 @@ export namespace Prisma {
   interface ProductVariantFieldRefs {
     readonly id: FieldRef<"ProductVariant", 'String'>
     readonly productId: FieldRef<"ProductVariant", 'String'>
+    readonly masterVariantId: FieldRef<"ProductVariant", 'String'>
     readonly tenantId: FieldRef<"ProductVariant", 'String'>
     readonly outletId: FieldRef<"ProductVariant", 'String'>
     readonly name: FieldRef<"ProductVariant", 'String'>
@@ -3488,6 +3727,2151 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProductVariantInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MasterProductTemplate
+   */
+
+  export type AggregateMasterProductTemplate = {
+    _count: MasterProductTemplateCountAggregateOutputType | null
+    _avg: MasterProductTemplateAvgAggregateOutputType | null
+    _sum: MasterProductTemplateSumAggregateOutputType | null
+    _min: MasterProductTemplateMinAggregateOutputType | null
+    _max: MasterProductTemplateMaxAggregateOutputType | null
+  }
+
+  export type MasterProductTemplateAvgAggregateOutputType = {
+    gstPercent: number | null
+    sortOrder: number | null
+  }
+
+  export type MasterProductTemplateSumAggregateOutputType = {
+    gstPercent: number | null
+    sortOrder: number | null
+  }
+
+  export type MasterProductTemplateMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    subCategory: string | null
+    gstPercent: number | null
+    imageUrl: string | null
+    emoji: string | null
+    isActive: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MasterProductTemplateMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    subCategory: string | null
+    gstPercent: number | null
+    imageUrl: string | null
+    emoji: string | null
+    isActive: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MasterProductTemplateCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    storeTypes: number
+    category: number
+    subCategory: number
+    searchAliases: number
+    gstPercent: number
+    imageUrl: number
+    emoji: number
+    isActive: number
+    sortOrder: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MasterProductTemplateAvgAggregateInputType = {
+    gstPercent?: true
+    sortOrder?: true
+  }
+
+  export type MasterProductTemplateSumAggregateInputType = {
+    gstPercent?: true
+    sortOrder?: true
+  }
+
+  export type MasterProductTemplateMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    category?: true
+    subCategory?: true
+    gstPercent?: true
+    imageUrl?: true
+    emoji?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MasterProductTemplateMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    category?: true
+    subCategory?: true
+    gstPercent?: true
+    imageUrl?: true
+    emoji?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MasterProductTemplateCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    storeTypes?: true
+    category?: true
+    subCategory?: true
+    searchAliases?: true
+    gstPercent?: true
+    imageUrl?: true
+    emoji?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MasterProductTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterProductTemplate to aggregate.
+     */
+    where?: MasterProductTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterProductTemplates to fetch.
+     */
+    orderBy?: MasterProductTemplateOrderByWithRelationInput | MasterProductTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MasterProductTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterProductTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterProductTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MasterProductTemplates
+    **/
+    _count?: true | MasterProductTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MasterProductTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MasterProductTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MasterProductTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MasterProductTemplateMaxAggregateInputType
+  }
+
+  export type GetMasterProductTemplateAggregateType<T extends MasterProductTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateMasterProductTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMasterProductTemplate[P]>
+      : GetScalarType<T[P], AggregateMasterProductTemplate[P]>
+  }
+
+
+
+
+  export type MasterProductTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MasterProductTemplateWhereInput
+    orderBy?: MasterProductTemplateOrderByWithAggregationInput | MasterProductTemplateOrderByWithAggregationInput[]
+    by: MasterProductTemplateScalarFieldEnum[] | MasterProductTemplateScalarFieldEnum
+    having?: MasterProductTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MasterProductTemplateCountAggregateInputType | true
+    _avg?: MasterProductTemplateAvgAggregateInputType
+    _sum?: MasterProductTemplateSumAggregateInputType
+    _min?: MasterProductTemplateMinAggregateInputType
+    _max?: MasterProductTemplateMaxAggregateInputType
+  }
+
+  export type MasterProductTemplateGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    description: string | null
+    storeTypes: string[]
+    category: string
+    subCategory: string | null
+    searchAliases: string[]
+    gstPercent: number
+    imageUrl: string | null
+    emoji: string | null
+    isActive: boolean
+    sortOrder: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MasterProductTemplateCountAggregateOutputType | null
+    _avg: MasterProductTemplateAvgAggregateOutputType | null
+    _sum: MasterProductTemplateSumAggregateOutputType | null
+    _min: MasterProductTemplateMinAggregateOutputType | null
+    _max: MasterProductTemplateMaxAggregateOutputType | null
+  }
+
+  type GetMasterProductTemplateGroupByPayload<T extends MasterProductTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MasterProductTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MasterProductTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MasterProductTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], MasterProductTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MasterProductTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    storeTypes?: boolean
+    category?: boolean
+    subCategory?: boolean
+    searchAliases?: boolean
+    gstPercent?: boolean
+    imageUrl?: boolean
+    emoji?: boolean
+    isActive?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    variants?: boolean | MasterProductTemplate$variantsArgs<ExtArgs>
+    _count?: boolean | MasterProductTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["masterProductTemplate"]>
+
+  export type MasterProductTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    storeTypes?: boolean
+    category?: boolean
+    subCategory?: boolean
+    searchAliases?: boolean
+    gstPercent?: boolean
+    imageUrl?: boolean
+    emoji?: boolean
+    isActive?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["masterProductTemplate"]>
+
+  export type MasterProductTemplateSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    storeTypes?: boolean
+    category?: boolean
+    subCategory?: boolean
+    searchAliases?: boolean
+    gstPercent?: boolean
+    imageUrl?: boolean
+    emoji?: boolean
+    isActive?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MasterProductTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variants?: boolean | MasterProductTemplate$variantsArgs<ExtArgs>
+    _count?: boolean | MasterProductTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MasterProductTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $MasterProductTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MasterProductTemplate"
+    objects: {
+      variants: Prisma.$MasterVariantTemplatePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      description: string | null
+      storeTypes: string[]
+      category: string
+      subCategory: string | null
+      searchAliases: string[]
+      gstPercent: number
+      imageUrl: string | null
+      emoji: string | null
+      isActive: boolean
+      sortOrder: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["masterProductTemplate"]>
+    composites: {}
+  }
+
+  type MasterProductTemplateGetPayload<S extends boolean | null | undefined | MasterProductTemplateDefaultArgs> = $Result.GetResult<Prisma.$MasterProductTemplatePayload, S>
+
+  type MasterProductTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MasterProductTemplateFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MasterProductTemplateCountAggregateInputType | true
+    }
+
+  export interface MasterProductTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MasterProductTemplate'], meta: { name: 'MasterProductTemplate' } }
+    /**
+     * Find zero or one MasterProductTemplate that matches the filter.
+     * @param {MasterProductTemplateFindUniqueArgs} args - Arguments to find a MasterProductTemplate
+     * @example
+     * // Get one MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MasterProductTemplateFindUniqueArgs>(args: SelectSubset<T, MasterProductTemplateFindUniqueArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one MasterProductTemplate that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MasterProductTemplateFindUniqueOrThrowArgs} args - Arguments to find a MasterProductTemplate
+     * @example
+     * // Get one MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MasterProductTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, MasterProductTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first MasterProductTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateFindFirstArgs} args - Arguments to find a MasterProductTemplate
+     * @example
+     * // Get one MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MasterProductTemplateFindFirstArgs>(args?: SelectSubset<T, MasterProductTemplateFindFirstArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first MasterProductTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateFindFirstOrThrowArgs} args - Arguments to find a MasterProductTemplate
+     * @example
+     * // Get one MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MasterProductTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, MasterProductTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more MasterProductTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MasterProductTemplates
+     * const masterProductTemplates = await prisma.masterProductTemplate.findMany()
+     * 
+     * // Get first 10 MasterProductTemplates
+     * const masterProductTemplates = await prisma.masterProductTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const masterProductTemplateWithIdOnly = await prisma.masterProductTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MasterProductTemplateFindManyArgs>(args?: SelectSubset<T, MasterProductTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a MasterProductTemplate.
+     * @param {MasterProductTemplateCreateArgs} args - Arguments to create a MasterProductTemplate.
+     * @example
+     * // Create one MasterProductTemplate
+     * const MasterProductTemplate = await prisma.masterProductTemplate.create({
+     *   data: {
+     *     // ... data to create a MasterProductTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends MasterProductTemplateCreateArgs>(args: SelectSubset<T, MasterProductTemplateCreateArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many MasterProductTemplates.
+     * @param {MasterProductTemplateCreateManyArgs} args - Arguments to create many MasterProductTemplates.
+     * @example
+     * // Create many MasterProductTemplates
+     * const masterProductTemplate = await prisma.masterProductTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MasterProductTemplateCreateManyArgs>(args?: SelectSubset<T, MasterProductTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MasterProductTemplates and returns the data saved in the database.
+     * @param {MasterProductTemplateCreateManyAndReturnArgs} args - Arguments to create many MasterProductTemplates.
+     * @example
+     * // Create many MasterProductTemplates
+     * const masterProductTemplate = await prisma.masterProductTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MasterProductTemplates and only return the `id`
+     * const masterProductTemplateWithIdOnly = await prisma.masterProductTemplate.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MasterProductTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, MasterProductTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a MasterProductTemplate.
+     * @param {MasterProductTemplateDeleteArgs} args - Arguments to delete one MasterProductTemplate.
+     * @example
+     * // Delete one MasterProductTemplate
+     * const MasterProductTemplate = await prisma.masterProductTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one MasterProductTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MasterProductTemplateDeleteArgs>(args: SelectSubset<T, MasterProductTemplateDeleteArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one MasterProductTemplate.
+     * @param {MasterProductTemplateUpdateArgs} args - Arguments to update one MasterProductTemplate.
+     * @example
+     * // Update one MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MasterProductTemplateUpdateArgs>(args: SelectSubset<T, MasterProductTemplateUpdateArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more MasterProductTemplates.
+     * @param {MasterProductTemplateDeleteManyArgs} args - Arguments to filter MasterProductTemplates to delete.
+     * @example
+     * // Delete a few MasterProductTemplates
+     * const { count } = await prisma.masterProductTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MasterProductTemplateDeleteManyArgs>(args?: SelectSubset<T, MasterProductTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MasterProductTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MasterProductTemplates
+     * const masterProductTemplate = await prisma.masterProductTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MasterProductTemplateUpdateManyArgs>(args: SelectSubset<T, MasterProductTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MasterProductTemplate.
+     * @param {MasterProductTemplateUpsertArgs} args - Arguments to update or create a MasterProductTemplate.
+     * @example
+     * // Update or create a MasterProductTemplate
+     * const masterProductTemplate = await prisma.masterProductTemplate.upsert({
+     *   create: {
+     *     // ... data to create a MasterProductTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MasterProductTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MasterProductTemplateUpsertArgs>(args: SelectSubset<T, MasterProductTemplateUpsertArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of MasterProductTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateCountArgs} args - Arguments to filter MasterProductTemplates to count.
+     * @example
+     * // Count the number of MasterProductTemplates
+     * const count = await prisma.masterProductTemplate.count({
+     *   where: {
+     *     // ... the filter for the MasterProductTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends MasterProductTemplateCountArgs>(
+      args?: Subset<T, MasterProductTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MasterProductTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MasterProductTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MasterProductTemplateAggregateArgs>(args: Subset<T, MasterProductTemplateAggregateArgs>): Prisma.PrismaPromise<GetMasterProductTemplateAggregateType<T>>
+
+    /**
+     * Group by MasterProductTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterProductTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MasterProductTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MasterProductTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: MasterProductTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MasterProductTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMasterProductTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MasterProductTemplate model
+   */
+  readonly fields: MasterProductTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MasterProductTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MasterProductTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    variants<T extends MasterProductTemplate$variantsArgs<ExtArgs> = {}>(args?: Subset<T, MasterProductTemplate$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findMany"> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MasterProductTemplate model
+   */ 
+  interface MasterProductTemplateFieldRefs {
+    readonly id: FieldRef<"MasterProductTemplate", 'String'>
+    readonly code: FieldRef<"MasterProductTemplate", 'String'>
+    readonly name: FieldRef<"MasterProductTemplate", 'String'>
+    readonly description: FieldRef<"MasterProductTemplate", 'String'>
+    readonly storeTypes: FieldRef<"MasterProductTemplate", 'String[]'>
+    readonly category: FieldRef<"MasterProductTemplate", 'String'>
+    readonly subCategory: FieldRef<"MasterProductTemplate", 'String'>
+    readonly searchAliases: FieldRef<"MasterProductTemplate", 'String[]'>
+    readonly gstPercent: FieldRef<"MasterProductTemplate", 'Float'>
+    readonly imageUrl: FieldRef<"MasterProductTemplate", 'String'>
+    readonly emoji: FieldRef<"MasterProductTemplate", 'String'>
+    readonly isActive: FieldRef<"MasterProductTemplate", 'Boolean'>
+    readonly sortOrder: FieldRef<"MasterProductTemplate", 'Int'>
+    readonly createdAt: FieldRef<"MasterProductTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"MasterProductTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MasterProductTemplate findUnique
+   */
+  export type MasterProductTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterProductTemplate to fetch.
+     */
+    where: MasterProductTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterProductTemplate findUniqueOrThrow
+   */
+  export type MasterProductTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterProductTemplate to fetch.
+     */
+    where: MasterProductTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterProductTemplate findFirst
+   */
+  export type MasterProductTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterProductTemplate to fetch.
+     */
+    where?: MasterProductTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterProductTemplates to fetch.
+     */
+    orderBy?: MasterProductTemplateOrderByWithRelationInput | MasterProductTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterProductTemplates.
+     */
+    cursor?: MasterProductTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterProductTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterProductTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterProductTemplates.
+     */
+    distinct?: MasterProductTemplateScalarFieldEnum | MasterProductTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterProductTemplate findFirstOrThrow
+   */
+  export type MasterProductTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterProductTemplate to fetch.
+     */
+    where?: MasterProductTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterProductTemplates to fetch.
+     */
+    orderBy?: MasterProductTemplateOrderByWithRelationInput | MasterProductTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterProductTemplates.
+     */
+    cursor?: MasterProductTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterProductTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterProductTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterProductTemplates.
+     */
+    distinct?: MasterProductTemplateScalarFieldEnum | MasterProductTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterProductTemplate findMany
+   */
+  export type MasterProductTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterProductTemplates to fetch.
+     */
+    where?: MasterProductTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterProductTemplates to fetch.
+     */
+    orderBy?: MasterProductTemplateOrderByWithRelationInput | MasterProductTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MasterProductTemplates.
+     */
+    cursor?: MasterProductTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterProductTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterProductTemplates.
+     */
+    skip?: number
+    distinct?: MasterProductTemplateScalarFieldEnum | MasterProductTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterProductTemplate create
+   */
+  export type MasterProductTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MasterProductTemplate.
+     */
+    data: XOR<MasterProductTemplateCreateInput, MasterProductTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * MasterProductTemplate createMany
+   */
+  export type MasterProductTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MasterProductTemplates.
+     */
+    data: MasterProductTemplateCreateManyInput | MasterProductTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MasterProductTemplate createManyAndReturn
+   */
+  export type MasterProductTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many MasterProductTemplates.
+     */
+    data: MasterProductTemplateCreateManyInput | MasterProductTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MasterProductTemplate update
+   */
+  export type MasterProductTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MasterProductTemplate.
+     */
+    data: XOR<MasterProductTemplateUpdateInput, MasterProductTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which MasterProductTemplate to update.
+     */
+    where: MasterProductTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterProductTemplate updateMany
+   */
+  export type MasterProductTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MasterProductTemplates.
+     */
+    data: XOR<MasterProductTemplateUpdateManyMutationInput, MasterProductTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which MasterProductTemplates to update
+     */
+    where?: MasterProductTemplateWhereInput
+  }
+
+  /**
+   * MasterProductTemplate upsert
+   */
+  export type MasterProductTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MasterProductTemplate to update in case it exists.
+     */
+    where: MasterProductTemplateWhereUniqueInput
+    /**
+     * In case the MasterProductTemplate found by the `where` argument doesn't exist, create a new MasterProductTemplate with this data.
+     */
+    create: XOR<MasterProductTemplateCreateInput, MasterProductTemplateUncheckedCreateInput>
+    /**
+     * In case the MasterProductTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MasterProductTemplateUpdateInput, MasterProductTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * MasterProductTemplate delete
+   */
+  export type MasterProductTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which MasterProductTemplate to delete.
+     */
+    where: MasterProductTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterProductTemplate deleteMany
+   */
+  export type MasterProductTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterProductTemplates to delete
+     */
+    where?: MasterProductTemplateWhereInput
+  }
+
+  /**
+   * MasterProductTemplate.variants
+   */
+  export type MasterProductTemplate$variantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    where?: MasterVariantTemplateWhereInput
+    orderBy?: MasterVariantTemplateOrderByWithRelationInput | MasterVariantTemplateOrderByWithRelationInput[]
+    cursor?: MasterVariantTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MasterVariantTemplateScalarFieldEnum | MasterVariantTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterProductTemplate without action
+   */
+  export type MasterProductTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterProductTemplate
+     */
+    select?: MasterProductTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterProductTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MasterVariantTemplate
+   */
+
+  export type AggregateMasterVariantTemplate = {
+    _count: MasterVariantTemplateCountAggregateOutputType | null
+    _avg: MasterVariantTemplateAvgAggregateOutputType | null
+    _sum: MasterVariantTemplateSumAggregateOutputType | null
+    _min: MasterVariantTemplateMinAggregateOutputType | null
+    _max: MasterVariantTemplateMaxAggregateOutputType | null
+  }
+
+  export type MasterVariantTemplateAvgAggregateOutputType = {
+    suggestedPricePaise: number | null
+    mrpPaise: number | null
+    defaultStock: number | null
+  }
+
+  export type MasterVariantTemplateSumAggregateOutputType = {
+    suggestedPricePaise: number | null
+    mrpPaise: number | null
+    defaultStock: number | null
+  }
+
+  export type MasterVariantTemplateMinAggregateOutputType = {
+    id: string | null
+    templateId: string | null
+    name: string | null
+    skuPrefix: string | null
+    barcode: string | null
+    suggestedPricePaise: number | null
+    mrpPaise: number | null
+    defaultStock: number | null
+    unitLabel: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MasterVariantTemplateMaxAggregateOutputType = {
+    id: string | null
+    templateId: string | null
+    name: string | null
+    skuPrefix: string | null
+    barcode: string | null
+    suggestedPricePaise: number | null
+    mrpPaise: number | null
+    defaultStock: number | null
+    unitLabel: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MasterVariantTemplateCountAggregateOutputType = {
+    id: number
+    templateId: number
+    name: number
+    skuPrefix: number
+    barcode: number
+    suggestedPricePaise: number
+    mrpPaise: number
+    defaultStock: number
+    unitLabel: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MasterVariantTemplateAvgAggregateInputType = {
+    suggestedPricePaise?: true
+    mrpPaise?: true
+    defaultStock?: true
+  }
+
+  export type MasterVariantTemplateSumAggregateInputType = {
+    suggestedPricePaise?: true
+    mrpPaise?: true
+    defaultStock?: true
+  }
+
+  export type MasterVariantTemplateMinAggregateInputType = {
+    id?: true
+    templateId?: true
+    name?: true
+    skuPrefix?: true
+    barcode?: true
+    suggestedPricePaise?: true
+    mrpPaise?: true
+    defaultStock?: true
+    unitLabel?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MasterVariantTemplateMaxAggregateInputType = {
+    id?: true
+    templateId?: true
+    name?: true
+    skuPrefix?: true
+    barcode?: true
+    suggestedPricePaise?: true
+    mrpPaise?: true
+    defaultStock?: true
+    unitLabel?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MasterVariantTemplateCountAggregateInputType = {
+    id?: true
+    templateId?: true
+    name?: true
+    skuPrefix?: true
+    barcode?: true
+    suggestedPricePaise?: true
+    mrpPaise?: true
+    defaultStock?: true
+    unitLabel?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MasterVariantTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterVariantTemplate to aggregate.
+     */
+    where?: MasterVariantTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterVariantTemplates to fetch.
+     */
+    orderBy?: MasterVariantTemplateOrderByWithRelationInput | MasterVariantTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MasterVariantTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterVariantTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterVariantTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MasterVariantTemplates
+    **/
+    _count?: true | MasterVariantTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MasterVariantTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MasterVariantTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MasterVariantTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MasterVariantTemplateMaxAggregateInputType
+  }
+
+  export type GetMasterVariantTemplateAggregateType<T extends MasterVariantTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateMasterVariantTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMasterVariantTemplate[P]>
+      : GetScalarType<T[P], AggregateMasterVariantTemplate[P]>
+  }
+
+
+
+
+  export type MasterVariantTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MasterVariantTemplateWhereInput
+    orderBy?: MasterVariantTemplateOrderByWithAggregationInput | MasterVariantTemplateOrderByWithAggregationInput[]
+    by: MasterVariantTemplateScalarFieldEnum[] | MasterVariantTemplateScalarFieldEnum
+    having?: MasterVariantTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MasterVariantTemplateCountAggregateInputType | true
+    _avg?: MasterVariantTemplateAvgAggregateInputType
+    _sum?: MasterVariantTemplateSumAggregateInputType
+    _min?: MasterVariantTemplateMinAggregateInputType
+    _max?: MasterVariantTemplateMaxAggregateInputType
+  }
+
+  export type MasterVariantTemplateGroupByOutputType = {
+    id: string
+    templateId: string
+    name: string
+    skuPrefix: string | null
+    barcode: string | null
+    suggestedPricePaise: number
+    mrpPaise: number | null
+    defaultStock: number
+    unitLabel: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MasterVariantTemplateCountAggregateOutputType | null
+    _avg: MasterVariantTemplateAvgAggregateOutputType | null
+    _sum: MasterVariantTemplateSumAggregateOutputType | null
+    _min: MasterVariantTemplateMinAggregateOutputType | null
+    _max: MasterVariantTemplateMaxAggregateOutputType | null
+  }
+
+  type GetMasterVariantTemplateGroupByPayload<T extends MasterVariantTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MasterVariantTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MasterVariantTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MasterVariantTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], MasterVariantTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MasterVariantTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateId?: boolean
+    name?: boolean
+    skuPrefix?: boolean
+    barcode?: boolean
+    suggestedPricePaise?: boolean
+    mrpPaise?: boolean
+    defaultStock?: boolean
+    unitLabel?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    template?: boolean | MasterProductTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["masterVariantTemplate"]>
+
+  export type MasterVariantTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    templateId?: boolean
+    name?: boolean
+    skuPrefix?: boolean
+    barcode?: boolean
+    suggestedPricePaise?: boolean
+    mrpPaise?: boolean
+    defaultStock?: boolean
+    unitLabel?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    template?: boolean | MasterProductTemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["masterVariantTemplate"]>
+
+  export type MasterVariantTemplateSelectScalar = {
+    id?: boolean
+    templateId?: boolean
+    name?: boolean
+    skuPrefix?: boolean
+    barcode?: boolean
+    suggestedPricePaise?: boolean
+    mrpPaise?: boolean
+    defaultStock?: boolean
+    unitLabel?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MasterVariantTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    template?: boolean | MasterProductTemplateDefaultArgs<ExtArgs>
+  }
+  export type MasterVariantTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    template?: boolean | MasterProductTemplateDefaultArgs<ExtArgs>
+  }
+
+  export type $MasterVariantTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MasterVariantTemplate"
+    objects: {
+      template: Prisma.$MasterProductTemplatePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      templateId: string
+      name: string
+      skuPrefix: string | null
+      barcode: string | null
+      suggestedPricePaise: number
+      mrpPaise: number | null
+      defaultStock: number
+      unitLabel: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["masterVariantTemplate"]>
+    composites: {}
+  }
+
+  type MasterVariantTemplateGetPayload<S extends boolean | null | undefined | MasterVariantTemplateDefaultArgs> = $Result.GetResult<Prisma.$MasterVariantTemplatePayload, S>
+
+  type MasterVariantTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MasterVariantTemplateFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MasterVariantTemplateCountAggregateInputType | true
+    }
+
+  export interface MasterVariantTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MasterVariantTemplate'], meta: { name: 'MasterVariantTemplate' } }
+    /**
+     * Find zero or one MasterVariantTemplate that matches the filter.
+     * @param {MasterVariantTemplateFindUniqueArgs} args - Arguments to find a MasterVariantTemplate
+     * @example
+     * // Get one MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MasterVariantTemplateFindUniqueArgs>(args: SelectSubset<T, MasterVariantTemplateFindUniqueArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one MasterVariantTemplate that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {MasterVariantTemplateFindUniqueOrThrowArgs} args - Arguments to find a MasterVariantTemplate
+     * @example
+     * // Get one MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MasterVariantTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, MasterVariantTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first MasterVariantTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateFindFirstArgs} args - Arguments to find a MasterVariantTemplate
+     * @example
+     * // Get one MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MasterVariantTemplateFindFirstArgs>(args?: SelectSubset<T, MasterVariantTemplateFindFirstArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first MasterVariantTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateFindFirstOrThrowArgs} args - Arguments to find a MasterVariantTemplate
+     * @example
+     * // Get one MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MasterVariantTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, MasterVariantTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more MasterVariantTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MasterVariantTemplates
+     * const masterVariantTemplates = await prisma.masterVariantTemplate.findMany()
+     * 
+     * // Get first 10 MasterVariantTemplates
+     * const masterVariantTemplates = await prisma.masterVariantTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const masterVariantTemplateWithIdOnly = await prisma.masterVariantTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MasterVariantTemplateFindManyArgs>(args?: SelectSubset<T, MasterVariantTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a MasterVariantTemplate.
+     * @param {MasterVariantTemplateCreateArgs} args - Arguments to create a MasterVariantTemplate.
+     * @example
+     * // Create one MasterVariantTemplate
+     * const MasterVariantTemplate = await prisma.masterVariantTemplate.create({
+     *   data: {
+     *     // ... data to create a MasterVariantTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends MasterVariantTemplateCreateArgs>(args: SelectSubset<T, MasterVariantTemplateCreateArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many MasterVariantTemplates.
+     * @param {MasterVariantTemplateCreateManyArgs} args - Arguments to create many MasterVariantTemplates.
+     * @example
+     * // Create many MasterVariantTemplates
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MasterVariantTemplateCreateManyArgs>(args?: SelectSubset<T, MasterVariantTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MasterVariantTemplates and returns the data saved in the database.
+     * @param {MasterVariantTemplateCreateManyAndReturnArgs} args - Arguments to create many MasterVariantTemplates.
+     * @example
+     * // Create many MasterVariantTemplates
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MasterVariantTemplates and only return the `id`
+     * const masterVariantTemplateWithIdOnly = await prisma.masterVariantTemplate.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MasterVariantTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, MasterVariantTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a MasterVariantTemplate.
+     * @param {MasterVariantTemplateDeleteArgs} args - Arguments to delete one MasterVariantTemplate.
+     * @example
+     * // Delete one MasterVariantTemplate
+     * const MasterVariantTemplate = await prisma.masterVariantTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one MasterVariantTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MasterVariantTemplateDeleteArgs>(args: SelectSubset<T, MasterVariantTemplateDeleteArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one MasterVariantTemplate.
+     * @param {MasterVariantTemplateUpdateArgs} args - Arguments to update one MasterVariantTemplate.
+     * @example
+     * // Update one MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MasterVariantTemplateUpdateArgs>(args: SelectSubset<T, MasterVariantTemplateUpdateArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more MasterVariantTemplates.
+     * @param {MasterVariantTemplateDeleteManyArgs} args - Arguments to filter MasterVariantTemplates to delete.
+     * @example
+     * // Delete a few MasterVariantTemplates
+     * const { count } = await prisma.masterVariantTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MasterVariantTemplateDeleteManyArgs>(args?: SelectSubset<T, MasterVariantTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MasterVariantTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MasterVariantTemplates
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MasterVariantTemplateUpdateManyArgs>(args: SelectSubset<T, MasterVariantTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MasterVariantTemplate.
+     * @param {MasterVariantTemplateUpsertArgs} args - Arguments to update or create a MasterVariantTemplate.
+     * @example
+     * // Update or create a MasterVariantTemplate
+     * const masterVariantTemplate = await prisma.masterVariantTemplate.upsert({
+     *   create: {
+     *     // ... data to create a MasterVariantTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MasterVariantTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MasterVariantTemplateUpsertArgs>(args: SelectSubset<T, MasterVariantTemplateUpsertArgs<ExtArgs>>): Prisma__MasterVariantTemplateClient<$Result.GetResult<Prisma.$MasterVariantTemplatePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of MasterVariantTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateCountArgs} args - Arguments to filter MasterVariantTemplates to count.
+     * @example
+     * // Count the number of MasterVariantTemplates
+     * const count = await prisma.masterVariantTemplate.count({
+     *   where: {
+     *     // ... the filter for the MasterVariantTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends MasterVariantTemplateCountArgs>(
+      args?: Subset<T, MasterVariantTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MasterVariantTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MasterVariantTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MasterVariantTemplateAggregateArgs>(args: Subset<T, MasterVariantTemplateAggregateArgs>): Prisma.PrismaPromise<GetMasterVariantTemplateAggregateType<T>>
+
+    /**
+     * Group by MasterVariantTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MasterVariantTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MasterVariantTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MasterVariantTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: MasterVariantTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MasterVariantTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMasterVariantTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MasterVariantTemplate model
+   */
+  readonly fields: MasterVariantTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MasterVariantTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MasterVariantTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    template<T extends MasterProductTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MasterProductTemplateDefaultArgs<ExtArgs>>): Prisma__MasterProductTemplateClient<$Result.GetResult<Prisma.$MasterProductTemplatePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MasterVariantTemplate model
+   */ 
+  interface MasterVariantTemplateFieldRefs {
+    readonly id: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly templateId: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly name: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly skuPrefix: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly barcode: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly suggestedPricePaise: FieldRef<"MasterVariantTemplate", 'Int'>
+    readonly mrpPaise: FieldRef<"MasterVariantTemplate", 'Int'>
+    readonly defaultStock: FieldRef<"MasterVariantTemplate", 'Int'>
+    readonly unitLabel: FieldRef<"MasterVariantTemplate", 'String'>
+    readonly createdAt: FieldRef<"MasterVariantTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"MasterVariantTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MasterVariantTemplate findUnique
+   */
+  export type MasterVariantTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterVariantTemplate to fetch.
+     */
+    where: MasterVariantTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterVariantTemplate findUniqueOrThrow
+   */
+  export type MasterVariantTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterVariantTemplate to fetch.
+     */
+    where: MasterVariantTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterVariantTemplate findFirst
+   */
+  export type MasterVariantTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterVariantTemplate to fetch.
+     */
+    where?: MasterVariantTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterVariantTemplates to fetch.
+     */
+    orderBy?: MasterVariantTemplateOrderByWithRelationInput | MasterVariantTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterVariantTemplates.
+     */
+    cursor?: MasterVariantTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterVariantTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterVariantTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterVariantTemplates.
+     */
+    distinct?: MasterVariantTemplateScalarFieldEnum | MasterVariantTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterVariantTemplate findFirstOrThrow
+   */
+  export type MasterVariantTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterVariantTemplate to fetch.
+     */
+    where?: MasterVariantTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterVariantTemplates to fetch.
+     */
+    orderBy?: MasterVariantTemplateOrderByWithRelationInput | MasterVariantTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MasterVariantTemplates.
+     */
+    cursor?: MasterVariantTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterVariantTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterVariantTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MasterVariantTemplates.
+     */
+    distinct?: MasterVariantTemplateScalarFieldEnum | MasterVariantTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterVariantTemplate findMany
+   */
+  export type MasterVariantTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MasterVariantTemplates to fetch.
+     */
+    where?: MasterVariantTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MasterVariantTemplates to fetch.
+     */
+    orderBy?: MasterVariantTemplateOrderByWithRelationInput | MasterVariantTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MasterVariantTemplates.
+     */
+    cursor?: MasterVariantTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MasterVariantTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MasterVariantTemplates.
+     */
+    skip?: number
+    distinct?: MasterVariantTemplateScalarFieldEnum | MasterVariantTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MasterVariantTemplate create
+   */
+  export type MasterVariantTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MasterVariantTemplate.
+     */
+    data: XOR<MasterVariantTemplateCreateInput, MasterVariantTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * MasterVariantTemplate createMany
+   */
+  export type MasterVariantTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MasterVariantTemplates.
+     */
+    data: MasterVariantTemplateCreateManyInput | MasterVariantTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MasterVariantTemplate createManyAndReturn
+   */
+  export type MasterVariantTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many MasterVariantTemplates.
+     */
+    data: MasterVariantTemplateCreateManyInput | MasterVariantTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MasterVariantTemplate update
+   */
+  export type MasterVariantTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MasterVariantTemplate.
+     */
+    data: XOR<MasterVariantTemplateUpdateInput, MasterVariantTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which MasterVariantTemplate to update.
+     */
+    where: MasterVariantTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterVariantTemplate updateMany
+   */
+  export type MasterVariantTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MasterVariantTemplates.
+     */
+    data: XOR<MasterVariantTemplateUpdateManyMutationInput, MasterVariantTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which MasterVariantTemplates to update
+     */
+    where?: MasterVariantTemplateWhereInput
+  }
+
+  /**
+   * MasterVariantTemplate upsert
+   */
+  export type MasterVariantTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MasterVariantTemplate to update in case it exists.
+     */
+    where: MasterVariantTemplateWhereUniqueInput
+    /**
+     * In case the MasterVariantTemplate found by the `where` argument doesn't exist, create a new MasterVariantTemplate with this data.
+     */
+    create: XOR<MasterVariantTemplateCreateInput, MasterVariantTemplateUncheckedCreateInput>
+    /**
+     * In case the MasterVariantTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MasterVariantTemplateUpdateInput, MasterVariantTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * MasterVariantTemplate delete
+   */
+  export type MasterVariantTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which MasterVariantTemplate to delete.
+     */
+    where: MasterVariantTemplateWhereUniqueInput
+  }
+
+  /**
+   * MasterVariantTemplate deleteMany
+   */
+  export type MasterVariantTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MasterVariantTemplates to delete
+     */
+    where?: MasterVariantTemplateWhereInput
+  }
+
+  /**
+   * MasterVariantTemplate without action
+   */
+  export type MasterVariantTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MasterVariantTemplate
+     */
+    select?: MasterVariantTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MasterVariantTemplateInclude<ExtArgs> | null
   }
 
 
@@ -7581,10 +9965,12 @@ export namespace Prisma {
     id: 'id',
     tenantId: 'tenantId',
     outletId: 'outletId',
+    masterProductId: 'masterProductId',
     name: 'name',
     description: 'description',
     category: 'category',
     subCategory: 'subCategory',
+    imageUrl: 'imageUrl',
     isAvailable: 'isAvailable',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -7596,6 +9982,7 @@ export namespace Prisma {
   export const ProductVariantScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
+    masterVariantId: 'masterVariantId',
     tenantId: 'tenantId',
     outletId: 'outletId',
     name: 'name',
@@ -7610,6 +9997,44 @@ export namespace Prisma {
   };
 
   export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
+
+
+  export const MasterProductTemplateScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    storeTypes: 'storeTypes',
+    category: 'category',
+    subCategory: 'subCategory',
+    searchAliases: 'searchAliases',
+    gstPercent: 'gstPercent',
+    imageUrl: 'imageUrl',
+    emoji: 'emoji',
+    isActive: 'isActive',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MasterProductTemplateScalarFieldEnum = (typeof MasterProductTemplateScalarFieldEnum)[keyof typeof MasterProductTemplateScalarFieldEnum]
+
+
+  export const MasterVariantTemplateScalarFieldEnum: {
+    id: 'id',
+    templateId: 'templateId',
+    name: 'name',
+    skuPrefix: 'skuPrefix',
+    barcode: 'barcode',
+    suggestedPricePaise: 'suggestedPricePaise',
+    mrpPaise: 'mrpPaise',
+    defaultStock: 'defaultStock',
+    unitLabel: 'unitLabel',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MasterVariantTemplateScalarFieldEnum = (typeof MasterVariantTemplateScalarFieldEnum)[keyof typeof MasterVariantTemplateScalarFieldEnum]
 
 
   export const StockBalanceScalarFieldEnum: {
@@ -7777,10 +10202,12 @@ export namespace Prisma {
     id?: StringFilter<"Product"> | string
     tenantId?: StringFilter<"Product"> | string
     outletId?: StringFilter<"Product"> | string
+    masterProductId?: StringNullableFilter<"Product"> | string | null
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     category?: StringFilter<"Product"> | string
     subCategory?: StringNullableFilter<"Product"> | string | null
+    imageUrl?: StringNullableFilter<"Product"> | string | null
     isAvailable?: BoolFilter<"Product"> | boolean
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -7791,10 +10218,12 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
+    masterProductId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     category?: SortOrder
     subCategory?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7808,10 +10237,12 @@ export namespace Prisma {
     NOT?: ProductWhereInput | ProductWhereInput[]
     tenantId?: StringFilter<"Product"> | string
     outletId?: StringFilter<"Product"> | string
+    masterProductId?: StringNullableFilter<"Product"> | string | null
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     category?: StringFilter<"Product"> | string
     subCategory?: StringNullableFilter<"Product"> | string | null
+    imageUrl?: StringNullableFilter<"Product"> | string | null
     isAvailable?: BoolFilter<"Product"> | boolean
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -7822,10 +10253,12 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
+    masterProductId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     category?: SortOrder
     subCategory?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7841,10 +10274,12 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Product"> | string
     tenantId?: StringWithAggregatesFilter<"Product"> | string
     outletId?: StringWithAggregatesFilter<"Product"> | string
+    masterProductId?: StringNullableWithAggregatesFilter<"Product"> | string | null
     name?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     category?: StringWithAggregatesFilter<"Product"> | string
     subCategory?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"Product"> | string | null
     isAvailable?: BoolWithAggregatesFilter<"Product"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
@@ -7856,6 +10291,7 @@ export namespace Prisma {
     NOT?: ProductVariantWhereInput | ProductVariantWhereInput[]
     id?: StringFilter<"ProductVariant"> | string
     productId?: StringFilter<"ProductVariant"> | string
+    masterVariantId?: StringNullableFilter<"ProductVariant"> | string | null
     tenantId?: StringNullableFilter<"ProductVariant"> | string | null
     outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
@@ -7876,6 +10312,7 @@ export namespace Prisma {
   export type ProductVariantOrderByWithRelationInput = {
     id?: SortOrder
     productId?: SortOrder
+    masterVariantId?: SortOrderInput | SortOrder
     tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrderInput | SortOrder
     name?: SortOrder
@@ -7899,6 +10336,7 @@ export namespace Prisma {
     OR?: ProductVariantWhereInput[]
     NOT?: ProductVariantWhereInput | ProductVariantWhereInput[]
     productId?: StringFilter<"ProductVariant"> | string
+    masterVariantId?: StringNullableFilter<"ProductVariant"> | string | null
     tenantId?: StringNullableFilter<"ProductVariant"> | string | null
     outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
@@ -7919,6 +10357,7 @@ export namespace Prisma {
   export type ProductVariantOrderByWithAggregationInput = {
     id?: SortOrder
     productId?: SortOrder
+    masterVariantId?: SortOrderInput | SortOrder
     tenantId?: SortOrderInput | SortOrder
     outletId?: SortOrderInput | SortOrder
     name?: SortOrder
@@ -7943,6 +10382,7 @@ export namespace Prisma {
     NOT?: ProductVariantScalarWhereWithAggregatesInput | ProductVariantScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ProductVariant"> | string
     productId?: StringWithAggregatesFilter<"ProductVariant"> | string
+    masterVariantId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     tenantId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     outletId?: StringNullableWithAggregatesFilter<"ProductVariant"> | string | null
     name?: StringWithAggregatesFilter<"ProductVariant"> | string
@@ -7954,6 +10394,200 @@ export namespace Prisma {
     leadTimeMinutes?: IntWithAggregatesFilter<"ProductVariant"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ProductVariant"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductVariant"> | Date | string
+  }
+
+  export type MasterProductTemplateWhereInput = {
+    AND?: MasterProductTemplateWhereInput | MasterProductTemplateWhereInput[]
+    OR?: MasterProductTemplateWhereInput[]
+    NOT?: MasterProductTemplateWhereInput | MasterProductTemplateWhereInput[]
+    id?: StringFilter<"MasterProductTemplate"> | string
+    code?: StringFilter<"MasterProductTemplate"> | string
+    name?: StringFilter<"MasterProductTemplate"> | string
+    description?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    storeTypes?: StringNullableListFilter<"MasterProductTemplate">
+    category?: StringFilter<"MasterProductTemplate"> | string
+    subCategory?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    searchAliases?: StringNullableListFilter<"MasterProductTemplate">
+    gstPercent?: FloatFilter<"MasterProductTemplate"> | number
+    imageUrl?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    emoji?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    isActive?: BoolFilter<"MasterProductTemplate"> | boolean
+    sortOrder?: IntFilter<"MasterProductTemplate"> | number
+    createdAt?: DateTimeFilter<"MasterProductTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"MasterProductTemplate"> | Date | string
+    variants?: MasterVariantTemplateListRelationFilter
+  }
+
+  export type MasterProductTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    storeTypes?: SortOrder
+    category?: SortOrder
+    subCategory?: SortOrderInput | SortOrder
+    searchAliases?: SortOrder
+    gstPercent?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    emoji?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    variants?: MasterVariantTemplateOrderByRelationAggregateInput
+  }
+
+  export type MasterProductTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: MasterProductTemplateWhereInput | MasterProductTemplateWhereInput[]
+    OR?: MasterProductTemplateWhereInput[]
+    NOT?: MasterProductTemplateWhereInput | MasterProductTemplateWhereInput[]
+    name?: StringFilter<"MasterProductTemplate"> | string
+    description?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    storeTypes?: StringNullableListFilter<"MasterProductTemplate">
+    category?: StringFilter<"MasterProductTemplate"> | string
+    subCategory?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    searchAliases?: StringNullableListFilter<"MasterProductTemplate">
+    gstPercent?: FloatFilter<"MasterProductTemplate"> | number
+    imageUrl?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    emoji?: StringNullableFilter<"MasterProductTemplate"> | string | null
+    isActive?: BoolFilter<"MasterProductTemplate"> | boolean
+    sortOrder?: IntFilter<"MasterProductTemplate"> | number
+    createdAt?: DateTimeFilter<"MasterProductTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"MasterProductTemplate"> | Date | string
+    variants?: MasterVariantTemplateListRelationFilter
+  }, "id" | "code">
+
+  export type MasterProductTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    storeTypes?: SortOrder
+    category?: SortOrder
+    subCategory?: SortOrderInput | SortOrder
+    searchAliases?: SortOrder
+    gstPercent?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    emoji?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MasterProductTemplateCountOrderByAggregateInput
+    _avg?: MasterProductTemplateAvgOrderByAggregateInput
+    _max?: MasterProductTemplateMaxOrderByAggregateInput
+    _min?: MasterProductTemplateMinOrderByAggregateInput
+    _sum?: MasterProductTemplateSumOrderByAggregateInput
+  }
+
+  export type MasterProductTemplateScalarWhereWithAggregatesInput = {
+    AND?: MasterProductTemplateScalarWhereWithAggregatesInput | MasterProductTemplateScalarWhereWithAggregatesInput[]
+    OR?: MasterProductTemplateScalarWhereWithAggregatesInput[]
+    NOT?: MasterProductTemplateScalarWhereWithAggregatesInput | MasterProductTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MasterProductTemplate"> | string
+    code?: StringWithAggregatesFilter<"MasterProductTemplate"> | string
+    name?: StringWithAggregatesFilter<"MasterProductTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"MasterProductTemplate"> | string | null
+    storeTypes?: StringNullableListFilter<"MasterProductTemplate">
+    category?: StringWithAggregatesFilter<"MasterProductTemplate"> | string
+    subCategory?: StringNullableWithAggregatesFilter<"MasterProductTemplate"> | string | null
+    searchAliases?: StringNullableListFilter<"MasterProductTemplate">
+    gstPercent?: FloatWithAggregatesFilter<"MasterProductTemplate"> | number
+    imageUrl?: StringNullableWithAggregatesFilter<"MasterProductTemplate"> | string | null
+    emoji?: StringNullableWithAggregatesFilter<"MasterProductTemplate"> | string | null
+    isActive?: BoolWithAggregatesFilter<"MasterProductTemplate"> | boolean
+    sortOrder?: IntWithAggregatesFilter<"MasterProductTemplate"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MasterProductTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MasterProductTemplate"> | Date | string
+  }
+
+  export type MasterVariantTemplateWhereInput = {
+    AND?: MasterVariantTemplateWhereInput | MasterVariantTemplateWhereInput[]
+    OR?: MasterVariantTemplateWhereInput[]
+    NOT?: MasterVariantTemplateWhereInput | MasterVariantTemplateWhereInput[]
+    id?: StringFilter<"MasterVariantTemplate"> | string
+    templateId?: StringFilter<"MasterVariantTemplate"> | string
+    name?: StringFilter<"MasterVariantTemplate"> | string
+    skuPrefix?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    barcode?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    suggestedPricePaise?: IntFilter<"MasterVariantTemplate"> | number
+    mrpPaise?: IntNullableFilter<"MasterVariantTemplate"> | number | null
+    defaultStock?: IntFilter<"MasterVariantTemplate"> | number
+    unitLabel?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    createdAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+    template?: XOR<MasterProductTemplateRelationFilter, MasterProductTemplateWhereInput>
+  }
+
+  export type MasterVariantTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    skuPrefix?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrderInput | SortOrder
+    defaultStock?: SortOrder
+    unitLabel?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    template?: MasterProductTemplateOrderByWithRelationInput
+  }
+
+  export type MasterVariantTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MasterVariantTemplateWhereInput | MasterVariantTemplateWhereInput[]
+    OR?: MasterVariantTemplateWhereInput[]
+    NOT?: MasterVariantTemplateWhereInput | MasterVariantTemplateWhereInput[]
+    templateId?: StringFilter<"MasterVariantTemplate"> | string
+    name?: StringFilter<"MasterVariantTemplate"> | string
+    skuPrefix?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    barcode?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    suggestedPricePaise?: IntFilter<"MasterVariantTemplate"> | number
+    mrpPaise?: IntNullableFilter<"MasterVariantTemplate"> | number | null
+    defaultStock?: IntFilter<"MasterVariantTemplate"> | number
+    unitLabel?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    createdAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+    template?: XOR<MasterProductTemplateRelationFilter, MasterProductTemplateWhereInput>
+  }, "id">
+
+  export type MasterVariantTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    skuPrefix?: SortOrderInput | SortOrder
+    barcode?: SortOrderInput | SortOrder
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrderInput | SortOrder
+    defaultStock?: SortOrder
+    unitLabel?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MasterVariantTemplateCountOrderByAggregateInput
+    _avg?: MasterVariantTemplateAvgOrderByAggregateInput
+    _max?: MasterVariantTemplateMaxOrderByAggregateInput
+    _min?: MasterVariantTemplateMinOrderByAggregateInput
+    _sum?: MasterVariantTemplateSumOrderByAggregateInput
+  }
+
+  export type MasterVariantTemplateScalarWhereWithAggregatesInput = {
+    AND?: MasterVariantTemplateScalarWhereWithAggregatesInput | MasterVariantTemplateScalarWhereWithAggregatesInput[]
+    OR?: MasterVariantTemplateScalarWhereWithAggregatesInput[]
+    NOT?: MasterVariantTemplateScalarWhereWithAggregatesInput | MasterVariantTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MasterVariantTemplate"> | string
+    templateId?: StringWithAggregatesFilter<"MasterVariantTemplate"> | string
+    name?: StringWithAggregatesFilter<"MasterVariantTemplate"> | string
+    skuPrefix?: StringNullableWithAggregatesFilter<"MasterVariantTemplate"> | string | null
+    barcode?: StringNullableWithAggregatesFilter<"MasterVariantTemplate"> | string | null
+    suggestedPricePaise?: IntWithAggregatesFilter<"MasterVariantTemplate"> | number
+    mrpPaise?: IntNullableWithAggregatesFilter<"MasterVariantTemplate"> | number | null
+    defaultStock?: IntWithAggregatesFilter<"MasterVariantTemplate"> | number
+    unitLabel?: StringNullableWithAggregatesFilter<"MasterVariantTemplate"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MasterVariantTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MasterVariantTemplate"> | Date | string
   }
 
   export type StockBalanceWhereInput = {
@@ -8280,10 +10914,12 @@ export namespace Prisma {
     id?: string
     tenantId: string
     outletId: string
+    masterProductId?: string | null
     name: string
     description?: string | null
     category: string
     subCategory?: string | null
+    imageUrl?: string | null
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8294,10 +10930,12 @@ export namespace Prisma {
     id?: string
     tenantId: string
     outletId: string
+    masterProductId?: string | null
     name: string
     description?: string | null
     category: string
     subCategory?: string | null
+    imageUrl?: string | null
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8308,10 +10946,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8322,10 +10962,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8336,10 +10978,12 @@ export namespace Prisma {
     id?: string
     tenantId: string
     outletId: string
+    masterProductId?: string | null
     name: string
     description?: string | null
     category: string
     subCategory?: string | null
+    imageUrl?: string | null
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -8349,10 +10993,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8362,10 +11008,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8373,6 +11021,7 @@ export namespace Prisma {
 
   export type ProductVariantCreateInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -8393,6 +11042,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateInput = {
     id?: string
     productId: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -8411,6 +11061,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -8431,6 +11082,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -8450,6 +11102,7 @@ export namespace Prisma {
   export type ProductVariantCreateManyInput = {
     id?: string
     productId: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -8465,6 +11118,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -8481,6 +11135,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -8490,6 +11145,233 @@ export namespace Prisma {
     compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
     isPreorder?: BoolFieldUpdateOperationsInput | boolean
     leadTimeMinutes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterProductTemplateCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    storeTypes?: MasterProductTemplateCreatestoreTypesInput | string[]
+    category: string
+    subCategory?: string | null
+    searchAliases?: MasterProductTemplateCreatesearchAliasesInput | string[]
+    gstPercent?: number
+    imageUrl?: string | null
+    emoji?: string | null
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: MasterVariantTemplateCreateNestedManyWithoutTemplateInput
+  }
+
+  export type MasterProductTemplateUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    storeTypes?: MasterProductTemplateCreatestoreTypesInput | string[]
+    category: string
+    subCategory?: string | null
+    searchAliases?: MasterProductTemplateCreatesearchAliasesInput | string[]
+    gstPercent?: number
+    imageUrl?: string | null
+    emoji?: string | null
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: MasterVariantTemplateUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type MasterProductTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: MasterVariantTemplateUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type MasterProductTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: MasterVariantTemplateUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type MasterProductTemplateCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    storeTypes?: MasterProductTemplateCreatestoreTypesInput | string[]
+    category: string
+    subCategory?: string | null
+    searchAliases?: MasterProductTemplateCreatesearchAliasesInput | string[]
+    gstPercent?: number
+    imageUrl?: string | null
+    emoji?: string | null
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterProductTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterProductTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterVariantTemplateCreateInput = {
+    id?: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    template: MasterProductTemplateCreateNestedOneWithoutVariantsInput
+  }
+
+  export type MasterVariantTemplateUncheckedCreateInput = {
+    id?: string
+    templateId: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterVariantTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    template?: MasterProductTemplateUpdateOneRequiredWithoutVariantsNestedInput
+  }
+
+  export type MasterVariantTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterVariantTemplateCreateManyInput = {
+    id?: string
+    templateId: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterVariantTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterVariantTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8913,10 +11795,12 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
+    masterProductId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
     subCategory?: SortOrder
+    imageUrl?: SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8926,10 +11810,12 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
+    masterProductId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
     subCategory?: SortOrder
+    imageUrl?: SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8939,10 +11825,12 @@ export namespace Prisma {
     id?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
+    masterProductId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
     subCategory?: SortOrder
+    imageUrl?: SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9061,6 +11949,7 @@ export namespace Prisma {
   export type ProductVariantCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    masterVariantId?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
     name?: SortOrder
@@ -9083,6 +11972,7 @@ export namespace Prisma {
   export type ProductVariantMaxOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    masterVariantId?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
     name?: SortOrder
@@ -9099,6 +11989,7 @@ export namespace Prisma {
   export type ProductVariantMinOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
+    masterVariantId?: SortOrder
     tenantId?: SortOrder
     outletId?: SortOrder
     name?: SortOrder
@@ -9148,6 +12039,170 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type MasterVariantTemplateListRelationFilter = {
+    every?: MasterVariantTemplateWhereInput
+    some?: MasterVariantTemplateWhereInput
+    none?: MasterVariantTemplateWhereInput
+  }
+
+  export type MasterVariantTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MasterProductTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    storeTypes?: SortOrder
+    category?: SortOrder
+    subCategory?: SortOrder
+    searchAliases?: SortOrder
+    gstPercent?: SortOrder
+    imageUrl?: SortOrder
+    emoji?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterProductTemplateAvgOrderByAggregateInput = {
+    gstPercent?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type MasterProductTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    subCategory?: SortOrder
+    gstPercent?: SortOrder
+    imageUrl?: SortOrder
+    emoji?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterProductTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    subCategory?: SortOrder
+    gstPercent?: SortOrder
+    imageUrl?: SortOrder
+    emoji?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterProductTemplateSumOrderByAggregateInput = {
+    gstPercent?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type MasterProductTemplateRelationFilter = {
+    is?: MasterProductTemplateWhereInput
+    isNot?: MasterProductTemplateWhereInput
+  }
+
+  export type MasterVariantTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    skuPrefix?: SortOrder
+    barcode?: SortOrder
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrder
+    defaultStock?: SortOrder
+    unitLabel?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterVariantTemplateAvgOrderByAggregateInput = {
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrder
+    defaultStock?: SortOrder
+  }
+
+  export type MasterVariantTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    skuPrefix?: SortOrder
+    barcode?: SortOrder
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrder
+    defaultStock?: SortOrder
+    unitLabel?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterVariantTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    skuPrefix?: SortOrder
+    barcode?: SortOrder
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrder
+    defaultStock?: SortOrder
+    unitLabel?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MasterVariantTemplateSumOrderByAggregateInput = {
+    suggestedPricePaise?: SortOrder
+    mrpPaise?: SortOrder
+    defaultStock?: SortOrder
   }
 
   export type ProductVariantRelationFilter = {
@@ -9557,6 +12612,88 @@ export namespace Prisma {
     deleteMany?: StockMovementScalarWhereInput | StockMovementScalarWhereInput[]
   }
 
+  export type MasterProductTemplateCreatestoreTypesInput = {
+    set: string[]
+  }
+
+  export type MasterProductTemplateCreatesearchAliasesInput = {
+    set: string[]
+  }
+
+  export type MasterVariantTemplateCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput> | MasterVariantTemplateCreateWithoutTemplateInput[] | MasterVariantTemplateUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: MasterVariantTemplateCreateOrConnectWithoutTemplateInput | MasterVariantTemplateCreateOrConnectWithoutTemplateInput[]
+    createMany?: MasterVariantTemplateCreateManyTemplateInputEnvelope
+    connect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+  }
+
+  export type MasterVariantTemplateUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput> | MasterVariantTemplateCreateWithoutTemplateInput[] | MasterVariantTemplateUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: MasterVariantTemplateCreateOrConnectWithoutTemplateInput | MasterVariantTemplateCreateOrConnectWithoutTemplateInput[]
+    createMany?: MasterVariantTemplateCreateManyTemplateInputEnvelope
+    connect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+  }
+
+  export type MasterProductTemplateUpdatestoreTypesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type MasterProductTemplateUpdatesearchAliasesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type MasterVariantTemplateUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput> | MasterVariantTemplateCreateWithoutTemplateInput[] | MasterVariantTemplateUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: MasterVariantTemplateCreateOrConnectWithoutTemplateInput | MasterVariantTemplateCreateOrConnectWithoutTemplateInput[]
+    upsert?: MasterVariantTemplateUpsertWithWhereUniqueWithoutTemplateInput | MasterVariantTemplateUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: MasterVariantTemplateCreateManyTemplateInputEnvelope
+    set?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    disconnect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    delete?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    connect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    update?: MasterVariantTemplateUpdateWithWhereUniqueWithoutTemplateInput | MasterVariantTemplateUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: MasterVariantTemplateUpdateManyWithWhereWithoutTemplateInput | MasterVariantTemplateUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: MasterVariantTemplateScalarWhereInput | MasterVariantTemplateScalarWhereInput[]
+  }
+
+  export type MasterVariantTemplateUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput> | MasterVariantTemplateCreateWithoutTemplateInput[] | MasterVariantTemplateUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: MasterVariantTemplateCreateOrConnectWithoutTemplateInput | MasterVariantTemplateCreateOrConnectWithoutTemplateInput[]
+    upsert?: MasterVariantTemplateUpsertWithWhereUniqueWithoutTemplateInput | MasterVariantTemplateUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: MasterVariantTemplateCreateManyTemplateInputEnvelope
+    set?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    disconnect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    delete?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    connect?: MasterVariantTemplateWhereUniqueInput | MasterVariantTemplateWhereUniqueInput[]
+    update?: MasterVariantTemplateUpdateWithWhereUniqueWithoutTemplateInput | MasterVariantTemplateUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: MasterVariantTemplateUpdateManyWithWhereWithoutTemplateInput | MasterVariantTemplateUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: MasterVariantTemplateScalarWhereInput | MasterVariantTemplateScalarWhereInput[]
+  }
+
+  export type MasterProductTemplateCreateNestedOneWithoutVariantsInput = {
+    create?: XOR<MasterProductTemplateCreateWithoutVariantsInput, MasterProductTemplateUncheckedCreateWithoutVariantsInput>
+    connectOrCreate?: MasterProductTemplateCreateOrConnectWithoutVariantsInput
+    connect?: MasterProductTemplateWhereUniqueInput
+  }
+
+  export type MasterProductTemplateUpdateOneRequiredWithoutVariantsNestedInput = {
+    create?: XOR<MasterProductTemplateCreateWithoutVariantsInput, MasterProductTemplateUncheckedCreateWithoutVariantsInput>
+    connectOrCreate?: MasterProductTemplateCreateOrConnectWithoutVariantsInput
+    upsert?: MasterProductTemplateUpsertWithoutVariantsInput
+    connect?: MasterProductTemplateWhereUniqueInput
+    update?: XOR<XOR<MasterProductTemplateUpdateToOneWithWhereWithoutVariantsInput, MasterProductTemplateUpdateWithoutVariantsInput>, MasterProductTemplateUncheckedUpdateWithoutVariantsInput>
+  }
+
   export type ProductVariantCreateNestedOneWithoutStockBalanceInput = {
     create?: XOR<ProductVariantCreateWithoutStockBalanceInput, ProductVariantUncheckedCreateWithoutStockBalanceInput>
     connectOrCreate?: ProductVariantCreateOrConnectWithoutStockBalanceInput
@@ -9777,8 +12914,25 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type ProductVariantCreateWithoutProductInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -9797,6 +12951,7 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedCreateWithoutProductInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -9845,6 +13000,7 @@ export namespace Prisma {
     NOT?: ProductVariantScalarWhereInput | ProductVariantScalarWhereInput[]
     id?: StringFilter<"ProductVariant"> | string
     productId?: StringFilter<"ProductVariant"> | string
+    masterVariantId?: StringNullableFilter<"ProductVariant"> | string | null
     tenantId?: StringNullableFilter<"ProductVariant"> | string | null
     outletId?: StringNullableFilter<"ProductVariant"> | string | null
     name?: StringFilter<"ProductVariant"> | string
@@ -9862,10 +13018,12 @@ export namespace Prisma {
     id?: string
     tenantId: string
     outletId: string
+    masterProductId?: string | null
     name: string
     description?: string | null
     category: string
     subCategory?: string | null
+    imageUrl?: string | null
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9875,10 +13033,12 @@ export namespace Prisma {
     id?: string
     tenantId: string
     outletId: string
+    masterProductId?: string | null
     name: string
     description?: string | null
     category: string
     subCategory?: string | null
+    imageUrl?: string | null
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9999,10 +13159,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10012,10 +13174,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tenantId?: StringFieldUpdateOperationsInput | string
     outletId?: StringFieldUpdateOperationsInput | string
+    masterProductId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10118,8 +13282,166 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"StockMovement"> | Date | string
   }
 
+  export type MasterVariantTemplateCreateWithoutTemplateInput = {
+    id?: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterVariantTemplateUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterVariantTemplateCreateOrConnectWithoutTemplateInput = {
+    where: MasterVariantTemplateWhereUniqueInput
+    create: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type MasterVariantTemplateCreateManyTemplateInputEnvelope = {
+    data: MasterVariantTemplateCreateManyTemplateInput | MasterVariantTemplateCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MasterVariantTemplateUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: MasterVariantTemplateWhereUniqueInput
+    update: XOR<MasterVariantTemplateUpdateWithoutTemplateInput, MasterVariantTemplateUncheckedUpdateWithoutTemplateInput>
+    create: XOR<MasterVariantTemplateCreateWithoutTemplateInput, MasterVariantTemplateUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type MasterVariantTemplateUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: MasterVariantTemplateWhereUniqueInput
+    data: XOR<MasterVariantTemplateUpdateWithoutTemplateInput, MasterVariantTemplateUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type MasterVariantTemplateUpdateManyWithWhereWithoutTemplateInput = {
+    where: MasterVariantTemplateScalarWhereInput
+    data: XOR<MasterVariantTemplateUpdateManyMutationInput, MasterVariantTemplateUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type MasterVariantTemplateScalarWhereInput = {
+    AND?: MasterVariantTemplateScalarWhereInput | MasterVariantTemplateScalarWhereInput[]
+    OR?: MasterVariantTemplateScalarWhereInput[]
+    NOT?: MasterVariantTemplateScalarWhereInput | MasterVariantTemplateScalarWhereInput[]
+    id?: StringFilter<"MasterVariantTemplate"> | string
+    templateId?: StringFilter<"MasterVariantTemplate"> | string
+    name?: StringFilter<"MasterVariantTemplate"> | string
+    skuPrefix?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    barcode?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    suggestedPricePaise?: IntFilter<"MasterVariantTemplate"> | number
+    mrpPaise?: IntNullableFilter<"MasterVariantTemplate"> | number | null
+    defaultStock?: IntFilter<"MasterVariantTemplate"> | number
+    unitLabel?: StringNullableFilter<"MasterVariantTemplate"> | string | null
+    createdAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"MasterVariantTemplate"> | Date | string
+  }
+
+  export type MasterProductTemplateCreateWithoutVariantsInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    storeTypes?: MasterProductTemplateCreatestoreTypesInput | string[]
+    category: string
+    subCategory?: string | null
+    searchAliases?: MasterProductTemplateCreatesearchAliasesInput | string[]
+    gstPercent?: number
+    imageUrl?: string | null
+    emoji?: string | null
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterProductTemplateUncheckedCreateWithoutVariantsInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    storeTypes?: MasterProductTemplateCreatestoreTypesInput | string[]
+    category: string
+    subCategory?: string | null
+    searchAliases?: MasterProductTemplateCreatesearchAliasesInput | string[]
+    gstPercent?: number
+    imageUrl?: string | null
+    emoji?: string | null
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterProductTemplateCreateOrConnectWithoutVariantsInput = {
+    where: MasterProductTemplateWhereUniqueInput
+    create: XOR<MasterProductTemplateCreateWithoutVariantsInput, MasterProductTemplateUncheckedCreateWithoutVariantsInput>
+  }
+
+  export type MasterProductTemplateUpsertWithoutVariantsInput = {
+    update: XOR<MasterProductTemplateUpdateWithoutVariantsInput, MasterProductTemplateUncheckedUpdateWithoutVariantsInput>
+    create: XOR<MasterProductTemplateCreateWithoutVariantsInput, MasterProductTemplateUncheckedCreateWithoutVariantsInput>
+    where?: MasterProductTemplateWhereInput
+  }
+
+  export type MasterProductTemplateUpdateToOneWithWhereWithoutVariantsInput = {
+    where?: MasterProductTemplateWhereInput
+    data: XOR<MasterProductTemplateUpdateWithoutVariantsInput, MasterProductTemplateUncheckedUpdateWithoutVariantsInput>
+  }
+
+  export type MasterProductTemplateUpdateWithoutVariantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterProductTemplateUncheckedUpdateWithoutVariantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    storeTypes?: MasterProductTemplateUpdatestoreTypesInput | string[]
+    category?: StringFieldUpdateOperationsInput | string
+    subCategory?: NullableStringFieldUpdateOperationsInput | string | null
+    searchAliases?: MasterProductTemplateUpdatesearchAliasesInput | string[]
+    gstPercent?: FloatFieldUpdateOperationsInput | number
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emoji?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductVariantCreateWithoutStockBalanceInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10139,6 +13461,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockBalanceInput = {
     id?: string
     productId: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10172,6 +13495,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockBalanceInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10191,6 +13515,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockBalanceInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10208,6 +13533,7 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutStockMovementsInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10227,6 +13553,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockMovementsInput = {
     id?: string
     productId: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10260,6 +13587,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10279,6 +13607,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10296,6 +13625,7 @@ export namespace Prisma {
 
   export type ProductVariantCreateWithoutStockReservationsInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10315,6 +13645,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedCreateWithoutStockReservationsInput = {
     id?: string
     productId: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10348,6 +13679,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutStockReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10367,6 +13699,7 @@ export namespace Prisma {
   export type ProductVariantUncheckedUpdateWithoutStockReservationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10384,6 +13717,7 @@ export namespace Prisma {
 
   export type ProductVariantCreateManyProductInput = {
     id?: string
+    masterVariantId?: string | null
     tenantId?: string | null
     outletId?: string | null
     name: string
@@ -10399,6 +13733,7 @@ export namespace Prisma {
 
   export type ProductVariantUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10417,6 +13752,7 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10435,6 +13771,7 @@ export namespace Prisma {
 
   export type ProductVariantUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
+    masterVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     tenantId?: NullableStringFieldUpdateOperationsInput | string | null
     outletId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
@@ -10544,6 +13881,58 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MasterVariantTemplateCreateManyTemplateInput = {
+    id?: string
+    name: string
+    skuPrefix?: string | null
+    barcode?: string | null
+    suggestedPricePaise: number
+    mrpPaise?: number | null
+    defaultStock?: number
+    unitLabel?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MasterVariantTemplateUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterVariantTemplateUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MasterVariantTemplateUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    skuPrefix?: NullableStringFieldUpdateOperationsInput | string | null
+    barcode?: NullableStringFieldUpdateOperationsInput | string | null
+    suggestedPricePaise?: IntFieldUpdateOperationsInput | number
+    mrpPaise?: NullableIntFieldUpdateOperationsInput | number | null
+    defaultStock?: IntFieldUpdateOperationsInput | number
+    unitLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -10558,6 +13947,10 @@ export namespace Prisma {
      */
     export type ProductVariantCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ProductVariantCountOutputTypeDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use MasterProductTemplateCountOutputTypeDefaultArgs instead
+     */
+    export type MasterProductTemplateCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MasterProductTemplateCountOutputTypeDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use ProductDefaultArgs instead
      */
     export type ProductArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ProductDefaultArgs<ExtArgs>
@@ -10565,6 +13958,14 @@ export namespace Prisma {
      * @deprecated Use ProductVariantDefaultArgs instead
      */
     export type ProductVariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ProductVariantDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MasterProductTemplateDefaultArgs instead
+     */
+    export type MasterProductTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MasterProductTemplateDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MasterVariantTemplateDefaultArgs instead
+     */
+    export type MasterVariantTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MasterVariantTemplateDefaultArgs<ExtArgs>
     /**
      * @deprecated Use StockBalanceDefaultArgs instead
      */

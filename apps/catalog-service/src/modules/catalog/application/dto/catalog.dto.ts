@@ -229,3 +229,155 @@ export class CreatePriceCapRuleDto {
   @IsNotEmpty()
   reason!: string;
 }
+
+// =========================================================================
+// Master Catalog Templates & Bulk Merchant Adoption DTOs
+// =========================================================================
+
+export class AdoptMasterVariantInputDto {
+  @IsString()
+  @IsNotEmpty()
+  masterVariantId!: string;
+
+  @IsNumber()
+  pricePaise!: number;
+
+  @IsNumber()
+  @IsOptional()
+  compareAtPricePaise?: number;
+
+  @IsNumber()
+  @IsOptional()
+  initialStock?: number;
+}
+
+export class AdoptMasterProductInputDto {
+  @IsString()
+  @IsNotEmpty()
+  masterProductId!: string;
+
+  @IsString()
+  @IsOptional()
+  customName?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isAvailable?: boolean;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => AdoptMasterVariantInputDto)
+  variants?: AdoptMasterVariantInputDto[];
+}
+
+export class AdoptMasterProductsDto {
+  @IsString()
+  @IsNotEmpty()
+  tenantId!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  outletId!: string;
+
+  @IsString()
+  @IsOptional()
+  actorId?: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdoptMasterProductInputDto)
+  items!: AdoptMasterProductInputDto[];
+}
+
+export class CreateMasterVariantTemplateDto {
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+
+  @IsString()
+  @IsOptional()
+  skuPrefix?: string;
+
+  @IsString()
+  @IsOptional()
+  barcode?: string;
+
+  @IsNumber()
+  suggestedPricePaise!: number;
+
+  @IsNumber()
+  @IsOptional()
+  mrpPaise?: number;
+
+  @IsNumber()
+  @IsOptional()
+  defaultStock?: number;
+
+  @IsString()
+  @IsOptional()
+  unitLabel?: string;
+}
+
+export class CreateMasterProductTemplateDto {
+  @IsString()
+  @IsNotEmpty()
+  code!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  name!: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  storeTypes!: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  category!: string;
+
+  @IsString()
+  @IsOptional()
+  subCategory?: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  searchAliases?: string[];
+
+  @IsNumber()
+  @IsOptional()
+  gstPercent?: number;
+
+  @IsString()
+  @IsOptional()
+  emoji?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsNumber()
+  @IsOptional()
+  sortOrder?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMasterVariantTemplateDto)
+  variants!: CreateMasterVariantTemplateDto[];
+}
+
+export class BulkImportMasterCatalogDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMasterProductTemplateDto)
+  items!: CreateMasterProductTemplateDto[];
+}

@@ -126,10 +126,12 @@ exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   outletId: 'outletId',
+  masterProductId: 'masterProductId',
   name: 'name',
   description: 'description',
   category: 'category',
   subCategory: 'subCategory',
+  imageUrl: 'imageUrl',
   isAvailable: 'isAvailable',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -138,6 +140,7 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
+  masterVariantId: 'masterVariantId',
   tenantId: 'tenantId',
   outletId: 'outletId',
   name: 'name',
@@ -147,6 +150,38 @@ exports.Prisma.ProductVariantScalarFieldEnum = {
   compareAtPricePaise: 'compareAtPricePaise',
   isPreorder: 'isPreorder',
   leadTimeMinutes: 'leadTimeMinutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MasterProductTemplateScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  storeTypes: 'storeTypes',
+  category: 'category',
+  subCategory: 'subCategory',
+  searchAliases: 'searchAliases',
+  gstPercent: 'gstPercent',
+  imageUrl: 'imageUrl',
+  emoji: 'emoji',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MasterVariantTemplateScalarFieldEnum = {
+  id: 'id',
+  templateId: 'templateId',
+  name: 'name',
+  skuPrefix: 'skuPrefix',
+  barcode: 'barcode',
+  suggestedPricePaise: 'suggestedPricePaise',
+  mrpPaise: 'mrpPaise',
+  defaultStock: 'defaultStock',
+  unitLabel: 'unitLabel',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -221,6 +256,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Product: 'Product',
   ProductVariant: 'ProductVariant',
+  MasterProductTemplate: 'MasterProductTemplate',
+  MasterVariantTemplate: 'MasterVariantTemplate',
   StockBalance: 'StockBalance',
   StockMovement: 'StockMovement',
   StockReservation: 'StockReservation',

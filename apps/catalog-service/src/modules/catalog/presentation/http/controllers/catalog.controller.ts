@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Put, Patch, Delete, Body, Param, Query, Req, Headers, NotFoundException, ForbiddenException } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CatalogService } from "../../../application/services/catalog.service";
+import { MasterCatalogService } from "../../../application/services/master-catalog.service";
 import { PrismaService } from "../../../infrastructure/persistence/prisma/prisma.service";
 import {
   CreateProductDto,
@@ -9,6 +10,9 @@ import {
   ReserveStockDto,
   UpdateVariantPricingDto,
   CreatePriceCapRuleDto,
+  AdoptMasterProductsDto,
+  CreateMasterProductTemplateDto,
+  BulkImportMasterCatalogDto,
 } from "../../../application/dto/catalog.dto";
 
 @ApiTags("Catalog & Inventory")
@@ -16,8 +20,76 @@ import {
 export class CatalogController {
   constructor(
     private readonly catalogService: CatalogService,
+    private readonly masterCatalogService: MasterCatalogService,
     private readonly prisma: PrismaService
   ) {}
+
+  // --- Platform Master Catalog & Merchant Quick-Setup ---
+
+  @Get("master")
+  @ApiOperation({ summary: "List Master Catalog templates grouped by Store Type with adoption status" })
+  async listMasterCatalog(
+    @Query("storeType") storeType?: string,
+    @Query("category") category?: string,
+    @Query("q") q?: string,
+    @Query("outletId") outletId?: string,
+    @Query("includeInactive") includeInactive?: string
+  ) {
+    return this.masterCatalogService.listMasterCatalog({
+      storeType,
+      category,
+      q,
+      outletId,
+      includeInactive: includeInactive === "true",
+    });
+  }
+
+  @Post("master/adopt")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Merchant: Bulk clone selected master catalog products into outlet inventory" })
+  async adoptMasterProducts(
+    @Body() dto: AdoptMasterProductsDto,
+    @Headers("x-tenant-id") headerTenantId?: string,
+    @Req() req?: any
+  ) {
+    const callerTenantId = req?.user?.tenantId || headerTenantId;
+    return this.masterCatalogService.adoptMasterProducts(dto, callerTenantId);
+  }
+
+  @Post("master")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Create or upsert a Master Catalog template" })
+  async createMasterTemplate(@Body() dto: CreateMasterProductTemplateDto) {
+    return this.masterCatalogService.createMasterTemplate(dto);
+  }
+
+  @Post("master/bulk-import")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Bulk import Master Catalog templates" })
+  async bulkImportMasterTemplates(@Body() dto: BulkImportMasterCatalogDto) {
+    return this.masterCatalogService.bulkImportMasterTemplates(dto);
+  }
+
+  @Post("master/seed-packs")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Ensure built-in starter packs exist in Master Catalog" })
+  async seedStarterPacks() {
+    return this.masterCatalogService.resetStarterPacks();
+  }
+
+  @Patch("master/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Update a Master Catalog template" })
+  async updateMasterTemplate(@Param("id") id: string, @Body() body: any) {
+    return this.masterCatalogService.updateMasterTemplate(id, body);
+  }
+
+  @Delete("master/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Delete a Master Catalog template" })
+  async deleteMasterTemplate(@Param("id") id: string) {
+    return this.masterCatalogService.deleteMasterTemplate(id);
+  }
 
   @Get("categories")
   @ApiOperation({ summary: "Customer: List active marketplace product categories with counts" })

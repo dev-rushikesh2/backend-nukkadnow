@@ -9,20 +9,23 @@ generator client {
 }
 
 model Product {
-  id          String           @id @default(uuid())
-  tenantId    String // Merchant Organization ID
-  outletId    String // Merchant Outlet ID
-  name        String
-  description String?
-  category    String
-  subCategory String?
-  isAvailable Boolean          @default(true)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  variants    ProductVariant[]
+  id              String           @id @default(uuid())
+  tenantId        String // Merchant Organization ID
+  outletId        String // Merchant Outlet ID
+  masterProductId String? // Optional reference to MasterProductTemplate
+  name            String
+  description     String?
+  category        String
+  subCategory     String?
+  imageUrl        String?
+  isAvailable     Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  variants        ProductVariant[]
 
   @@index([tenantId, outletId])
   @@index([outletId, isAvailable])
+  @@index([outletId, masterProductId])
   @@index([category])
   @@map("products")
 }
@@ -30,6 +33,7 @@ model Product {
 model ProductVariant {
   id                  String             @id @default(uuid())
   productId           String
+  masterVariantId     String? // Optional reference to MasterVariantTemplate
   tenantId            String? // Denormalized Merchant Org ID for direct variant tenant checks
   outletId            String? // Denormalized Merchant Outlet ID
   name                String
@@ -49,6 +53,48 @@ model ProductVariant {
   @@index([productId])
   @@index([tenantId, outletId])
   @@map("product_variants")
+}
+
+model MasterProductTemplate {
+  id            String                  @id @default(uuid())
+  code          String                  @unique // e.g. MC-SABJI-TOMATO
+  name          String
+  description   String?
+  storeTypes    String[] // e.g. ["SABJI_MANDI"], ["GENERAL_STORE"]
+  category      String
+  subCategory   String?
+  searchAliases String[] // Local keywords e.g. ["tamatar", "tomato"]
+  gstPercent    Float                   @default(0)
+  imageUrl      String?
+  emoji         String?                 @default("📦")
+  isActive      Boolean                 @default(true)
+  sortOrder     Int                     @default(100)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  variants      MasterVariantTemplate[]
+
+  @@index([isActive, sortOrder])
+  @@index([category])
+  @@map("master_product_templates")
+}
+
+model MasterVariantTemplate {
+  id                  String                @id @default(uuid())
+  templateId          String
+  name                String // e.g. "500g", "1kg"
+  skuPrefix           String?
+  barcode             String?
+  suggestedPricePaise Int
+  mrpPaise            Int?
+  defaultStock        Int                   @default(25)
+  unitLabel           String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  template            MasterProductTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId])
+  @@index([barcode])
+  @@map("master_variant_templates")
 }
 
 model StockBalance {

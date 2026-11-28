@@ -953,6 +953,85 @@ export class AdminController {
     });
   }
 
+  @Get("catalog/master")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: List all Master Catalog templates" })
+  async adminListMasterCatalog(
+    @Query("storeType") storeType?: string,
+    @Query("category") category?: string,
+    @Query("q") q?: string,
+    @Headers() headers?: any
+  ) {
+    requireAdmin(headers!);
+    const params = new URLSearchParams();
+    params.set("includeInactive", "true");
+    if (storeType) params.set("storeType", storeType);
+    if (category) params.set("category", category);
+    if (q) params.set("q", q);
+    return this.proxy.dispatch(this.catalogServiceUrl, `/api/v1/catalog/master?${params.toString()}`, {
+      method: "GET",
+      headers: { authorization: headers!.authorization },
+    });
+  }
+
+  @Post("catalog/master")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Create or upsert a Master Catalog template" })
+  async adminCreateMasterTemplate(@Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, "/api/v1/catalog/master", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Post("catalog/master/bulk-import")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Bulk import Master Catalog templates" })
+  async adminBulkImportMasterCatalog(@Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, "/api/v1/catalog/master/bulk-import", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Post("catalog/master/seed-packs")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Restore built-in starter packs into Master Catalog" })
+  async adminSeedMasterPacks(@Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, "/api/v1/catalog/master/seed-packs", {
+      method: "POST",
+      headers: { authorization: headers.authorization },
+    });
+  }
+
+  @Patch("catalog/master/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Update a Master Catalog template" })
+  async adminUpdateMasterTemplate(@Param("id") id: string, @Body() body: any, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, `/api/v1/catalog/master/${id}`, {
+      method: "PATCH",
+      headers: { authorization: headers.authorization },
+      body: JSON.stringify(body),
+    });
+  }
+
+  @Delete("catalog/master/:id")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Admin: Delete a Master Catalog template" })
+  async adminDeleteMasterTemplate(@Param("id") id: string, @Headers() headers: any) {
+    requireAdmin(headers);
+    return this.proxy.dispatch(this.catalogServiceUrl, `/api/v1/catalog/master/${id}`, {
+      method: "DELETE",
+      headers: { authorization: headers.authorization },
+    });
+  }
+
   // =========================================================================
   // CUSTOMERS
   // =========================================================================

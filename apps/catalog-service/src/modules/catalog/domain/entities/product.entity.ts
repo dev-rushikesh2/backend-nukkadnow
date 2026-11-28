@@ -3,6 +3,7 @@ import { Money } from "@nukkadnow/platform-kernel";
 export interface VariantProps {
   id: string;
   productId: string;
+  masterVariantId?: string;
   name: string;
   sku?: string;
   barcode?: string;
@@ -21,6 +22,7 @@ export class ProductVariant {
 
   get id(): string { return this.props.id; }
   get productId(): string { return this.props.productId; }
+  get masterVariantId(): string | undefined { return this.props.masterVariantId; }
   get name(): string { return this.props.name; }
   get sku(): string | undefined { return this.props.sku; }
   get barcode(): string | undefined { return this.props.barcode; }
@@ -48,10 +50,12 @@ export interface ProductProps {
   id: string;
   tenantId: string;
   outletId: string;
+  masterProductId?: string;
   name: string;
   description?: string;
   category: string;
   subCategory?: string;
+  imageUrl?: string;
   isAvailable: boolean;
   variants: ProductVariant[];
   createdAt: Date;
@@ -68,10 +72,12 @@ export class Product {
   get id(): string { return this.props.id; }
   get tenantId(): string { return this.props.tenantId; }
   get outletId(): string { return this.props.outletId; }
+  get masterProductId(): string | undefined { return this.props.masterProductId; }
   get name(): string { return this.props.name; }
   get description(): string | undefined { return this.props.description; }
   get category(): string { return this.props.category; }
   get subCategory(): string | undefined { return this.props.subCategory; }
+  get imageUrl(): string | undefined { return this.props.imageUrl; }
   get isAvailable(): boolean { return this.props.isAvailable; }
   get variants(): ProductVariant[] { return [...this.props.variants]; }
   get createdAt(): Date { return this.props.createdAt; }

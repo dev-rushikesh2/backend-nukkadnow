@@ -512,6 +512,62 @@ export class MerchantController {
   // Catalog & Inventory (strictly tenant/outlet-isolated + RBAC gated)
   // -------------------------------------------------------------------------
 
+  @Get("catalog/master")
+  @UseGuards(StaffPermissionGuard)
+  @RequirePermission("catalog:view", "catalog:create_edit")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Browse Master Catalog starter packs with outlet adoption status" })
+  async getMasterCatalog(
+    @Query("storeType") storeType?: string,
+    @Query("category") category?: string,
+    @Query("q") q?: string,
+    @Query("outletId") queryOutletId?: string,
+    @Headers() headers?: any,
+    @Req() req?: any
+  ) {
+    const { tenantId, outletId } = resolveTenantContext(headers!, req);
+    const targetOutletId = await this.resolveAuthorizedOutletId(tenantId, outletId, queryOutletId);
+    const params = new URLSearchParams();
+    if (storeType) params.set("storeType", storeType);
+    if (category) params.set("category", category);
+    if (q) params.set("q", q);
+    if (targetOutletId) params.set("outletId", targetOutletId);
+    return this.proxy.dispatch<any>(
+      this.catalogServiceUrl,
+      `/api/v1/catalog/master?${params.toString()}`,
+      {
+        method: "GET",
+        headers: { authorization: headers!.authorization, "x-tenant-id": tenantId },
+      }
+    );
+  }
+
+  @Post("catalog/master/adopt")
+  @UseGuards(StaffPermissionGuard)
+  @RequirePermission("catalog:create_edit")
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Bulk adopt selected Master Catalog products into merchant store inventory" })
+  async adoptMasterCatalog(@Body() body: any, @Headers() headers: any, @Req() req: any) {
+    const { tenantId, outletId, sub } = resolveTenantContext(headers, req);
+    const resolvedOutletId = await this.resolveAuthorizedOutletId(tenantId, outletId, body?.outletId);
+    const res = await this.proxy.dispatch<any>(this.catalogServiceUrl, "/api/v1/catalog/master/adopt", {
+      method: "POST",
+      headers: { authorization: headers.authorization, "x-tenant-id": tenantId },
+      body: JSON.stringify({ ...body, tenantId, outletId: resolvedOutletId, actorId: sub }),
+    });
+
+    void this.recordAudit(tenantId, resolvedOutletId, headers, req, {
+      module: "CATALOG",
+      action: "MASTER_CATALOG_ADOPTED",
+      targetType: "PRODUCT",
+      targetId: resolvedOutletId,
+      targetLabel: `Bulk adopted ${res?.data?.adoptedCount ?? body?.items?.length ?? 0} master products`,
+      afterState: { adoptedCount: res?.data?.adoptedCount, skippedCount: res?.data?.skippedCount },
+    });
+
+    return res;
+  }
+
   @Get("catalog/products")
   @UseGuards(StaffPermissionGuard)
   @RequirePermission("catalog:view", "inventory:view", "pos:walkin_billing")

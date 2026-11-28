@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { CatalogController } from "./presentation/http/controllers/catalog.controller";
 import { CatalogService } from "./application/services/catalog.service";
+import { MasterCatalogService } from "./application/services/master-catalog.service";
 import {
   ProductRepositoryPort,
   StockRepositoryPort,
@@ -19,6 +20,7 @@ import { StockReservationExpiryScheduler } from "./infrastructure/scheduler/stoc
   providers: [
     PrismaService,
     CatalogService,
+    MasterCatalogService,
     StockReservationExpiryScheduler,
     {
       provide: ProductRepositoryPort,
@@ -33,6 +35,6 @@ import { StockReservationExpiryScheduler } from "./infrastructure/scheduler/stoc
       useClass: PrismaPriceCapRepository,
     },
   ],
-  exports: [CatalogService, PrismaService],
+  exports: [CatalogService, MasterCatalogService, PrismaService],
 })
 export class CatalogModule {}
